@@ -39,7 +39,7 @@
                 <span data-key="t-pages">Masters</span>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/item-expenses">
+                <Link :class="['nav-link menu-link', {active: route().current('master.item-expenses.index')}]" :href="route('master.item-expenses.index')">
                     <i class="ri-honour-line"></i>
                     <span>Item Expenses</span>
                 </Link>
