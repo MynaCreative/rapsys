@@ -63,6 +63,12 @@
                 </Link>
             </li>
             <li class="nav-item">
+                <Link :class="['nav-link menu-link', {active: route().current('master.sales-channels.index')}]" :href="route('master.sales-channels.index')">
+                    <i class="ri-shopping-bag-2-line"></i>
+                    <span>Sales Channel</span>
+                </Link>
+            </li>
+            <li class="nav-item">
                 <Link class="nav-link menu-link" href="/masters/vendor">
                     <i class="ri-building-4-line"></i>
                     <span>Vendor</span>
@@ -96,12 +102,6 @@
                 <Link class="nav-link menu-link" href="/masters/tax">
                     <i class=" ri-money-dollar-circle-line"></i>
                     <span>Tax</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/sales-channel">
-                    <i class="ri-shopping-bag-2-line"></i>
-                    <span>Sales Channel</span>
                 </Link>
             </li>
             <li class="menu-title">
