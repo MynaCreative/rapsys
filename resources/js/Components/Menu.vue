@@ -81,9 +81,9 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/item-line-type">
+                <Link :class="['nav-link menu-link', {active: route().current('master.line-types.index')}]" :href="route('master.line-types.index')">
                     <i class="ri-list-check-2"></i>
-                    <span>Item Line Type</span>
+                    <span>Line Type</span>
                 </Link>
             </li>
             <li class="nav-item">
