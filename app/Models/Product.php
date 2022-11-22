@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -13,7 +12,7 @@ use Spatie\Activitylog\LogOptions;
 use App\Traits\Signature;
 use App\Traits\Scope as GeneralScope;
 
-class ItemExpense extends Model
+class Product extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity, GeneralScope, Signature;
 
@@ -22,7 +21,7 @@ class ItemExpense extends Model
      *
      * @var array
      */
-    protected $fillable = ['code','name','coa','description'];
+    protected $fillable = ['code','name','cost_center','description'];
 
 
     /**
