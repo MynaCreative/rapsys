@@ -57,7 +57,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/department">
+                <Link :class="['nav-link menu-link', {active: route().current('master.departments.index')}]" :href="route('master.departments.index')">
                     <i class="ri-building-2-line"></i>
                     <span>Department</span>
                 </Link>
