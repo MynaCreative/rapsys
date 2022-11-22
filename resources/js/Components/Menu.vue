@@ -39,9 +39,9 @@
                 <span data-key="t-pages">Masters</span>
             </li>
             <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.item-expenses.index')}]" :href="route('master.item-expenses.index')">
+                <Link :class="['nav-link menu-link', {active: route().current('master.expenses.index')}]" :href="route('master.expenses.index')">
                     <i class="ri-honour-line"></i>
-                    <span>Item Expenses</span>
+                    <span>Expenses</span>
                 </Link>
             </li>
             <li class="nav-item">
@@ -69,7 +69,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/vendor">
+                <Link :class="['nav-link menu-link', {active: route().current('master.vendors.index')}]" :href="route('master.vendors.index')">
                     <i class="ri-building-4-line"></i>
                     <span>Vendor</span>
                 </Link>

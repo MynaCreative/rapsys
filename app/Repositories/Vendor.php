@@ -3,9 +3,9 @@ namespace App\Repositories;
 
 use Illuminate\Http\Request;
 
-use App\Models\ItemExpense as Model;
+use App\Models\Vendor as Model;
 
-class ItemExpense
+class Vendor
 {
     private Model $model;
 
@@ -13,9 +13,9 @@ class ItemExpense
      * Initialize the repository from model.
      *
      * @param Model $model
-     * @return ItemExpense
+     * @return Vendor
      */
-    public static function init(Model $model): ItemExpense
+    public static function init(Model $model): Vendor
     {
         $instance = new self;
         $instance->model = $model;
@@ -34,7 +34,7 @@ class ItemExpense
         $query = Model::withTrashed()
             ->ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name', 'coa'])
+            ->searching($request, ['code', 'name'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->latest();
 
@@ -44,7 +44,6 @@ class ItemExpense
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
-                'coa'           => $item->coa,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,

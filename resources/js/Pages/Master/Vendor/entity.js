@@ -2,13 +2,13 @@ export default () => {
     return {
         page: {
             module  : 'master',
-            name    : 'item-expenses',
-            title   : 'Item Expense'
+            name    : 'vendors',
+            title   : 'Vendor'
         },
         form: {
             id: null,
             code: null,
-            coa: null,
+            cost_center: null,
             name: null,
             description: null,
         }

@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\ItemExpense as Model;
+use App\Models\Expense as Model;
 
-class ItemExpenseSeeder extends Seeder
+class ExpenseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

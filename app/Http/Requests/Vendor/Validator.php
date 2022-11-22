@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests\ItemExpense;
+namespace App\Http\Requests\Vendor;
 
-use App\Models\ItemExpense as Model;
+use App\Models\Vendor as Model;
 
 class Validator 
 {
@@ -16,7 +16,6 @@ class Validator
         return [
             'code' => ['unique:'. Model::class.',code'. ($model ? ','.$model->id : '')],
             'name' => ['required'],
-            'coa'  => ['required'],
         ];
     }
 

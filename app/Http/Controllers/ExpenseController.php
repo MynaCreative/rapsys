@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
-use App\Repositories\ItemExpense as Repository;
-use App\Models\ItemExpense as Model;
+use App\Repositories\Expense as Repository;
+use App\Models\Expense as Model;
 
-use App\Http\Requests\ItemExpense\{
+use App\Http\Requests\Expense\{
     Show    as ShowRequest,
     Index   as IndexRequest,
     Store   as StoreRequest,
@@ -18,12 +18,12 @@ use App\Http\Requests\ItemExpense\{
 use Inertia\Inertia;
 use Throwable;
 
-class ItemExpenseController extends Controller
+class ExpenseController extends Controller
 {
     private Repository  $repository;
 
     private $module = 'Master';
-    private $page = 'ItemExpense';
+    private $page = 'Expense';
 
     /**
      * Create the controller instance.
@@ -56,15 +56,15 @@ class ItemExpenseController extends Controller
      * Display the specified resource.
      *
      * @param   ShowRequest  $request
-     * @param   Model $item_expense
+     * @param   Model $expense
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function show(ShowRequest $request, Model $item_expense)
+    public function show(ShowRequest $request, Model $expense)
     {
         try {
-            $data = $this->repository::init($item_expense)->show($request);
+            $data = $this->repository::init($expense)->show($request);
             return response()->json($data);
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in data fetching. Please try again.');
@@ -97,15 +97,15 @@ class ItemExpenseController extends Controller
      * Update specified resource.
      *
      * @param   UpdateRequest  $request
-     * @param   Model $item_expense
+     * @param   Model $expense
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function update(UpdateRequest $request, Model $item_expense)
+    public function update(UpdateRequest $request, Model $expense)
     {
         try {
-            $this->repository::init($item_expense)->update($request);
+            $this->repository::init($expense)->update($request);
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
         }
@@ -119,15 +119,15 @@ class ItemExpenseController extends Controller
      * Remove specified resource.
      *
      * @param   DestroyRequest  $request
-     * @param   Model $item_expense
+     * @param   Model $expense
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function destroy(DestroyRequest $request, Model $item_expense)
+    public function destroy(DestroyRequest $request, Model $expense)
     {
         try {
-            $this->repository::init($item_expense)->delete();
+            $this->repository::init($expense)->delete();
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
         }
@@ -141,15 +141,15 @@ class ItemExpenseController extends Controller
      * Restore specified resource.
      *
      * @param   DestroyRequest  $request
-     * @param   Model $item_expense
+     * @param   Model $expense
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function restore(DestroyRequest $request, Model $item_expense)
+    public function restore(DestroyRequest $request, Model $expense)
     {
         try {
-            $this->repository::init($item_expense)->restore();
+            $this->repository::init($expense)->restore();
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
         }

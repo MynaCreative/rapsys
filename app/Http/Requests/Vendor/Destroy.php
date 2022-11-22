@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ItemExpense;
+namespace App\Http\Requests\Vendor;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Index extends FormRequest
+class Destroy extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\ItemExpense;
+namespace App\Http\Requests\Vendor;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Elegant\Sanitizer\Laravel\SanitizesInput;
 
-class Update extends FormRequest
+class Store extends FormRequest
 {
     use SanitizesInput;
 
@@ -26,7 +26,7 @@ class Update extends FormRequest
      */
     public function rules(): array
     {
-        return (new Validator())->rules($this->item_expense);
+        return (new Validator())->rules();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\ItemExpense;
+namespace App\Http\Requests\Expense;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Elegant\Sanitizer\Laravel\SanitizesInput;

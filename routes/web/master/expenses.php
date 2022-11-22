@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ItemExpenseController as CurrentController;
+use App\Http\Controllers\ExpenseController as CurrentController;
 
 $module   = basename(dirname(__FILE__));
 $endpoint = basename(__FILE__, '.php');
