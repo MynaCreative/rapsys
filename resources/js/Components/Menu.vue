@@ -99,7 +99,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/tax">
+                <Link :class="['nav-link menu-link', {active: route().current('master.taxes.index')}]" :href="route('master.taxes.index')">
                     <i class=" ri-money-dollar-circle-line"></i>
                     <span>Tax</span>
                 </Link>
