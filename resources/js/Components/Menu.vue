@@ -75,7 +75,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/invoice-type">
+                <Link :class="['nav-link menu-link', {active: route().current('master.invoice-types.index')}]" :href="route('master.invoice-types.index')">
                     <i class="ri-notification-badge-line"></i>
                     <span>Invoice Type</span>
                 </Link>

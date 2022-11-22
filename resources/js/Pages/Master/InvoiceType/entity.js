@@ -2,8 +2,8 @@ export default () => {
     return {
         page: {
             module  : 'master',
-            name    : 'vendors',
-            title   : 'Vendor'
+            name    : 'invoice-types',
+            title   : 'Invoice Type'
         },
         form: {
             id: null,
