@@ -45,7 +45,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/area">
+                <Link :class="['nav-link menu-link', {active: route().current('master.areas.index')}]" :href="route('master.areas.index')">
                     <i class=" ri-map-pin-5-line"></i>
                     <span>Area</span>
                 </Link>
