@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AreaSeeder::class);
         $this->call(ExpenseSeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(CurrencySeeder::class);
         $this->call(LineTypeSeeder::class);
         $this->call(DepartmentSeeder::class);
         $this->call(InvoiceTypeSeeder::class);

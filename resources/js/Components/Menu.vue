@@ -87,7 +87,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/currency">
+                <Link :class="['nav-link menu-link', {active: route().current('master.currencies.index')}]" :href="route('master.currencies.index')">
                     <i class="ri-copper-coin-line"></i>
                     <span>Currency</span>
                 </Link>
