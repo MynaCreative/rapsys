@@ -93,7 +93,7 @@
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/masters/term">
+                <Link :class="['nav-link menu-link', {active: route().current('master.terms.index')}]" :href="route('master.terms.index')">
                     <i class="ri-alarm-warning-line"></i>
                     <span>Term</span>
                 </Link>
