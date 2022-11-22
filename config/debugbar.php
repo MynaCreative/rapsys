@@ -156,7 +156,7 @@ return [
         'exceptions'      => true,  // Exception displayer
         'log'             => true,  // Logs from Monolog (merged in messages if enabled)
         'db'              => true,  // Show database (PDO) queries and bindings
-        'views'           => true,  // Views with their data
+        'views'           => false,  // Views with their data
         'route'           => true,  // Current route information
         'auth'            => false, // Display Laravel authentication status
         'gate'            => true,  // Display Laravel Gate checks
@@ -171,7 +171,7 @@ return [
         'config'          => false, // Display config settings
         'cache'           => false, // Display cache events
         'models'          => true,  // Display models
-        'livewire'        => true,  // Display Livewire (when available)
+        'livewire'        => false,  // Display Livewire (when available)
     ],
 
     /*

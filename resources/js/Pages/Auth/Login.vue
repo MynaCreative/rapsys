@@ -29,7 +29,7 @@
                                     <p class="text-muted">Sign in to continue using RAPsys.</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <b-alert v-model="status" variant="warning" class="mt-3" dismissible>{{ status }}</b-alert>
+                                    <!-- <b-alert v-model="status" variant="warning" class="mt-3" dismissible>{{ status }}</b-alert> -->
                                     <form @submit.prevent="submit">
                                         <div class="mb-3">
                                             <label for="username" class="form-label">Username</label>

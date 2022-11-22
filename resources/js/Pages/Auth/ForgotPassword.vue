@@ -33,7 +33,7 @@
                                     />
                                 </div>
                                 <div class="p-2">
-                                    <b-alert v-model="status" variant="warning" class="mt-3" dismissible>{{ status }}</b-alert>
+                                    <!-- <b-alert v-model="status" variant="warning" class="mt-3" dismissible>{{ status }}</b-alert> -->
                                     <form @submit.prevent="submit">                                     
                                         <div class="mb-4">
                                             <label for="username" class="form-label">Email</label>
@@ -65,8 +65,8 @@
 import Footer from '@/Components/Footer.vue'
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3'
 
-import Lottie from '@/Components/widgets/lottie.vue'
-import animationData from '@/Components/widgets/rhvddzym.json'
+import Lottie from '@/Components/Widgets/lottie.vue'
+import animationData from '@/Components/Widgets/rhvddzym.json'
 
 defineProps({
     status: String,

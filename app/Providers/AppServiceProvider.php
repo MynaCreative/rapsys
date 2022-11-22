@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -30,6 +31,15 @@ class AppServiceProvider extends ServiceProvider
 
         LogViewer::auth(function ($request) {
             return $request->user();
+        });
+
+        Builder::macro('whereLike', function($columns, $search) {
+            $this->where(function($query) use ($columns, $search) {
+                foreach($columns as $column) {
+                    $query->orWhere($column, 'like', '%'.$search.'%');
+                }
+            });   
+            return $this;
         });
     }
 }

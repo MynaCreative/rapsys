@@ -119,7 +119,7 @@
                         <Link href="/dashboard" class="nav-link">User</Link>
                         <Link href="/dashboard" class="nav-link">Role</Link>
                         <Link href="/dashboard" class="nav-link">Permission</Link>
-                        <Link href="/dashboard" class="nav-link">Permission Group</Link>
+                        <Link :href="route('master.permission-groups.index')" class="nav-link">Permission Group</Link>
                         <Link href="/dashboard" class="nav-link">Approval Matrix</Link>
                     </li>
                 </ul>
