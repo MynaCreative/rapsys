@@ -18,7 +18,7 @@ class AreaSeeder extends Seeder
     {
         $data = [
             [ ['code' => 'BDO'], ['name' => 'Bandung','coa' => 'BDO000'] ],
-            [ ['code' => 'MES'], ['name' => 'Medan','coa' => 'Mes000'] ],
+            [ ['code' => 'MES'], ['name' => 'Medan','coa' => 'MES000'] ],
         ];
 
         foreach($data as $row) {

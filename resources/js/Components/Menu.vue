@@ -20,10 +20,10 @@
             </li>
             <li class="menu-title">
                 <i class="ri-more-fill"></i>
-                <span data-key="t-pages">Transactions</span>
+                <span data-key="t-pages">Transaction</span>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
+                <Link :class="['nav-link menu-link', {active: route().current('transaction.invoices.index')}]" :href="route('transaction.invoices.index')">
                     <i class="ri-newspaper-line"></i>
                     <span>Invoice</span>
                 </Link>
@@ -36,7 +36,7 @@
             </li>
             <li class="menu-title">
                 <i class="ri-more-fill"></i>
-                <span data-key="t-pages">Masters</span>
+                <span data-key="t-pages">Master</span>
             </li>
             <li class="nav-item">
                 <Link :class="['nav-link menu-link', {active: route().current('master.expenses.index')}]" :href="route('master.expenses.index')">
@@ -106,30 +106,46 @@
             </li>
             <li class="menu-title">
                 <i class="ri-more-fill"></i>
-                <span data-key="t-components">Settings</span>
+                <span data-key="t-components">Setting</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link" href="#sub-administrator" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sub-administrator">
+                <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.administrator')}]"
+                :aria-expanded="route().current().startsWith('setting.administrator')"
+                href="#setting-administrator" data-bs-toggle="collapse" role="button" aria-controls="setting-administrator">
                     <i class="ri-account-circle-line"></i>
                     <span data-key="t-authentication">Administrator</span>
                 </a>
-                <div class="collapse menu-dropdown" id="sub-administrator">
+                <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.administrator')}]" id="setting-administrator">
                 <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
                         <Link href="/dashboard" class="nav-link">User</Link>
                         <Link href="/dashboard" class="nav-link">Role</Link>
-                        <Link href="/dashboard" class="nav-link">Permission</Link>
-                        <Link :href="route('master.permission-groups.index')" class="nav-link">Permission Group</Link>
-                        <Link href="/dashboard" class="nav-link">Approval Matrix</Link>
+                        <Link :class="['nav-link', {active: route().current('setting.administrator.permissions.index')}]"
+                            :href="route('setting.administrator.permissions.index')">
+                            Permission
+                        </Link>
+                        <Link :class="['nav-link', {active: route().current('setting.administrator.permission-groups.index')}]"
+                            :href="route('setting.administrator.permission-groups.index')">
+                            Permission Group
+                        </Link>
                     </li>
                 </ul>
                 </div>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
+                <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.configuration')}]"
+                :aria-expanded="route().current().startsWith('setting.configuration')"
+                href="#setting-configuration" data-bs-toggle="collapse" role="button" aria-controls="setting-configuration">
                     <i class="ri-settings-line"></i>
-                    <span>Configuration</span>
-                </Link>
+                    <span data-key="t-authentication">Configuration</span>
+                </a>
+                <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.configuration')}]" id="setting-configuration">
+                <ul class="nav nav-sm flex-column">
+                    <li class="nav-item">
+                        <Link href="/dashboard" class="nav-link">Approval</Link>
+                    </li>
+                </ul>
+                </div>
             </li>
             <li class="menu-title">
                 <i class="ri-more-fill"></i>

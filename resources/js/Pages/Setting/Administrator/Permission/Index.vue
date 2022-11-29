@@ -9,9 +9,6 @@
                 <div class="row g-4">
                     <div class="col-sm-auto">
                         <b-button-group>
-                            <!-- <b-button variant="soft-danger" @click="modalFormVisible = true, currentId = null">
-                                <i class="ri-delete-bin-2-line align-bottom me-1"></i>
-                            </b-button> -->
                             <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFormVisible = true, currentId = null">
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
@@ -22,13 +19,6 @@
                         <div class="d-flex justify-content-sm-end">
                             <b-button-group>
                                 <Reload :page="page"/>
-                                <!-- <b-dropdown right variant="info">
-                                    <template #button-content>
-                                        <i class="ri-upload-2-fill me-1 align-bottom me-1"></i> Export
-                                    </template>
-                                    <b-dropdown-item>Excel</b-dropdown-item>
-                                    <b-dropdown-item>PDF</b-dropdown-item>
-                                </b-dropdown> -->
                                 <PerPage v-if="collection.links.length > 3"/>
                             </b-button-group>
                         </div>
@@ -46,65 +36,44 @@
                     <table class="table table-hover table-nowrap align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <!-- <th scope="col" style="width: 25px;">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="checkAll" value="option">
-                                    </div>
-                                </th> -->
                                 <th>#</th>
-                                <Sort label="Code" attribute='code'/>
                                 <Sort label="Name" attribute='name'/>
+                                <Sort label="Label" attribute='label'/>
+                                <Sort label="Guard" attribute='guard_name'/>
                                 <Sort label="Created At" attribute='created_at'/>
-                                <th>Created By</th>
-                                <th>Active</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
-                                <!-- <th scope="row">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
-                                    </div>
-                                </th> -->
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td>{{ item.code }}</td>
                                 <td>{{ item.name }}</td>
+                                <td>{{ item.label }}</td>
+                                <td>{{ item.guard_name }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
-                                <td><DataUserName :data="item.created_user?.name"/></td>
-                                <td><DataActive :data="item.deleted_at"/></td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
-                                        <template v-if="!item.deleted_at">
-                                            <li class="list-inline-item" title="View" @click="() => {
-                                                currentId = item.id
-                                                modalDetailVisible = true
-                                            }">
-                                                <a href="#" class="text-warning d-inline-block" >
-                                                    <i class="ri-eye-fill fs-16"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item edit" title="Edit" @click="() => {
-                                                currentId = item.id
-                                                modalFormVisible = true
-                                            }">
-                                                <a href="#" class="text-primary d-inline-block">
-                                                    <i class="ri-pencil-fill fs-16"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item" title="Remove">
-                                                <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
-                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                </a>
-                                            </li>
-                                        </template>
-                                        <template v-else>
-                                            <li class="list-inline-item" title="Restore">
-                                                <a href="#" class="text-info d-inline-block" @click="service.deleteData(item.id, true)">
-                                                    <i class="ri-refresh-fill fs-16"></i>
-                                                </a>
-                                            </li>
-                                        </template>
+                                        <li class="list-inline-item" title="View" @click="() => {
+                                            currentId = item.id
+                                            modalDetailVisible = true
+                                        }">
+                                            <a href="#" class="text-warning d-inline-block" >
+                                                <i class="ri-eye-fill fs-16"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item edit" title="Edit" @click="() => {
+                                            currentId = item.id
+                                            modalFormVisible = true
+                                        }">
+                                            <a href="#" class="text-primary d-inline-block">
+                                                <i class="ri-pencil-fill fs-16"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item" title="Remove">
+                                            <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
+                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>
@@ -154,7 +123,8 @@ const page = entityData().page
 
 const breadcrumbs = [
     { text: 'Dashboard', to: route('dashboard') },
-    { text: 'Master' },
+    { text: 'Setting' },
+    { text: 'Administrator' },
     { text: page.title, active: true },
 ]
 

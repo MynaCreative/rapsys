@@ -1,7 +1,7 @@
 export default () => {
     return {
         page: {
-            module  : 'master',
+            module  : 'setting.administrator',
             name    : 'permission-groups',
             title   : 'Permission Group'
         },

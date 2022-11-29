@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 
-use App\Repositories\PermissionGroup as Repository;
-use App\Models\PermissionGroup as Model;
+use App\Repositories\Permission as Repository;
+use App\Models\Permission as Model;
 
-use App\Http\Requests\PermissionGroup\{
+use App\Http\Requests\Permission\{
     Show    as ShowRequest,
     Index   as IndexRequest,
     Store   as StoreRequest,
@@ -18,12 +18,12 @@ use App\Http\Requests\PermissionGroup\{
 use Inertia\Inertia;
 use Throwable;
 
-class PermissionGroupController extends Controller
+class PermissionController extends Controller
 {
     private Repository  $repository;
 
     private $module = 'Setting/Administrator';
-    private $page = 'PermissionGroup';
+    private $page = 'Permission';
 
     /**
      * Create the controller instance.
@@ -56,15 +56,15 @@ class PermissionGroupController extends Controller
      * Display the specified resource.
      *
      * @param   ShowRequest  $request
-     * @param   Model $permission_group
+     * @param   Model $permission
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function show(ShowRequest $request, Model $permission_group)
+    public function show(ShowRequest $request, Model $permission)
     {
         try {
-            $data = $this->repository::init($permission_group)->show($request);
+            $data = $this->repository::init($permission)->show($request);
             return response()->json($data);
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in data fetching. Please try again.');
@@ -97,15 +97,15 @@ class PermissionGroupController extends Controller
      * Update specified resource.
      *
      * @param   UpdateRequest  $request
-     * @param   Model $permission_group
+     * @param   Model $permission
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function update(UpdateRequest $request, Model $permission_group)
+    public function update(UpdateRequest $request, Model $permission)
     {
         try {
-            $this->repository::init($permission_group)->update($request);
+            $this->repository::init($permission)->update($request);
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
         }
@@ -119,43 +119,21 @@ class PermissionGroupController extends Controller
      * Remove specified resource.
      *
      * @param   DestroyRequest  $request
-     * @param   Model $permission_group
+     * @param   Model $permission
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function destroy(DestroyRequest $request, Model $permission_group)
+    public function destroy(DestroyRequest $request, Model $permission)
     {
         try {
-            $this->repository::init($permission_group)->delete();
+            $this->repository::init($permission)->delete();
         } catch (Throwable $exception) {
             return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
             ->with('success', 'The record has been deleted.');
-    }
-
-    /**
-     * 
-     * Restore specified resource.
-     *
-     * @param   DestroyRequest  $request
-     * @param   Model $permission_group
-     * 
-     * @return  ApiResponse
-     * @throws  Throwable
-     */
-    public function restore(DestroyRequest $request, Model $permission_group)
-    {
-        try {
-            $this->repository::init($permission_group)->restore();
-        } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
-        }
-
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been restored.');
     }
 
     /**

@@ -2,11 +2,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PermissionGroupController as CurrentController;
 
-$module   = basename(dirname(__FILE__));
+$subModule   = basename(dirname(__FILE__));
 $endpoint = basename(__FILE__, '.php');
 $modelBinding = str($endpoint)->singular()->replace('-','_');
 
-Route::name("{$module}.")->prefix($module)
+Route::prefix("{$module}/{$subModule}")->name("{$module}.{$subModule}.")
 ->middleware(['auth', 'verified'])
 ->group(function () use ($endpoint, $modelBinding){
     Route::match(['post','put'], $endpoint.'/save', [CurrentController::class, 'save'])->name($endpoint.'.save');

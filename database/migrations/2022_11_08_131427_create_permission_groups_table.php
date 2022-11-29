@@ -19,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
+            $table->unsignedInteger('sequence');
             $table->text('description')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
@@ -29,6 +30,9 @@ return new class extends Migration
         Schema::table('permissions', function (Blueprint $table) {
             $table->after('id', function ($table) {
                 $table->foreignIdFor(PermissionGroup::class)->nullable()->constrained();
+            });
+            $table->after('name', function ($table) {
+                $table->string('label')->nullable();
             });
         });
     }
