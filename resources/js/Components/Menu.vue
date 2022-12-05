@@ -5,16 +5,11 @@
             <li class="menu-title">
                 <span data-key="t-menu">Menu</span>
             </li>
-            <li class="nav-item">
-                <Link href="/dashboard" :class="['nav-link menu-link',{ active: route().current('dashboard') }]">
-                <i class="ri-home-3-line"></i>
-                    <span>Dashboard</span>
-                </Link>
-            </li>
+            <MenuItem route-name="dashboard" name="Dashboard" icon="ri-home-3-line"/>
             <li class="nav-item">
                 <Link class="nav-link menu-link" href="/dashboard">
-                    <i class="ri-pencil-ruler-2-line"></i>
-                    <span>Approval</span>
+                    <i class="ri-mail-line"></i>
+                    <span>Inbox</span>
                     <span class="badge badge-pill bg-danger" data-key="t-new">2</span>
                 </Link>
             </li>
@@ -22,88 +17,28 @@
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Transaction</span>
             </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('transaction.invoices.index')}]" :href="route('transaction.invoices.index')">
-                    <i class="ri-newspaper-line"></i>
-                    <span>Invoice</span>
-                </Link>
-            </li>
+            <MenuItem route-name="transaction.invoices.index" name="Invoice" icon="ri-newspaper-line" :permission="$page.props.auth.permissions.includes('invoice')"/>
             <li class="nav-item">
                 <Link class="nav-link menu-link" href="/dashboard">
                     <i class="ri-file-list-3-line"></i>
-                    <span>Reports</span>
+                    <span>Report</span>
                 </Link>
             </li>
-            <li class="menu-title">
+            <li class="menu-title" :permission="$page.props.auth.roles.includes('Administrator') || $page.props.auth.roles.includes('Super User')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Master</span>
             </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.expenses.index')}]" :href="route('master.expenses.index')">
-                    <i class="ri-honour-line"></i>
-                    <span>Expenses</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.areas.index')}]" :href="route('master.areas.index')">
-                    <i class=" ri-map-pin-5-line"></i>
-                    <span>Area</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.products.index')}]" :href="route('master.products.index')">
-                    <i class="ri-apps-line"></i>
-                    <span>Product / Project</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.departments.index')}]" :href="route('master.departments.index')">
-                    <i class="ri-building-2-line"></i>
-                    <span>Department</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.sales-channels.index')}]" :href="route('master.sales-channels.index')">
-                    <i class="ri-shopping-bag-2-line"></i>
-                    <span>Sales Channel</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.vendors.index')}]" :href="route('master.vendors.index')">
-                    <i class="ri-building-4-line"></i>
-                    <span>Vendor</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.invoice-types.index')}]" :href="route('master.invoice-types.index')">
-                    <i class="ri-notification-badge-line"></i>
-                    <span>Invoice Type</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.line-types.index')}]" :href="route('master.line-types.index')">
-                    <i class="ri-list-check-2"></i>
-                    <span>Line Type</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.currencies.index')}]" :href="route('master.currencies.index')">
-                    <i class="ri-copper-coin-line"></i>
-                    <span>Currency</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.terms.index')}]" :href="route('master.terms.index')">
-                    <i class="ri-alarm-warning-line"></i>
-                    <span>Term</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link :class="['nav-link menu-link', {active: route().current('master.taxes.index')}]" :href="route('master.taxes.index')">
-                    <i class=" ri-money-dollar-circle-line"></i>
-                    <span>Tax</span>
-                </Link>
-            </li>
+            <MenuItem route-name="master.expenses.index" name="Expense" icon="ri-honour-line" :permission="$page.props.auth.permissions.includes('expense')"/>
+            <MenuItem route-name="master.areas.index" name="Area" icon="ri-map-pin-5-line" :permission="$page.props.auth.permissions.includes('area')"/>
+            <MenuItem route-name="master.products.index" name="Product / Project" icon="ri-apps-line" :permission="$page.props.auth.permissions.includes('product')"/>
+            <MenuItem route-name="master.departments.index" name="Department" icon="ri-building-2-line" :permission="$page.props.auth.permissions.includes('department')"/>
+            <MenuItem route-name="master.sales-channels.index" name="Sales Channel" icon="ri-shopping-bag-2-line" :permission="$page.props.auth.permissions.includes('sales-channel')"/>
+            <MenuItem route-name="master.vendors.index" name="Vendor" icon="ri-building-4-line" :permission="$page.props.auth.permissions.includes('vendor')"/>
+            <MenuItem route-name="master.invoice-types.index" name="Invoice Type" icon="ri-notification-badge-line" :permission="$page.props.auth.permissions.includes('invoice-type')"/>
+            <MenuItem route-name="master.line-types.index" name="Line Type" icon="ri-list-check-2" :permission="$page.props.auth.permissions.includes('line-type')"/>
+            <MenuItem route-name="master.currencies.index" name="Currency" icon="ri-copper-coin-line" :permission="$page.props.auth.permissions.includes('currency')"/>
+            <MenuItem route-name="master.terms.index" name="Term" icon="ri-alarm-warning-line" :permission="$page.props.auth.permissions.includes('term')"/>
+            <MenuItem route-name="master.taxes.index" name="Tax" icon="ri-money-dollar-circle-line" :permission="$page.props.auth.permissions.includes('tax')"/>
             <li class="menu-title">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Setting</span>
@@ -117,18 +52,10 @@
                 </a>
                 <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.administrator')}]" id="setting-administrator">
                 <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                        <Link href="/dashboard" class="nav-link">User</Link>
-                        <Link href="/dashboard" class="nav-link">Role</Link>
-                        <Link :class="['nav-link', {active: route().current('setting.administrator.permissions.index')}]"
-                            :href="route('setting.administrator.permissions.index')">
-                            Permission
-                        </Link>
-                        <Link :class="['nav-link', {active: route().current('setting.administrator.permission-groups.index')}]"
-                            :href="route('setting.administrator.permission-groups.index')">
-                            Permission Group
-                        </Link>
-                    </li>
+                    <MenuItem route-name="setting.administrator.users.index" name="User" :permission="$page.props.auth.permissions.includes('user')"/>
+                    <MenuItem route-name="setting.administrator.roles.index" name="Role" :permission="$page.props.auth.permissions.includes('role')"/>
+                    <MenuItem route-name="setting.administrator.permissions.index" name="Permission" :permission="$page.props.auth.permissions.includes('permission')"/>
+                    <MenuItem route-name="setting.administrator.permission-groups.index" name="Permission Group" :permission="$page.props.auth.permissions.includes('permission-group')"/>
                 </ul>
                 </div>
             </li>
@@ -151,26 +78,18 @@
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Helps</span>
             </li>
-            <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
-                    <i class="ri-book-3-line"></i>
-                    <span>Dictionary</span>
-                </Link>
-            </li>
-            <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
-                    <i class="ri-book-open-line"></i>
-                    <span>User Manual</span>
-                </Link>
-            </li>
+            <MenuItem route-name="dashboard" name="Dictionary" icon="ri-book-3-line"/>
+            <MenuItem route-name="dashboard" name="User Manual" icon="ri-book-open-line"/>
         </ul>
     </div>
 </template>
 <script>
 import { Link } from '@inertiajs/inertia-vue3'
+import MenuItem from './MenuItem.vue'
 export default {
     components: {
-        Link
+        Link,
+        MenuItem
     },
     mounted() {
         if (document.querySelectorAll(".navbar-nav .collapse")) {

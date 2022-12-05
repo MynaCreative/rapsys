@@ -67,7 +67,10 @@ class AreaController extends Controller
             $data = $this->repository::init($area)->show($request);
             return response()->json($data);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in data fetching. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
     }
 
@@ -85,11 +88,14 @@ class AreaController extends Controller
         try {
             $this->repository::store($request);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been created.');
+            ->with('success', __('messages.success.store'));
     }
 
     /**
@@ -107,11 +113,14 @@ class AreaController extends Controller
         try {
             $this->repository::init($area)->update($request);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been updated.');
+            ->with('success', __('messages.success.update'));
     }
 
     /**
@@ -129,11 +138,14 @@ class AreaController extends Controller
         try {
             $this->repository::init($area)->delete();
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been deleted.');
+            ->with('success', __('messages.success.delete'));
     }
 
     /**
@@ -151,11 +163,14 @@ class AreaController extends Controller
         try {
             $this->repository::init($area)->restore();
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been restored.');
+            ->with('success', __('messages.success.restore'));
     }
 
     /**

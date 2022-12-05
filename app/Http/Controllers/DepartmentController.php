@@ -67,7 +67,10 @@ class DepartmentController extends Controller
             $data = $this->repository::init($department)->show($request);
             return response()->json($data);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in data fetching. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
     }
 
@@ -85,11 +88,14 @@ class DepartmentController extends Controller
         try {
             $this->repository::store($request);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been created.');
+            ->with('success', __('messages.success.store'));
     }
 
     /**
@@ -107,11 +113,14 @@ class DepartmentController extends Controller
         try {
             $this->repository::init($department)->update($request);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been updated.');
+            ->with('success', __('messages.success.update'));
     }
 
     /**
@@ -129,11 +138,14 @@ class DepartmentController extends Controller
         try {
             $this->repository::init($department)->delete();
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been deleted.');
+            ->with('success', __('messages.success.delete'));
     }
 
     /**
@@ -151,11 +163,14 @@ class DepartmentController extends Controller
         try {
             $this->repository::init($department)->restore();
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been restored.');
+            ->with('success', __('messages.success.restore'));
     }
 
     /**

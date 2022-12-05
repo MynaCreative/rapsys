@@ -12,9 +12,11 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Traits\Scope as GeneralScope;
+
 class User extends Authenticatable 
 {
-    use HasApiTokens, HasFactory, SoftDeletes, Notifiable, HasRoles, AuthenticationLoggable;
+    use HasApiTokens, HasFactory, SoftDeletes, Notifiable, HasRoles, AuthenticationLoggable, GeneralScope;
 
     /**
      * The attributes that are mass assignable.

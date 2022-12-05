@@ -16,11 +16,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        Model::factory()->create([
-            'name' => 'Muhammad Cahya',
-            'username' => 'muhammadcahyax',
-            'email' => 'muhammadcahyax@gmail.com',
+        $user = Model::factory()->create([
+            'name' => 'Super User',
+            'username' => 'super.user',
+            'email' => 'super.user@rpx.co.id',
             'password' => 'password',
         ]);
+        $user->assignRole('Super User');
     }
 }

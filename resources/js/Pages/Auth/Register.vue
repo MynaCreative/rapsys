@@ -31,19 +31,19 @@
                                 <div class="p-2 mt-4">
                                     <form @submit.prevent="submit">                                     
                                         <div class="mb-3">
-                                            <label for="name" class="form-label">Name:</label>
+                                            <label for="name" class="form-label">Name</label>
                                             <b-form-input id="name" v-model="form.name" :class="{'is-invalid' : form.errors.name }"
                                                 aria-describedby="input-name-feedback" placeholder="Enter name" autocomplete="name" required autofocus />
                                             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Username:</label>
+                                            <label for="username" class="form-label">Username</label>
                                             <b-form-input id="username" v-model="form.username" :class="{'is-invalid' : form.errors.username }"
                                                 aria-describedby="input-username-feedback" placeholder="Enter username" autocomplete="username" required trim />
                                             <b-form-invalid-feedback id="input-username-feedback" v-html="form.errors.username"/>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="email" class="form-label">Email:</label>
+                                            <label for="email" class="form-label">Email</label>
                                             <b-form-input id="email" v-model="form.email" :class="{'is-invalid' : form.errors.email }" type="email"
                                                 aria-describedby="input-email-feedback" placeholder="Enter email" autocomplete="email" required />
                                             <b-form-invalid-feedback id="input-email-feedback" v-html="form.errors.email"/>

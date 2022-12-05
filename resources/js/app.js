@@ -1,6 +1,7 @@
 import './bootstrap'
 
 import '@/Assets/scss/config/material/app.scss'
+import '@vueform/multiselect/themes/default.css'
 
 import { createApp, h } from 'vue'
 

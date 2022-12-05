@@ -42,10 +42,20 @@
     </div>
 </template>
 <script setup>
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link, usePage } from '@inertiajs/inertia-vue3'
 import { SimpleBar } from 'simplebar-vue3'
+import Swal from 'sweetalert2'
+import { watch } from 'vue'
 
 import NavBar from '@/Components/NavBar.vue'
 import Footer from '@/Components/Footer.vue'
 import Menu from '@/Components/Menu.vue'
+
+const props = usePage().props
+
+watch(props, (prop) => {
+    if(prop.flash.success){
+        Swal.fire('Success!',prop.flash.success, 'success')
+    }
+})
 </script>

@@ -33,6 +33,10 @@ class PermissionGroupController extends Controller
     public function __construct(Repository $repository)
     {
         $this->repository   = $repository;
+
+        $this->middleware('password.confirm', [
+            'only' => ['index']
+        ]);
     }
 
     /**
@@ -67,7 +71,10 @@ class PermissionGroupController extends Controller
             $data = $this->repository::init($permission_group)->show($request);
             return response()->json($data);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in data fetching. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
     }
 
@@ -85,11 +92,14 @@ class PermissionGroupController extends Controller
         try {
             $this->repository::store($request);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been created.');
+            ->with('success', __('messages.success.store'));
     }
 
     /**
@@ -107,11 +117,14 @@ class PermissionGroupController extends Controller
         try {
             $this->repository::init($permission_group)->update($request);
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been updated.');
+            ->with('success', __('messages.success.update'));
     }
 
     /**
@@ -129,11 +142,14 @@ class PermissionGroupController extends Controller
         try {
             $this->repository::init($permission_group)->delete();
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been deleted.');
+            ->with('success', __('messages.success.delete'));
     }
 
     /**
@@ -151,11 +167,14 @@ class PermissionGroupController extends Controller
         try {
             $this->repository::init($permission_group)->restore();
         } catch (Throwable $exception) {
-            return redirect()->back()->with('error', 'Error in form submissions. Please try again.');
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
         }
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
-            ->with('success', 'The record has been restored.');
+            ->with('success', __('messages.success.restore'));
     }
 
     /**

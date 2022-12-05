@@ -34,7 +34,7 @@ class Area
         $query = Model::withTrashed()
             ->ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name', 'coa'])
+            ->searching($request, ['code','name'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->latest();
 
@@ -44,7 +44,6 @@ class Area
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
-                'coa'           => $item->coa,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,

@@ -33,7 +33,7 @@
                                     />
                                 </div>
                                 <div class="p-2">
-                                    <!-- <b-alert v-model="status" variant="warning" class="mt-3" dismissible>{{ status }}</b-alert> -->
+                                    <b-alert :show="!!status" variant="warning" class="mt-3" dismissible>{{ status }}</b-alert>
                                     <form @submit.prevent="submit">                                     
                                         <div class="mb-4">
                                             <label for="username" class="form-label">Email</label>

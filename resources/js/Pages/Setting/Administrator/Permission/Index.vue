@@ -39,6 +39,7 @@
                                 <th>#</th>
                                 <Sort label="Name" attribute='name'/>
                                 <Sort label="Label" attribute='label'/>
+                                <Sort label="Group" attribute='permission_group_id'/>
                                 <Sort label="Guard" attribute='guard_name'/>
                                 <Sort label="Created At" attribute='created_at'/>
                                 <th class="text-center">Action</th>
@@ -49,6 +50,7 @@
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.label }}</td>
+                                <td>{{ item.permission_group.name }}</td>
                                 <td>{{ item.guard_name }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>
@@ -90,6 +92,7 @@
             @update:show="modalFormVisible = $event"
             :id="currentId"
             @update:id="currentId = $event"
+            :references="references"
         />
         <ModalDetail
             :show="modalDetailVisible"
@@ -128,7 +131,7 @@ const breadcrumbs = [
     { text: page.title, active: true },
 ]
 
-const props = defineProps(['collection','filters'])
+const props = defineProps(['collection','filters','references'])
 
 const form = useForm({
     keyword: usePage().props.value.ziggy.query.keyword ?? null,

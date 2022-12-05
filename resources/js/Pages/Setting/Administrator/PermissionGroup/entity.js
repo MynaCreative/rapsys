@@ -9,6 +9,7 @@ export default () => {
             id: null,
             code: null,
             name: null,
+            sequence: 0,
             description: null,
         }
     }

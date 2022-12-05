@@ -4,6 +4,7 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 
 use App\Models\Permission as Model;
+use App\Models\PermissionGroup;
 
 class Permission
 {
@@ -84,7 +85,7 @@ class Permission
      * @return Model
      */
     public function show(): Model {
-        return $this->model;
+        return $this->model->load(['permissionGroup']);
     }
 
     /**
@@ -95,5 +96,17 @@ class Permission
     public function delete(): bool
     {
         return $this->model->deleteOrFail();
+    }
+
+    /**
+     * Data reference resource for this resource.
+     *
+     * @return array|null
+     */
+    public static function reference(): array
+    {
+        return [
+            'permission_groups' => PermissionGroup::pluck('name','id'),
+        ];
     }
 }

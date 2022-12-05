@@ -15,6 +15,10 @@
                     <td>{{ form.name }}</td>
                 </tr>
                 <tr>
+                    <td class="text-muted table-light">Group</td>
+                    <td>{{ form.permission_group?.name }}</td>
+                </tr>
+                <tr>
                     <td class="text-muted table-light">Guard</td>
                     <td>{{ form.guard_name }}</td>
                 </tr>

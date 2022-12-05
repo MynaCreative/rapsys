@@ -39,6 +39,14 @@ class PermissionGroup extends Model
         $this->attributes['code'] = 'PRG'.sprintf('%03d', $id);
     }
 
+    /**
+     * Get the permissions for the permission group.
+     */
+    public function permissions()
+    {
+        return $this->hasMany(Permission::class);
+    }
+
 
     /**
      * Logging activity history.

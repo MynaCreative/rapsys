@@ -23,7 +23,6 @@ export default {
                 form.reset()
                 form.clearErrors()
                 emit('update:show',false)
-                Swal.fire(id ? 'Updated!' : 'Created!', `The record has been successfully ${id ? 'updated' : 'created'}.`, "success")
             }
         })
     },
@@ -38,11 +37,7 @@ export default {
             confirmButtonText: `Yes, ${undo ? 'restore' : 'delete'} it!`,
         }).then((result) => {
             if (result.value) {
-                Inertia.delete(route(`${page.module}.${page.name}.${undo ? 'restore' : 'destroy'}`, id), {
-                    onSuccess: () => {
-                        Swal.fire(`${undo ? 'Restored' : 'Deleted'}!`, `The record has been successfully ${undo ? 'restored' : 'deleted'}.`, 'success')
-                    }
-                })
+                Inertia.delete(route(`${page.module}.${page.name}.${undo ? 'restore' : 'destroy'}`, id))
             }
         })
     }

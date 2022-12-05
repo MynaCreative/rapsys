@@ -6,6 +6,7 @@
         </div>
         <form @submit.prevent="submit">
             <div class="modal-body">
+                <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
                 <PartialForm v-model:formData="form"/>
             </div>
             <div class="modal-footer justify-content-between">
@@ -14,8 +15,8 @@
                     Close
                 </b-button>
                 <b-button type="submit" variant="primary" class="btn-label waves-effect waves-light" :disabled="form.processing">
-                    <i class="ri-save-line label-icon align-middle fs-16 me-2"></i>
-                    Save
+                    <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
+                    {{ form.processing ? 'Processing' : 'Save' }}
                 </b-button>
             </div>
         </form>

@@ -16,7 +16,6 @@ class Validator
         return [
             'code' => ['required','unique:'. Model::class.',code'. ($model ? ','.$model->id : '')],
             'name' => ['required'],
-            'coa'  => ['required'],
         ];
     }
 
