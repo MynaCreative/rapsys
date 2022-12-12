@@ -23,8 +23,8 @@ class CurrencySeeder extends Seeder
             [ ['code' => 'IDR'], ['name' => 'Rupiah'] ],
             [ ['code' => 'JPY'], ['name' => 'Yen'] ],
             [ ['code' => 'SGD'], ['name' => 'Singapore Dollar'] ],
-            [ ['code' => 'STAT'], ['name' => 'Statistical'] ],
             [ ['code' => 'USD'], ['name' => 'US Dollar'] ],
+            [ ['code' => 'STAT'], ['name' => 'Statistical'] ],
         ];
 
         foreach($data as $row) {

@@ -17,7 +17,7 @@ class SalesChannelSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['name' => 'B2B'], ['cost_center' => 'R001'] ],
+            [ ['code' => 'B2B'], ['name' => 'Business To Business', 'cost_center' => 'R001'] ],
         ];
 
         foreach($data as $row) {

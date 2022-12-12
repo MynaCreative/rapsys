@@ -11,6 +11,7 @@ export default () => {
             name: null,
             coa:null,
             description: null,
+            excel_file: null,
         }
     }
 }

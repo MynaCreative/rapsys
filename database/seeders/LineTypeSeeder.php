@@ -17,11 +17,11 @@ class LineTypeSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['name' => 'Freight'], ['description' => 'Freight line.'] ],
-            [ ['name' => 'Item'], ['description' => 'Purchased goods or service line.'] ],
-            [ ['name' => 'Miscellaneous'], ['description' => 'Miscellaneous charges line.'] ],
-            [ ['name' => 'Tax'], ['description' => 'Tax line.'] ],
-            [ ['name' => 'Withholding Tax'], ['description' => 'Withholding tax line.'] ],
+            [ ['code' => 'FRG'], ['name' => 'Freight', 'description' => 'Freight line.'] ],
+            [ ['code' => 'ITM'], ['name' => 'Item', 'description' => 'Purchased goods or service line.'] ],
+            [ ['code' => 'MSC'], ['name' => 'Miscellaneous', 'description' => 'Miscellaneous charges line.'] ],
+            [ ['code' => 'TAX'], ['name' => 'Tax', 'description' => 'Tax line.'] ],
+            [ ['code' => 'WHT'], ['name' => 'Withholding Tax', 'description' => 'Withholding tax line.'] ],
         ];
 
         foreach($data as $row) {

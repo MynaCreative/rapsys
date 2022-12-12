@@ -27,27 +27,27 @@
                 <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
                     id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="bx bx-bell fs-22"></i>
-                    <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                    <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-success">0<span class="visually-hidden">unread messages</span></span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
                     <div class="dropdown-head bg-primary bg-pattern rounded-top">
                         <div class="p-3">
                             <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="m-0 fs-16 fw-semibold text-white">
-                                Notifications
-                                </h6>
-                            </div>
-                            <div class="col-auto dropdown-tabs">
-                                <span class="badge badge-soft-light fs-13"> 4 New</span>
-                            </div>
+                                <div class="col">
+                                    <h6 class="m-0 fs-16 fw-semibold text-white">
+                                    Notifications
+                                    </h6>
+                                </div>
+                                <!-- <div class="col-auto dropdown-tabs">
+                                    <span class="badge badge-soft-light fs-13"> 4 New</span>
+                                </div> -->
                             </div>
                         </div>
                         <div class="px-2 pt-2">
                             <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="false" @click.capture.stop>
-                                    All (4)
+                                        Empty
                                     </a>
                                 </li>
                             </ul>
@@ -58,7 +58,7 @@
     
                     <div class="tab-pane fade py-2 ps-2 show active" id="all-noti-tab" role="tabpanel">
                         <SimpleBar data-simplebar style="max-height: 300px" class="pe-2">
-                            <div class="text-reset notification-item d-block dropdown-item position-relative" v-for="(item,index) in 2" :key="index">
+                            <!-- <div class="text-reset notification-item d-block dropdown-item position-relative" v-for="(item,index) in 2" :key="index">
                                 <div class="d-flex">
                                     <div class="avatar-xs me-3">
                                         <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
@@ -76,14 +76,14 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
     
-                        <div class="my-3 text-center">
-                            <button type="button" class="btn btn-soft-success">
-                            View All Notifications
-                            <i class="ri-arrow-right-line align-middle"></i>
-                            </button>
-                        </div>
+                            <div class="my-3 text-center">
+                                <button type="button" class="btn btn-soft-success">
+                                View All Notifications
+                                <i class="ri-arrow-right-line align-middle"></i>
+                                </button>
+                            </div>
                         </SimpleBar>
                     </div>
     
@@ -115,20 +115,20 @@
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
                     <h6 class="dropdown-header">Welcome {{ $page.props.auth.user.name }}!</h6>
-                    <Link class="dropdown-item" :href="route('dashboard')">
+                    <!-- <Link class="dropdown-item" :href="route('dashboard')">
                         <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle">Profile</span>
-                    </Link>
+                    </Link> -->
                     <Link class="dropdown-item" :href="route('dashboard')">
                         <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle">Help</span>
                     </Link>
-                    <div class="dropdown-divider"></div>
+                    <!-- <div class="dropdown-divider"></div>
                     <Link class="dropdown-item" :href="route('dashboard')">
                         <span class="badge bg-soft-success text-success mt-1 float-end">New</span>
                         <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle">Settings</span>
-                    </Link>
+                    </Link> -->
                     <Link :href="route('logout')" method="post" as="button" class="dropdown-item">
                         <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle" data-key="t-logout">Logout</span>

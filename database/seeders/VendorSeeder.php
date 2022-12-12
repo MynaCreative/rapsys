@@ -17,9 +17,9 @@ class VendorSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['name' => 'Vendor 1'], ['site' => 'Jakarta'] ],
-            [ ['name' => 'Vendor 2'], ['site' => 'Bandung'] ],
-            [ ['name' => 'Vendor 3'], ['site' => 'Medan'] ],
+            [ ['code' => 'VN1'], ['name' => 'Vendor 1', 'site' => 'Jakarta'] ],
+            [ ['code' => 'VN2'], ['name' => 'Vendor 2', 'site' => 'Bandung'] ],
+            [ ['code' => 'VN3'], ['name' => 'Vendor 3', 'site' => 'Medan'] ],
         ];
 
         foreach($data as $row) {

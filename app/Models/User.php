@@ -63,7 +63,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['position_text'];
+    protected $appends = [
+        'position_text'
+    ];
 
     /**
      * Set the user's password.

@@ -26,6 +26,15 @@ export default {
             }
         })
     },
+    importData(form, emit){
+        form.submit('post', route(`${page.module}.${page.name}.import`), {
+            onSuccess: () => {
+                form.reset()
+                form.clearErrors()
+                emit('update:show',false)
+            }
+        })
+    },
     deleteData(id, undo = false){
         Swal.fire({
             title: `Are you sure you want to ${undo ? 'Restore' : 'Delete'} this item?`,

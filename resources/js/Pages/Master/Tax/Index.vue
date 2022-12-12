@@ -13,6 +13,10 @@
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </b-button>
+                            <b-button variant="success" class="btn-label waves-effect waves-light right" @click="modalImportVisible = true">
+                                <i class="ri-upload-2-line label-icon align-middle fs-16"></i>
+                                Import
+                            </b-button>
                         </b-button-group>
                     </div>
                     <div class="col-sm">
@@ -39,6 +43,7 @@
                                 <th>#</th>
                                 <Sort label="Code" attribute='code'/>
                                 <Sort label="Name" attribute='name'/>
+                                <Sort label="Type" attribute='type'/>
                                 <Sort label="Created At" attribute='created_at'/>
                                 <th>Created By</th>
                                 <th>Active</th>
@@ -50,6 +55,7 @@
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.code }}</td>
                                 <td>{{ item.name }}</td>
+                                <td>{{ item.type_text }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td><DataUserName :data="item.created_user?.name"/></td>
                                 <td><DataActive :data="item.deleted_at"/></td>
@@ -102,6 +108,10 @@
             :id="currentId"
             @update:id="currentId = $event"
         />
+        <ModalImport
+            :show="modalImportVisible"
+            @update:show="modalImportVisible = $event"
+        />
         <ModalDetail
             :show="modalDetailVisible"
             @update:show="modalDetailVisible = $event"
@@ -128,6 +138,7 @@ import entityData from './entity'
 import service from './service'
 
 import ModalForm from './Modals/Form.vue'
+import ModalImport from './Modals/Import.vue'
 import ModalDetail from './Modals/Detail.vue'
 
 const page = entityData().page
@@ -145,5 +156,6 @@ const form = useForm({
 })
 const currentId = ref(null)
 const modalFormVisible = ref(false)
+const modalImportVisible = ref(false)
 const modalDetailVisible = ref(false)
 </script>

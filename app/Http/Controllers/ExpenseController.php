@@ -101,7 +101,7 @@ class ExpenseController extends Controller
 
     /**
      * 
-     * Store a newly created resource.
+     * Import resource.
      *
      * @param   ImportRequest  $request
      * 
@@ -124,7 +124,7 @@ class ExpenseController extends Controller
     }
 
     /**
-     * Sample
+     * Import Sample
      *
      * @param  \Illuminate\Http\Request  $request
      */

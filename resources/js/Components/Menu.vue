@@ -7,23 +7,18 @@
             </li>
             <MenuItem route-name="dashboard" name="Dashboard" icon="ri-home-3-line"/>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
+                <Link class="nav-link menu-link" href="/">
                     <i class="ri-mail-line"></i>
                     <span>Approval</span>
-                    <span class="badge badge-pill bg-danger" data-key="t-new">2</span>
+                    <span class="badge badge-pill bg-success">0</span>
                 </Link>
             </li>
-            <li class="menu-title" v-if="$page.props.auth.roles.includes('Requestor') || $page.props.auth.roles.includes('Administrator')">
+            <li class="menu-title" v-if="$page.props.auth.roles.includes('Requestor') || $page.props.auth.roles.includes('Approval') || $page.props.auth.roles.includes('Administrator')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Transaction</span>
             </li>
             <MenuItem route-name="transaction.invoices.index" name="Invoice" icon="ri-newspaper-line" :permission="$page.props.auth.permissions.includes('invoice')"/>
-            <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
-                    <i class="ri-file-list-3-line"></i>
-                    <span>Report</span>
-                </Link>
-            </li>
+            <MenuItem route-name="dashboard" name="Report" icon="ri-file-list-3-line" :permission="$page.props.auth.permissions.includes('report')"/>
             <li class="menu-title" v-if="$page.props.auth.roles.includes('Master') || $page.props.auth.roles.includes('Administrator')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Master</span>
@@ -41,7 +36,7 @@
             <MenuItem route-name="master.taxes.index" name="Tax" icon="ri-money-dollar-circle-line" :permission="$page.props.auth.permissions.includes('tax')"/>
             <MenuItem route-name="master.sbus.index" name="Sbu" icon="ri-store-3-line" :permission="$page.props.auth.permissions.includes('sbu')"/>
             <MenuItem route-name="master.intercos.index" name="Interco" icon="ri-luggage-deposit-line" :permission="$page.props.auth.permissions.includes('interco')"/>
-            <li class="menu-title" v-if="$page.props.auth.roles.includes('Administrator') || $page.props.auth.roles.includes('Administrator')">
+            <li class="menu-title" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Setting</span>
             </li>
@@ -79,13 +74,13 @@
                 <span data-key="t-components">Helps</span>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
+                <Link class="nav-link menu-link" href="/">
                     <i class="ri-book-3-line"></i>
                     <span>Dictionary</span>
                 </Link>
             </li>
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/dashboard">
+                <Link class="nav-link menu-link" href="/">
                     <i class="ri-book-open-line"></i>
                     <span>User Manual</span>
                 </Link>

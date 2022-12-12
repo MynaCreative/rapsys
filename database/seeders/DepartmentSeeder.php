@@ -17,11 +17,11 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['name' => 'Internal Audit'], ['cost_center' => 'R001'] ],
-            [ ['name' => 'Procurement'], ['cost_center' => 'R002'] ],
-            [ ['name' => 'Legal'], ['cost_center' => 'R003'] ],
-            [ ['name' => 'Tax'], ['cost_center' => 'R004'] ],
-            [ ['name' => 'Pricing'], ['cost_center' => 'R005'] ],
+            [ ['code' => 'INA'], ['name' => 'Internal Audit', 'cost_center' => 'R001'] ],
+            [ ['code' => 'PRC'], ['name' => 'Procurement', 'cost_center' => 'R002'] ],
+            [ ['code' => 'LGL'], ['name' => 'Legal', 'cost_center' => 'R003'] ],
+            [ ['code' => 'TAX'], ['name' => 'Tax', 'cost_center' => 'R004'] ],
+            [ ['code' => 'PRC'], ['name' => 'Pricing', 'cost_center' => 'R005'] ],
         ];
 
         foreach($data as $row) {

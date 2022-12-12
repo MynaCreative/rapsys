@@ -12,6 +12,7 @@ export default () => {
             type: null,
             deduction: null,
             description: null,
+            excel_file: null,
         }
     }
 }

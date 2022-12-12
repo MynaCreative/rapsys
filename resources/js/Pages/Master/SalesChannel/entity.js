@@ -11,6 +11,7 @@ export default () => {
             cost_center: null,
             name: null,
             description: null,
+            excel_file: null,
         }
     }
 }

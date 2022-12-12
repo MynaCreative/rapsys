@@ -1,0 +1,10 @@
+<table>
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Site</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

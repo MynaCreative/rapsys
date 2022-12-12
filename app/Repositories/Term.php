@@ -1,9 +1,14 @@
 <?php
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Models\Term as Model;
+use App\Imports\DataImport;
+use App\Exports\Term\Sample as SampleTemplate;
 
 class Term
 {
@@ -66,6 +71,40 @@ class Term
         $model->saveOrFail();
 
         return $model;
+    }
+
+    /**
+     * Import to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function import($request): void
+    {
+        $rows = Excel::toCollection(new DataImport, $request->file('excel_file'))
+            ->first()
+            ->toArray();
+        DB::transaction(function () use ($rows) {
+            foreach($rows as $row){
+                Model::updateOrCreate(
+                    ['code'=>$row['code']],
+                    $row
+                );
+            }
+        });
+    }
+
+    /**
+     * Import to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function importSample()
+    {
+        $date = now()->format('d-m-Y H:i:s');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        return Excel::download(new SampleTemplate(), "{$name}-import-sample-{$date}.xlsx");
     }
 
     /**

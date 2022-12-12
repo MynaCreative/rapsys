@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <label for="code" class="form-label">Code</label>
             <b-form-input id="code" v-model="form.code" :class="{'is-invalid' : form.errors.code }"
-                aria-describedby="input-code-feedback" :disabled="!!form.id"/>
+                aria-describedby="input-code-feedback"/>
             <b-form-invalid-feedback id="input-code-feedback" v-html="form.errors.code"/>
         </div>
         <div class="col-lg-12">

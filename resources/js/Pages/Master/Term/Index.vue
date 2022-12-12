@@ -13,6 +13,10 @@
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </b-button>
+                            <b-button variant="success" class="btn-label waves-effect waves-light right" @click="modalImportVisible = true">
+                                <i class="ri-upload-2-line label-icon align-middle fs-16"></i>
+                                Import
+                            </b-button>
                         </b-button-group>
                     </div>
                     <div class="col-sm">
@@ -102,6 +106,10 @@
             :id="currentId"
             @update:id="currentId = $event"
         />
+        <ModalImport
+            :show="modalImportVisible"
+            @update:show="modalImportVisible = $event"
+        />
         <ModalDetail
             :show="modalDetailVisible"
             @update:show="modalDetailVisible = $event"
@@ -128,6 +136,7 @@ import entityData from './entity'
 import service from './service'
 
 import ModalForm from './Modals/Form.vue'
+import ModalImport from './Modals/Import.vue'
 import ModalDetail from './Modals/Detail.vue'
 
 const page = entityData().page
@@ -145,5 +154,6 @@ const form = useForm({
 })
 const currentId = ref(null)
 const modalFormVisible = ref(false)
+const modalImportVisible = ref(false)
 const modalDetailVisible = ref(false)
 </script>

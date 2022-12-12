@@ -15,6 +15,10 @@
                     <td colspan="3">{{ form.name }}</td>
                 </tr>
                 <tr>
+                    <td class="text-muted table-light">Type</td>
+                    <td colspan="3">{{ form.type_text }}</td>
+                </tr>
+                <tr>
                     <td class="text-muted table-light">Deduction</td>
                     <td colspan="3">{{ form.deduction }}</td>
                 </tr>

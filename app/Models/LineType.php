@@ -32,11 +32,11 @@ class LineType extends Model
     public function setCreatedAtAttribute($value)
     {
         $this->attributes['created_at'] = $value;
-        $id = DB::table('INFORMATION_SCHEMA.TABLES')->select('AUTO_INCREMENT as id')
-                ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
-                ->where('TABLE_NAME', (new self)->getTable())
-                ->value('id');
-        $this->attributes['code'] = 'LTP'.sprintf('%03d', $id);
+        // $id = DB::table('INFORMATION_SCHEMA.TABLES')->select('AUTO_INCREMENT as id')
+        //         ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
+        //         ->where('TABLE_NAME', (new self)->getTable())
+        //         ->value('id');
+        // $this->attributes['code'] = 'LTP'.sprintf('%03d', $id);
     }
 
 
