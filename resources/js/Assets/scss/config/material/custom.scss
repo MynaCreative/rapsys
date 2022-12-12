@@ -538,3 +538,8 @@ File: Custom Css File
 .multiselect.is-invalid{
     border-color: #f06548 !important;
 }
+
+.form-label.required:after, .col-form-label.required:after {
+    content: " *";
+    color: #f06548;
+}

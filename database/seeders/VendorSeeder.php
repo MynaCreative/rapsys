@@ -16,6 +16,17 @@ class VendorSeeder extends Seeder
      */
     public function run()
     {
-        
+        $data = [
+            [ ['name' => 'Vendor 1'], ['site' => 'Jakarta'] ],
+            [ ['name' => 'Vendor 2'], ['site' => 'Bandung'] ],
+            [ ['name' => 'Vendor 3'], ['site' => 'Medan'] ],
+        ];
+
+        foreach($data as $row) {
+            Model::updateOrCreate(
+                $row[0],
+                $row[1],
+            );
+        }
     }
 }

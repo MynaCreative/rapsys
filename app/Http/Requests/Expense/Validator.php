@@ -14,8 +14,9 @@ class Validator
     public function rules($model = null): array
     {
         return [
-            'code' => ['required','unique:'. Model::class.',code'. ($model ? ','.$model->id : '')],
-            'name' => ['required'],
+            'code'              => ['required','unique:'. Model::class.',code'. ($model ? ','.$model->id : '')],
+            'mandatory_scan'    => ['required'],
+            'name'              => ['required'],
         ];
     }
 

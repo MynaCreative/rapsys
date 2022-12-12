@@ -38,7 +38,9 @@
                             <tr>
                                 <th>#</th>
                                 <Sort label="Name" attribute='name'/>
-                                <Sort label="Guard" attribute='guard_name'/>
+                                <Sort label="Username" attribute='username'/>
+                                <Sort label="Email" attribute='email'/>
+                                <Sort label="Position" attribute='position'/>
                                 <Sort label="Created At" attribute='created_at'/>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -47,7 +49,9 @@
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.name }}</td>
-                                <td>{{ item.guard_name }}</td>
+                                <td>{{ item.username }}</td>
+                                <td>{{ item.email }}</td>
+                                <td>{{ item.position_text }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
@@ -59,7 +63,7 @@
                                                 <i class="ri-eye-fill fs-16"></i>
                                             </a>
                                         </li>
-                                        <li class="list-inline-item edit" title="Edit" @click="() => {
+                                        <li v-if="(item.id != 1)" class="list-inline-item edit" title="Edit" @click="() => {
                                             currentId = item.id
                                             modalFormVisible = true
                                         }">
@@ -67,7 +71,7 @@
                                                 <i class="ri-pencil-fill fs-16"></i>
                                             </a>
                                         </li>
-                                        <li class="list-inline-item" title="Remove">
+                                        <li v-if="(item.id != 1)" class="list-inline-item" title="Remove">
                                             <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>

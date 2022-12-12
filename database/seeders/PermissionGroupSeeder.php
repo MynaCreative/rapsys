@@ -18,7 +18,7 @@ class PermissionGroupSeeder extends Seeder
     {
         $group = Model::create(['name' => 'General', 'sequence' => 1]);
         $group->permissions()->createMany([
-            ['name' => 'inbox', 'label' => 'Inbox'],
+            ['name' => 'approval', 'label' => 'Approval'],
         ]);
 
         $group = Model::create(['name' => 'Transaction', 'sequence' => 2]);
@@ -40,6 +40,8 @@ class PermissionGroupSeeder extends Seeder
             ['name' => 'currency', 'label' => 'Currency'],
             ['name' => 'term', 'label' => 'Term'],
             ['name' => 'tax', 'label' => 'Tax'],
+            ['name' => 'sbu', 'label' => 'SBU'],
+            ['name' => 'interco', 'label' => 'Interco'],
         ]);
 
         $group = Model::create(['name' => 'Administrator', 'sequence' => 4]);
@@ -52,7 +54,7 @@ class PermissionGroupSeeder extends Seeder
 
         $group = Model::create(['name' => 'Configuration', 'sequence' => 5]);
         $group->permissions()->createMany([
-            ['name' => 'approval', 'label' => 'Approval'],
+            ['name' => 'workflow', 'label' => 'Workflow'],
         ]);
     }
 }

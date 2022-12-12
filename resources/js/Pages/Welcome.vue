@@ -35,8 +35,8 @@
                                     <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</Link>
                                     <template v-else>
                                         <Link :href="route('login')" class="fw-semibold text-primary text-decoration-underline">Log in</Link>
-                                        Or
-                                        <Link v-if="canRegister" :href="route('register')" class="fw-semibold text-primary text-decoration-underline">Register</Link>
+                                        <!-- Or
+                                        <Link v-if="canRegister" :href="route('register')" class="fw-semibold text-primary text-decoration-underline">Register</Link> -->
                                     </template>
                                 </div>
                             </div>

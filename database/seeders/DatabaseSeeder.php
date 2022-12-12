@@ -19,10 +19,14 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionGroupSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(WorkflowSeeder::class);
 
+        $this->call(SbuSeeder::class);
         $this->call(TaxSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(TermSeeder::class);
+        $this->call(VendorSeeder::class);
+        $this->call(IntercoSeeder::class);
         $this->call(ExpenseSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(CurrencySeeder::class);

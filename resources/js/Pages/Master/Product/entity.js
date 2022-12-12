@@ -8,8 +8,8 @@ export default () => {
         form: {
             id: null,
             code: null,
-            cost_center: null,
             name: null,
+            coa:null,
             description: null,
         }
     }

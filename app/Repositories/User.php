@@ -42,7 +42,9 @@ class User
             return [
                 'id'                => $item->id,
                 'name'              => $item->name,
-                'guard_name'        => $item->guard_name,
+                'username'          => $item->username,
+                'email'             => $item->email,
+                'position_text'     => $item->position_text,
                 'created_at'        => $item->created_at,
                 'updated_at'        => $item->updated_at,
             ];

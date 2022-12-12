@@ -7,8 +7,12 @@
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <td class="text-muted table-light" width="100">Code</td>
+                    <td class="text-muted table-light" width="140">Code</td>
                     <td colspan="3">{{ form.code }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted table-light">Mandatory Scan</td>
+                    <td colspan="3">{{ form.mandatory_scan }}</td>
                 </tr>
                 <tr>
                     <td class="text-muted table-light">Name</td>

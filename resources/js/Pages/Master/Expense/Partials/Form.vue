@@ -3,13 +3,19 @@
         <div class="col-lg-12">
             <label for="code" class="form-label">Code</label>
             <b-form-input id="code" v-model="form.code" :class="{'is-invalid' : form.errors.code }"
-                aria-describedby="input-code-feedback" :disabled="!!form.id"/>
+                aria-describedby="input-code-feedback"/>
             <b-form-invalid-feedback id="input-code-feedback" v-html="form.errors.code"/>
+        </div>
+        <div class="col-lg-12">
+            <label for="mandatory_scan" class="form-label">Mandatory Scan</label>
+            <b-form-input id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }"
+                aria-describedby="input-mandatory_scan-feedback" v-focus autofocus/>
+            <b-form-invalid-feedback id="input-mandatory_scan-feedback" v-html="form.errors.mandatory_scan"/>
         </div>
         <div class="col-lg-12">
             <label for="name" class="form-label">Name</label>
             <b-form-input id="name" v-model="form.name" :class="{'is-invalid' : form.errors.name }"
-                aria-describedby="input-name-feedback" v-focus autofocus/>
+                aria-describedby="input-name-feedback"/>
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">

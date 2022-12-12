@@ -3,17 +3,17 @@
         <div id="two-column-menu"></div>
         <ul class="navbar-nav h-100" id="navbar-nav">
             <li class="menu-title">
-                <span data-key="t-menu">Menu</span>
+                <span data-key="t-menu">General</span>
             </li>
             <MenuItem route-name="dashboard" name="Dashboard" icon="ri-home-3-line"/>
             <li class="nav-item">
                 <Link class="nav-link menu-link" href="/dashboard">
                     <i class="ri-mail-line"></i>
-                    <span>Inbox</span>
+                    <span>Approval</span>
                     <span class="badge badge-pill bg-danger" data-key="t-new">2</span>
                 </Link>
             </li>
-            <li class="menu-title">
+            <li class="menu-title" v-if="$page.props.auth.roles.includes('Requestor') || $page.props.auth.roles.includes('Administrator')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Transaction</span>
             </li>
@@ -24,7 +24,7 @@
                     <span>Report</span>
                 </Link>
             </li>
-            <li class="menu-title" :permission="$page.props.auth.roles.includes('Administrator') || $page.props.auth.roles.includes('Super User')">
+            <li class="menu-title" v-if="$page.props.auth.roles.includes('Master') || $page.props.auth.roles.includes('Administrator')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Master</span>
             </li>
@@ -39,11 +39,13 @@
             <MenuItem route-name="master.currencies.index" name="Currency" icon="ri-copper-coin-line" :permission="$page.props.auth.permissions.includes('currency')"/>
             <MenuItem route-name="master.terms.index" name="Term" icon="ri-alarm-warning-line" :permission="$page.props.auth.permissions.includes('term')"/>
             <MenuItem route-name="master.taxes.index" name="Tax" icon="ri-money-dollar-circle-line" :permission="$page.props.auth.permissions.includes('tax')"/>
-            <li class="menu-title">
+            <MenuItem route-name="master.sbus.index" name="Sbu" icon="ri-store-3-line" :permission="$page.props.auth.permissions.includes('sbu')"/>
+            <MenuItem route-name="master.intercos.index" name="Interco" icon="ri-luggage-deposit-line" :permission="$page.props.auth.permissions.includes('interco')"/>
+            <li class="menu-title" v-if="$page.props.auth.roles.includes('Administrator') || $page.props.auth.roles.includes('Administrator')">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Setting</span>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">
                 <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.administrator')}]"
                 :aria-expanded="route().current().startsWith('setting.administrator')"
                 href="#setting-administrator" data-bs-toggle="collapse" role="button" aria-controls="setting-administrator">
@@ -59,7 +61,7 @@
                 </ul>
                 </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">
                 <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.configuration')}]"
                 :aria-expanded="route().current().startsWith('setting.configuration')"
                 href="#setting-configuration" data-bs-toggle="collapse" role="button" aria-controls="setting-configuration">
@@ -68,9 +70,7 @@
                 </a>
                 <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.configuration')}]" id="setting-configuration">
                 <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                        <Link href="/dashboard" class="nav-link">Approval</Link>
-                    </li>
+                    <MenuItem route-name="setting.configuration.workflows.index" name="Workflow" :permission="$page.props.auth.permissions.includes('workflow')"/>
                 </ul>
                 </div>
             </li>
@@ -78,8 +78,18 @@
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Helps</span>
             </li>
-            <MenuItem route-name="dashboard" name="Dictionary" icon="ri-book-3-line"/>
-            <MenuItem route-name="dashboard" name="User Manual" icon="ri-book-open-line"/>
+            <li class="nav-item">
+                <Link class="nav-link menu-link" href="/dashboard">
+                    <i class="ri-book-3-line"></i>
+                    <span>Dictionary</span>
+                </Link>
+            </li>
+            <li class="nav-item">
+                <Link class="nav-link menu-link" href="/dashboard">
+                    <i class="ri-book-open-line"></i>
+                    <span>User Manual</span>
+                </Link>
+            </li>
         </ul>
     </div>
 </template>

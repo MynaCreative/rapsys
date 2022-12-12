@@ -16,10 +16,11 @@ return [
     ],
 
     'success' => [
-        'store' => 'The record has been successfully created.',
-        'update' => 'The record has been successfully updated.',
-        'delete' => 'The record has been successfully deleted.',
-        'restore' => 'The record has been successfully restored.',
+        'store'     => 'The record has been successfully created.',
+        'update'    => 'The record has been successfully updated.',
+        'delete'    => 'The record has been successfully deleted.',
+        'import'    => 'The record has been successfully imported.',
+        'restore'   => 'The record has been successfully restored.',
     ]
 
 ];

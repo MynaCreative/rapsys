@@ -13,6 +13,12 @@
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">
+            <label for="site" class="form-label">Site</label>
+            <b-form-input id="site" v-model="form.site" :class="{'is-invalid' : form.errors.site }"
+                aria-describedby="input-site-feedback"/>
+            <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.site"/>
+        </div>
+        <div class="col-lg-12">
             <label class="form-label">Description</label>
             <textarea class="form-control" v-model="form.description" rows="4"></textarea>
         </div>

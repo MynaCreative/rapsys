@@ -3,13 +3,13 @@
         <div class="layout-width">
             <div class="navbar-header">
             <div class="d-flex">
-                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
+                <!-- <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
                         <span></span>
                         <span></span>
                         <span></span>
                     </span>
-                </button>
+                </button> -->
             </div>
     
             <div class="d-flex align-items-center">
@@ -108,7 +108,7 @@
                     <img class="rounded-circle header-profile-user" src="@/Assets/images/users/user.png" :alt="$page.props.auth.user.name" />
                     <span class="text-start ms-xl-2">
                         <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.auth.user.name }}</span>
-                        <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Requestor</span>
+                        <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.user.position_text }}</span>
                     </span>
                     </span>
                 </button>

@@ -43,6 +43,7 @@ class Vendor
             return [
                 'id'            => $item->id,
                 'name'          => $item->name,
+                'site'          => $item->site,
                 'code'          => $item->code,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,

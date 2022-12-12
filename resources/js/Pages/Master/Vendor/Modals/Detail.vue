@@ -15,6 +15,10 @@
                     <td colspan="3">{{ form.name }}</td>
                 </tr>
                 <tr>
+                    <td class="text-muted table-light">Site</td>
+                    <td colspan="3">{{ form.site }}</td>
+                </tr>
+                <tr>
                     <td class="text-muted table-light">Description</td>
                     <td colspan="3" class="text-wrap">{{ form.description }}</td>
                 </tr>

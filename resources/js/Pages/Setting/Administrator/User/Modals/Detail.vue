@@ -11,6 +11,18 @@
                     <td>{{ form.name }}</td>
                 </tr>
                 <tr>
+                    <td class="text-muted table-light" width="100">Username</td>
+                    <td>{{ form.username }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted table-light" width="100">Email</td>
+                    <td>{{ form.email }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted table-light" width="100">Position</td>
+                    <td>{{ form.position_text }}</td>
+                </tr>
+                <tr>
                     <td class="text-muted table-light">Created At</td>
                     <td><DataTimestamp :data="form.created_at"/></td>
                 </tr>

@@ -7,14 +7,14 @@
         <div class="card">
             <div class="card-header border-0">
                 <div class="row g-4">
-                    <div class="col-sm-auto">
+                    <!-- <div class="col-sm-auto">
                         <b-button-group>
                             <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFormVisible = true, currentId = null">
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </b-button>
                         </b-button-group>
-                    </div>
+                    </div> -->
                     <div class="col-sm">
                         <div class="d-flex justify-content-sm-end">
                             <b-button-group>
@@ -71,11 +71,11 @@
                                                 <i class="ri-pencil-fill fs-16"></i>
                                             </a>
                                         </li>
-                                        <li class="list-inline-item" title="Remove">
+                                        <!-- <li class="list-inline-item" title="Remove">
                                             <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </td>
                             </tr>

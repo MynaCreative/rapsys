@@ -9,7 +9,7 @@
                 <div class="row g-4">
                     <div class="col-sm-auto">
                         <b-button-group>
-                            <Link :href="route('transaction.invoices.create')" class="btn btn-primary btn-label waves-effect waves-light">
+                            <Link :href="route(`${page.module}.${page.name}.create`)" class="btn btn-primary btn-label waves-effect waves-light">
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </Link>
@@ -19,6 +19,7 @@
                         <div class="d-flex justify-content-sm-end">
                             <b-button-group>
                                 <Reload :page="page"/>
+                                <PerPage v-if="collection.links.length > 3"/>
                             </b-button-group>
                         </div>
                     </div>
@@ -32,40 +33,60 @@
             </div>
             <div class="card-body pb-0">
                 <div class="table-responsive table-card mb-0">
-                    <table class="table table-hover table-nowrap align-middle mb-0">
+                    <table class="table table-hover table-nowrap table-sm align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
                                 <th>#</th>
-                                <th>Code</th>
-                                <th>Total Item</th>
-                                <th>Grand Total</th>
-                                <th>Created At</th>
+                                <Sort label="Code" attribute='code'/>
+                                <Sort label="Invoice Number" attribute='invoice_number'/>
+                                <Sort label="Vendor" attribute='vendor_id'/>
+                                <Sort label="Invoice Amount" attribute='amount' class="text-center"/>
+                                <Sort label="Invoice Date" attribute='invoice_date'/>
+                                <Sort label="Invoice Receipt Date" attribute='invoice_receipt_date'/>
+                                <Sort label="Created At" attribute='created_at'/>
+                                <th class="text-center">Document Status</th>
                                 <th>Created By</th>
-                                <th>Active</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td colspan="7">There are no item in this table</td>
+                            <tr v-for="item, index in collection.data" :key="item.id">
+                                <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.invoice_number }}</td>
+                                <td>{{ item.vendor?.code }} - {{ item.vendor?.name }}</td>
+                                <td class="text-center">9.500.000,00</td>
+                                <td>{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
+                                <td>{{ $dayjs(item.invoice_receipt_date).format('DD MMM, YYYY') }}</td>
+                                <td class="date"><DataTimestamp :data="item.created_at"/></td>
+                                <td class="text-center"><b-badge variant="light" class="text-capitalize">{{ item.document_status }}</b-badge></td>
+                                <td><DataUserName :data="item.created_user?.name"/></td>
+                                <td>
+                                    <ul class="list-inline gap-2 mb-0 text-center">
+                                            <li class="list-inline-item edit" title="Edit" @click="() => {
+                                                currentId = item.id
+                                                modalFormVisible = true
+                                            }">
+                                                <Link :href="route(`${page.module}.${page.name}.edit`, item.id)" class="text-primary d-inline-block" title="Edit">
+                                                    <i class="ri-pencil-fill fs-16"></i>
+                                                </Link>
+                                            </li>
+                                            <li class="list-inline-item" title="Remove">
+                                                <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
+                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                </a>
+                                            </li>
+                                    </ul>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <div class="card-footer p-0">
+                <Pagination :data="collection"/>
+            </div>
         </div>
-        <ModalForm
-            :show="modalFormVisible"
-            @update:show="modalFormVisible = $event"
-            :id="currentId"
-            @update:id="currentId = $event"
-        />
-        <ModalDetail
-            :show="modalDetailVisible"
-            @update:show="modalDetailVisible = $event"
-            :id="currentId"
-            @update:id="currentId = $event"
-        />
     </Layout>
 </template>
 <script setup>
@@ -85,14 +106,11 @@ import Sort from '@/Components/Sort.vue'
 import entityData from './entity'
 import service from './service'
 
-import ModalForm from './Modals/Form.vue'
-import ModalDetail from './Modals/Detail.vue'
-
 const page = entityData().page
 
 const breadcrumbs = [
     { text: 'Dashboard', to: route('dashboard') },
-    { text: 'Transaction' },
+    { text: 'Master' },
     { text: page.title, active: true },
 ]
 

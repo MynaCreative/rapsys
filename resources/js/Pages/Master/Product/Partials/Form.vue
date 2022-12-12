@@ -13,10 +13,10 @@
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">
-            <label for="cost_center" class="form-label">Cost Center</label>
-            <b-form-input id="cost_center" v-model="form.cost_center" :class="{'is-invalid' : form.errors.cost_center }"
-                aria-describedby="input-cost_center-feedback" v-focus autofocus/>
-            <b-form-invalid-feedback id="input-cost_center-feedback" v-html="form.errors.cost_center"/>
+            <label for="coa" class="form-label">Coa</label>
+            <b-form-input id="coa" v-model="form.coa" :class="{'is-invalid' : form.errors.coa }"
+                aria-describedby="input-coa-feedback" v-focus autofocus/>
+            <b-form-invalid-feedback id="input-coa-feedback" v-html="form.errors.coa"/>
         </div>
         <div class="col-lg-12">
             <label class="form-label">Description</label>

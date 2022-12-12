@@ -25,6 +25,12 @@
             <b-form-invalid-feedback id="input-password-feedback" v-html="form.errors.password"/>
         </div>
         <div class="col-lg-12">
+            <label for="position" class="form-label">Position</label>
+            <Multiselect id="position" v-model="form.position" :class="{'is-invalid' : form.errors.position }"
+                aria-describedby="input-position-feedback" :options="positions" placeholder="Select data"></Multiselect>
+            <b-form-invalid-feedback id="input-position-feedback" v-html="form.errors.position"/>
+        </div>
+        <div class="col-lg-12">
             <label class="form-label">Roles</label>
             <div :class="['form-check', {'is-invalid' : form.errors.roles_id }]" v-for="(role, role_id) in references.roles" :key="role_id">
                 <input :class="['form-check-input', {'is-invalid' : form.errors.roles_id }]" type="checkbox" v-model="form.roles_id"
@@ -41,6 +47,13 @@ import Multiselect from '@vueform/multiselect'
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
+
+const positions = [
+    { value: 1, label: 'VP' },
+    { value: 2, label: 'Manager' },
+    { value: 3, label: 'Specialist' },
+    { value: 4, label: 'Staff' },
+]
 
 const form = computed({
     get() {

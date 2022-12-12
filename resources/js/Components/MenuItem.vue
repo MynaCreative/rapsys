@@ -1,5 +1,5 @@
 <template>
-    <li class="nav-item" v-show="permission || $page.props.auth.roles.includes('Super User')">
+    <li class="nav-item" v-show="permission || $page.props.auth.roles.includes('Administrator')">
         <Link :class="['nav-link menu-link', {active: route().current(routeName)}]" :href="route(routeName)">
             <i :class="icon" v-show="icon"></i>
             <span>{{ name }}</span>

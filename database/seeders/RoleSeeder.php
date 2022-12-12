@@ -16,15 +16,15 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Model::create(['name' => 'Super User']);
+        Model::create(['name' => 'Administrator']);
 
         $requestor = Model::create(['name' => 'Requestor']);
         $requestor->syncPermissions(['invoice', 'report']);
 
         $requestor = Model::create(['name' => 'Approval']);
-        $requestor->syncPermissions(['inbox', 'invoice', 'report']);
+        $requestor->syncPermissions(['approval', 'invoice', 'report']);
 
-        $requestor = Model::create(['name' => 'Administrator']);
+        $requestor = Model::create(['name' => 'Master']);
         $requestor->syncPermissions([
             'expense',
             'area',
@@ -37,11 +37,18 @@ class RoleSeeder extends Seeder
             'currency',
             'term',
             'tax',
+            'sbu',
+            'interco',
+        ]);
 
+        $requestor = Model::create(['name' => 'Super User']);
+        $requestor->syncPermissions([
             'user',
             'role',
             'permission',
             'permission-group',
+
+            'workflow',
         ]);
     }
 }

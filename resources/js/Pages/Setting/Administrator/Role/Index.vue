@@ -59,7 +59,7 @@
                                                 <i class="ri-eye-fill fs-16"></i>
                                             </a>
                                         </li>
-                                        <li class="list-inline-item edit" title="Edit" @click="() => {
+                                        <li v-if="(item.id != 1)" class="list-inline-item edit" title="Edit" @click="() => {
                                             currentId = item.id
                                             modalFormVisible = true
                                         }">
@@ -67,7 +67,7 @@
                                                 <i class="ri-pencil-fill fs-16"></i>
                                             </a>
                                         </li>
-                                        <li class="list-inline-item" title="Remove">
+                                        <li v-if="(item.id != 1)" class="list-inline-item" title="Remove">
                                             <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>

@@ -13,17 +13,14 @@ export default {
             form[field] = fields[field]
         })
     },
-    submitData(form, id, emit){
+    submitData(form, id){
         let method = form.id ? 'patch' : 'post'
         let action = form.id ? 
             route(`${page.module}.${page.name}.update`, form.id) : 
             route(`${page.module}.${page.name}.store`)
         form.submit(method, action, {
-            onSuccess: () => {
-                form.reset()
-                form.clearErrors()
-                emit('update:show',false)
-            }
+            preserveState: (page) => Object.keys(page.props.errors).length,
+            preserveScroll: (page) => Object.keys(page.props.errors).length,
         })
     },
     deleteData(id, undo = false){

@@ -20,6 +20,7 @@ class Validator
             'username'  => ['required','unique:'. Model::class.',username'. ($model ? ','.$model->id : '')],
             'email'     => ['required','unique:'. Model::class.',email'. ($model ? ','.$model->id : ''), 'email'],
             'roles_id'  => ['required','array'],
+            'position'  => ['required'],
             'password'  => $password_rule,
         ];
     }

@@ -11,6 +11,7 @@ use App\Http\Requests\Expense\{
     Show    as ShowRequest,
     Index   as IndexRequest,
     Store   as StoreRequest,
+    Import  as ImportRequest,
     Update  as UpdateRequest,
     Destroy as DestroyRequest
 };
@@ -96,6 +97,47 @@ class ExpenseController extends Controller
 
         return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
             ->with('success', __('messages.success.store'));
+    }
+
+    /**
+     * 
+     * Store a newly created resource.
+     *
+     * @param   ImportRequest  $request
+     * 
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function import(ImportRequest $request)
+    {
+        try {
+            $this->repository::import($request);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+
+        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+            ->with('success', __('messages.success.import'));
+    }
+
+    /**
+     * Sample
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function importSample()
+    {
+        try {
+            return $this->repository::importSample();
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
     }
 
     /**
