@@ -91,15 +91,31 @@ class User extends Authenticatable
                 $text = null;
                 if(isset($attributes['position'])){
                     $position = $attributes['position'];
-                    match ($position) {
-                        self::POSITION_VP           => $text = 'VP',
-                        self::POSITION_MANAGER      => $text = 'Manager',
-                        self::POSITION_SPECIALIST   => $text = 'Specialist',
-                        self::POSITION_STAFF        => $text = 'Staff',
-                        default => throw new Exception(
-                            message: "$position is not supported yet.",
-                        ),
-                    };
+                    switch ($position) {
+                        case self::POSITION_VP:
+                            $text = 'VP';
+                            break;
+                        case self::POSITION_MANAGER:
+                            $text = 'Manager';
+                            break;
+                        case self::POSITION_SPECIALIST:
+                            $text = 'Specialist';
+                            break;
+                        case self::POSITION_STAFF:
+                            $text = 'Staff';
+                            break;
+                        default:
+                            $text = '';
+                    }
+                    // match ($position) {
+                    //     self::POSITION_VP           => $text = 'VP',
+                    //     self::POSITION_MANAGER      => $text = 'Manager',
+                    //     self::POSITION_SPECIALIST   => $text = 'Specialist',
+                    //     self::POSITION_STAFF        => $text = 'Staff',
+                    //     default => throw new Exception(
+                    //         message: "$position is not supported yet.",
+                    //     ),
+                    // };
                 }
                 return $text;
             },
