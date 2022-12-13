@@ -5,10 +5,12 @@
             <button type="button" class="btn-close" aria-label="Close" @click="emit('update:show', false)"></button>
         </div>
         <form @submit.prevent="submit">
+            <b-overlay :show="loading" :opacity="0.25" spinner-small rounded="sm">
             <div class="modal-body">
                 <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
                 <PartialForm v-model:formData="form"/>
             </div>
+            </b-overlay>
             <div class="modal-footer justify-content-between">
                 <b-button variant="light" @click="emit('update:show', false)">
                     <i class="ri-close-line align-bottom me-1"></i>
@@ -23,7 +25,7 @@
     </ModalContainer>
 </template>
 <script setup>
-import { watch } from 'vue'
+import { ref,watch } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import ModalContainer from '@/Components/Modal.vue'
 
@@ -41,9 +43,14 @@ const submit = () => {
     service.submitData(form, props.id, emit)
 }
 
+const loading = ref(false)
+
 watch(props, async (value) => {
+    form.reset()
     if(value.id){
-        service.showData(form, value.id)
+        loading.value = true
+        await service.showData(form, value.id)
+        loading.value = false
     }else{
         emit('update:id',null)
         form.reset()

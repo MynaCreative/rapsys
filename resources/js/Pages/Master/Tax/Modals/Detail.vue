@@ -4,6 +4,7 @@
             <h5 class="modal-title">Detail View - {{ page.title }}</h5>
             <button type="button" class="btn-close" aria-label="Close" @click="emit('update:show', false)"></button>
         </div>
+        <b-overlay :show="loading" :opacity="0.25" spinner-small rounded="sm">
         <table class="table table-bordered">
             <tbody>
                 <tr>
@@ -40,6 +41,7 @@
                 </tr>
             </tbody>
         </table>
+        </b-overlay>
         <div class="modal-footer">
             <b-button variant="light" @click="emit('update:show', false)">
                 <i class="ri-close-line align-bottom me-1"></i>
@@ -49,7 +51,7 @@
     </ModalContainer>
 </template>
 <script setup>
-import { watch } from 'vue'
+import { ref,watch } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import ModalContainer from '@/Components/Modal.vue'
 
@@ -65,9 +67,14 @@ const emit  = defineEmits(['update:show','update:id'])
 
 const form = useForm(entityData().form)
 
+const loading = ref(false)
+
 watch(props, async (value) => {
+    form.reset()
     if(value.id){
-        service.showData(form, value.id)
+        loading.value = true
+        await service.showData(form, value.id)
+        loading.value = false
     }else{
         emit('update:id',null)
     }
