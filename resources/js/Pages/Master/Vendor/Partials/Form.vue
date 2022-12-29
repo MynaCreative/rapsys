@@ -16,9 +16,15 @@
         </div>
         <div class="col-lg-12">
             <label for="site" class="form-label">Site</label>
-            <b-form-input id="site" v-model="form.site" :class="{'is-invalid' : form.errors.site }"
-                aria-describedby="input-site-feedback"/>
-            <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.site"/>
+            <Multiselect id="site" v-model="form.site_id" :class="{'is-invalid' : form.errors.site_id }"
+                aria-describedby="input-site-feedback" :options="references.sites" placeholder="Select data"></Multiselect>
+            <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.site_id"/>
+        </div>
+        <div class="col-lg-12">
+            <label for="sbu" class="form-label">SBU</label>
+            <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }"
+                aria-describedby="input-sbu-feedback" :options="references.sbus" placeholder="Select data"></Multiselect>
+            <b-form-invalid-feedback id="input-sbu-feedback" v-html="form.errors.sbu_id"/>
         </div>
         <div class="col-lg-12">
             <label class="form-label">Description</label>
@@ -28,8 +34,9 @@
 </template>
 <script setup>
 import { computed } from 'vue'
+import Multiselect from '@vueform/multiselect'
 
-const props = defineProps(['formData'])
+const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
 
 const form = computed({

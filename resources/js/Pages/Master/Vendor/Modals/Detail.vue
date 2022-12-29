@@ -17,7 +17,11 @@
                 </tr>
                 <tr>
                     <td class="text-muted table-light">Site</td>
-                    <td colspan="3">{{ form.site }}</td>
+                    <td colspan="3">{{ form.site?.name }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted table-light">SBU</td>
+                    <td colspan="3">{{ form.sbu?.name }}</td>
                 </tr>
                 <tr>
                     <td class="text-muted table-light">Description</td>

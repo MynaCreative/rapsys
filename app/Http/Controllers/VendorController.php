@@ -49,6 +49,7 @@ class VendorController extends Controller
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
             'collection'=>$this->repository::all($request),
+            'references' => $this->repository::reference(),
         ]);
     }
 

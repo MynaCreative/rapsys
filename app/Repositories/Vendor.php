@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Vendor as Model;
+use App\Models\Site;
+use App\Models\Sbu;
+
 use App\Imports\DataImport;
 use App\Exports\Vendor\Sample as SampleTemplate;
 
@@ -130,7 +133,8 @@ class Vendor
      */
     public function show(): Model {
         return $this->model->load([
-            'createdUser:id,name','updatedUser:id,name'
+            'createdUser:id,name','updatedUser:id,name',
+            'site:id,name','sbu:id,name'
         ]);
     }
 
@@ -162,5 +166,18 @@ class Vendor
     public function restore(): bool
     {
         return $this->model->restore();
+    }
+
+    /**
+     * Data reference resource for this resource.
+     *
+     * @return array|null
+     */
+    public static function reference(): array
+    {
+        return [
+            'sites' => Site::pluck('name','id'),
+            'sbus' => Sbu::pluck('name','id'),
+        ];
     }
 }

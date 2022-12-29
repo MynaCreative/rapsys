@@ -109,6 +109,7 @@
             @update:show="modalFormVisible = $event"
             :id="currentId"
             @update:id="currentId = $event"
+            :references="references"
         />
         <ModalImport
             :show="modalImportVisible"
@@ -151,7 +152,7 @@ const breadcrumbs = [
     { text: page.title, active: true },
 ]
 
-const props = defineProps(['collection','filters'])
+const props = defineProps(['collection','filters','references'])
 
 const form = useForm({
     keyword: usePage().props.value.ziggy.query.keyword ?? null,

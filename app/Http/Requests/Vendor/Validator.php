@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Vendor;
 
 use App\Models\Vendor as Model;
+use App\Models\Site;
+use App\Models\Sbu;
 
 class Validator 
 {
@@ -14,9 +16,10 @@ class Validator
     public function rules($model = null): array
     {
         return [
+            'site_id'   => ['required','exists:'.Site::class.',id'],
+            'sbu_id'   => ['required','exists:'.Sbu::class.',id'],
             'code' => ['required','unique:'. Model::class.',code'. ($model ? ','.$model->id : '')],
             'name' => ['required'],
-            'site' => ['required'],
         ];
     }
 

@@ -3,13 +3,13 @@
         <div class="layout-width">
             <div class="navbar-header">
             <div class="d-flex">
-                <!-- <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger shadow-none" id="topnav-hamburger-icon">
                     <span class="hamburger-icon">
                         <span></span>
                         <span></span>
                         <span></span>
                     </span>
-                </button> -->
+                </button>
             </div>
     
             <div class="d-flex align-items-center">
@@ -187,7 +187,7 @@ export default{
                 document.documentElement.setAttribute("data-sidebar-size", "sm");
             } else if (windowSize > 1025) {
                 document.body.classList.remove("vertical-sidebar-enable");
-                document.documentElement.getAttribute("data-sidebar-size") == "lg" ?
+                document.documentElement.getAttribute("data-sidebar-size") === "lg" || document.documentElement.getAttribute("data-sidebar-size") === null ?
                 document.documentElement.setAttribute("data-sidebar-size", "sm") :
                 document.documentElement.setAttribute("data-sidebar-size", "lg");
             } else if (windowSize <= 767) {

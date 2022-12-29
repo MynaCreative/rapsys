@@ -8,7 +8,7 @@
             <b-overlay :show="loading" :opacity="0.25" spinner-small rounded="sm">
             <div class="modal-body">
                 <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
-                <PartialForm v-model:formData="form"/>
+                <PartialForm v-model:formData="form" :references="references"/>
             </div>
             </b-overlay>
             <div class="modal-footer justify-content-between">
@@ -34,7 +34,7 @@ import entityData from '../entity'
 import service from '../service'
 
 const page = entityData().page
-const props = defineProps(['show','id'])
+const props = defineProps(['show','id','references'])
 const emit  = defineEmits(['update:show','update:id'])
 
 const form = useForm(entityData().form)

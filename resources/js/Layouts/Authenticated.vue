@@ -20,7 +20,7 @@
                             <img src="@/Assets/images/logo-light.png" alt="" height="38" />
                         </span>
                     </Link>
-                    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover" @click="initActiveMenu">
+                    <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
                         <i class="ri-record-circle-line"></i>
                     </button>
                 </div>
@@ -45,13 +45,20 @@
 import { Link, usePage } from '@inertiajs/inertia-vue3'
 import { SimpleBar } from 'simplebar-vue3'
 import Swal from 'sweetalert2'
-import { watch } from 'vue'
+import { watch, onMounted } from 'vue'
 
 import NavBar from '@/Components/NavBar.vue'
 import Footer from '@/Components/Footer.vue'
 import Menu from '@/Components/Menu.vue'
 
 const props = usePage().props
+
+
+onMounted(() => {
+    document.getElementById('overlay').addEventListener('click',()=>{
+        document.body.classList.remove('vertical-sidebar-enable')
+    })
+})
 
 watch(props, (prop) => {
     if(prop.flash.success){
