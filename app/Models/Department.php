@@ -22,22 +22,7 @@ class Department extends Model
      *
      * @var array
      */
-    protected $fillable = ['code','name','cost_center','description'];
-
-    /**
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setCreatedAtAttribute($value)
-    {
-        $this->attributes['created_at'] = $value;
-        // $id = DB::table('INFORMATION_SCHEMA.TABLES')->select('AUTO_INCREMENT as id')
-        //         ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
-        //         ->where('TABLE_NAME', (new self)->getTable())
-        //         ->value('id');
-        // $this->attributes['code'] = 'DPT'.sprintf('%03d', $id);
-    }
+    protected $fillable = ['name','cost_center','description'];
 
 
     /**

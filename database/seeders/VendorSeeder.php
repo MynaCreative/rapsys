@@ -6,6 +6,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Vendor as Model;
+use App\Models\Site;
+use App\Models\Sbu;
 
 class VendorSeeder extends Seeder
 {
@@ -17,9 +19,11 @@ class VendorSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['code' => 'VN1'], ['name' => 'Vendor 1', 'site' => 'Jakarta'] ],
-            [ ['code' => 'VN2'], ['name' => 'Vendor 2', 'site' => 'Bandung'] ],
-            [ ['code' => 'VN3'], ['name' => 'Vendor 3', 'site' => 'Medan'] ],
+            [ ['code' => '120'], [
+                'name'      => 'Garuda Indonesia (Persero) Tbk, PT',
+                'site_id'   => 1,
+                'sbu_id'    => 1
+            ] ],
         ];
 
         foreach($data as $row) {

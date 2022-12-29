@@ -17,8 +17,14 @@ class InvoiceTypeSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['code' => 'STD'], ['name' => 'Standard'] ],
-            [ ['code' => 'FXD'], ['name' => 'Fixed Data'] ],
+            [ ['code' => 'STD'], ['name' => 'Standard', 'description' => 'Standard Invoice'] ],
+            [ ['code' => 'CRM'], ['name' => 'Credit Memo', 'description' => 'Credit Memo'] ],
+            [ ['code' => 'DBM'], ['name' => 'Debit Memo', 'description' => 'Debit Memo'] ],
+            [ ['code' => 'EXR'], ['name' => 'Expense Report', 'description' => 'Employee Expense Report'] ],
+            [ ['code' => 'PRP'], ['name' => 'Prepayment', 'description' => 'Prepayments, advances and finances'] ],
+            [ ['code' => 'RTR'], ['name' => 'Retainage Release', 'description' => 'Retainage Release Invoices'] ],
+            [ ['code' => 'WHT'], ['name' => 'Withholding Tax', 'description' => 'Withholding Tax Invoice'] ],
+            [ ['code' => 'MXD'], ['name' => 'Mixed', 'description' => 'Mixed type invoice'] ],
         ];
 
         foreach($data as $row) {

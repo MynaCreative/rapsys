@@ -41,7 +41,6 @@
                         <thead class="table-light text-muted">
                             <tr>
                                 <th>#</th>
-                                <Sort label="Code" attribute='code'/>
                                 <Sort label="Name" attribute='name'/>
                                 <Sort label="Cost Center" attribute='name'/>
                                 <Sort label="Created At" attribute='created_at'/>
@@ -53,7 +52,6 @@
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td>{{ item.code }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.cost_center }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>

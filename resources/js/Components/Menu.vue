@@ -34,6 +34,7 @@
             <MenuItem route-name="master.currencies.index" name="Currency" icon="ri-copper-coin-line" :permission="$page.props.auth.permissions.includes('currency')"/>
             <MenuItem route-name="master.terms.index" name="Term" icon="ri-alarm-warning-line" :permission="$page.props.auth.permissions.includes('term')"/>
             <MenuItem route-name="master.taxes.index" name="Tax" icon="ri-money-dollar-circle-line" :permission="$page.props.auth.permissions.includes('tax')"/>
+            <MenuItem route-name="master.withholdings.index" name="Withholding" icon="ri-money-dollar-box-line" :permission="$page.props.auth.permissions.includes('withholding')"/>
             <MenuItem route-name="master.sbus.index" name="Sbu" icon="ri-store-3-line" :permission="$page.props.auth.permissions.includes('sbu')"/>
             <MenuItem route-name="master.intercos.index" name="Interco" icon="ri-luggage-deposit-line" :permission="$page.props.auth.permissions.includes('interco')"/>
             <li class="menu-title" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">

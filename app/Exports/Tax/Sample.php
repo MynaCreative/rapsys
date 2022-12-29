@@ -14,7 +14,7 @@ class Sample implements WithMultipleSheets
         $page = basename(dirname(__FILE__));
         return [
             new Item($page),
-            new Type($page),
+            // new Type($page),
         ];
     }
 }

@@ -39,7 +39,7 @@ class Department
         $query = Model::withTrashed()
             ->ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name', 'cost_center'])
+            ->searching($request, ['name', 'cost_center'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->latest();
 
@@ -48,8 +48,7 @@ class Department
             return [
                 'id'            => $item->id,
                 'name'          => $item->name,
-                'code'          => $item->code,
-                'cost_center'           => $item->cost_center,
+                'cost_center'   => $item->cost_center,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,
@@ -88,7 +87,7 @@ class Department
         DB::transaction(function () use ($rows) {
             foreach($rows as $row){
                 Model::updateOrCreate(
-                    ['code'=>$row['code']],
+                    ['name'=>$row['name']],
                     $row
                 );
             }

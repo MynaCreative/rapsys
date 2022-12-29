@@ -7,9 +7,10 @@ export default () => {
         },
         form: {
             id: null,
+            site_id: null,
+            sbu_id: null,
             code: null,
             name: null,
-            site: null,
             description: null,
             excel_file: null,
 

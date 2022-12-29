@@ -9,7 +9,6 @@ export default () => {
             id: null,
             code: null,
             name: null,
-            type: null,
             deduction: null,
             description: null,
             excel_file: null,

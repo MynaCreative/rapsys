@@ -3,7 +3,7 @@
         <tr>
             <th>Code</th>
             <th>Name</th>
-            <th>Type</th>
+            <th>Deduction</th>
         </tr>
     </thead>
     <tbody></tbody>

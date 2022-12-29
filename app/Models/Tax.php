@@ -19,17 +19,12 @@ class Tax extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity, GeneralScope, Signature;
 
-    const TYPE_VAT_IN       = 1;
-    const TYPE_VAT_OUT      = 2;
-    const TYPE_WITHHOLDING  = 3;
-    const TYPE_CREDIT       = 4;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['code','name','deduction','type','description'];
+    protected $fillable = ['code','name','deduction','description'];
 
     /**
      * The attributes that should be cast.
@@ -46,7 +41,7 @@ class Tax extends Model
      * @var array
      */
     protected $appends = [
-        'type_text'
+        // 'type_text'
     ];
 
     /**
@@ -61,22 +56,22 @@ class Tax extends Model
                 $text = null;
                 if(isset($attributes['type'])){
                     $type = $attributes['type'];
-                    switch ($type) {
-                        case self::TYPE_VAT_IN:
-                            $text = 'Vat In';
-                            break;
-                        case self::TYPE_VAT_OUT:
-                            $text = 'Vat Out';
-                            break;
-                        case self::TYPE_WITHHOLDING:
-                            $text = 'Withholding';
-                            break;
-                        case self::TYPE_CREDIT:
-                            $text = 'Credit';
-                            break;
-                        default:
-                            $text = '';
-                    }
+                    // switch ($type) {
+                    //     case self::TYPE_VAT_IN:
+                    //         $text = 'Vat In';
+                    //         break;
+                    //     case self::TYPE_VAT_OUT:
+                    //         $text = 'Vat Out';
+                    //         break;
+                    //     case self::TYPE_WITHHOLDING:
+                    //         $text = 'Withholding';
+                    //         break;
+                    //     case self::TYPE_CREDIT:
+                    //         $text = 'Credit';
+                    //         break;
+                    //     default:
+                    //         $text = '';
+                    // }
                     // match ($type) {
                     //     self::TYPE_VAT_IN       => $text = 'Vat In',
                     //     self::TYPE_VAT_OUT      => $text = 'Vat Out',

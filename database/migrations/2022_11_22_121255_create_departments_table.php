@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('cost_center');
             $table->text('description')->nullable();
             $table->unsignedInteger('created_by')->nullable();

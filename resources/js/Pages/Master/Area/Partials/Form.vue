@@ -13,6 +13,12 @@
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">
+            <label for="coa" class="form-label">COA</label>
+            <b-form-input id="coa" v-model="form.coa" :class="{'is-invalid' : form.errors.coa }"
+                aria-describedby="input-coa-feedback" v-focus autofocus/>
+            <b-form-invalid-feedback id="input-coa-feedback" v-html="form.errors.coa"/>
+        </div>
+        <div class="col-lg-12">
             <label class="form-label">Description</label>
             <textarea class="form-control" v-model="form.description" rows="4"></textarea>
         </div>

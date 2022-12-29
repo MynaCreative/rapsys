@@ -37,12 +37,13 @@ class Delta
             ->withBody(json_encode([
                 'request'=>[
                     'body' => [
-                        'reference_number' => $code,
-                        'tracking_status_id' => 'SMU',
+                        // 'reference_number' => $code,
+                        // 'tracking_status_id' => 'SMU',
+                        'awb' => $code
                     ]
                 ]
             ]), 'application/json')
-            ->get(config('delta.rest.url').'/v3/track/getTrackAwbDetail');
+            ->get(config('delta.rest.url').'/v3/tracking');
     }
 
     /**

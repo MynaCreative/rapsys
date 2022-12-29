@@ -8,7 +8,7 @@ export default () => {
         form: {
             id: null,
             code: null,
-            cost_center: null,
+            coa: null,
             name: null,
             description: null,
             excel_file: null,

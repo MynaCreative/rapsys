@@ -39,7 +39,7 @@ class SalesChannel
         $query = Model::withTrashed()
             ->ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name', 'cost_center'])
+            ->searching($request, ['code', 'name', 'coa'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->latest();
 
@@ -49,7 +49,7 @@ class SalesChannel
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
-                'cost_center'           => $item->cost_center,
+                'coa'           => $item->coa,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,

@@ -40,7 +40,7 @@ class Vendor
             ->ordering($request)
             ->filtering($request)
             ->searching($request, ['code', 'name'])
-            ->with(['createdUser:id,name','updatedUser:id,name'])
+            ->with(['createdUser:id,name','updatedUser:id,name','site:id,name','sbu:id,name'])
             ->latest();
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
@@ -48,8 +48,9 @@ class Vendor
             return [
                 'id'            => $item->id,
                 'name'          => $item->name,
-                'site'          => $item->site,
                 'code'          => $item->code,
+                'site'          => $item->site,
+                'sbu'           => $item->sbu,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,

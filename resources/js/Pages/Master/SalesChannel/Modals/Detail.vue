@@ -16,8 +16,8 @@
                     <td colspan="3">{{ form.name }}</td>
                 </tr>
                 <tr>
-                    <td class="text-muted table-light">Cost Center</td>
-                    <td colspan="3">{{ form.cost_center }}</td>
+                    <td class="text-muted table-light">COA</td>
+                    <td colspan="3">{{ form.coa }}</td>
                 </tr>
                 <tr>
                     <td class="text-muted table-light">Description</td>

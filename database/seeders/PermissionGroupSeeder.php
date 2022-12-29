@@ -40,6 +40,7 @@ class PermissionGroupSeeder extends Seeder
             ['name' => 'currency', 'label' => 'Currency'],
             ['name' => 'term', 'label' => 'Term'],
             ['name' => 'tax', 'label' => 'Tax'],
+            ['name' => 'withholding', 'label' => 'Withholding'],
             ['name' => 'sbu', 'label' => 'SBU'],
             ['name' => 'interco', 'label' => 'Interco'],
         ]);

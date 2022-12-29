@@ -7,7 +7,6 @@ export default () => {
         },
         form: {
             id: null,
-            code: null,
             cost_center: null,
             name: null,
             description: null,

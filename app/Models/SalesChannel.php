@@ -22,7 +22,7 @@ class SalesChannel extends Model
      *
      * @var array
      */
-    protected $fillable = ['code','name','cost_center','description'];
+    protected $fillable = ['code','name','coa','description'];
 
     /**
      *

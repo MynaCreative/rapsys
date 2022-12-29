@@ -39,7 +39,7 @@ class Interco
         $query = Model::withTrashed()
             ->ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name'])
+            ->searching($request, ['code', 'name','coa'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->latest();
 
@@ -49,6 +49,7 @@ class Interco
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
+                'coa'           => $item->coa,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,

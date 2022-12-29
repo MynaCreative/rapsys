@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
-            $table->tinyInteger('type');
             $table->decimal('deduction',12,4)->default(0);
             $table->text('description')->nullable();
             $table->unsignedInteger('created_by')->nullable();

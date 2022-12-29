@@ -17,7 +17,7 @@ class SbuSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['code' => '03'], ['name' => 'APA'] ],
+            [ ['code' => 'APA'], ['name' => 'PT Antareja Prima Antaran', 'coa' => '03'] ],
         ];
 
         foreach($data as $row) {

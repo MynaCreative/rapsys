@@ -22,7 +22,13 @@ class Vendor extends Model
      *
      * @var array
      */
-    protected $fillable = ['code','name','site','description'];
+    protected $fillable = [
+        'site_id',
+        'sbu_id',
+        'code',
+        'name',
+        'description'
+    ];
 
     /**
      *
@@ -37,6 +43,22 @@ class Vendor extends Model
         //         ->where('TABLE_NAME', (new self)->getTable())
         //         ->value('id');
         // $this->attributes['code'] = 'VDR'.sprintf('%03d', $id);
+    }
+
+    /**
+     * Get the site that owns the vendor.
+     */
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
+    }
+
+    /**
+     * Get the sbu that owns the vendor.
+     */
+    public function sbu()
+    {
+        return $this->belongsTo(Sbu::class);
     }
 
 

@@ -2,7 +2,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Repositories\Delta;
 
-Route::get('/awb/{code}', function ($code) {
+Route::get('/awb/', function () {
+    $code = ["717661005051","700001770020"];
     return Delta::awbDetail($code);
 });
 

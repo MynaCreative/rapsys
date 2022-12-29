@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SbuSeeder::class);
         $this->call(TaxSeeder::class);
         $this->call(AreaSeeder::class);
+        $this->call(SiteSeeder::class);
         $this->call(TermSeeder::class);
-        $this->call(VendorSeeder::class);
         $this->call(IntercoSeeder::class);
         $this->call(ExpenseSeeder::class);
         $this->call(ProductSeeder::class);
@@ -33,6 +33,9 @@ class DatabaseSeeder extends Seeder
         $this->call(LineTypeSeeder::class);
         $this->call(DepartmentSeeder::class);
         $this->call(InvoiceTypeSeeder::class);
+        $this->call(WithholdingSeeder::class);
         $this->call(SalesChannelSeeder::class);
+
+        $this->call(VendorSeeder::class);
     }
 }

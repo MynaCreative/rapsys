@@ -43,6 +43,7 @@
                                 <th>#</th>
                                 <Sort label="Code" attribute='code'/>
                                 <Sort label="Name" attribute='name'/>
+                                <Sort label="COA" attribute='coa'/>
                                 <Sort label="Created At" attribute='created_at'/>
                                 <th>Created By</th>
                                 <th>Active</th>
@@ -54,6 +55,7 @@
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.code }}</td>
                                 <td>{{ item.name }}</td>
+                                <td>{{ item.coa }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td><DataUserName :data="item.created_user?.name"/></td>
                                 <td><DataActive :data="item.deleted_at"/></td>

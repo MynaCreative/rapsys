@@ -49,7 +49,6 @@ class Tax
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
-                'type_text'     => $item->type_text,
                 'deduction'     => $item->deduction,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,

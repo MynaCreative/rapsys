@@ -100,18 +100,29 @@ class Item implements FromView, WithTitle, WithStyles, WithEvents, WithColumnFor
             $sheet->getStyle("{$column}{$firstRow}:{$column}".$sheet->getHighestRow())->applyFromArray($styleThinArray);
         }
 
+        // $validation = $sheet->getCell('C2')->getDataValidation();
+        // $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST );
+        // $validation->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION );
+        // $validation->setAllowBlank(false);
+        // $validation->setShowInputMessage(true);
+        // $validation->setShowErrorMessage(true);
+        // $validation->setShowDropDown(true);
+        // $validation->setErrorTitle('Input type error');
+        // $validation->setError('Item must be exist on type data');
+        // $validation->setPromptTitle('Pick from type list');
+        // $validation->setPrompt('Please pick a value from the type list.');
+        // $validation->setFormula1('\'Reference - Type\'!$A$2:$A$5');
+        // $validation->setSqref('C2:D1048576');
+
         $validation = $sheet->getCell('C2')->getDataValidation();
-        $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST );
+        $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_DECIMAL );
         $validation->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION );
         $validation->setAllowBlank(false);
         $validation->setShowInputMessage(true);
         $validation->setShowErrorMessage(true);
         $validation->setShowDropDown(true);
-        $validation->setErrorTitle('Input type error');
-        $validation->setError('Item must be exist on type data');
-        $validation->setPromptTitle('Pick from type list');
-        $validation->setPrompt('Please pick a value from the type list.');
-        $validation->setFormula1('\'Reference - Type\'!$A$2:$A$5');
-        $validation->setSqref('C2:D1048576');
+        $validation->setErrorTitle('Input deduction error');
+        $validation->setError('Deduction must numeric');
+        $validation->setSqref('C2:C1048576');
     }
 }

@@ -8,11 +8,7 @@
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <td class="text-muted table-light" width="100">Code</td>
-                    <td colspan="3">{{ form.code }}</td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Name</td>
+                    <td class="text-muted table-light" width="100">Name</td>
                     <td colspan="3">{{ form.name }}</td>
                 </tr>
                 <tr>
