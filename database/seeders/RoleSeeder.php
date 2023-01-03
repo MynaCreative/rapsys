@@ -37,8 +37,10 @@ class RoleSeeder extends Seeder
             'currency',
             'term',
             'tax',
+            'withholding',
             'sbu',
             'interco',
+            'ops-plan',
         ]);
 
         $requestor = Model::create(['name' => 'Super User']);

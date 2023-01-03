@@ -33,12 +33,19 @@ class Invoice extends Model
         'sbu_id',
 
         'invoice_number',
+        'supplier_tax_invoice',
+
         'posting_date',
         'invoice_date',
         'invoice_receipt_date',
+        'supplier_tax_invoice_date',
 
         'term_date',
         'due_date',
+
+        'total_amount',
+        'total_amount_valid',
+        'total_amount_invalid',
 
         'document_status',
         'approval_status',
@@ -60,13 +67,13 @@ class Invoice extends Model
      * @var array
      */
     protected $casts = [
-        'posting_date'          => 'date',
-        'invoice_date'          => 'date',
-        'invoice_receipt_date'  => 'date',
+        'total_amount'              => 'decimal:4',
+        'total_amount_valid'        => 'decimal:4',
+        'total_amount_invalid'      => 'decimal:4',
 
-        'document_status_time'  => 'datetime',
-        'approval_status_time'  => 'datetime',
-        'published_at'          => 'datetime',
+        'document_status_time'      => 'datetime',
+        'approval_status_time'      => 'datetime',
+        'published_at'              => 'datetime',
     ];
 
     /**

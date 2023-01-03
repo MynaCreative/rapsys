@@ -1,18 +1,34 @@
 <?php
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Invoice as Model;
 use App\Imports\DataImport;
+use App\Helpers\Relationship;
 use App\Exports\Invoice\Sample as SampleTemplate;
+
+use App\Models\Area;
+use App\Models\Currency;
+use App\Models\Expense;
+use App\Models\Interco;
+use App\Models\InvoiceType;
+use App\Models\Product;
+use App\Models\Sbu;
+use App\Models\Tax;
+use App\Models\Term;
+use App\Models\Vendor;
+use App\Models\Withholding;
 
 class Invoice
 {
     private Model $model;
+
+    static  $uploadPath = 'invoices';
 
     /**
      * Initialize the repository from model.
@@ -49,6 +65,7 @@ class Invoice
                 'code'                  => $item->code,
                 'vendor'                => $item->vendor,
                 'document_status'       => $item->document_status,
+                'approval_status'       => $item->approval_status,
                 'invoice_number'        => $item->invoice_number,
                 'invoice_date'          => $item->invoice_date,
                 'invoice_receipt_date'  => $item->invoice_receipt_date,
@@ -72,6 +89,16 @@ class Invoice
     {
         $model = new Model($request->sanitizedData());
         $model->saveOrFail();
+
+        /**
+        * Document Item
+        */
+        self::saveDocumentItem($model, $request->items);
+
+        /**
+        * Document Attachment
+        */
+        self::saveDocumentAttachment($model, $request);
 
         return $model;
     }
@@ -121,6 +148,17 @@ class Invoice
         $this->model->fill($request->sanitizedData());
         $this->model->updateOrFail();
 
+        /**
+        * Document Item
+        */
+        self::saveDocumentItem($this->model, $request->items);
+
+        /**
+        * Document Attachment
+        */
+        self::deleteDocumentAttachment($this->model, $request);
+        self::saveDocumentAttachment($this->model, $request, true);
+
         return $this->model;
     }
 
@@ -131,7 +169,8 @@ class Invoice
      */
     public function show(): Model {
         return $this->model->load([
-            'createdUser:id,name','updatedUser:id,name'
+            'createdUser:id,name','updatedUser:id,name',
+            'attachments'
         ]);
     }
 
@@ -172,6 +211,93 @@ class Invoice
      */
     public static function reference(): array
     {
-        return [];
+        return [
+            /** Header */
+            'sbus' => Sbu::pluck('name','id'),
+            'invoice_types' => InvoiceType::pluck('name','id'),
+            'currencies' => Currency::pluck('name','id'),
+            'intercos' => Interco::pluck('name','id'),
+            'vendors' => Vendor::pluck('name','id'),
+            'terms' => Term::pluck('name','id'),
+            /** Item */
+            'expenses' => Expense::pluck('name','id'),
+            'products' => Product::pluck('name','id'),
+            'areas' => Area::pluck('name','id'),
+            'taxes' => Tax::pluck('name','id'),
+            'withholdings' => Withholding::pluck('name','id'),
+        ];
+    }
+
+    /**
+     * Save items
+     */
+    public static function saveDocumentItem(Model $model, $items){
+        if(!empty($items)) {
+            Relationship::proccesRelationWithRequest(
+                $model->items(),
+                $items
+            );
+        }
+    }
+
+    /**
+     * Add new attachments
+     */
+    public static function saveDocumentAttachment(Model $model, $request, $onUpdate = false){
+        $attachments = [];
+        $items = 'attachments';
+        $has_attachments = $onUpdate ? $request->hasFile($items) : $request->attachments;
+        if($has_attachments){
+            foreach($request->file($items) as $attachment){
+                $attachments[] = self::uploadFile($attachment);
+            }
+        }
+        $model->attachments()->createMany($attachments);
+    }
+
+    /**
+     * Delete attachments
+     */
+    public static function deleteDocumentAttachment(Model $model, $request){
+        $requestAttachments = $request->attachments ? array_column($request->attachments, 'id') : [];
+        $deletedAttachments = $model->attachments->whereNotIn('id',$requestAttachments);
+        foreach($deletedAttachments as $item){
+            self::deleteFile($item);
+            $item->delete();
+        }
+    }
+
+    /**
+     * Upload File
+     */
+    public static function uploadFile($file){
+        $path           = 'public/'.self::$uploadPath;
+        $url            = 'storage/'.self::$uploadPath;
+        $timestamp      = now()->format('YmdHs');
+        $extension      = $file->getClientOriginalExtension();
+        $type           = $file->getClientMimeType();
+        $size           = $file->getSize();
+        $nameOriginal   = $file->getClientOriginalName();
+        $nameUpload     = $timestamp.'_'.str($nameOriginal)->slug().'.'.$extension;
+
+        $file->storeAs($path, $nameUpload);
+
+        return [
+            'name'      => $nameOriginal,
+            'storage'   => $nameUpload,
+            'path'      => $path,
+            'url'       => $url,
+            'size'      => $size,
+            'type'      => $type,
+            'extension' => $extension,
+        ];
+    }
+
+    /**
+     * Delete File
+     */
+    public static function deleteFile($file){
+        $path = 'public/'.self::$uploadPath;
+        Storage::delete($path.'/'.$file->storage);
     }
 }

@@ -21,17 +21,22 @@ class InvoiceItem extends Model
      */
     protected $fillable = [
         'uuid',
+        'sequence_number',
+
         'code',
         'awb',
         'smu',
-        'document_index',
+        'route',
+        'cost_center',
+        'description',
 
         'invoice_id',
+        'expense_id',
         'product_id',
         'area_id',
 
-        'withholding_tax_id',
-        'vat_tax_id',
+        'tax_id',
+        'withholding_id',
 
         'quantity',
         'price',
@@ -95,6 +100,14 @@ class InvoiceItem extends Model
     }
 
     /**
+     * Get the expense that owns the invoice item.
+     */
+    public function expense()
+    {
+        return $this->belongsTo(Expense::class);
+    }
+
+    /**
      * Get the product that owns the invoice item.
      */
     public function product()
@@ -111,21 +124,20 @@ class InvoiceItem extends Model
     }
 
     /**
-     * Get the withholding tax that owns the invoice item.
+     * Get the tax that owns the invoice item.
      */
-    public function withholdingTax()
+    public function tax()
     {
         return $this->belongsTo(Tax::class);
     }
 
     /**
-     * Get the vat tax that owns the invoice item.
+     * Get the withholding tax that owns the invoice item.
      */
-    public function vatTax()
+    public function withholding()
     {
-        return $this->belongsTo(Tax::class);
+        return $this->belongsTo(Withholding::class);
     }
-
 
     /**
      * Logging activity history.

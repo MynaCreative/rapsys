@@ -43,6 +43,7 @@ class PermissionGroupSeeder extends Seeder
             ['name' => 'withholding', 'label' => 'Withholding'],
             ['name' => 'sbu', 'label' => 'SBU'],
             ['name' => 'interco', 'label' => 'Interco'],
+            ['name' => 'ops-plan', 'label' => 'Ops Plan'],
         ]);
 
         $group = Model::create(['name' => 'Administrator', 'sequence' => 4]);

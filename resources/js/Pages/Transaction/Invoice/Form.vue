@@ -26,7 +26,9 @@
                 </div>
             </div>
             <form @submit.prevent="submit">
-                <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
+                <div class="p-3" v-if="!!form.errors.error">
+                    <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
+                </div>
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="header" role="tabpanel">
                         <PartialHeader v-model:formData="form" :references="references"/>
@@ -53,6 +55,7 @@
 </template>
 <script setup>
 import { Head, Link, useForm  } from '@inertiajs/inertia-vue3'
+import { getCurrentInstance, onMounted } from 'vue'
 
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -63,16 +66,32 @@ import entityData from './entity'
 import service from './service'
 
 const page = entityData().page
+const app = getCurrentInstance()
+
+const dayjs = app.appContext.config.globalProperties.$dayjs
 
 const breadcrumbs = [
     { text: 'Dashboard', to: route('dashboard') },
     { text: 'Transaction' },
-    { text: page.title, active: true },
+    { text: 'Invoice', to: route('transaction.invoices.index') },
+    { text: 'Form', active: true },
 ]
 
 const props = defineProps(['references','model'])
 
 const form = useForm(props.model ? { ...props.model } : entityData().form)
+
+onMounted(() => {
+    if(!form.id){
+        let now = dayjs().format('YYYY-MM-DD')
+        form.invoice_date               = now
+        form.posting_date               = now
+        form.term_date                  = now
+        form.due_date                   = now
+        form.invoice_receipt_date       = now
+        form.supplier_tax_invoice_date  = now
+    }
+})
 
 const submit = () => {
     service.submitData(form, form.id)

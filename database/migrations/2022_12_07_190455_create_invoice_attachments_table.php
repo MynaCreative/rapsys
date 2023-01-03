@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('url');
             $table->string('size');
             $table->string('type');
+            $table->string('extension');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

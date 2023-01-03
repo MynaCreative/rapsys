@@ -27,6 +27,7 @@ class InvoiceAttachment extends Model
         'url',
         'size',
         'type',
+        'extension'
     ];
 
 

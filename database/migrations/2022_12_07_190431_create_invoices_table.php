@@ -33,13 +33,19 @@ return new class extends Migration
 
             $table->string('code')->unique();
             $table->string('invoice_number')->nullable();
+            $table->string('supplier_tax_invoice')->nullable();
 
             $table->date('posting_date')->nullable();
             $table->date('invoice_date')->nullable();
             $table->date('invoice_receipt_date')->nullable();
+            $table->date('supplier_tax_invoice_date')->nullable();
 
             $table->date('term_date')->nullable();
             $table->date('due_date')->nullable();
+
+            $table->decimal('total_amount',20,4)->nullable()->default(0);
+            $table->decimal('total_amount_valid',20,4)->nullable()->default(0);
+            $table->decimal('total_amount_invalid',20,4)->nullable()->default(0);
 
             /** Standard Header Status **/
             $table->string('document_status')->default('draft')->nullable();

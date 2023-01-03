@@ -4,9 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\Tax;
+use App\Models\Area;
 use App\Models\Invoice;
 use App\Models\Product;
-use App\Models\Area;
+use App\Models\Expense;
+use App\Models\Withholding;
 
 return new class extends Migration
 {
@@ -20,17 +23,20 @@ return new class extends Migration
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->nullable();
+            $table->integer('sequence_number')->nullable();
+
             $table->string('code')->nullable();
             $table->string('awb')->nullable();
             $table->string('smu')->nullable();
-            $table->integer('document_index')->nullable();
+            $table->string('route')->nullable();
+            $table->string('cost_center')->nullable();
 
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
+            $table->foreignIdFor(Expense::class)->nullable()->constrained();
             $table->foreignIdFor(Product::class)->nullable()->constrained();
             $table->foreignIdFor(Area::class)->nullable()->constrained();
-
-            $table->foreignId('withholding_tax_id')->nullable()->constrained('taxes');
-            $table->foreignId('vat_tax_id')->nullable()->constrained('taxes');
+            $table->foreignIdFor(Tax::class)->nullable()->constrained();
+            $table->foreignIdFor(Withholding::class)->nullable()->constrained();
 
             $table->decimal('quantity',20,4)->nullable()->default(0);
             $table->decimal('price',20,4)->nullable()->default(0);

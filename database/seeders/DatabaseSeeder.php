@@ -37,5 +37,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SalesChannelSeeder::class);
 
         $this->call(VendorSeeder::class);
+        $this->call(OpsPlanSeeder::class);
     }
 }

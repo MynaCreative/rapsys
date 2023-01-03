@@ -18,7 +18,11 @@ export default {
         let action = form.id ? 
             route(`${page.module}.${page.name}.update`, form.id) : 
             route(`${page.module}.${page.name}.store`)
-        form.submit(method, action, {
+        form.transform((data) => ({
+            ...data,
+            _method: method,
+        }))
+        .submit('post', action, {
             preserveState: (page) => Object.keys(page.props.errors).length,
             preserveScroll: (page) => Object.keys(page.props.errors).length,
         })

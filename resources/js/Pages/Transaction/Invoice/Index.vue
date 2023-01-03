@@ -37,45 +37,58 @@
                         <thead class="table-light text-muted">
                             <tr>
                                 <th>#</th>
-                                <Sort label="Code" attribute='code'/>
                                 <Sort label="Invoice Number" attribute='invoice_number'/>
-                                <Sort label="Vendor" attribute='vendor_id'/>
-                                <Sort label="Invoice Amount" attribute='amount' class="text-center"/>
                                 <Sort label="Invoice Date" attribute='invoice_date'/>
-                                <Sort label="Invoice Receipt Date" attribute='invoice_receipt_date'/>
-                                <Sort label="Created At" attribute='created_at'/>
+                                <Sort label="Vendor" attribute='vendor_id'/>
+                                <Sort label="Total Amount" attribute='total_amount' class="text-end"/>
+                                <Sort label="Total Amount Valid" attribute='total_amount_valid' class="text-end"/>
+                                <Sort label="Total Amount Invalid" attribute='total_amount_invalid' class="text-end"/>
                                 <th class="text-center">Document Status</th>
-                                <th>Created By</th>
+                                <th class="text-center">Approval Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td>{{ item.code }}</td>
-                                <td>{{ item.invoice_number }}</td>
-                                <td>{{ item.vendor?.code }} - {{ item.vendor?.name }}</td>
-                                <td class="text-center">9.500.000,00</td>
+                                <td class="fw-medium">{{ item.invoice_number }}</td>
                                 <td>{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
-                                <td>{{ $dayjs(item.invoice_receipt_date).format('DD MMM, YYYY') }}</td>
-                                <td class="date"><DataTimestamp :data="item.created_at"/></td>
+                                <td>{{ item.vendor?.code }} - {{ item.vendor?.name }}</td>
+                                <td class="text-end">
+                                    <h6 class="text-primary fs-11 mb-0">
+                                        <i class="ri-wallet-line align-middle me-1"></i>
+                                        9.500.000,00
+                                    </h6>
+                                </td>
+                                <td class="text-end text-success">
+                                    <h6 class="text-success fs-11 mb-0">
+                                        <i class="ri-check-line align-middle me-1"></i>
+                                        9.500.000,00
+                                    </h6>
+                                </td>
+                                <td class="text-end">
+                                    <h6 class="text-danger fs-11 mb-0">
+                                        <i class="ri-close-line align-middle me-1"></i>
+                                        9.500.000,00
+                                    </h6>
+                                </td>
                                 <td class="text-center"><b-badge variant="light" class="text-capitalize">{{ item.document_status }}</b-badge></td>
-                                <td><DataUserName :data="item.created_user?.name"/></td>
+                                <td class="text-center"><b-badge variant="light" class="text-capitalize">{{ item.approval_status }}</b-badge></td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
-                                            <li class="list-inline-item edit" title="Edit" @click="() => {
-                                                currentId = item.id
-                                                modalFormVisible = true
-                                            }">
-                                                <Link :href="route(`${page.module}.${page.name}.edit`, item.id)" class="text-primary d-inline-block" title="Edit">
-                                                    <i class="ri-pencil-fill fs-16"></i>
-                                                </Link>
-                                            </li>
-                                            <li class="list-inline-item" title="Remove">
-                                                <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
-                                                    <i class="ri-delete-bin-5-fill fs-16"></i>
-                                                </a>
-                                            </li>
+                                        <li class="list-inline-item edit" title="Edit" @click="() => {
+                                            currentId = item.id
+                                            modalFormVisible = true
+                                        }">
+                                            <Link :href="route(`${page.module}.${page.name}.edit`, item.id)" class="text-primary d-inline-block" title="Edit">
+                                                <i class="ri-pencil-fill fs-16"></i>
+                                            </Link>
+                                        </li>
+                                        <li class="list-inline-item" title="Remove">
+                                            <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
+                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>
@@ -110,7 +123,7 @@ const page = entityData().page
 
 const breadcrumbs = [
     { text: 'Dashboard', to: route('dashboard') },
-    { text: 'Master' },
+    { text: 'Transaction' },
     { text: page.title, active: true },
 ]
 
