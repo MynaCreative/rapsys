@@ -34,6 +34,8 @@ class PermissionGroupController extends Controller
     {
         $this->repository   = $repository;
 
+        $this->middleware('permission:permission-group');
+
         $this->middleware('password.confirm', [
             'only' => ['index']
         ]);

@@ -34,6 +34,8 @@ class RoleController extends Controller
     {
         $this->repository   = $repository;
 
+        $this->middleware('permission:role');
+
         $this->middleware('password.confirm', [
             'only' => ['index']
         ]);

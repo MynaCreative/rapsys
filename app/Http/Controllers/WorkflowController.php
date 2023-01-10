@@ -34,6 +34,8 @@ class WorkflowController extends Controller
     {
         $this->repository   = $repository;
 
+        $this->middleware('permission:workflow');
+
         $this->middleware('password.confirm', [
             'only' => ['index']
         ]);

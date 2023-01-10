@@ -21,24 +21,24 @@ class OpsPlanSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_ecp.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_hwp.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_mdp.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_ndp.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_phw.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psc.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_ecp.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_hwp.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_mdp.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_ndp.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_phw.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psc.xlsx'));
         Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psm.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psn.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_pss.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_sdp.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_1.1.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_1.2.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_2.1.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_2.1.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_1.1.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_1.2.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_2.1.xlsx'));
-        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_2.1.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psn.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_pss.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_sdp.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_1.1.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_1.2.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_2.1.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psr_2.1.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_1.1.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_1.2.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_2.1.xlsx'));
+        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_rgp_2.1.xlsx'));
     }
 
     public function import(){

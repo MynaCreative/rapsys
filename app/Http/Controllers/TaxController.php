@@ -34,6 +34,7 @@ class TaxController extends Controller
     public function __construct(Repository $repository)
     {
         $this->repository   = $repository;
+        $this->middleware('permission:tax');
     }
 
     /**

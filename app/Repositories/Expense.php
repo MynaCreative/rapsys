@@ -49,6 +49,7 @@ class Expense
                 'id'                => $item->id,
                 'name'              => $item->name,
                 'code'              => $item->code,
+                'icon'              => $item->icon,
                 'mandatory_scan'    => $item->mandatory_scan,
                 'description'       => $item->description,
                 'created_user'      => $item->createdUser,

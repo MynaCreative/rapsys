@@ -34,6 +34,8 @@ class UserController extends Controller
     {
         $this->repository   = $repository;
 
+        $this->middleware('permission:user');
+
         $this->middleware('password.confirm', [
             'only' => ['index']
         ]);

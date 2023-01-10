@@ -220,7 +220,7 @@ class Invoice
             'vendors' => Vendor::pluck('name','id'),
             'terms' => Term::pluck('name','id'),
             /** Item */
-            'expenses' => Expense::pluck('name','id'),
+            'expenses' => Expense::select('id','icon','code','name')->get(),
             'products' => Product::pluck('name','id'),
             'areas' => Area::pluck('name','id'),
             'taxes' => Tax::pluck('name','id'),

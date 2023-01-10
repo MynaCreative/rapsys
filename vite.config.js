@@ -18,4 +18,9 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        manifest: true,
+        minify: 'terser',
+        chunkSizeWarningLimit: 1500
+    }
 });

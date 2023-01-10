@@ -34,6 +34,8 @@ class PermissionController extends Controller
     {
         $this->repository   = $repository;
 
+        $this->middleware('permission:permission');
+
         $this->middleware('password.confirm', [
             'only' => ['index']
         ]);

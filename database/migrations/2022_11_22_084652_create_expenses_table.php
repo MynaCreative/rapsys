@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('mandatory_scan');
             $table->string('name');
+            $table->string('icon')->nullable();
             $table->text('description')->nullable();
             $table->json('columns')->nullable();
             $table->unsignedInteger('created_by')->nullable();

@@ -19,6 +19,12 @@
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">
+            <label for="icon" class="form-label">Icon</label>
+            <b-form-input id="icon" v-model="form.icon" :class="{'is-invalid' : form.errors.icon }"
+                aria-describedby="input-icon-feedback"/>
+            <b-form-invalid-feedback id="input-icon-feedback" v-html="form.errors.icon"/>
+        </div>
+        <div class="col-lg-12">
             <label class="form-label">Description</label>
             <textarea class="form-control" v-model="form.description" rows="4"></textarea>
         </div>

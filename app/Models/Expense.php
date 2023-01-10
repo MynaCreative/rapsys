@@ -21,7 +21,7 @@ class Expense extends Model
      *
      * @var array
      */
-    protected $fillable = ['code','name','mandatory_scan','description','columns'];
+    protected $fillable = ['code','name','mandatory_scan','icon','description','columns'];
 
     /**
      * The attributes that should be cast.

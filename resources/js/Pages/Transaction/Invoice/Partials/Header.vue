@@ -29,13 +29,13 @@
         <hr>
         <div class="row g-4 mb-2">
             <div class="col-lg-4">
-                <label for="vendor" class="form-label required">Vendor</label>
-                <Multiselect id="vendor" v-model="form.vendor_id" :class="{'is-invalid' : form.errors.vendor_id }"
-                    aria-describedby="input-vendor-feedback" :options="references.vendors" placeholder="Select data"></Multiselect>
-                <b-form-invalid-feedback id="input-vendor-feedback" v-html="form.errors.vendor_id"/>
-            </div>
+                <label for="invoice_number" class="form-label required">Invoice Number</label>
+                <b-form-input id="invoice_number" v-model="form.invoice_number" :class="{'is-invalid' : form.errors.invoice_number }"
+                    aria-describedby="input-invoice_number-feedback" v-focus autofocus/>
+                <b-form-invalid-feedback id="input-invoice_number-feedback" v-html="form.errors.invoice_number"/>
+            </div>            
             <div class="col-lg-4">
-                <label for="code" class="form-label">Invoice Number</label>
+                <label for="code" class="form-label">Code</label>
                 <input :value="form.id ? form.code : 'System Generated Number'" class="form-control text-muted" disabled/>
             </div>
             <div class="col-lg-4">
@@ -45,10 +45,10 @@
         </div>
         <div class="row g-4 mb-2">
             <div class="col-lg-4">
-                <label for="invoice_number" class="form-label required">Invoice Number</label>
-                <b-form-input id="invoice_number" v-model="form.invoice_number" :class="{'is-invalid' : form.errors.invoice_number }"
-                    aria-describedby="input-invoice_number-feedback"/>
-                <b-form-invalid-feedback id="input-invoice_number-feedback" v-html="form.errors.invoice_number"/>
+                <label for="vendor" class="form-label required">Vendor</label>
+                <Multiselect id="vendor" v-model="form.vendor_id" :class="{'is-invalid' : form.errors.vendor_id }"
+                    aria-describedby="input-vendor-feedback" :options="references.vendors" placeholder="Select data"></Multiselect>
+                <b-form-invalid-feedback id="input-vendor-feedback" v-html="form.errors.vendor_id"/>
             </div>
             <div class="col-lg-4">
                 <label for="invoice_date" class="form-label required">Invoice Date</label>
@@ -59,7 +59,7 @@
             <div class="col-lg-4">
                 <label for="posting_date" class="form-label required">Posting Date</label>
                 <b-form-input id="posting_date" v-model="form.posting_date" :class="{'is-invalid' : form.errors.posting_date }" type="date"
-                    aria-describedby="input-posting_date-feedback" v-focus autofocus/>
+                    aria-describedby="input-posting_date-feedback"/>
                 <b-form-invalid-feedback id="input-posting_date-feedback" v-html="form.errors.posting_date"/>
             </div>
         </div>

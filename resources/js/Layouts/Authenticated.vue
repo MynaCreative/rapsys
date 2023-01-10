@@ -43,16 +43,23 @@
 </template>
 <script setup>
 import { Link, usePage } from '@inertiajs/inertia-vue3'
+import { Inertia } from '@inertiajs/inertia'
+import { onMounted, onUnmounted } from 'vue'
+
 import { SimpleBar } from 'simplebar-vue3'
 import Swal from 'sweetalert2'
-import { watch, onMounted } from 'vue'
 
 import NavBar from '@/Components/NavBar.vue'
 import Footer from '@/Components/Footer.vue'
 import Menu from '@/Components/Menu.vue'
 
-const props = usePage().props
+const page = usePage()
 
+let removeFinishEventListener = Inertia.on('finish', () => {
+    if(page.props.value.flash.success){
+        Swal.fire('Success!',page.props.value.flash.success, 'success')
+    }
+})
 
 onMounted(() => {
     document.getElementById('overlay').addEventListener('click',()=>{
@@ -60,9 +67,7 @@ onMounted(() => {
     })
 })
 
-watch(props, (prop) => {
-    if(prop.flash.success){
-        Swal.fire('Success!',prop.flash.success, 'success')
-    }
+onUnmounted(() => {
+    removeFinishEventListener()
 })
 </script>
