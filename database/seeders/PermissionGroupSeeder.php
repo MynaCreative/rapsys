@@ -57,6 +57,7 @@ class PermissionGroupSeeder extends Seeder
         $group = Model::create(['name' => 'Configuration', 'sequence' => 5]);
         $group->permissions()->createMany([
             ['name' => 'workflow', 'label' => 'Workflow'],
+            ['name' => 'integration', 'label' => 'Integration'],
         ]);
     }
 }

@@ -33,7 +33,8 @@
         "mockery/mockery": "^1.5",
         "nunomaduro/collision": "^6.3",
         "phpunit/phpunit": "^9.5",
-        "spatie/laravel-ignition": "^1.5"
+        "spatie/laravel-ignition": "^1.5",
+        "xammie/mailbook": "^1.5"
     },
     "autoload": {
         "psr-4": {

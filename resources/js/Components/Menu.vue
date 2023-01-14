@@ -13,13 +13,32 @@
                     <span class="badge badge-pill bg-success">0</span>
                 </Link>
             </li>
-            <li class="menu-title" v-if="$page.props.auth.roles.includes('Requestor') || $page.props.auth.roles.includes('Approval') || $page.props.auth.roles.includes('Administrator')">
+            <li class="menu-title" v-if="hasAnyPermission([
+                'invoice',
+                'report',
+            ])">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Transaction</span>
             </li>
             <MenuItem route-name="transaction.invoices.index" name="Invoice" icon="ri-newspaper-line" :permission="$page.props.auth.permissions.includes('invoice')"/>
             <MenuItem route-name="dashboard" name="Report" icon="ri-file-list-3-line" :permission="$page.props.auth.permissions.includes('report')"/>
-            <li class="menu-title" v-if="$page.props.auth.roles.includes('Master') || $page.props.auth.roles.includes('Administrator')">
+            <li class="menu-title" v-if="hasAnyPermission([
+                'expense',
+                'area',
+                'product',
+                'department',
+                'sales-channel',
+                'vendor',
+                'invoice-type',
+                'line-type',
+                'currency',
+                'term',
+                'tax',
+                'withholding',
+                'sbu',
+                'interco',
+                'ops-plan',
+            ])">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-pages">Master</span>
             </li>
@@ -38,11 +57,22 @@
             <MenuItem route-name="master.sbus.index" name="Sbu" icon="ri-store-3-line" :permission="$page.props.auth.permissions.includes('sbu')"/>
             <MenuItem route-name="master.intercos.index" name="Interco" icon="ri-luggage-deposit-line" :permission="$page.props.auth.permissions.includes('interco')"/>
             <MenuItem route-name="master.ops-plans.index" name="Ops Plan" icon="ri-store-3-line" :permission="$page.props.auth.permissions.includes('ops-plan')"/>
-            <li class="menu-title" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">
+            <li class="menu-title" v-if="hasAnyPermission([
+                'user',
+                'role',
+                'permission',
+                'permission-group',
+                'workflow',
+            ])">
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Setting</span>
             </li>
-            <li class="nav-item" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">
+            <li class="nav-item" v-if="hasAnyPermission([
+                'user',
+                'role',
+                'permission',
+                'permission-group',
+            ])">
                 <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.administrator')}]"
                 :aria-expanded="route().current().startsWith('setting.administrator')"
                 href="#setting-administrator" data-bs-toggle="collapse" role="button" aria-controls="setting-administrator">
@@ -58,7 +88,9 @@
                 </ul>
                 </div>
             </li>
-            <li class="nav-item" v-if="$page.props.auth.roles.includes('Super User') || $page.props.auth.roles.includes('Administrator')">
+            <li class="nav-item" v-if="hasAnyPermission([
+                'workflow',
+            ])">
                 <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.configuration')}]"
                 :aria-expanded="route().current().startsWith('setting.configuration')"
                 href="#setting-configuration" data-bs-toggle="collapse" role="button" aria-controls="setting-configuration">
@@ -68,6 +100,7 @@
                 <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.configuration')}]" id="setting-configuration">
                 <ul class="nav nav-sm flex-column">
                     <MenuItem route-name="setting.configuration.workflows.index" name="Workflow" :permission="$page.props.auth.permissions.includes('workflow')"/>
+                    <MenuItem route-name="setting.configuration.workflows.index" name="Integration" :permission="$page.props.auth.permissions.includes('integration')"/>
                 </ul>
                 </div>
             </li>
@@ -160,5 +193,19 @@ export default {
             });
         }
     },
+    methods:{
+        hasAnyPermission(permissions) {
+            let hasAdministrator = this.$page.props.auth.roles.includes('Administrator')
+            let allPermissions = this.$page.props.auth.permissions
+            let hasPermission = false
+            for (const item of permissions) {  
+                if (allPermissions.includes(item) || hasAdministrator){
+                    hasPermission = true
+                    break
+                }
+            }
+            return hasPermission
+        }
+    }
 }
 </script>

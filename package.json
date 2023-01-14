@@ -11,10 +11,11 @@
         "bootstrap-vue-3": "^0.3.12",
         "dayjs": "^1.11.7",
         "lodash": "^4.17.21",
-        "lottie-web": "^5.10.0",
+        "lottie-web": "^5.10.1",
         "simplebar": "5.3.8",
         "simplebar-vue3": "^0.2.0",
-        "sweetalert2": "^11.6.16"
+        "sweetalert2": "^11.7.0",
+        "terser": "^5.16.1"
     },
     "devDependencies": {
         "@inertiajs/inertia": "^0.11.1",
