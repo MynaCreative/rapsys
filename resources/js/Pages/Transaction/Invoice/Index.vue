@@ -85,7 +85,7 @@
                                             </Link>
                                         </li>
                                         <li class="list-inline-item" title="Remove">
-                                            <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
+                                            <a href="javascript:void(0);" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>
                                         </li>

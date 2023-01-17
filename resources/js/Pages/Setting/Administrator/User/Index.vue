@@ -42,6 +42,7 @@
                                 <Sort label="Email" attribute='email'/>
                                 <Sort label="Position" attribute='position'/>
                                 <Sort label="Created At" attribute='created_at'/>
+                                <Sort label="Online" attribute='seen_at'/>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -54,12 +55,16 @@
                                 <td>{{ item.position_text }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>
+                                    <span class="badge badge-soft-success" v-if="item.online">Yes</span>
+                                    <span class="badge badge-soft-danger" v-else>No</span>
+                                </td>
+                                <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
                                         <li class="list-inline-item" title="View" @click="() => {
                                             currentId = item.id
                                             modalDetailVisible = true
                                         }">
-                                            <a href="#" class="text-warning d-inline-block" >
+                                            <a href="javascript:void(0);" class="text-warning d-inline-block" >
                                                 <i class="ri-eye-fill fs-16"></i>
                                             </a>
                                         </li>
@@ -67,12 +72,12 @@
                                             currentId = item.id
                                             modalFormVisible = true
                                         }">
-                                            <a href="#" class="text-primary d-inline-block">
+                                            <a href="javascript:void(0);" class="text-primary d-inline-block">
                                                 <i class="ri-pencil-fill fs-16"></i>
                                             </a>
                                         </li>
                                         <li v-if="(item.id != 1)" class="list-inline-item" title="Remove">
-                                            <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
+                                            <a href="javascript:void(0);" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>
                                         </li>

@@ -37,6 +37,7 @@ class User extends Authenticatable
         'position',
         'username',
         'password',
+        'seen_at'
     ];
 
     /**

@@ -105,30 +105,33 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                 <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="d-flex align-items-center">
-                    <img class="rounded-circle header-profile-user" src="@/Assets/images/users/user.png" :alt="$page.props.auth.user.name" />
-                    <span class="text-start ms-xl-2">
-                        <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.auth.user.name }}</span>
-                        <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.user.position_text }}</span>
-                    </span>
+                        <img class="rounded-circle header-profile-user" :src="`/img/initials/${$page.props.auth.user.name.charAt(0).toLowerCase()}.png`" :alt="$page.props.auth.user.name" />
+                        <span class="text-start ms-xl-2">
+                            <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.auth.user.name }}</span>
+                            <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.user.position_text }}</span>
+                        </span>
                     </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <h6 class="dropdown-header">Welcome {{ $page.props.auth.user.name }}!</h6>
-                    <!-- <Link class="dropdown-item" :href="route('dashboard')">
+                    <!-- <h6 class="dropdown-header">Welcome {{ $page.props.auth.user.name }}!</h6> -->
+                    <Link class="dropdown-item" :href="route('profile')">
                         <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle">Profile</span>
-                    </Link> -->
-                    <Link class="dropdown-item" :href="route('dashboard')">
+                    </Link>
+                    <!-- <Link class="dropdown-item" :href="route('dashboard')">
                         <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle">Help</span>
-                    </Link>
-                    <!-- <div class="dropdown-divider"></div>
-                    <Link class="dropdown-item" :href="route('dashboard')">
-                        <span class="badge bg-soft-success text-success mt-1 float-end">New</span>
-                        <i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle">Settings</span>
                     </Link> -->
+                    <!-- <Link class="dropdown-item" :href="route('dashboard')">
+                        <i class="ri-book-3-line text-muted fs-16 align-middle me-1"></i>
+                        <span class="align-middle">Dictionary</span>
+                    </Link>
+                    <Link class="dropdown-item" :href="route('dashboard')">
+                        <i class="ri-book-open-line text-muted fs-16 align-middle me-1"></i>
+                        <span class="align-middle">User Manual</span>
+                    </Link>
+                    <div class="dropdown-divider"></div> -->
                     <Link :href="route('logout')" method="post" as="button" class="dropdown-item">
                         <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                         <span class="align-middle" data-key="t-logout">Logout</span>

@@ -21,7 +21,7 @@
                 <span data-key="t-pages">Transaction</span>
             </li>
             <MenuItem route-name="transaction.invoices.index" name="Invoice" icon="ri-newspaper-line" :permission="$page.props.auth.permissions.includes('invoice')"/>
-            <MenuItem route-name="dashboard" name="Report" icon="ri-file-list-3-line" :permission="$page.props.auth.permissions.includes('report')"/>
+            <MenuItem route-name="transaction.report.index" name="Report" icon="ri-file-list-3-line" :permission="$page.props.auth.permissions.includes('report')"/>
             <li class="menu-title" v-if="hasAnyPermission([
                 'expense',
                 'area',
@@ -100,7 +100,6 @@
                 <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.configuration')}]" id="setting-configuration">
                 <ul class="nav nav-sm flex-column">
                     <MenuItem route-name="setting.configuration.workflows.index" name="Workflow" :permission="$page.props.auth.permissions.includes('workflow')"/>
-                    <MenuItem route-name="setting.configuration.workflows.index" name="Integration" :permission="$page.props.auth.permissions.includes('integration')"/>
                 </ul>
                 </div>
             </li>

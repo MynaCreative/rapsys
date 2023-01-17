@@ -25,28 +25,28 @@
                     </td>
                     <td class="text-center">{{ index }}</td>
                     <td class="text-center">
-                        <a href="#" class="text-decoration-none">AWB-00001</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">AWB-00001</a>
                     </td>
                     <td class="text-center">
-                        <a href="#" class="text-decoration-none">SMU-00001</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">SMU-00001</a>
                     </td>
                     <td>
-                        <a href="#" class="text-decoration-none">Description</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">Description</a>
                     </td>
                     <td>
-                        <a href="#" class="text-decoration-none">Cost Center</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">Cost Center</a>
                     </td>
                     <td>
-                        <a href="#" class="text-decoration-none">Route</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">Route</a>
                     </td>
                     <td class="text-end">
-                        <a href="#" class="text-decoration-none">2.00</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">2.00</a>
                     </td>
                     <td class="text-end">
-                        <a href="#" class="text-decoration-none">2.000.00</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">2.000.00</a>
                     </td>
                     <td class="text-end">
-                        <a href="#" class="text-decoration-none">2.00</a>
+                        <a href="javascript:void(0);" class="text-decoration-none">2.00</a>
                     </td>
                     <td class="text-end">12.000.0000</td>
                 </tr>

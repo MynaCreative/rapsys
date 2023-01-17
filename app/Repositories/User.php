@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\User as Model;
 use App\Models\Role;
@@ -47,6 +48,7 @@ class User
                 'position_text'     => $item->position_text,
                 'created_at'        => $item->created_at,
                 'updated_at'        => $item->updated_at,
+                'online'            => Cache::has('user-is-online-' . $item->id) ?? false
             ];
         });
     }

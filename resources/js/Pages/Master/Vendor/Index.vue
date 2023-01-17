@@ -68,7 +68,7 @@
                                                 currentId = item.id
                                                 modalDetailVisible = true
                                             }">
-                                                <a href="#" class="text-warning d-inline-block" >
+                                                <a href="javascript:void(0);" class="text-warning d-inline-block" >
                                                     <i class="ri-eye-fill fs-16"></i>
                                                 </a>
                                             </li>
@@ -76,19 +76,19 @@
                                                 currentId = item.id
                                                 modalFormVisible = true
                                             }">
-                                                <a href="#" class="text-primary d-inline-block">
+                                                <a href="javascript:void(0);" class="text-primary d-inline-block">
                                                     <i class="ri-pencil-fill fs-16"></i>
                                                 </a>
                                             </li>
                                             <li class="list-inline-item" title="Remove">
-                                                <a href="#" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
+                                                <a href="javascript:void(0);" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                     <i class="ri-delete-bin-5-fill fs-16"></i>
                                                 </a>
                                             </li>
                                         </template>
                                         <template v-else>
                                             <li class="list-inline-item" title="Restore">
-                                                <a href="#" class="text-info d-inline-block" @click="service.deleteData(item.id, true)">
+                                                <a href="javascript:void(0);" class="text-info d-inline-block" @click="service.deleteData(item.id, true)">
                                                     <i class="ri-refresh-fill fs-16"></i>
                                                 </a>
                                             </li>

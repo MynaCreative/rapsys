@@ -10,7 +10,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" >
+                    <a class="nav-link" href="javascript:void(0);" >
                         <i class="me-1 align-bottom ri-upload-fill"></i>
                         Upload
                         <i class="ri-add-fill align-bottom"></i>

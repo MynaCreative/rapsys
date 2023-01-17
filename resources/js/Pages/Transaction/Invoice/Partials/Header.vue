@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden">
-                                    <h5 class="fs-13 mb-1"><a href="#" class="text-body text-truncate d-block">{{ attachment.name }}</a></h5>
+                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block">{{ attachment.name }}</a></h5>
                                     <div>{{ fileSizeSI(attachment.size) }}</div>
                                 </div>
                                 <div class="flex-shrink-0 ms-2">
@@ -173,7 +173,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden">
-                                    <h5 class="fs-13 mb-1"><a href="#" class="text-body text-truncate d-block">No attachment on this invoice</a></h5>
+                                    <h5 class="fs-13 mb-1"><a href="javascript:void(0);" class="text-body text-truncate d-block">No attachment on this invoice</a></h5>
                                     <div>Please upload the file relating to this invoice.</div>
                                 </div>
                             </div>
