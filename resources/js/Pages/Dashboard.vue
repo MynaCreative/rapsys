@@ -35,7 +35,7 @@
                                         </span>
                                     </div>
                                     <div class="flex-grow-1 ps-3">
-                                        <h5 class="text-muted text-uppercase fs-13 mb-0">Total Invoice</h5>
+                                        <h5 class="text-muted text-uppercase fs-13 mb-0">Total Amount</h5>
                                     </div>
                                 </div>
                                 <div class="mt-4 pt-1">
@@ -46,7 +46,7 @@
                                         <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                             <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                         </span>
-                                        vs. previous month
+                                        vs. prev month
                                     </p>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                         </span>
                                     </div>
                                     <div class="flex-grow-1 ps-3">
-                                        <h5 class="text-muted text-uppercase fs-13 mb-0">Total Valid</h5>
+                                        <h5 class="text-muted text-uppercase fs-13 mb-0">Valid Amount</h5>
                                     </div>
                                 </div>
                                 <div class="mt-4 pt-1">
@@ -73,7 +73,7 @@
                                         <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                             <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                         </span>
-                                        vs. previous month
+                                        vs. prev month
                                     </p>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                         </span>
                                     </div>
                                     <div class="flex-grow-1 ps-3">
-                                        <h5 class="text-muted text-uppercase fs-13 mb-0">Total Invalid</h5>
+                                        <h5 class="text-muted text-uppercase fs-13 mb-0">Invalid Amount</h5>
                                     </div>
                                 </div>
                                 <div class="mt-4 pt-1">
@@ -100,7 +100,7 @@
                                         <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                             <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                         </span>
-                                        vs. previous month
+                                        vs. prev month
                                     </p>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
 </template>
 <script setup>
 import AuthenticatedLayout from '@/Layouts/Main.vue'
-import { Head } from '@inertiajs/inertia-vue3'
+import { Head } from '@inertiajs/vue3'
 import { CountTo } from 'vue3-count-to'
 
 import Widget from './Dashboard/Widget.vue'

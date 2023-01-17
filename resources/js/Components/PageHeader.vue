@@ -6,7 +6,7 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item" v-for="(item, index) in breadcrumbs" :key="index" :class="{ active: item[0] }">
-                            <Link :href="item.to">{{ item.text }}</Link>
+                            <Link :href="item.to ?? '#'">{{ item.text }}</Link>
                         </li>
                     </ol>
                 </div>
@@ -15,7 +15,7 @@
     </div>
 </template>
 <script setup>
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 const props = defineProps({
     title: {
         type: String,

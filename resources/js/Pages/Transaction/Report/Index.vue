@@ -10,16 +10,16 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <p class="fw-medium text-muted mb-0">Total Tasks</p>
+                                <p class="fw-medium text-muted mb-0">All Invoice Receipt </p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="234" :duration="5000"></count-to>k
+                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
-                                    <span class="badge bg-light text-success mb-0">
-                                        <i class="ri-arrow-up-line align-middle"></i> 17.32 %
+                                    <span class="badge bg-soft-primary text-primary mb-0 me-1">
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                     </span>
-                                    vs. previous month
-                                </p>
+                                    vs. prev month
+                                </p>                                
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -37,15 +37,15 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <p class="fw-medium text-muted mb-0">Pending Tasks</p>
+                                <p class="fw-medium text-muted mb-0">Pending Invoice</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="64" :duration="5000"></count-to>k
+                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
-                                    <span class="badge bg-light text-danger mb-0">
-                                        <i class="ri-arrow-down-line align-middle"></i> 0.87 %
+                                    <span class="badge bg-soft-primary text-primary mb-0 me-1">
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                     </span>
-                                    vs. previous month
+                                    vs. prev month
                                 </p>
                             </div>
                             <div>
@@ -64,15 +64,15 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <p class="fw-medium text-muted mb-0">Completed Tasks</p>
+                                <p class="fw-medium text-muted mb-0">Approved Invoice</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="116" :duration="5000"></count-to>K
+                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
-                                    <span class="badge bg-light text-danger mb-0">
-                                        <i class="ri-arrow-down-line align-middle"></i> 2.52 %
+                                    <span class="badge bg-soft-primary text-primary mb-0 me-1">
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                     </span>
-                                    vs. previous month
+                                    vs. prev month
                                 </p>
                             </div>
                             <div>
@@ -91,21 +91,21 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <p class="fw-medium text-muted mb-0">Deleted Tasks</p>
+                                <p class="fw-medium text-muted mb-0">Rejected Invoice</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="14" :duration="5000"></count-to>%
+                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
-                                    <span class="badge bg-light text-success mb-0">
-                                        <i class="ri-arrow-up-line align-middle"></i> 0.63 %
+                                    <span class="badge bg-soft-primary text-primary mb-0 me-1">
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
                                     </span>
-                                    vs. previous month
+                                    vs. prev month
                                 </p>
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
-                                    <span class="avatar-title bg-secondary rounded-circle fs-4">
-                                        <i class="ri-delete-bin-line"></i>
+                                    <span class="avatar-title bg-danger rounded-circle fs-4">
+                                        <i class="ri-close-circle-line"></i>
                                     </span>
                                 </div>
                             </div>
@@ -119,8 +119,8 @@
                 <div class="row g-4">
                     <div class="col-sm-auto">
                         <b-button-group>
-                            <Link :href="route(`${page.module}.${page.name}.create`)" class="btn btn-success btn-label waves-effect waves-light">
-                                <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
+                            <Link href="#" class="btn btn-success btn-label waves-effect waves-light">
+                                <i class="ri-upload-2-line label-icon align-middle fs-16 me-2"></i>
                                 Export
                             </Link>
                         </b-button-group>
@@ -196,7 +196,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { Head, Link, useForm, usePage  } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
 import { CountTo } from 'vue3-count-to'
 
 import Layout from '@/Layouts/Main.vue'
@@ -222,6 +222,6 @@ const breadcrumbs = [
 const props = defineProps(['collection','filters'])
 
 const form = useForm({
-    keyword: usePage().props.value.ziggy.query.keyword ?? null,
+    keyword: usePage().props.ziggy.query.keyword ?? null,
 })
 </script>

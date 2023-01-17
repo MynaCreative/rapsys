@@ -18,8 +18,8 @@ class WorkflowSeeder extends Seeder
     public function run()
     {
         $data = [
-            [ ['user_id' => $this->getUser('specialist@rpx.co.id')], ['sequence' => 1] ],
-            [ ['user_id' => $this->getUser('manager@rpx.co.id')], ['sequence' => 2] ],
+            [ ['user_id' => $this->getUser('pradikta.putra@rpxholding.com')], ['sequence' => 1] ],
+            [ ['user_id' => $this->getUser('wmunaiseche@rpxholding.com')], ['sequence' => 2] ],
         ];
 
         foreach($data as $row) {

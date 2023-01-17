@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
         $requestor = Model::create(['name' => 'Requestor']);
         $requestor->syncPermissions(['invoice', 'report']);
 
-        $requestor = Model::create(['name' => 'Approval']);
+        $requestor = Model::create(['name' => 'Approver']);
         $requestor->syncPermissions(['approval', 'invoice', 'report']);
 
         $requestor = Model::create(['name' => 'Master']);

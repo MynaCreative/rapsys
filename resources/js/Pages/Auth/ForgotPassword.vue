@@ -63,7 +63,7 @@
 </template>
 <script setup>
 import Footer from '@/Components/Footer.vue'
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 
 import Lottie from '@/Components/Widgets/lottie.vue'
 import animationData from '@/Components/Widgets/rhvddzym.json'

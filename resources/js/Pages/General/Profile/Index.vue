@@ -121,7 +121,7 @@
     </Layout>
 </template>
 <script setup>
-import { Head, Link, useForm, usePage  } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
 import { UserCheckIcon } from '@zhuowenli/vue-feather-icons'
 
 import Layout from '@/Layouts/Main.vue'

@@ -122,7 +122,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { Head, Link, useForm, usePage  } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
 
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -152,7 +152,7 @@ const breadcrumbs = [
 const props = defineProps(['collection','filters'])
 
 const form = useForm({
-    keyword: usePage().props.value.ziggy.query.keyword ?? null,
+    keyword: usePage().props.ziggy.query.keyword ?? null,
 })
 const currentId = ref(null)
 const modalFormVisible = ref(false)

@@ -83,7 +83,7 @@
 <script setup>
 import { ref } from 'vue'
 import Footer from '@/Components/Footer.vue'
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3'
 
 const props = defineProps({
     email: String,

@@ -48,7 +48,7 @@ class User
                 'position_text'     => $item->position_text,
                 'created_at'        => $item->created_at,
                 'updated_at'        => $item->updated_at,
-                'online'            => Cache::has('user-is-online-' . $item->id) ?? false
+                'online'            => Cache::tags(['user-online'])->has('user-is-online-' . $item->id) ?? false
             ];
         });
     }

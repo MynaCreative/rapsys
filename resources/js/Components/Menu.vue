@@ -6,7 +6,8 @@
                 <span data-key="t-menu">General</span>
             </li>
             <MenuItem route-name="dashboard" name="Dashboard" icon="ri-home-3-line"/>
-            <li class="nav-item">
+            <!-- <MenuItem route-name="dashboard" name="Approval" icon="ri-mail-line" :permission="$page.props.auth.permissions.includes('approval')"/> -->
+            <li class="nav-item" v-if="$page.props.auth.roles.includes('Administrator') || $page.props.auth.permissions.includes('approval')">
                 <Link class="nav-link menu-link" href="/">
                     <i class="ri-mail-line"></i>
                     <span>Approval</span>
@@ -123,7 +124,7 @@
     </div>
 </template>
 <script>
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 import MenuItem from './MenuItem.vue'
 export default {
     components: {

@@ -24,7 +24,7 @@
 </template>
 <script setup>
 import { watch } from 'vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/vue3'
 import ModalContainer from '@/Components/Modal.vue'
 
 import PartialForm from '../Partials/Form.vue'

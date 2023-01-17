@@ -21,10 +21,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, SoftDeletes, Notifiable, HasRoles, AuthenticationLoggable, GeneralScope;
 
-    const POSITION_VP           = 1;
-    const POSITION_MANAGER      = 2;
-    const POSITION_SPECIALIST   = 3;
-    const POSITION_STAFF        = 4;
+    const POSITION_IT       = 1;
+    const POSITION_FINANCE  = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -93,26 +91,18 @@ class User extends Authenticatable
                 if(isset($attributes['position'])){
                     $position = $attributes['position'];
                     switch ($position) {
-                        case self::POSITION_VP:
-                            $text = 'VP';
+                        case self::POSITION_IT:
+                            $text = 'IT';
                             break;
-                        case self::POSITION_MANAGER:
-                            $text = 'Manager';
-                            break;
-                        case self::POSITION_SPECIALIST:
-                            $text = 'Specialist';
-                            break;
-                        case self::POSITION_STAFF:
-                            $text = 'Staff';
+                        case self::POSITION_FINANCE:
+                            $text = 'Finance';
                             break;
                         default:
                             $text = '';
                     }
                     // match ($position) {
-                    //     self::POSITION_VP           => $text = 'VP',
-                    //     self::POSITION_MANAGER      => $text = 'Manager',
-                    //     self::POSITION_SPECIALIST   => $text = 'Specialist',
-                    //     self::POSITION_STAFF        => $text = 'Staff',
+                    //     self::POSITION_IT           => $text = 'IT',
+                    //     self::POSITION_FINANCE      => $text = 'Finance',
                     //     default => throw new Exception(
                     //         message: "$position is not supported yet.",
                     //     ),

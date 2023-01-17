@@ -11,12 +11,12 @@
     </b-input-group>
 </template>
 <script setup>
-import { ref, watch } from "vue"
-import { usePage } from "@inertiajs/inertia-vue3"
+import { ref, watch } from 'vue'
+import { usePage } from '@inertiajs/vue3'
 
 const per_page = ref(10)
-const locationValue = usePage().props.value.ziggy.location
-const perPageQuery = usePage().props.value.ziggy.query.per_page
+const locationValue = usePage().props.ziggy.location
+const perPageQuery = usePage().props.ziggy.query.per_page
 
 if(perPageQuery){
     per_page.value = perPageQuery

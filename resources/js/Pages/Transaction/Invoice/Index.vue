@@ -8,12 +8,12 @@
             <div class="card-header border-0">
                 <div class="row g-4">
                     <div class="col-sm-auto">
-                        <b-button-group>
+                        <!-- <b-button-group>
                             <Link :href="route(`${page.module}.${page.name}.create`)" class="btn btn-primary btn-label waves-effect waves-light">
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </Link>
-                        </b-button-group>
+                        </b-button-group> -->
                     </div>
                     <div class="col-sm">
                         <div class="d-flex justify-content-sm-end">
@@ -104,7 +104,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { Head, Link, useForm, usePage  } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
 
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -130,7 +130,7 @@ const breadcrumbs = [
 const props = defineProps(['collection','filters'])
 
 const form = useForm({
-    keyword: usePage().props.value.ziggy.query.keyword ?? null,
+    keyword: usePage().props.ziggy.query.keyword ?? null,
 })
 const currentId = ref(null)
 const modalFormVisible = ref(false)

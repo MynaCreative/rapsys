@@ -15,7 +15,7 @@
                     <h4 class="fs- mb-0">725,800</h4>
                     <p class="mb-0 mt-2 text-muted"><span class="badge badge-soft-success mb-0">
                         <i class="ri-arrow-up-line align-middle"></i> 15.72 %
-                    </span> vs. previous month</p>
+                    </span> vs. prev month</p>
                 </div>
                 <div class="col-6">
                     <div class="text-center">

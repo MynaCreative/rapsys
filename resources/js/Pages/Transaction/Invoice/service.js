@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { Inertia } from '@inertiajs/inertia'
+import { router } from '@inertiajs/vue3'
 
 import entityData from './entity'
 
@@ -38,7 +38,7 @@ export default {
             confirmButtonText: `Yes, ${undo ? 'restore' : 'delete'} it!`,
         }).then((result) => {
             if (result.value) {
-                Inertia.delete(route(`${page.module}.${page.name}.${undo ? 'restore' : 'destroy'}`, id))
+                router.delete(route(`${page.module}.${page.name}.${undo ? 'restore' : 'destroy'}`, id))
             }
         })
     }

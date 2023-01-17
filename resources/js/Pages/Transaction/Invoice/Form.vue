@@ -54,7 +54,7 @@
     </Layout>
 </template>
 <script setup>
-import { Head, Link, useForm  } from '@inertiajs/inertia-vue3'
+import { Head, Link, useForm  } from '@inertiajs/vue3'
 import { getCurrentInstance, onMounted } from 'vue'
 
 import Layout from '@/Layouts/Main.vue'

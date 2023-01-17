@@ -29,7 +29,7 @@
                             </td>
                             <td>
                                 <p class="text-muted mb-0">
-                                <UsersIcon class="me-2 icon-sm"></UsersIcon>78.56k
+                                <UsersIcon class="me-2 icon-sm"></UsersIcon>78
                                 </p>
                             </td>
                             <td class="text-end">
@@ -46,7 +46,7 @@
                             </td>
                             <td>
                                 <p class="text-muted mb-0">
-                                <UsersIcon class="me-2 icon-sm"></UsersIcon>105.02k
+                                <UsersIcon class="me-2 icon-sm"></UsersIcon>105
                                 </p>
                             </td>
                             <td class="text-end">
@@ -63,7 +63,7 @@
                             </td>
                             <td>
                                 <p class="text-muted mb-0">
-                                <UsersIcon class="me-2 icon-sm"></UsersIcon>42.89k
+                                <UsersIcon class="me-2 icon-sm"></UsersIcon>42
                                 </p>
                             </td>
                             <td class="text-end">

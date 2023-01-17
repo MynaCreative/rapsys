@@ -2,8 +2,8 @@
     <Link :href="locationValue" :data="sortLink" as="th" :class="['sort', sortClass]">{{ label }}</Link>
 </template>
 <script setup>
-import { computed } from "vue"
-import { Link, usePage } from "@inertiajs/inertia-vue3"
+import { computed } from 'vue'
+import { Link, usePage } from '@inertiajs/vue3'
 const props = defineProps({
     label: {
         type: String,
@@ -15,10 +15,10 @@ const props = defineProps({
     },
 })
 
-const locationValue = usePage().props.value.ziggy.location
+const locationValue = usePage().props.ziggy.location
 
 const sortLink = computed(() => {
-    let sortQuery = usePage().props.value.ziggy.query.sort
+    let sortQuery = usePage().props.ziggy.query.sort
     let sortValue = null
     if (sortQuery == props.attribute) {
         sortValue = "-" + props.attribute
@@ -31,7 +31,7 @@ const sortLink = computed(() => {
 })
 
 const sortClass = computed(() => {
-    let sortQuery = usePage().props.value.ziggy.query.sort
+    let sortQuery = usePage().props.ziggy.query.sort
     let sortClass = null
     if (sortQuery == props.attribute) {
         sortClass = 'asc'

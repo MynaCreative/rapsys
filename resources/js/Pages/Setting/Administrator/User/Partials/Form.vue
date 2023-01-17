@@ -49,10 +49,8 @@ const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
 
 const positions = [
-    { value: 1, label: 'VP' },
-    { value: 2, label: 'Manager' },
-    { value: 3, label: 'Specialist' },
-    { value: 4, label: 'Staff' },
+    { value: 1, label: 'IT' },
+    { value: 2, label: 'Finance' },
 ]
 
 const form = computed({

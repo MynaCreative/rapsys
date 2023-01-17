@@ -48,8 +48,8 @@ class DashboardController extends Controller
                 'total_user' => count($users),
                 'total_login' => AuthenticationLog::count(),
                 'login_duration' => [
-                    'minute' => Carbon::createFromTimestamp($authentications)->format('m'),
-                    'second' => Carbon::createFromTimestamp($authentications)->format('s'),
+                    'minute' => (int) Carbon::createFromTimestamp($authentications)->format('m'),
+                    'second' => (int) Carbon::createFromTimestamp($authentications)->format('s'),
                 ],
                 'online' => $usersOnline
             ]

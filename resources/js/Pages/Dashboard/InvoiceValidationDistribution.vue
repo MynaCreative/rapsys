@@ -54,11 +54,11 @@
                                     <h5 class="fs-16 mb-1 fw-bold">Invoice Receipt</h5>
                                     <p class="text-muted mb-0">Total Amount</p>
                                 </div>
-                                <div class="dropdown">
+                                <!-- <div class="dropdown">
                                     <a href="javascript:void(0);" class="align-middle text-muted" role="button" id="dropdownMenuButton5" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="ri-share-line fs-18"></i>
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                             <h3 class="ff-secondary fw-bold mt-4">
                                 <i class="mdi mdi-ethereum text-primary"></i> Rp. 0
@@ -115,7 +115,7 @@
 <script setup>
 import { CountTo } from 'vue3-count-to'
 import { ref, watchEffect  } from 'vue'
-import { Link  } from '@inertiajs/inertia-vue3'
+import { Link  } from '@inertiajs/vue3'
 
 const getChartColorsArray = (colors) => {
     colors = JSON.parse(colors)

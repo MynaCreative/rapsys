@@ -3,6 +3,7 @@
         <tr>
             <th>Code</th>
             <th>Name</th>
+            <th>COA</th>
         </tr>
     </thead>
     <tbody></tbody>

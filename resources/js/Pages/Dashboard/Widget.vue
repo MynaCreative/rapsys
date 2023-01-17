@@ -34,7 +34,7 @@
                                 <count-to :startVal='0' :endVal='references.online.length' :duration='5000'></count-to>
                             </h2>
                             <p class="mb-0 text-muted">
-                                Count all online users
+                                Count online users
                             </p>
                         </div>
                         <div>
@@ -55,7 +55,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <p class="fw-medium text-muted mb-0">Average Duration</p>
+                        <p class="fw-medium text-muted mb-0">AVG Duration</p>
                         <h2 class="mt-4 ff-secondary fw-semibold">
                             <count-to :startVal='0' :endVal='references.login_duration.minute' :duration='3000'></count-to>m
                             <count-to :startVal='0' :endVal='references.login_duration.second' :duration='3000'></count-to>sec
@@ -64,7 +64,7 @@
                             <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                 <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                             </span>
-                            vs. previous month
+                            vs. prev month
                         </p>
                     </div>
                     <div>
@@ -91,7 +91,7 @@
                                 <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                     <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                 </span>
-                                vs. previous month
+                                vs. prev month
                             </p>
                         </div>
                         <div>

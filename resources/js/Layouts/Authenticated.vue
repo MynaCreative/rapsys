@@ -42,9 +42,9 @@
     </div>
 </template>
 <script setup>
-import { Link, usePage } from '@inertiajs/inertia-vue3'
-import { Inertia } from '@inertiajs/inertia'
-import { onMounted, onUnmounted } from 'vue'
+import { Link, usePage } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
+import { computed, onMounted, onUnmounted } from 'vue'
 
 import { SimpleBar } from 'simplebar-vue3'
 import Swal from 'sweetalert2'
@@ -53,11 +53,11 @@ import NavBar from '@/Components/NavBar.vue'
 import Footer from '@/Components/Footer.vue'
 import Menu from '@/Components/Menu.vue'
 
-const page = usePage()
+const flash = computed(() => usePage().props.flash)
 
-let removeFinishEventListener = Inertia.on('finish', () => {
-    if(page.props.value.flash.success){
-        Swal.fire('Success!',page.props.value.flash.success, 'success')
+let removeFinishEventListener = router.on('finish', (event) => {
+    if(flash.value.success){
+        Swal.fire('Success!',flash.value.success, 'success')
     }
 })
 

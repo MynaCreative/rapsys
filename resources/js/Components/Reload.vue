@@ -4,7 +4,7 @@
     </b-button>
 </template>
 <script setup>
-import { Inertia } from '@inertiajs/inertia'
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
     page: {
@@ -13,7 +13,7 @@ const props = defineProps({
 })
 
 const reload = () => {
-    // Inertia.reload()
-    Inertia.visit(route(`${props.page.module}.${props.page.name}.index`))
+    // router.reload()
+    router.visit(route(`${props.page.module}.${props.page.name}.index`))
 }
 </script>

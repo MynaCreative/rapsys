@@ -32,19 +32,18 @@ class Role
      */
     public static function all(Request $request)
     {
-        $query = Model::latest()
-            ->ordering($request)
+        $query = Model::ordering($request)
             ->filtering($request)
             ->searching($request, ['name']);
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
         ->through(function ($item) {
             return [
-                'id'                => $item->id,
-                'name'              => $item->name,
-                'guard_name'        => $item->guard_name,
-                'created_at'        => $item->created_at,
-                'updated_at'        => $item->updated_at,
+                'id'            => $item->id,
+                'name'          => $item->name,
+                'guard_name'    => $item->guard_name,
+                'created_at'    => $item->created_at,
+                'updated_at'    => $item->updated_at,
             ];
         });
     }
