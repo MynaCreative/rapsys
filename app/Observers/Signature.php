@@ -24,6 +24,6 @@ class Signature
 
     public function getId()
     {
-        return auth()->id() ?? app()->runningInConsole() ? 1 : null;
+        return auth()->id() ?? (app()->runningInConsole() ? 1 : null);
     }
 }

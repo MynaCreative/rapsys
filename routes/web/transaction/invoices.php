@@ -8,6 +8,6 @@ $endpoint = basename(__FILE__, '.php');
 Route::name("{$module}.")->prefix($module)
 ->middleware(['auth', 'verified'])
 ->group(function () use ($endpoint){
-    Route::match(['post','put'], $endpoint.'/save', [CurrentController::class, 'save'])->name($endpoint.'.save');
+    Route::match(['post','patch','put'], $endpoint.'/save', [CurrentController::class, 'save'])->name($endpoint.'.save');
     Route::resource($endpoint, CurrentController::class);
 });

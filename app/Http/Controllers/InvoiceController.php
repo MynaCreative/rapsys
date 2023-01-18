@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\Invoice as Repository;
@@ -15,7 +16,6 @@ use App\Http\Requests\Invoice\{
     Update  as UpdateRequest,
     Destroy as DestroyRequest
 };
-
 use Inertia\Inertia;
 use Throwable;
 
@@ -90,6 +90,31 @@ class InvoiceController extends Controller
 
     /**
      * 
+     * Save a resource.
+     *
+     * @param   StoreRequest  $request
+     * 
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function save(Request $request)
+    {
+        try {
+            $this->repository::save($request);
+        } catch (Throwable $exception) {
+            info($exception);
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+
+        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+            ->with('success', __('messages.success.store'));
+    }
+
+    /**
+     * 
      * Store a newly created resource.
      *
      * @param   StoreRequest  $request
@@ -102,6 +127,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::store($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
@@ -182,6 +208,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::init($invoice)->update($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
@@ -207,6 +234,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::init($invoice)->delete();
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()

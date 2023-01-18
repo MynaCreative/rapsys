@@ -7,7 +7,15 @@
         <div class="card">
             <div class="card-header align-items-center d-flex">
                 <div class="flex-grow-1 oveflow-hidden">
-                    <h5 class="modal-title">Form {{ form.id ? 'Update' : 'Create' }} - {{ page.title }}</h5>
+                    <h5 class="modal-title">
+                        Form {{ form.id ? 'Update' : 'Create' }} - {{ page.title }} {{ form.code ? ` [${form.code}]` : '' }}
+                        <template v-if="form.id">
+                            <b-badge variant="light" class="text-capitalize" v-if="form.document_status == 'draft'">{{ form.document_status }}</b-badge>
+                            <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="form.document_status == 'published'">{{ form.document_status }}</b-badge>
+                            <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="form.document_status == 'cancelled'">{{ form.document_status }}</b-badge>
+                            <b-badge variant="soft-success" class="text-success text-capitalize" v-if="form.document_status == 'closed'">{{ form.document_status }}</b-badge>
+                        </template>
+                    </h5>
                 </div>
                 <div class="flex-shrink-0 ms-2">
                     <ul class="nav justify-content-end nav-tabs-custom rounded card-header-tabs border-bottom-0"
@@ -25,9 +33,11 @@
                     </ul>
                 </div>
             </div>
-            <form @submit.prevent="submit">
-                <div class="p-3" v-if="!!form.errors.error">
-                    <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
+            <form ref="formElement">
+                <div class="ps-3 pt-3" v-if="Object.keys(form.errors).length">
+                    <b-alert :modelValue="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
+                    <b-alert :modelValue="!!form.errors.exception" variant="danger">{{ form.errors.exception }}</b-alert>
+                    <b-alert :modelValue="!!form.errors.total_amount" variant="danger">{{ form.errors.total_amount }}</b-alert>
                 </div>
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="header" role="tabpanel">
@@ -39,15 +49,28 @@
                         <PartialLine v-model:formData="form" :references="references"/>
                     </div>
                 </div>
-                <div class="card-footer justify-content-between">
-                    <Link :href="route(`${page.module}.${page.name}.index`)" class="btn btn-light me-1">
-                        <i class="ri-close-line align-bottom me-1"></i>
+                <div class="card-footer d-flex justify-content-between">
+                    <div>
+                        <b-button @click="submit" v-if="!(['published','closed','cancelled'].includes(form.document_status))"
+                        type="submit" variant="primary" class="btn-label waves-effect waves-light me-1" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
+                            {{ form.processing ? 'Processing' : 'Save' }}
+                        </b-button>
+                        <b-button @click="save('draft')" v-if="!['published','closed','cancelled'].includes(form.document_status)"
+                        type="submit" variant="light" class="btn-label waves-effect waves-light right" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-save-2-line']"></i>
+                            {{ form.processing ? 'Processing' : 'Draft' }}
+                        </b-button>
+                        <b-button @click="save('cancelled')" v-if="form.document_status == 'closed'"
+                        type="submit" variant="danger" class="btn-label waves-effect waves-light right" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-close-line']"></i>
+                            {{ form.processing ? 'Processing' : 'Cancel' }}
+                        </b-button>
+                    </div>
+                    <Link :href="route(`${page.module}.${page.name}.index`)" class="btn btn-info me-1">
+                        <i class="ri-arrow-go-forward-line align-bottom me-1"></i>
                         Back
                     </Link>
-                    <b-button type="submit" variant="primary" class="btn-label waves-effect waves-light" :disabled="form.processing">
-                        <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
-                        {{ form.processing ? 'Processing' : 'Save' }}
-                    </b-button>
                 </div>
             </form>
         </div>
@@ -55,7 +78,7 @@
 </template>
 <script setup>
 import { Head, Link, useForm  } from '@inertiajs/vue3'
-import { getCurrentInstance, onMounted } from 'vue'
+import { ref, getCurrentInstance, onMounted } from 'vue'
 
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -65,6 +88,7 @@ import PartialLine from './Partials/Line.vue'
 import entityData from './entity'
 import service from './service'
 
+const formElement = ref(null)
 const page = entityData().page
 const app = getCurrentInstance()
 
@@ -95,5 +119,9 @@ onMounted(() => {
 
 const submit = () => {
     service.submitData(form, form.id)
+}
+
+const save = (status) => {
+    service.saveData(form, status)
 }
 </script>

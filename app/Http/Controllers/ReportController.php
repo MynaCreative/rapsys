@@ -43,7 +43,7 @@ class ReportController extends Controller
     public function index(IndexRequest $request)
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
-            'collection'=>$this->repository::all($request),
+            'collection'=>$this->repository::report($request),
         ]);
     }
 

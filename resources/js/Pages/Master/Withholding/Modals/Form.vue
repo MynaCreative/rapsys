@@ -7,7 +7,7 @@
         <form @submit.prevent="submit">
             <b-overlay :show="loading" :opacity="0.25" spinner-small rounded="sm">
             <div class="modal-body">
-                <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
+                <b-alert :modelValue="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
                 <PartialForm v-model:formData="form"/>
             </div>
             </b-overlay>

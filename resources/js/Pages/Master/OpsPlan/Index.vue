@@ -40,7 +40,7 @@
                     <table class="table table-hover table-nowrap align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <th>#</th>
+                                <th width="60">#</th>
                                 <Sort label="Service Type" attribute='service_type'/>
                                 <Sort label="Origin City" attribute='origin_city'/>
                                 <Sort label="Origin Station" attribute='origin_station'/>
@@ -50,8 +50,8 @@
                                 <Sort label="Delivery Served By" attribute='delivery_served_by'/>
                                 <Sort label="Scan Dest" attribute='scan_dest'/>
                                 <Sort label="Hub Station Dest" attribute='hub_station_dest'/>
-                                <Sort label="Created At" attribute='created_at'/>
-                                <!-- <th class="text-center">Action</th> -->
+                                <Sort width="140" label="Created At" attribute='created_at'/>
+                                <!-- <th width="120" class="text-center">Action</th> -->
                             </tr>
                         </thead>
                         <tbody>

@@ -9,7 +9,7 @@
         "@vueform/multiselect": "2.3.1",
         "@zhuowenli/vue-feather-icons": "^5.0.2",
         "apexcharts": "^3.36.3",
-        "axios": "^1.2.2",
+        "axios": "^1.2.3",
         "bootstrap": "^5.2.3",
         "bootstrap-vue-next": "^0.6.2",
         "dayjs": "^1.11.7",

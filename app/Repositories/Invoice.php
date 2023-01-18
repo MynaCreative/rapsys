@@ -3,9 +3,11 @@ namespace App\Repositories;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Activitylog\Facades\LogBatch;
 
 use App\Models\Invoice as Model;
 use App\Imports\DataImport;
@@ -80,6 +82,81 @@ class Invoice
     }
 
     /**
+     * Display all of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function report(Request $request)
+    {
+        $query = Model::ordering($request)
+            ->filtering($request)
+            ->searching($request, ['code', 'name'])
+            ->with(['createdUser:id,name','updatedUser:id,name'])
+            ->where('document_status', '!=', Model::DOCUMENT_STATUS_DRAFT)
+            ->latest();
+
+        return $query->paginate($request->per_page ?? 10)->withQueryString()
+        ->through(function ($item) {
+            return [
+                'id'                    => $item->id,
+                'code'                  => $item->code,
+                'vendor'                => $item->vendor,
+                'document_status'       => $item->document_status,
+                'approval_status'       => $item->approval_status,
+                'invoice_number'        => $item->invoice_number,
+                'invoice_date'          => $item->invoice_date,
+                'invoice_receipt_date'  => $item->invoice_receipt_date,
+                'description'           => $item->description,
+                'created_user'          => $item->createdUser,
+                'updated_user'          => $item->updatedUser,
+                'created_at'            => $item->created_at,
+                'updated_at'            => $item->updated_at,
+                'deleted_at'            => $item->deleted_at,
+            ];
+        });
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function save($request): Model
+    {
+        $transaction = DB::transaction(function () use ($request) {
+            return LogBatch::withinBatch(function(string $uuid) use ($request) {
+                $request->merge([
+                    'uuid'                          => $uuid,
+                    'approval_status'               => Model::APPROVAL_STATUS_NONE,
+                    'approval_status_time'          => null,
+                    'document_status_time'          => null,
+                    'published_at'                  => null,
+                ]);
+
+                $model = Model::updateOrCreate([
+                    'code' => $request->code
+                ], $request->except('items'));
+        
+                /**
+                * Document Item
+                */
+                self::saveDocumentItem($model, $request->items);
+        
+                /**
+                * Document Attachment
+                */
+                self::saveDocumentAttachment($model, $request);
+        
+                return $model;
+            });
+        });
+
+        return $transaction;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -87,20 +164,35 @@ class Invoice
      */
     public static function store($request): Model
     {
-        $model = new Model($request->sanitizedData());
-        $model->saveOrFail();
+        $transaction = DB::transaction(function () use ($request) {
+            return LogBatch::withinBatch(function(string $uuid) use ($request) {
+                $request->merge([
+                    'uuid'                          => $uuid,
+                    'document_status'               => Model::DOCUMENT_STATUS_PUBLISHED,
+                    'approval_status'               => Model::APPROVAL_STATUS_PENDING,
+                    'approval_status_time'          => null,
+                    'document_status_time'          => now(),
+                    'published_at'                  => now(),
+                ]);
 
-        /**
-        * Document Item
-        */
-        self::saveDocumentItem($model, $request->items);
+                $model = new Model($request->except('items'));
+                $model->saveOrFail();
 
-        /**
-        * Document Attachment
-        */
-        self::saveDocumentAttachment($model, $request);
+                /**
+                * Document Item
+                */
+                self::saveDocumentItem($model, $request->items);
 
-        return $model;
+                /**
+                * Document Attachment
+                */
+                self::saveDocumentAttachment($model, $request);
+
+                return $model;
+            });
+        });
+
+        return $transaction;
     }
 
     /**
@@ -145,21 +237,36 @@ class Invoice
      */
     public function update($request): Model
     {
-        $this->model->fill($request->sanitizedData());
-        $this->model->updateOrFail();
+        $transaction = DB::transaction(function () use ($request) {
+            return LogBatch::withinBatch(function(string $uuid) use ($request) {
+                $request->merge([
+                    'uuid'                          => $uuid,
+                    'document_status'               => Model::DOCUMENT_STATUS_PUBLISHED,
+                    'approval_status'               => Model::APPROVAL_STATUS_PENDING,
+                    'approval_status_time'          => null,
+                    'document_status_time'          => now(),
+                    'published_at'                  => now(),
+                ]);
 
-        /**
-        * Document Item
-        */
-        self::saveDocumentItem($this->model, $request->items);
+                $this->model->fill($request->except('items'));
+                $this->model->updateOrFail();
 
-        /**
-        * Document Attachment
-        */
-        self::deleteDocumentAttachment($this->model, $request);
-        self::saveDocumentAttachment($this->model, $request, true);
+                /**
+                * Document Item
+                */
+                self::saveDocumentItem($this->model, $request->items);
 
-        return $this->model;
+                /**
+                * Document Attachment
+                */
+                self::deleteDocumentAttachment($this->model, $request);
+                self::saveDocumentAttachment($this->model, $request, true);
+
+                return $this->model;
+            });
+        });
+
+        return $transaction;
     }
 
     /**
@@ -169,7 +276,9 @@ class Invoice
      */
     public function show(): Model {
         return $this->model->load([
-            'createdUser:id,name','updatedUser:id,name',
+            'createdUser:id,name',
+            'updatedUser:id,name',
+            'items',
             'attachments'
         ]);
     }

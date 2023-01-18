@@ -36,14 +36,14 @@
                     <table class="table table-hover table-nowrap align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <th>#</th>
+                                <th width="60">#</th>
                                 <Sort label="Name" attribute='name'/>
                                 <Sort label="Username" attribute='username'/>
                                 <Sort label="Email" attribute='email'/>
                                 <Sort label="Position" attribute='position'/>
-                                <Sort label="Created At" attribute='created_at'/>
-                                <Sort label="Online" attribute='seen_at'/>
-                                <th class="text-center">Action</th>
+                                <Sort width="140" label="Created At" attribute='created_at'/>
+                                <Sort width="65" label="Online" attribute='seen_at'/>
+                                <th width="120" class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>

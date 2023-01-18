@@ -8,12 +8,12 @@
             <div class="card-header border-0">
                 <div class="row g-4">
                     <div class="col-sm-auto">
-                        <!-- <b-button-group>
+                        <b-button-group>
                             <Link :href="route(`${page.module}.${page.name}.create`)" class="btn btn-primary btn-label waves-effect waves-light">
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </Link>
-                        </b-button-group> -->
+                        </b-button-group>
                     </div>
                     <div class="col-sm">
                         <div class="d-flex justify-content-sm-end">
@@ -36,24 +36,24 @@
                     <table class="table table-hover table-nowrap table-sm align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <th>#</th>
-                                <Sort label="Invoice Number" attribute='invoice_number'/>
+                                <th width="60">#</th>
                                 <Sort label="Invoice Date" attribute='invoice_date'/>
+                                <Sort label="Invoice Number" attribute='invoice_number'/>
                                 <Sort label="Vendor" attribute='vendor_id'/>
                                 <Sort label="Total Amount" attribute='total_amount' class="text-end"/>
                                 <Sort label="Total Amount Valid" attribute='total_amount_valid' class="text-end"/>
                                 <Sort label="Total Amount Invalid" attribute='total_amount_invalid' class="text-end"/>
-                                <th class="text-center">Document Status</th>
                                 <th class="text-center">Approval Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Document Status</th>
+                                <th width="120" class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td class="fw-medium">{{ item.invoice_number }}</td>
                                 <td>{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
-                                <td>{{ item.vendor?.code }} - {{ item.vendor?.name }}</td>
+                                <td class="fw-medium">{{ item.invoice_number ? item.invoice_number : '--' }}</td>
+                                <td>{{ item.vendor ? `${item.vendor.code} - ${item.vendor.name}` : '--' }}</td>
                                 <td class="text-end">
                                     <h6 class="text-primary fs-11 mb-0">
                                         <i class="ri-wallet-line align-middle me-1"></i>
@@ -72,8 +72,18 @@
                                         9.500.000,00
                                     </h6>
                                 </td>
-                                <td class="text-center"><b-badge variant="light" class="text-capitalize">{{ item.document_status }}</b-badge></td>
-                                <td class="text-center"><b-badge variant="light" class="text-capitalize">{{ item.approval_status }}</b-badge></td>
+                                <td class="text-center">
+                                    <b-badge variant="light" class="text-capitalize" v-if="item.approval_status == 'none'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.approval_status == 'pending'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.approval_status == 'approved'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="item.approval_status == 'rejected'">{{ item.approval_status }}</b-badge>
+                                </td>
+                                <td class="text-center">
+                                    <b-badge variant="light" class="rounded-pill text-capitalize" v-if="item.document_status == 'draft'">{{ item.document_status }}</b-badge>
+                                    <b-badge variant="primary" class="rounded-pill text-capitalize" v-if="item.document_status == 'published'">{{ item.document_status }}</b-badge>
+                                    <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.document_status == 'cancelled'">{{ item.document_status }}</b-badge>
+                                    <b-badge variant="success" class="rounded-pill text-capitalize" v-if="item.document_status == 'closed'">{{ item.document_status }}</b-badge>
+                                </td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
                                         <li class="list-inline-item edit" title="Edit" @click="() => {

@@ -16,6 +16,17 @@ class Invoice extends Model
 {
     use HasFactory, LogsActivity, GeneralScope, Signature;
 
+    const DOCUMENT_STATUS_DRAFT     = 'draft';
+    const DOCUMENT_STATUS_PUBLISHED = 'published';
+    const DOCUMENT_STATUS_CANCELLED = 'cancelled';
+    const DOCUMENT_STATUS_CLOSED    = 'closed';
+
+    const APPROVAL_STATUS_NONE      = 'none';
+    const APPROVAL_STATUS_PENDING   = 'pending';
+    const APPROVAL_STATUS_APPROVED  = 'approved';
+    const APPROVAL_STATUS_REJECTED  = 'rejected';
+
+
     /**
      * The attributes that are mass assignable.
      *

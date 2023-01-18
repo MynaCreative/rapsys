@@ -7,7 +7,7 @@ specifiers:
   '@vueform/multiselect': 2.3.1
   '@zhuowenli/vue-feather-icons': ^5.0.2
   apexcharts: ^3.36.3
-  axios: ^1.2.2
+  axios: ^1.2.3
   bootstrap: ^5.2.3
   bootstrap-vue-next: ^0.6.2
   dayjs: ^1.11.7
@@ -29,7 +29,7 @@ dependencies:
   '@vueform/multiselect': 2.3.1
   '@zhuowenli/vue-feather-icons': 5.0.2
   apexcharts: 3.36.3
-  axios: 1.2.2
+  axios: 1.2.3
   bootstrap: 5.2.3_@popperjs+core@2.11.6
   bootstrap-vue-next: 0.6.2_oqk4qlcdjoqdyjmg4lc7gcmfmi
   dayjs: 1.11.7
@@ -276,7 +276,7 @@ packages:
   /@inertiajs/core/1.0.0:
     resolution: {integrity: sha512-V8GgUMqwD6L0A+/O5EEnoCKI/CJ6o33/PUlrjte2skAixZmuNjL3AcP1pB5xUPLMFxGONpZVU2BTpqTC2ppLGA==}
     dependencies:
-      axios: 1.2.2
+      axios: 1.2.3
       deepmerge: 4.2.2
       nprogress: 0.2.0
       qs: 6.11.0
@@ -596,8 +596,8 @@ packages:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
     dev: false
 
-  /axios/1.2.2:
-    resolution: {integrity: sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q==}
+  /axios/1.2.3:
+    resolution: {integrity: sha512-pdDkMYJeuXLZ6Xj/Q5J3Phpe+jbGdsSzlQaFVkMQzRUL05+6+tetX8TV3p4HrU4kzuO9bt+io/yGQxuyxA/xcw==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0

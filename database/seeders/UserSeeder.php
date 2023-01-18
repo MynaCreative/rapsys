@@ -18,6 +18,15 @@ class UserSeeder extends Seeder
     {
         $user = Model::factory()->create([
             'position'  => Model::POSITION_IT,
+            'name'      => 'FA Dev',
+            'username'  => 'fa-development',
+            'email'     => 'fa-development@rpxholding.com',
+            'password'  => 'password',
+        ]);
+        $user->assignRole('Administrator');
+
+        $user = Model::factory()->create([
+            'position'  => Model::POSITION_IT,
             'name'      => 'Mamik Rahayu',
             'username'  => 'mrahayu1',
             'email'     => 'mrahayu1@rpxholding.com',
@@ -27,9 +36,9 @@ class UserSeeder extends Seeder
 
         $user = Model::factory()->create([
             'position'  => Model::POSITION_IT,
-            'name'      => 'FA Dev',
-            'username'  => 'fa-development',
-            'email'     => 'fa-development@rpxholding.com',
+            'name'      => 'Leo Alfa Risma Savitri',
+            'username'  => 'lsavitri',
+            'email'     => 'lsavitri@rpxholding.com',
             'password'  => 'password',
         ]);
         $user->assignRole('Administrator');

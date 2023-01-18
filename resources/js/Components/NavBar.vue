@@ -23,120 +23,120 @@
                         <i class="bx bx-moon fs-22"></i>
                     </button>
                 </div>
-                <div class="dropdown topbar-head-dropdown ms-1 header-item">
-                <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
-                    id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="bx bx-bell fs-22"></i>
-                    <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-success">0<span class="visually-hidden">unread messages</span></span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
-                    <div class="dropdown-head bg-primary bg-pattern rounded-top">
-                        <div class="p-3">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h6 class="m-0 fs-16 fw-semibold text-white">
-                                    Notifications
-                                    </h6>
-                                </div>
-                                <!-- <div class="col-auto dropdown-tabs">
-                                    <span class="badge badge-soft-light fs-13"> 4 New</span>
-                                </div> -->
-                            </div>
-                        </div>
-                        <div class="px-2 pt-2">
-                            <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="false" @click.capture.stop>
-                                        Empty
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-    
-                    <div class="tab-content" id="notificationItemsTabContent">
-    
-                    <div class="tab-pane fade py-2 ps-2 show active" id="all-noti-tab" role="tabpanel">
-                        <SimpleBar data-simplebar style="max-height: 300px" class="pe-2">
-                            <!-- <div class="text-reset notification-item d-block dropdown-item position-relative" v-for="(item,index) in 2" :key="index">
-                                <div class="d-flex">
-                                    <div class="avatar-xs me-3">
-                                        <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
-                                            <i class="bx bx-message-square-dots"></i>
-                                        </span>
+                <div class="dropdown topbar-head-dropdown ms-1 header-item" v-if="$page.props.auth.roles.includes('Administrator') || $page.props.auth.permissions.includes('approval')">
+                    <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
+                        id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bx bx-bell fs-22"></i>
+                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-success">0<span class="visually-hidden">unread messages</span></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+                        <div class="dropdown-head bg-primary bg-pattern rounded-top">
+                            <div class="p-3">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h6 class="m-0 fs-16 fw-semibold text-white">
+                                        Notifications
+                                        </h6>
                                     </div>
-                                    <div class="flex-1">
-                                        <a href="#!" class="stretched-link">
-                                            <h6 class="mt-0 mb-2 fs-13 lh-base">
-                                                Invoice #50000{{ index+1 }}<br>Has been rejected
-                                            </h6>
+                                    <!-- <div class="col-auto dropdown-tabs">
+                                        <span class="badge badge-soft-light fs-13"> 4 New</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="px-2 pt-2">
+                                <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="false" @click.capture.stop>
+                                            Empty
                                         </a>
-                                        <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                            <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div> -->
-    
-                            <div class="my-3 text-center">
-                                <button type="button" class="btn btn-soft-success">
-                                View All Notifications
-                                <i class="ri-arrow-right-line align-middle"></i>
-                                </button>
+                                    </li>
+                                </ul>
                             </div>
-                        </SimpleBar>
-                    </div>
-    
-                    <div class="tab-pane fade p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
-                        <div class="w-25 w-sm-50 pt-3 mx-auto">
-                        <img src="@/Assets/images/svg/bell.svg" class="img-fluid" alt="user-pic" />
                         </div>
-                        <div class="text-center pb-5 mt-2">
-                        <h6 class="fs-18 fw-semibold lh-base">
-                            Hey! You have no any notifications
-                        </h6>
+        
+                        <div class="tab-content" id="notificationItemsTabContent">
+        
+                        <div class="tab-pane fade py-2 ps-2 show active" id="all-noti-tab" role="tabpanel">
+                            <SimpleBar data-simplebar style="max-height: 300px" class="pe-2">
+                                <!-- <div class="text-reset notification-item d-block dropdown-item position-relative" v-for="(item,index) in 2" :key="index">
+                                    <div class="d-flex">
+                                        <div class="avatar-xs me-3">
+                                            <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
+                                                <i class="bx bx-message-square-dots"></i>
+                                            </span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <a href="#!" class="stretched-link">
+                                                <h6 class="mt-0 mb-2 fs-13 lh-base">
+                                                    Invoice #50000{{ index+1 }}<br>Has been rejected
+                                                </h6>
+                                            </a>
+                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
+                                                <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div> -->
+        
+                                <div class="my-3 text-center">
+                                    <button type="button" class="btn btn-soft-success">
+                                    View All Notifications
+                                    <i class="ri-arrow-right-line align-middle"></i>
+                                    </button>
+                                </div>
+                            </SimpleBar>
+                        </div>
+        
+                        <div class="tab-pane fade p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                            <div class="w-25 w-sm-50 pt-3 mx-auto">
+                            <img src="@/Assets/images/svg/bell.svg" class="img-fluid" alt="user-pic" />
+                            </div>
+                            <div class="text-center pb-5 mt-2">
+                            <h6 class="fs-18 fw-semibold lh-base">
+                                Hey! You have no any notifications
+                            </h6>
+                            </div>
+                        </div>
+        
                         </div>
                     </div>
-    
-                    </div>
-                </div>
                 </div>
     
                 <div class="dropdown ms-sm-3 header-item topbar-user">
-                <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="d-flex align-items-center">
-                        <img class="rounded-circle header-profile-user" :src="`/img/initials/${$page.props.auth.user.name.charAt(0).toLowerCase()}.png`" :alt="$page.props.auth.user.name" />
-                        <span class="text-start ms-xl-2">
-                            <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.auth.user.name }}</span>
-                            <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.user.position_text }}</span>
+                    <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-flex align-items-center">
+                            <img class="rounded-circle header-profile-user" :src="`/img/initials/${$page.props.auth.user.name.charAt(0).toLowerCase()}.png`" :alt="$page.props.auth.user.name" />
+                            <span class="text-start ms-xl-2">
+                                <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.auth.user.name }}</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.user.position_text }}</span>
+                            </span>
                         </span>
-                    </span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                    <!-- item-->
-                    <!-- <h6 class="dropdown-header">Welcome {{ $page.props.auth.user.name }}!</h6> -->
-                    <Link class="dropdown-item" :href="route('profile')">
-                        <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle">Profile</span>
-                    </Link>
-                    <!-- <Link class="dropdown-item" :href="route('dashboard')">
-                        <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle">Help</span>
-                    </Link> -->
-                    <!-- <Link class="dropdown-item" :href="route('dashboard')">
-                        <i class="ri-book-3-line text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle">Dictionary</span>
-                    </Link>
-                    <Link class="dropdown-item" :href="route('dashboard')">
-                        <i class="ri-book-open-line text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle">User Manual</span>
-                    </Link>
-                    <div class="dropdown-divider"></div> -->
-                    <Link :href="route('logout')" method="post" as="button" class="dropdown-item">
-                        <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
-                        <span class="align-middle" data-key="t-logout">Logout</span>
-                    </Link>
-                </div>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <!-- item-->
+                        <!-- <h6 class="dropdown-header">Welcome {{ $page.props.auth.user.name }}!</h6> -->
+                        <Link class="dropdown-item" :href="route('profile')">
+                            <i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Profile</span>
+                        </Link>
+                        <!-- <Link class="dropdown-item" :href="route('dashboard')">
+                            <i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Help</span>
+                        </Link> -->
+                        <!-- <Link class="dropdown-item" :href="route('dashboard')">
+                            <i class="ri-book-3-line text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Dictionary</span>
+                        </Link>
+                        <Link class="dropdown-item" :href="route('dashboard')">
+                            <i class="ri-book-open-line text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">User Manual</span>
+                        </Link>
+                        <div class="dropdown-divider"></div> -->
+                        <Link :href="route('logout')" method="post" as="button" class="dropdown-item">
+                            <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle" data-key="t-logout">Logout</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
             </div>

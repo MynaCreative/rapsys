@@ -6,7 +6,7 @@
         </div>
         <form @submit.prevent="submit">
             <div class="modal-body">
-                <b-alert :show="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
+                <b-alert :modelValue="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
                 <div class="border border-danger border-dotted rounded p-2 mb-4 text-muted" v-show="!!form.errors.exception">{{ form.errors.exception }}</div>
                 <div class="row g-2">
                     <div class="col-lg-12">

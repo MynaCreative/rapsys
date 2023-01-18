@@ -13,6 +13,19 @@ export default {
             form[field] = fields[field]
         })
     },
+    saveData(form, status){
+        let method = form.id ? 'patch' : 'post'
+        let action = route(`${page.module}.${page.name}.save`)
+        form.transform((data) => ({
+            ...data,
+            _method: method,
+            document_status: status,
+        }))
+        .submit('post', action, {
+            preserveState: (page) => Object.keys(page.props.errors).length,
+            preserveScroll: (page) => Object.keys(page.props.errors).length,
+        })
+    },
     submitData(form, id){
         let method = form.id ? 'patch' : 'post'
         let action = form.id ? 

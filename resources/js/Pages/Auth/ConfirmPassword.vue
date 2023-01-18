@@ -43,7 +43,7 @@
                                             <label class="form-label" for="password">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <b-form-input id="password" v-model="form.password" :class="['pe-5',{'is-invalid' : form.errors.password }]"
-                                                    aria-describedby="input-password-feedback" placeholder="Enter new password" :type="passwordFieldType" autocomplete="current-password" required />
+                                                    aria-describedby="input-password-feedback" placeholder="Enter new password" :type="passwordFieldType" autocomplete="current-password" autofocus required />
                                                 <b-button @click="switchVisibility" variant="link"
                                                     class="position-absolute end-0 top-0 text-decoration-none text-muted">
                                                     <i class="ri-eye-fill align-middle"></i>

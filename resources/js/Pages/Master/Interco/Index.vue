@@ -40,13 +40,13 @@
                     <table class="table table-hover table-nowrap align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <th>#</th>
+                                <th width="60">#</th>
                                 <Sort label="Code" attribute='code'/>
                                 <Sort label="Name" attribute='name'/>
-                                <Sort label="Created At" attribute='created_at'/>
-                                <th>Created By</th>
-                                <th>Active</th>
-                                <th class="text-center">Action</th>
+                                <Sort width="140" label="Created At" attribute='created_at'/>
+                                <th width="140">Created By</th>
+                                <th width="70">Active</th>
+                                <th width="120" class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
