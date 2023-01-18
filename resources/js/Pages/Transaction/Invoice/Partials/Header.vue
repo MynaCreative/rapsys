@@ -31,7 +31,7 @@
             <div class="col-lg-4">
                 <label for="invoice_number" class="form-label required">Invoice Number</label>
                 <b-form-input id="invoice_number" v-model="form.invoice_number" :class="{'is-invalid' : form.errors.invoice_number }"
-                    aria-describedby="input-invoice_number-feedback" v-focus autofocus/>
+                    aria-describedby="input-invoice_number-feedback" autofocus/>
                 <b-form-invalid-feedback id="input-invoice_number-feedback" v-html="form.errors.invoice_number"/>
             </div>            
             <div class="col-lg-4">

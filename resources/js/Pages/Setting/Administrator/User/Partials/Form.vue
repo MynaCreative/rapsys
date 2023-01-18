@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <label for="name" class="form-label">Name</label>
             <b-form-input id="name" v-model="form.name" :class="{'is-invalid' : form.errors.name }"
-                aria-describedby="input-name-feedback" v-focus autofocus/>
+                aria-describedby="input-name-feedback" autofocus/>
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">

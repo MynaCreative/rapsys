@@ -9,7 +9,8 @@ import { createInertiaApp } from '@inertiajs/vue3'
 
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
-import { BootstrapVue3, BToastPlugin} from 'bootstrap-vue-3'
+import BootstrapVueNext from 'bootstrap-vue-next'
+import {BToastPlugin} from 'bootstrap-vue-next'
 import VueApexCharts from 'vue3-apexcharts'
 import dayjs from 'dayjs'
 
@@ -24,7 +25,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const myApp = createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(BootstrapVue3)
+            .use(BootstrapVueNext)
             .use(BToastPlugin)
             .use(ZiggyVue, Ziggy)
             .use(VueApexCharts)

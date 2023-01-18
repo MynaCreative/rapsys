@@ -9,13 +9,13 @@
         <div class="col-lg-12">
             <label for="name" class="form-label">Name</label>
             <b-form-input id="name" v-model="form.name" :class="{'is-invalid' : form.errors.name }"
-                aria-describedby="input-name-feedback" v-focus autofocus/>
+                aria-describedby="input-name-feedback" autofocus/>
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">
             <label for="coa" class="form-label">Coa</label>
             <b-form-input id="coa" v-model="form.coa" :class="{'is-invalid' : form.errors.coa }"
-                aria-describedby="input-coa-feedback" v-focus autofocus/>
+                aria-describedby="input-coa-feedback"/>
             <b-form-invalid-feedback id="input-coa-feedback" v-html="form.errors.coa"/>
         </div>
         <div class="col-lg-12">

@@ -9,7 +9,7 @@
         <div class="col-lg-12">
             <label for="mandatory_scan" class="form-label">Mandatory Scan</label>
             <b-form-input id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }"
-                aria-describedby="input-mandatory_scan-feedback" v-focus autofocus/>
+                aria-describedby="input-mandatory_scan-feedback" autofocus/>
             <b-form-invalid-feedback id="input-mandatory_scan-feedback" v-html="form.errors.mandatory_scan"/>
         </div>
         <div class="col-lg-12">

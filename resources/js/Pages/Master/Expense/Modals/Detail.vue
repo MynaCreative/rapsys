@@ -1,46 +1,77 @@
 <template>
-    <ModalContainer :visible="show" @update:visible="show = $event">
+    <ModalContainer :visible="show" size="modal-lg" @update:visible="show = $event">
         <div class="modal-header p-3 bg-soft-warning">
             <h5 class="modal-title">Detail View - {{ page.title }}</h5>
             <button type="button" class="btn-close" aria-label="Close" @click="emit('update:show', false)"></button>
         </div>
         <b-overlay :show="loading" :opacity="0.25" spinner-small rounded="sm">
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <td class="text-muted table-light" width="140">Code</td>
-                    <td colspan="3">{{ form.code }}</td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Mandatory Scan</td>
-                    <td colspan="3">{{ form.mandatory_scan }}</td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Name</td>
-                    <td colspan="3">{{ form.name }}</td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Icon</td>
-                    <td colspan="3">{{ form.icon }}</td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Description</td>
-                    <td colspan="3" class="text-wrap">{{ form.description }}</td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Created By</td>
-                    <td><DataUserName :data="form.created_user?.name"/></td>
-                    <td class="text-muted table-light">Time</td>
-                    <td width="150"><DataTimestamp :data="form.created_at"/></td>
-                </tr>
-                <tr>
-                    <td class="text-muted table-light">Updated By</td>
-                    <td><DataUserName :data="form.updated_user?.name"/></td>
-                    <td class="text-muted table-light">Time</td>
-                    <td><DataTimestamp :data="form.updated_at"/></td>
-                </tr>
-            </tbody>
-        </table>
+            <nav>
+                <ul class="nav nav-tabs nav-tabs-custom nav-warning nav-justified" id="nav-tab" role="tablist" >
+                    <li class="nav-item">
+                        <a :class="['nav-link', 'active']" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" :aria-selected="true">
+                            Expense Detail
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a :class="['nav-link']" data-bs-toggle="tab" href="#nav-invoice" role="tab" aria-controls="nav-deinvoicetail" :aria-selected="true">
+                            Invoice Line Column
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="tab-content">
+                <div :class="['tab-pane fade', 'show', 'active']" id="nav-detail" role="tabpanel" :aria-labelledby="`nav-detail-tab`">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="text-muted table-light" width="140">Code</td>
+                                <td colspan="3">{{ form.code }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Mandatory Scan</td>
+                                <td colspan="3">{{ form.mandatory_scan }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Name</td>
+                                <td colspan="3">{{ form.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Icon</td>
+                                <td colspan="3">{{ form.icon }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Description</td>
+                                <td colspan="3" class="text-wrap">{{ form.description }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Created By</td>
+                                <td><DataUserName :data="form.created_user?.name"/></td>
+                                <td class="text-muted table-light">Time</td>
+                                <td width="150"><DataTimestamp :data="form.created_at"/></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Updated By</td>
+                                <td><DataUserName :data="form.updated_user?.name"/></td>
+                                <td class="text-muted table-light">Time</td>
+                                <td><DataTimestamp :data="form.updated_at"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div :class="['tab-pane fade']" id="nav-invoice" role="tabpanel" :aria-labelledby="`nav-invoice-tab`">
+                    <table class="table table-bordered table-hover table-sm" v-if="form.columns">
+                        <tbody>
+                            <tr v-for="(value, key) in form.columns" :key="key">
+                                <th class="text-muted table-light text-capitalize text-end" width="200">{{ key.split('_').join(' ') }}</th>
+                                <td class="fw-bold">
+                                    <i class="ri-check-line text-success" v-if="value"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </b-overlay>
         <div class="modal-footer">
             <b-button variant="light" @click="emit('update:show', false)">

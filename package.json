@@ -11,7 +11,7 @@
         "apexcharts": "^3.36.3",
         "axios": "^1.2.2",
         "bootstrap": "^5.2.3",
-        "bootstrap-vue-3": "^0.3.12",
+        "bootstrap-vue-next": "^0.6.2",
         "dayjs": "^1.11.7",
         "lodash": "^4.17.21",
         "lottie-web": "^5.10.1",

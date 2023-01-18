@@ -50,6 +50,7 @@ class Expense
                 'name'              => $item->name,
                 'code'              => $item->code,
                 'icon'              => $item->icon,
+                'columns'           => $item->columns,
                 'mandatory_scan'    => $item->mandatory_scan,
                 'description'       => $item->description,
                 'created_user'      => $item->createdUser,
