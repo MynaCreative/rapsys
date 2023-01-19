@@ -19,7 +19,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="index in 15" :key="index">
+                <td colspan="99" class="text-center text-muted">
+                    <em>There are no item in this table</em>
+                </td>
+                <!-- <tr v-for="index in 15" :key="index">
                     <td class="text-center cursor-pointer">
                         <i class="ri-close-line text-danger"></i>
                     </td>
@@ -49,15 +52,15 @@
                         <a href="javascript:void(0);" class="text-decoration-none">2.00</a>
                     </td>
                     <td class="text-end">12.000.0000</td>
-                </tr>
+                </tr> -->
             </tbody>
-            <tfoot class="bg-soft-light text-muted">
+            <!-- <tfoot class="bg-soft-light text-muted">
                 <tr>
                     <td class="fw-medium text-end" colspan="9">Total</td>
-                    <td class="fw-medium text-end">2.00</td>
-                    <td class="fw-medium text-end">12.000.0000</td>
+                    <td class="fw-medium text-end">0.00</td>
+                    <td class="fw-medium text-end">0.00</td>
                 </tr>
-            </tfoot>
+            </tfoot> -->
         </table>
     </div>
 </template>

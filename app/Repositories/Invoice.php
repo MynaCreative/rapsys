@@ -56,7 +56,7 @@ class Invoice
     {
         $query = Model::ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name'])
+            ->searching($request, ['code', 'invoice_number'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->latest();
 
@@ -91,7 +91,7 @@ class Invoice
     {
         $query = Model::ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name'])
+            ->searching($request, ['code', 'invoice_number'])
             ->with(['createdUser:id,name','updatedUser:id,name'])
             ->where('document_status', '!=', Model::DOCUMENT_STATUS_DRAFT)
             ->latest();

@@ -12,7 +12,7 @@
             <div class="row align-items-center">
                 <div class="col-6">
                     <h6 class="text-muted text-uppercase fw-semibold text-truncate fs-12 mb-3">Total Vendor by Invoice</h6>
-                    <h4 class="fs- mb-0">725,800</h4>
+                    <h4 class="fs- mb-0">725</h4>
                     <p class="mb-0 mt-2 text-muted"><span class="badge badge-soft-success mb-0">
                         <i class="ri-arrow-up-line align-middle"></i> 15.72 %
                     </span> vs. prev month</p>

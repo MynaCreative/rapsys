@@ -57,19 +57,19 @@
                                 <td class="text-end">
                                     <h6 class="text-primary fs-11 mb-0">
                                         <i class="ri-wallet-line align-middle me-1"></i>
-                                        9.500.000,00
+                                        0,00
                                     </h6>
                                 </td>
                                 <td class="text-end text-success">
                                     <h6 class="text-success fs-11 mb-0">
                                         <i class="ri-check-line align-middle me-1"></i>
-                                        9.500.000,00
+                                        0,00
                                     </h6>
                                 </td>
                                 <td class="text-end">
                                     <h6 class="text-danger fs-11 mb-0">
                                         <i class="ri-close-line align-middle me-1"></i>
-                                        9.500.000,00
+                                        0,00
                                     </h6>
                                 </td>
                                 <td class="text-center">
