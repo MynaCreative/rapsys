@@ -24,11 +24,14 @@ class InvoiceItem extends Model
         'sequence_number',
 
         'code',
+        'type',
         'awb',
         'smu',
         'route',
         'cost_center',
         'description',
+        'date_smu',
+        'date_awb',
 
         'invoice_id',
         'expense_id',
@@ -52,6 +55,7 @@ class InvoiceItem extends Model
         'amount_awb_smu',
 
         'description',
+        'is_manual',
 
         'validation_reference',
         'validation_weight',
@@ -84,6 +88,7 @@ class InvoiceItem extends Model
         'amount_smu'                    => 'float',
         'amount_awb_smu'                => 'float',
 
+        'is_manual'                     => 'boolean',
         'validation_reference'          => 'boolean',
         'validation_weight'             => 'boolean',
         'validation_scan_compliance'    => 'boolean',

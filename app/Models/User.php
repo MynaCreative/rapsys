@@ -21,18 +21,15 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, SoftDeletes, Notifiable, HasRoles, AuthenticationLoggable, GeneralScope;
 
-    const POSITION_IT       = 1;
-    const POSITION_FINANCE  = 2;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'department_id',
         'name',
         'email',
-        'position',
         'username',
         'password',
         'seen_at'
@@ -58,15 +55,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'position_text'
-    ];
-
-    /**
      * Set the user's password.
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
@@ -79,37 +67,10 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's position text.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * Get the department that owns the user.
      */
-    protected function positionText(): Attribute
+    public function department()
     {
-        return Attribute::make(
-            get: function ($value, $attributes) {
-                $text = null;
-                if(isset($attributes['position'])){
-                    $position = $attributes['position'];
-                    switch ($position) {
-                        case self::POSITION_IT:
-                            $text = 'IT';
-                            break;
-                        case self::POSITION_FINANCE:
-                            $text = 'Finance';
-                            break;
-                        default:
-                            $text = '';
-                    }
-                    // match ($position) {
-                    //     self::POSITION_IT           => $text = 'IT',
-                    //     self::POSITION_FINANCE      => $text = 'Finance',
-                    //     default => throw new Exception(
-                    //         message: "$position is not supported yet.",
-                    //     ),
-                    // };
-                }
-                return $text;
-            },
-        );
+        return $this->belongsTo(Department::class);
     }
 }

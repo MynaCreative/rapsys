@@ -2,6 +2,7 @@
 
 namespace App\Exports\Invoice\Sample;
 
+use App\Models\Expense;
 use Illuminate\Contracts\View\View;
 
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -17,10 +18,12 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class Item implements FromView, WithTitle, WithStyles, WithEvents, WithColumnFormatting, WithColumnWidths
 {
     protected $page;
+    protected $expense;
 
-    public function __construct($page)
+    public function __construct($page, $expense)
     {
         $this->page = $page;
+        $this->expense = $expense;
     }
 
     /**
@@ -33,8 +36,9 @@ class Item implements FromView, WithTitle, WithStyles, WithEvents, WithColumnFor
 
     public function view(): View
     {
+        $model = Expense::where('code', $this->expense)->first();
         $page = str($this->page)->kebab();
-        return view("excel.{$page}.sample.item");
+        return view("excel.{$page}.sample.". $model->type_text);
     }
 
     public function columnWidths(): array
@@ -43,6 +47,7 @@ class Item implements FromView, WithTitle, WithStyles, WithEvents, WithColumnFor
             'A' => 10,
             'B' => 20,
             'C' => 30,
+            'D' => 30,
         ];
     }
 

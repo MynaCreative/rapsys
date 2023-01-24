@@ -108,7 +108,7 @@
                             <img class="rounded-circle header-profile-user" :src="`/img/initials/${$page.props.auth.user.name.charAt(0).toLowerCase()}.png`" :alt="$page.props.auth.user.name" />
                             <span class="text-start ms-xl-2">
                                 <span class=" d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ $page.props.auth.user.name }}</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.user.position_text }}</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{{ $page.props.auth.department.name }}</span>
                             </span>
                         </span>
                     </button>

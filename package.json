@@ -7,6 +7,7 @@
     "dependencies": {
         "@inertiajs/vue3": "^1.0.0",
         "@vueform/multiselect": "2.3.1",
+        "@vueform/slider": "2.0.8",
         "@zhuowenli/vue-feather-icons": "^5.0.2",
         "apexcharts": "^3.36.3",
         "axios": "^1.2.3",
@@ -14,11 +15,12 @@
         "bootstrap-vue-next": "^0.6.2",
         "dayjs": "^1.11.7",
         "lodash": "^4.17.21",
-        "lottie-web": "^5.10.1",
+        "lottie-web": "^5.10.2",
         "simplebar": "5.3.8",
         "simplebar-vue3": "^0.2.0",
         "sweetalert2": "^11.7.0",
         "terser": "^5.16.1",
+        "v-money3": "^3.22.3",
         "vue3-apexcharts": "^1.4.1",
         "vue3-count-to": "^1.1.2"
     },

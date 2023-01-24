@@ -17,6 +17,7 @@ class WithholdingSeeder extends Seeder
     public function run()
     {
         $data = [
+            [ ['code' => 'NO WHT'], ['name' => 'NO WHT', 'deduction' => 0.0000, 'description' => null ] ],
             [ ['code' => 'PPH 15 1,8 %'], ['name' => 'PPH 15 1,8 %', 'deduction' => 0.0180, 'description' => 'Pembayaran Sewa Pesawat' ] ],
             [ ['code' => 'PPH 21 -2,5 %'], ['name' => 'PPH 21 -2,5 %', 'deduction' => 0.0250, 'description' => 'Vendor Perorangan' ] ],
             [ ['code' => 'PPH 21 -5%'], ['name' => 'PPH 21 -5%', 'deduction' => 0.0500, 'description' => 'Vendor Perorangan' ] ],

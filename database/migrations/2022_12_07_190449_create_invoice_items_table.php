@@ -26,10 +26,13 @@ return new class extends Migration
             $table->integer('sequence_number')->nullable();
 
             $table->string('code')->nullable();
+            $table->string('type')->nullable();
             $table->string('awb')->nullable();
             $table->string('smu')->nullable();
             $table->string('route')->nullable();
             $table->string('cost_center')->nullable();
+            $table->date('date_smu')->nullable();
+            $table->date('date_awb')->nullable();
 
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
@@ -52,6 +55,7 @@ return new class extends Migration
             $table->decimal('amount_awb_smu',20,4)->nullable()->default(0);
 
             $table->text('description')->nullable();
+            $table->boolean('is_manual')->default(false);
 
             $table->boolean('validation_reference')->nullable();
             $table->boolean('validation_weight')->nullable();

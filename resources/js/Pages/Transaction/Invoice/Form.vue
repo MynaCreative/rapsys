@@ -37,7 +37,11 @@
                 <div class="ps-3 pt-3" v-if="Object.keys(form.errors).length">
                     <b-alert :modelValue="!!form.errors.error" variant="danger">{{ form.errors.error }}</b-alert>
                     <b-alert :modelValue="!!form.errors.exception" variant="danger">{{ form.errors.exception }}</b-alert>
-                    <b-alert :modelValue="!!form.errors.total_amount" variant="danger">{{ form.errors.total_amount }}</b-alert>
+                    <b-alert :modelValue="!!form.errors" variant="danger" class="alert-top-border">
+                        <div v-for="(error, index) in form.errors" :key="index" class="mb-1">
+                            <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger"></i> {{ error }}
+                        </div>
+                    </b-alert>
                 </div>
                 <div class="tab-content text-muted">
                     <div class="tab-pane active" id="header" role="tabpanel">
@@ -51,7 +55,22 @@
                 </div>
                 <div class="card-footer d-flex justify-content-between">
                     <div>
-                        <b-button @click="submit" v-if="!(['published','closed','cancelled'].includes(form.document_status))"
+                        <b-button @click="submit" v-if="form.id && !(['published','closed','cancelled'].includes(form.document_status))"
+                        type="submit" variant="primary" class="btn-label waves-effect waves-light me-1" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
+                            {{ form.processing ? 'Processing' : 'Submit' }}
+                        </b-button>
+                        <b-button @click="save('draft')" v-if="!form.id || !['published','closed','cancelled'].includes(form.document_status)"
+                        type="submit" variant="light" class="btn-label waves-effect waves-light right" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-save-2-line']"></i>
+                            {{ form.processing ? 'Processing' : 'Save as Draft' }}
+                        </b-button>
+                        <b-button @click="save('cancelled')" v-if="form.document_status == 'closed'"
+                        type="submit" variant="danger" class="btn-label waves-effect waves-light right" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-close-line']"></i>
+                            {{ form.processing ? 'Processing' : 'Cancel' }}
+                        </b-button>
+                        <!-- <b-button @click="submit" v-if="!(['published','closed','cancelled'].includes(form.document_status))"
                         type="submit" variant="primary" class="btn-label waves-effect waves-light me-1" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
                             {{ form.processing ? 'Processing' : 'Save' }}
@@ -65,7 +84,7 @@
                         type="submit" variant="danger" class="btn-label waves-effect waves-light right" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-close-line']"></i>
                             {{ form.processing ? 'Processing' : 'Cancel' }}
-                        </b-button>
+                        </b-button> -->
                     </div>
                     <Link :href="route(`${page.module}.${page.name}.index`)" class="btn btn-info me-1">
                         <i class="ri-arrow-go-forward-line align-bottom me-1"></i>

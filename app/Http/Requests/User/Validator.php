@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use App\Models\User as Model;
+use App\Models\Department;
 use App\Models\UserGroup;
 
 class Validator 
@@ -16,12 +17,12 @@ class Validator
     {
         $password_rule = !optional($model)->id ? ['required'] : [];
         return [
-            'name'      => ['required','unique:'. Model::class.',name'. ($model ? ','.$model->id : '')],
-            'username'  => ['required','unique:'. Model::class.',username'. ($model ? ','.$model->id : '')],
-            'email'     => ['required','unique:'. Model::class.',email'. ($model ? ','.$model->id : ''), 'email'],
-            'roles_id'  => ['required','array'],
-            'position'  => ['required'],
-            'password'  => $password_rule,
+            'department_id' => ['required','exists:'.Department::class.',id'],
+            'name'          => ['required','unique:'. Model::class.',name'. ($model ? ','.$model->id : '')],
+            'username'      => ['required','unique:'. Model::class.',username'. ($model ? ','.$model->id : '')],
+            'email'         => ['required','unique:'. Model::class.',email'. ($model ? ','.$model->id : ''), 'email'],
+            'roles_id'      => ['required','array'],
+            'password'      => $password_rule,
         ];
     }
 

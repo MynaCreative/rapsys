@@ -40,7 +40,7 @@
                                 <Sort label="Name" attribute='name'/>
                                 <Sort label="Username" attribute='username'/>
                                 <Sort label="Email" attribute='email'/>
-                                <Sort label="Position" attribute='position'/>
+                                <Sort label="Department" attribute='department_id'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
                                 <Sort width="65" label="Online" attribute='seen_at'/>
                                 <th width="120" class="text-center">Action</th>
@@ -52,7 +52,7 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.username }}</td>
                                 <td>{{ item.email }}</td>
-                                <td>{{ item.position_text }}</td>
+                                <td>{{ item.department?.name }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>
                                     <span class="badge badge-soft-success" v-if="item.online">Yes</span>

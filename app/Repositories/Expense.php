@@ -40,8 +40,7 @@ class Expense
             ->ordering($request)
             ->filtering($request)
             ->searching($request, ['code','name','mandatory_scan'])
-            ->with(['createdUser:id,name','updatedUser:id,name'])
-            ->latest();
+            ->with(['createdUser:id,name','updatedUser:id,name']);
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
         ->through(function ($item) {
@@ -50,7 +49,10 @@ class Expense
                 'name'              => $item->name,
                 'code'              => $item->code,
                 'icon'              => $item->icon,
-                'columns'           => $item->columns,
+                'coa'               => $item->coa,
+                'coa_description'   => $item->coa_description,
+                'type'              => $item->type,
+                'type_text'         => $item->type_text,
                 'mandatory_scan'    => $item->mandatory_scan,
                 'description'       => $item->description,
                 'created_user'      => $item->createdUser,

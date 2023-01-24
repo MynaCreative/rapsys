@@ -39,7 +39,7 @@
                                 <th width="60">#</th>
                                 <Sort label="User" attribute='user_id'/>
                                 <Sort label="Email" attribute='user_id'/>
-                                <Sort label="Position" attribute='user_id'/>
+                                <Sort label="Department" attribute='user_id'/>
                                 <Sort label="Sequence" attribute='sequence'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
                                 <th width="120" class="text-center">Action</th>
@@ -50,7 +50,7 @@
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.user.name }}</td>
                                 <td>{{ item.user.email }}</td>
-                                <td>{{ item.user.position_text }}</td>
+                                <td>{{ item.user.department?.name }}</td>
                                 <td>{{ item.sequence }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>

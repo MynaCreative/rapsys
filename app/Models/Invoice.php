@@ -57,6 +57,7 @@ class Invoice extends Model
         'total_amount',
         'total_amount_valid',
         'total_amount_invalid',
+        'expenses',
 
         'document_status',
         'approval_status',
@@ -78,9 +79,10 @@ class Invoice extends Model
      * @var array
      */
     protected $casts = [
-        'total_amount'              => 'decimal:4',
-        'total_amount_valid'        => 'decimal:4',
-        'total_amount_invalid'      => 'decimal:4',
+        'total_amount'              => 'float',
+        'total_amount_valid'        => 'float',
+        'total_amount_invalid'      => 'float',
+        'expenses'                  => 'array',
 
         'document_status_time'      => 'datetime',
         'approval_status_time'      => 'datetime',
@@ -99,7 +101,7 @@ class Invoice extends Model
                 ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
                 ->where('TABLE_NAME', (new self)->getTable())
                 ->value('id');
-        $this->attributes['code'] = 'INV'.sprintf('%03d', $id);
+        $this->attributes['code'] = 'INV'.sprintf('%06d', $id);
     }
 
     /**

@@ -14,7 +14,7 @@
                             </div>
                             <h5 class="fs-16 mb-1">{{ $page.props.auth.user.name }}</h5>
                             <p class="text-muted mb-1">{{ $page.props.auth.user.email }}</p>
-                            <p class="text-muted mb-0">{{ $page.props.auth.user.position_text }}</p>
+                            <p class="text-muted mb-0">{{ $page.props.auth.department.name }}</p>
                         </div>
                     </div>
                 </div>

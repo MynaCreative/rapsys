@@ -2,29 +2,40 @@
 
 namespace App\Http\Requests\Invoice;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Elegant\Sanitizer\Laravel\SanitizesInput;
+
 use App\Models\Invoice as Model;
-use App\Models\Withholding;
 use App\Models\InvoiceType;
-use App\Models\Product;
 use App\Models\Currency;
 use App\Models\Interco;
 use App\Models\Vendor;
 use App\Models\Term;
-use App\Models\Area;
 use App\Models\Sbu;
-use App\Models\Tax;
 
-class Validator 
+class Draft extends FormRequest
 {
+    use SanitizesInput;
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(): bool
+    {
+        return auth()->check();
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules($model = null): array
+    public function rules(): array
     {
         return [
-            'invoice_number'        => ['required','unique:'. Model::class.',invoice_number'. ($model ? ','.$model->id : '')],
+            'invoice_number'        => ['required'],
             'sbu_id'                => ['required','exists:'.Sbu::class.',id'],
             'invoice_type_id'       => ['required','exists:'.InvoiceType::class.',id'],
             'currency_id'           => ['required','exists:'.Currency::class.',id'],
@@ -37,12 +48,7 @@ class Validator
             'total_amount'          => ['required','gt:0'],
             'note'                  => ['required'],
 
-            'items'                 => 'required|array',
-            'items.*.cost_center'     => ['required'],
-            'items.*.withholding_id'  => ['required','exists:'.Withholding::class.',id'],
-            'items.*.tax_id'          => ['required','exists:'.Tax::class.',id'],
-            'items.*.area_id'         => ['required','exists:'.Area::class.',id'],
-            'items.*.product_id'      => ['required','exists:'.Product::class.',id'],
+            'items'                 => ['array']
         ];
     }
 
@@ -53,7 +59,7 @@ class Validator
      */
     public function messages(): array
     {
-        return [];
+        return (new Validator())->messages();
     }
 
     /**
@@ -63,6 +69,17 @@ class Validator
      */
     public function filters(): array
     {
-        return [];
+        return (new Validator())->filters();
+    }
+
+    /**
+    * Sanitized input data
+    *
+    * @return array
+    */
+    public function sanitizedData()
+    {
+        $sanitized = $this->all();
+        return $sanitized;
     }
 }

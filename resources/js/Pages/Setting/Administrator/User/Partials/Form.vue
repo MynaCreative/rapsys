@@ -25,10 +25,10 @@
             <b-form-invalid-feedback id="input-password-feedback" v-html="form.errors.password"/>
         </div>
         <div class="col-lg-12">
-            <label for="position" class="form-label">Position</label>
-            <Multiselect id="position" v-model="form.position" :class="{'is-invalid' : form.errors.position }"
-                aria-describedby="input-position-feedback" :options="positions" placeholder="Select data"></Multiselect>
-            <b-form-invalid-feedback id="input-position-feedback" v-html="form.errors.position"/>
+            <label for="department" class="form-label">Department</label>
+            <Multiselect id="department" v-model="form.department_id" :class="{'is-invalid' : form.errors.department_id }"
+                aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
+            <b-form-invalid-feedback id="input-department-feedback" v-html="form.errors.department"/>
         </div>
         <div class="col-lg-12">
             <label class="form-label">Roles</label>
@@ -47,11 +47,6 @@ import Multiselect from '@vueform/multiselect'
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
-
-const positions = [
-    { value: 1, label: 'IT' },
-    { value: 2, label: 'Finance' },
-]
 
 const form = computed({
     get() {

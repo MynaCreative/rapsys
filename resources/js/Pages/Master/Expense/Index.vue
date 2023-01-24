@@ -42,8 +42,10 @@
                             <tr>
                                 <th width="60">#</th>
                                 <Sort label="Code" attribute='code'/>
-                                <Sort label="Mandatory Scan" attribute='mandatory_scan'/>
                                 <Sort label="Name" attribute='name'/>
+                                <Sort label="COA" attribute='coa'/>
+                                <Sort label="Type" attribute='type'/>
+                                <Sort label="Mandatory Scan" attribute='mandatory_scan'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
                                 <th width="140">Created By</th>
                                 <th width="70">Active</th>
@@ -54,8 +56,18 @@
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.code }}</td>
-                                <td>{{ item.mandatory_scan }}</td>
                                 <td>{{ item.name }}</td>
+                                <td>{{ item.coa }}</td>
+                                <td>
+                                    <span :class="['badge badge-label',{'bg-info': item.type == 1}, {'bg-secondary': item.type == 2}]" v-if="item.type != null">
+                                        <i class="mdi mdi-circle-medium"></i> {{ item.type_text }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in item.mandatory_scan" :key="index">
+                                        {{ mandatory_scan }}
+                                    </span>
+                                </td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td><DataUserName :data="item.created_user?.name"/></td>
                                 <td><DataActive :data="item.deleted_at"/></td>

@@ -23,10 +23,22 @@ class Workflow extends Model
     protected $fillable = [
         'user_id',
         'sequence',
+        'range_from',
+        'range_to',
         'description',
         
         'created_by',
         'updated_by'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'range_from'    => 'float',
+        'range_to'      => 'float',
     ];
 
     /**

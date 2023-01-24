@@ -15,8 +15,8 @@
                     <td>{{ form.user?.email }}</td>
                 </tr>
                 <tr>
-                    <td class="text-muted table-light">Position</td>
-                    <td>{{ form.user?.position_text }}</td>
+                    <td class="text-muted table-light">Department</td>
+                    <td>{{ form.user?.department?.name }}</td>
                 </tr>
                 <tr>
                     <td class="text-muted table-light">Sequence</td>

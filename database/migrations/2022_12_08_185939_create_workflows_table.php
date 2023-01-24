@@ -19,6 +19,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
             $table->unsignedInteger('sequence');
+            $table->bigInteger('range_from')->default(0);
+            $table->bigInteger('range_to')->default(0);
             $table->text('description')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();

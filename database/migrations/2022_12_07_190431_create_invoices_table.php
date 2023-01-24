@@ -47,6 +47,8 @@ return new class extends Migration
             $table->decimal('total_amount_valid',20,4)->nullable()->default(0);
             $table->decimal('total_amount_invalid',20,4)->nullable()->default(0);
 
+            $table->json('expenses')->nullable();
+
             /** Standard Header Status **/
             $table->string('document_status')->default('draft')->nullable();
             $table->string('approval_status')->default('none')->nullable();

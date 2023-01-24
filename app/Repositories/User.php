@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 use App\Models\User as Model;
+use App\Models\Department;
 use App\Models\Role;
 
 class User
@@ -45,7 +46,7 @@ class User
                 'name'              => $item->name,
                 'username'          => $item->username,
                 'email'             => $item->email,
-                'position_text'     => $item->position_text,
+                'department'        => $item->department,
                 'created_at'        => $item->created_at,
                 'updated_at'        => $item->updated_at,
                 'online'            => Cache::tags(['user-online'])->has('user-is-online-' . $item->id) ?? false
@@ -93,7 +94,7 @@ class User
      * @return Model
      */
     public function show(): Model {
-        $this->model->load(['roles']);
+        $this->model->load(['roles','department:id,name']);
         $this->model->roles_id = $this->model->roles->map(fn($item) => $item->id)->all();
         return $this->model;
     }
@@ -116,7 +117,8 @@ class User
     public static function reference(): array
     {
         return [
-            'roles' => Role::pluck('name','id'),
+            'roles'         => Role::pluck('name','id'),
+            'departments'   => Department::pluck('name','id'),
         ];
     }
 }

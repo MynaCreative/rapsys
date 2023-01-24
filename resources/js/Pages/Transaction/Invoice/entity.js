@@ -31,8 +31,11 @@ export default () => {
             total_amount: 0,
             total_amount_valid: 0,
             total_amount_invalid: 0,
+            expenses: ['MNL'],
             items: [],
-            attachments: []
+            attachments: [],
+
+            uploads: [],
         }
     }
 }

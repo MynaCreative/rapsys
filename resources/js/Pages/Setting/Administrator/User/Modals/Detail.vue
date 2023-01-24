@@ -19,8 +19,8 @@
                     <td>{{ form.email }}</td>
                 </tr>
                 <tr>
-                    <td class="text-muted table-light" width="100">Position</td>
-                    <td>{{ form.position_text }}</td>
+                    <td class="text-muted table-light" width="100">Department</td>
+                    <td>{{ form.department?.name }}</td>
                 </tr>
                 <tr>
                     <td class="text-muted table-light">Created At</td>

@@ -28,12 +28,32 @@
                                 <td colspan="3">{{ form.code }}</td>
                             </tr>
                             <tr>
-                                <td class="text-muted table-light">Mandatory Scan</td>
-                                <td colspan="3">{{ form.mandatory_scan }}</td>
-                            </tr>
-                            <tr>
                                 <td class="text-muted table-light">Name</td>
                                 <td colspan="3">{{ form.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">COA</td>
+                                <td colspan="3">{{ form.coa }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">COA Description</td>
+                                <td colspan="3">{{ form.coa_description }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Type</td>
+                                <td colspan="3">
+                                    <span :class="['badge badge-label',{'bg-info': form.type == 1}, {'bg-secondary': form.type == 2}]" v-if="form.type != null">
+                                        <i class="mdi mdi-circle-medium"></i> {{ form.type_text }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted table-light">Mandatory Scan</td>
+                                <td colspan="3">
+                                    <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in form.mandatory_scan" :key="index">
+                                        {{ mandatory_scan }}
+                                    </span>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="text-muted table-light">Icon</td>
@@ -59,9 +79,20 @@
                     </table>
                 </div>
                 <div :class="['tab-pane fade']" id="nav-invoice" role="tabpanel" :aria-labelledby="`nav-invoice-tab`">
-                    <table class="table table-bordered table-hover table-sm" v-if="form.columns">
+                    <table class="table table-bordered table-hover table-sm" v-if="form.type_text == 'SMU'">
                         <tbody>
-                            <tr v-for="(value, key) in form.columns" :key="key">
+                            <tr v-for="(value, key) in typeSMU" :key="key">
+                                <th class="text-muted table-light text-capitalize text-end" width="200">{{ key.split('_').join(' ') }}</th>
+                                <td class="fw-bold">
+                                    <i class="ri-check-line text-success" v-if="value"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-sm" v-if="form.type_text == 'AWB'">
+                        <tbody>
+                            <tr v-for="(value, key) in typeAWB" :key="key">
                                 <th class="text-muted table-light text-capitalize text-end" width="200">{{ key.split('_').join(' ') }}</th>
                                 <td class="fw-bold">
                                     <i class="ri-check-line text-success" v-if="value"></i>
@@ -110,4 +141,32 @@ watch(props, async (value) => {
         emit('update:id',null)
     }
 })
+
+const typeSMU = {
+    no_smu              : true,
+    amount_smu          : true,
+    awb_rpx             : false,
+    invoice_weight_smu  : true,
+    invoice_weight_awb  : false,
+    amount_awb          : false,
+    amount_smu          : true,
+    route_smu           : true,
+    delta_weight_smu    : true,
+    delta_weight_awb    : true,
+    amount_awb_smu      : true,
+}
+
+const typeAWB = {
+    no_smu              : false,
+    amount_smu          : false,
+    awb_rpx             : true,
+    invoice_weight_smu  : false,
+    invoice_weight_awb  : true,
+    amount_awb          : true,
+    amount_smu          : false,
+    route_smu           : false,
+    delta_weight_smu    : false,
+    delta_weight_awb    : true,
+    amount_awb_smu      : false,
+}
 </script>

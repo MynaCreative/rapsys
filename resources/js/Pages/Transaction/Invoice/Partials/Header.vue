@@ -33,14 +33,16 @@
                 <b-form-input id="invoice_number" v-model="form.invoice_number" :class="{'is-invalid' : form.errors.invoice_number }"
                     aria-describedby="input-invoice_number-feedback" autofocus/>
                 <b-form-invalid-feedback id="input-invoice_number-feedback" v-html="form.errors.invoice_number"/>
-            </div>            
+            </div>
+            <div class="col-lg-4">
+                <label for="total_amount" class="form-label required">Invoice Amount</label>
+                <money3-component v-model.number="form.total_amount" v-bind="moneyConfig" :class="{'is-invalid' : form.errors.total_amount }"
+                    class="form-control text-end" aria-describedby="input-total_amount-feedback"></money3-component>
+                <b-form-invalid-feedback id="input-total_amount-feedback" v-html="form.errors.total_amount"/>
+            </div>
             <div class="col-lg-4">
                 <label for="code" class="form-label">Code</label>
                 <input :value="form.id ? form.code : 'System Generated Number'" class="form-control text-muted" disabled/>
-            </div>
-            <div class="col-lg-4">
-                <label for="invoice_amount" class="form-label">Invoice Amount</label>
-                <b-form-input id="invoice_amount" class="text-muted" :value="form.total_amount" disabled/>
             </div>
         </div>
         <div class="row g-4 mb-2">
@@ -187,6 +189,7 @@
 </template>
 <script setup>
 import { ref, computed } from 'vue'
+import { Money3Component } from 'v-money3'
 import Multiselect from '@vueform/multiselect'
 
 const props = defineProps(['formData','references'])
@@ -229,5 +232,10 @@ const storageLink = (file) => {
 const fileSizeSI = (a,b,c,d,e) => {
     return (b=Math,c=b.log,d=1000,e=c(a)/c(d)|0,a/b.pow(d,e)).toFixed(2)
     +' '+(e?'kMGTPEZY'[--e]+'B':'Bytes')
+}
+
+const moneyConfig =  {
+    precision: 0,
+    masked: false
 }
 </script>

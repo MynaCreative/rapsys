@@ -12,6 +12,7 @@ use App\Http\Requests\Invoice\{
     Show    as ShowRequest,
     Index   as IndexRequest,
     Store   as StoreRequest,
+    Draft   as DraftRequest,
     Import  as ImportRequest,
     Update  as UpdateRequest,
     Destroy as DestroyRequest
@@ -92,12 +93,12 @@ class InvoiceController extends Controller
      * 
      * Save a resource.
      *
-     * @param   StoreRequest  $request
+     * @param   DraftRequest  $request
      * 
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function save(Request $request)
+    public function save(DraftRequest $request)
     {
         try {
             $this->repository::save($request);
@@ -167,10 +168,10 @@ class InvoiceController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      */
-    public function importSample()
+    public function importSample($expense)
     {
         try {
-            return $this->repository::importSample();
+            return $this->repository::importSample($expense);
         } catch (Throwable $exception) {
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),

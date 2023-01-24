@@ -21,7 +21,7 @@
                         
                         <b-form-invalid-feedback id="input-excel_file-feedback" v-html="form.errors.excel_file"/>
                         <div class="form-text mt-4">
-                            <a :href="route(`${page.module}.${page.name}.import-sample`)" target="_blank" class="text-black">
+                            <a :href="route(`${page.module}.${page.name}.import-sample`)" target="_blank">
                                 <i class="ri-attachment-2 align-bottom"></i>
                                 Download Excel template
                             </a>

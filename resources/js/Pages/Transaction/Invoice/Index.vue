@@ -57,7 +57,7 @@
                                 <td class="text-end">
                                     <h6 class="text-primary fs-11 mb-0">
                                         <i class="ri-wallet-line align-middle me-1"></i>
-                                        0,00
+                                        {{ item.total_amount.toLocaleString() }}
                                     </h6>
                                 </td>
                                 <td class="text-end text-success">

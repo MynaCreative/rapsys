@@ -16,6 +16,7 @@ use App\Exports\Invoice\Sample as SampleTemplate;
 
 use App\Models\Area;
 use App\Models\Currency;
+use App\Models\Department;
 use App\Models\Expense;
 use App\Models\Interco;
 use App\Models\InvoiceType;
@@ -57,7 +58,7 @@ class Invoice
         $query = Model::ordering($request)
             ->filtering($request)
             ->searching($request, ['code', 'invoice_number'])
-            ->with(['createdUser:id,name','updatedUser:id,name'])
+            ->with(['createdUser:id,name','updatedUser:id,name', 'vendor:id,code,name'])
             ->latest();
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
@@ -68,6 +69,7 @@ class Invoice
                 'vendor'                => $item->vendor,
                 'document_status'       => $item->document_status,
                 'approval_status'       => $item->approval_status,
+                'total_amount'          => $item->total_amount,
                 'invoice_number'        => $item->invoice_number,
                 'invoice_date'          => $item->invoice_date,
                 'invoice_receipt_date'  => $item->invoice_receipt_date,
@@ -104,6 +106,7 @@ class Invoice
                 'vendor'                => $item->vendor,
                 'document_status'       => $item->document_status,
                 'approval_status'       => $item->approval_status,
+                'total_amount'          => $item->total_amount,
                 'invoice_number'        => $item->invoice_number,
                 'invoice_date'          => $item->invoice_date,
                 'invoice_receipt_date'  => $item->invoice_receipt_date,
@@ -137,12 +140,28 @@ class Invoice
 
                 $model = Model::updateOrCreate([
                     'code' => $request->code
-                ], $request->except('items'));
+                ], $request->except(['items','uploads']));
         
                 /**
                 * Document Item
                 */
                 self::saveDocumentItem($model, $request->items);
+
+                if($request->uploads){
+                    foreach($request->uploads as $upload){
+                        $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
+                            ->first()
+                            ->map(function($item) use ($upload){
+                                return [
+                                    ...$item,
+                                    'expense_id' => (int) $upload['expense_id'],
+                                    'type' => $upload['type']
+                                ];
+                            })
+                            ->toArray();
+                        $model->items()->createMany($rows);
+                    }
+                }
         
                 /**
                 * Document Attachment
@@ -222,11 +241,11 @@ class Invoice
      * @param  \Illuminate\Http\Request  $request
      * @return Model
      */
-    public static function importSample()
+    public static function importSample($expense)
     {
         $date = now()->format('d-m-Y H:i:s');
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
-        return Excel::download(new SampleTemplate(), "{$name}-import-sample-{$date}.xlsx");
+        return Excel::download(new SampleTemplate($expense), "{$name}-{$expense}-line-import-sample-{$date}.xlsx");
     }
 
     /**
@@ -275,12 +294,16 @@ class Invoice
      * @return Model
      */
     public function show(): Model {
-        return $this->model->load([
+        $model = $this->model->load([
             'createdUser:id,name',
             'updatedUser:id,name',
-            'items',
-            'attachments'
+            'attachments',
+            'items' => function($query){
+                $query->with(['withholding','tax','area','product']);
+            },
         ]);
+        $model->uploads = [];
+        return $model;
     }
 
     /**
@@ -329,11 +352,12 @@ class Invoice
             'vendors' => Vendor::pluck('name','id'),
             'terms' => Term::pluck('name','id'),
             /** Item */
-            'expenses' => Expense::select('id','icon','code','name')->get(),
-            'products' => Product::pluck('name','id'),
-            'areas' => Area::pluck('name','id'),
-            'taxes' => Tax::pluck('name','id'),
-            'withholdings' => Withholding::pluck('name','id'),
+            'expenses' => Expense::select('id','icon','code','name','type')->get()->append('type_text'),
+            'products' => Product::select('id','name')->get(),
+            'areas' => Area::select('id','name')->get(),
+            'departments' => Department::select('id','name')->get(),
+            'taxes' => Tax::select('id','name')->get(),
+            'withholdings' => Withholding::select('id','name')->get(),
         ];
     }
 

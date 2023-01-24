@@ -7,11 +7,11 @@ export default () => {
         },
         form: {
             id: null,
+            department_id: null,
             name: null,
             username: null,
             email: null,
             password: null,
-            position: null,
             roles: [],
             roles_id: [],
         }

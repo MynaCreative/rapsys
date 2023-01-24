@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('name');
-            $table->string('mandatory_scan')->nullable();
+            $table->string('coa')->nullable();
+            $table->string('coa_description')->nullable();
             $table->string('icon')->nullable();
             $table->text('description')->nullable();
-            $table->json('columns')->nullable();
+            $table->tinyInteger('type')->nullable();
+            $table->json('mandatory_scan')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

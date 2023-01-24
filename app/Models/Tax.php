@@ -36,58 +36,6 @@ class Tax extends Model
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        // 'type_text'
-    ];
-
-    /**
-     * Get the user's position text.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function typeText(): Attribute
-    {
-        return Attribute::make(
-            get: function ($value, $attributes) {
-                $text = null;
-                if(isset($attributes['type'])){
-                    $type = $attributes['type'];
-                    // switch ($type) {
-                    //     case self::TYPE_VAT_IN:
-                    //         $text = 'Vat In';
-                    //         break;
-                    //     case self::TYPE_VAT_OUT:
-                    //         $text = 'Vat Out';
-                    //         break;
-                    //     case self::TYPE_WITHHOLDING:
-                    //         $text = 'Withholding';
-                    //         break;
-                    //     case self::TYPE_CREDIT:
-                    //         $text = 'Credit';
-                    //         break;
-                    //     default:
-                    //         $text = '';
-                    // }
-                    // match ($type) {
-                    //     self::TYPE_VAT_IN       => $text = 'Vat In',
-                    //     self::TYPE_VAT_OUT      => $text = 'Vat Out',
-                    //     self::TYPE_WITHHOLDING  => $text = 'Withholding',
-                    //     self::TYPE_CREDIT       => $text = 'Credit',
-                    //     default => throw new Exception(
-                    //         message: "$type is not supported yet.",
-                    //     ),
-                    // };
-                }
-                return $text;
-            },
-        );
-    }
-
-    /**
      * Logging activity history.
      */
     public function getActivitylogOptions(): LogOptions

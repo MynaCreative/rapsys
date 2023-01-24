@@ -33,7 +33,7 @@ class Workflow
     public static function all(Request $request)
     {
         $query = Model::withTrashed()
-            ->with(['createdUser:id,name','updatedUser:id,name','user:id,name,email,position'])
+            ->with(['createdUser:id,name','updatedUser:id,name','user:id,department_id,name,email','user.department'])
             ->orderBy('sequence');
 
         return $query->paginate($request->per_page ?? 10)
@@ -88,7 +88,7 @@ class Workflow
      */
     public function show(): Model {
         return $this->model->load([
-            'createdUser:id,name','updatedUser:id,name','user:id,name,email,position'
+            'createdUser:id,name','updatedUser:id,name','user:id,name,email'
         ]);
     }
 

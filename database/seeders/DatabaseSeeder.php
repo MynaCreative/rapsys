@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         DB::transaction(function (){
             activity()->withoutLogs(function () {
+                $this->call(DepartmentSeeder::class);
                 $this->call(PermissionGroupSeeder::class);
                 $this->call(RoleSeeder::class);
                 $this->call(UserSeeder::class);
@@ -34,7 +35,6 @@ class DatabaseSeeder extends Seeder
                 $this->call(ProductSeeder::class);
                 $this->call(CurrencySeeder::class);
                 $this->call(LineTypeSeeder::class);
-                $this->call(DepartmentSeeder::class);
                 $this->call(InvoiceTypeSeeder::class);
                 $this->call(WithholdingSeeder::class);
                 $this->call(SalesChannelSeeder::class);
