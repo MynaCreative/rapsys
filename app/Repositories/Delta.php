@@ -37,13 +37,49 @@ class Delta
             ->withBody(json_encode([
                 'request'=>[
                     'body' => [
-                        // 'reference_number' => $code,
-                        // 'tracking_status_id' => 'SMU',
-                        'awb' => $code
+                        'reference_number' => $code,
+                        'tracking_status_id' => 'SMU'
                     ]
-                ]
+                ],
+                'signature' => ''
             ]), 'application/json')
-            ->get(config('delta.rest.url').'/v3/tracking');
+            ->get(config('delta.rest.url').'/v3/track/getTrackAwbDetail');
+    }
+
+    /**
+     * Get tracking AWB Detail
+     */
+    public static function awbBatch($awb)
+    {
+        $token = self::token();
+        return Http::withToken($token)
+            ->withBody(json_encode([
+                'request'=>[
+                    'body' => [
+                        'awb' => $awb,
+                    ]
+                ],
+                'signature' => ''
+            ]), 'application/json')
+            ->get(config('delta.rest.url').'/v3/tracking/');
+    }
+
+    /**
+     * Get tracking AWB Detail
+     */
+    public static function smu($code)
+    {
+        $token = self::token();
+        return Http::withToken($token)
+            ->withBody(json_encode([
+                'request'=>[
+                    'body' => [
+                        'smu_number' => $code
+                    ]
+                ],
+                'signature' => ''
+            ]), 'application/json')
+            ->get(config('delta.rest.url').'/v3/track/getSmuDetail');
     }
 
     /**
@@ -51,14 +87,14 @@ class Delta
      */
     public static function token()
     {
-        if(session()->has('delta.soap.timestamp')) {
-            $lifetime = now()->diffInSeconds(session('delta.soap.timestamp'));
-            if($lifetime > session('delta.soap.expired')){
-                session()->forget('delta.soap.token');
+        if(session()->has('delta.rest.timestamp')) {
+            $lifetime = now()->diffInSeconds(session('delta.rest.timestamp'));
+            if($lifetime > session('delta.rest.expired')){
+                session()->forget('delta.rest.token');
             }
         }
         
-        if(!session()->has('delta.soap.token')) {
+        if(!session()->has('delta.rest.token')) {
             $username   = config('delta.rest.username');
             $password   = config('delta.rest.password');
     
@@ -69,12 +105,12 @@ class Delta
                 ->post(config('delta.rest.url').'/token');
                 
             session([
-                'delta.soap.token'      => $response['data']['token'],
-                'delta.soap.expired'    => $response['data']['expired'],
-                'delta.soap.timestamp'  => now()
+                'delta.rest.token'      => $response['data']['token'],
+                'delta.rest.expired'    => $response['data']['expired'],
+                'delta.rest.timestamp'  => now()
             ]);
         }
 
-        return session('delta.soap.token');
+        return session('delta.rest.token');
     }
 }

@@ -81,12 +81,30 @@
                     <span data-key="t-authentication">Administrator</span>
                 </a>
                 <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.administrator')}]" id="setting-administrator">
-                <ul class="nav nav-sm flex-column">
-                    <MenuItem route-name="setting.administrator.users.index" name="User" :permission="$page.props.auth.permissions.includes('user')"/>
-                    <MenuItem route-name="setting.administrator.roles.index" name="Role" :permission="$page.props.auth.permissions.includes('role')"/>
-                    <MenuItem route-name="setting.administrator.permissions.index" name="Permission" :permission="$page.props.auth.permissions.includes('permission')"/>
-                    <MenuItem route-name="setting.administrator.permission-groups.index" name="Permission Group" :permission="$page.props.auth.permissions.includes('permission-group')"/>
-                </ul>
+                    <ul class="nav nav-sm flex-column">
+                        <MenuItem route-name="setting.administrator.users.index" name="User" :permission="$page.props.auth.permissions.includes('user')"/>
+                        <MenuItem route-name="setting.administrator.roles.index" name="Role" :permission="$page.props.auth.permissions.includes('role')"/>
+                        <MenuItem route-name="setting.administrator.permissions.index" name="Permission" :permission="$page.props.auth.permissions.includes('permission')"/>
+                        <MenuItem route-name="setting.administrator.permission-groups.index" name="Permission Group" :permission="$page.props.auth.permissions.includes('permission-group')"/>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item" v-if="hasAnyPermission([
+                'delta',
+            ])">
+                <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.delta')}]"
+                :aria-expanded="route().current().startsWith('setting.delta')"
+                href="#setting-delta" data-bs-toggle="collapse" role="button" aria-controls="setting-delta">
+                    <i class="ri-settings-line"></i>
+                    <span data-key="t-authentication">Delta Testing</span>
+                </a>
+                <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.delta')}]" id="setting-delta">
+                    <ul class="nav nav-sm flex-column">
+                        <MenuItem route-name="setting.delta.smu" name="SMU" :permission="$page.props.auth.permissions.includes('delta')"/>
+                        <MenuItem route-name="setting.delta.awb" name="AWB" :permission="$page.props.auth.permissions.includes('delta')"/>
+                        <MenuItem route-name="setting.delta.awb-detail" name="AWB Detail" :permission="$page.props.auth.permissions.includes('delta')"/>
+                        <MenuItem route-name="setting.delta.awb-batch" name="AWB Batch" :permission="$page.props.auth.permissions.includes('delta')"/>
+                    </ul>
                 </div>
             </li>
             <li class="nav-item" v-if="hasAnyPermission([
@@ -95,13 +113,13 @@
                 <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.configuration')}]"
                 :aria-expanded="route().current().startsWith('setting.configuration')"
                 href="#setting-configuration" data-bs-toggle="collapse" role="button" aria-controls="setting-configuration">
-                    <i class="ri-settings-line"></i>
+                    <i class="ri-settings-3-line"></i>
                     <span data-key="t-authentication">Configuration</span>
                 </a>
                 <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.configuration')}]" id="setting-configuration">
-                <ul class="nav nav-sm flex-column">
-                    <MenuItem route-name="setting.configuration.workflows.index" name="Workflow" :permission="$page.props.auth.permissions.includes('workflow')"/>
-                </ul>
+                    <ul class="nav nav-sm flex-column">
+                        <MenuItem route-name="setting.configuration.workflows.index" name="Workflow" :permission="$page.props.auth.permissions.includes('workflow')"/>
+                    </ul>
                 </div>
             </li>
             <li class="menu-title">

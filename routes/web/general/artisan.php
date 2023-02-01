@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController as CurrentController;
 use Illuminate\Support\Facades\Artisan;
 
 $endpoint = basename(__FILE__, '.php');

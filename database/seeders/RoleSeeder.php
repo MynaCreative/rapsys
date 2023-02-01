@@ -51,6 +51,7 @@ class RoleSeeder extends Seeder
             'permission-group',
 
             'workflow',
+            'delta',
         ]);
     }
 }
