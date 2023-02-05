@@ -43,9 +43,14 @@ return new class extends Migration
             $table->date('term_date')->nullable();
             $table->date('due_date')->nullable();
 
+            $table->integer('total_item')->nullable()->default(0);
+            $table->integer('total_item_validated')->nullable()->default(0);
             $table->decimal('total_amount',20,4)->nullable()->default(0);
+            $table->decimal('total_amount_after_tax',20,4)->nullable()->default(0);
             $table->decimal('total_amount_valid',20,4)->nullable()->default(0);
             $table->decimal('total_amount_invalid',20,4)->nullable()->default(0);
+            $table->decimal('total_amount_after_tax_valid',20,4)->nullable()->default(0);
+            $table->decimal('total_amount_after_tax_invalid',20,4)->nullable()->default(0);
 
             $table->json('expenses')->nullable();
 

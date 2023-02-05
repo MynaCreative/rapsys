@@ -64,9 +64,10 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in item.mandatory_scan" :key="index">
+                                    <!-- <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in item.mandatory_scan" :key="index">
                                         {{ mandatory_scan }}
-                                    </span>
+                                    </span> -->
+                                    {{ item.mandatory_scan }}
                                 </td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td><DataUserName :data="item.created_user?.name"/></td>

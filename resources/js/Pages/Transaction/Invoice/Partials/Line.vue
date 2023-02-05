@@ -9,7 +9,7 @@
                         <!-- <span class="badge bg-danger align-middle ms-1" v-if="form.items.length > 0">{{ form.items.length }}</span> -->
                     </a>
                 </li>
-                <li class="nav-item" v-if="form.expenses.length < 6">
+                <li class="nav-item" v-if="form.expenses.length < 6 && !(['published','closed','cancelled'].includes(form.document_status))">
                     <a class="nav-link" href="javascript:void(0);" @click="modalFormVisible = true">
                         <i class="me-1 align-bottom ri-upload-fill"></i>
                         Upload

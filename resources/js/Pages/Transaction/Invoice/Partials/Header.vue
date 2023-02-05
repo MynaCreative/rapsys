@@ -35,8 +35,8 @@
                 <b-form-invalid-feedback id="input-invoice_number-feedback" v-html="form.errors.invoice_number"/>
             </div>
             <div class="col-lg-4">
-                <label for="total_amount" class="form-label required">Invoice Amount</label>
-                <money3-component v-model.number="form.total_amount" v-bind="moneyConfig" :class="{'is-invalid' : form.errors.total_amount }"
+                <label for="total_amount" class="form-label">Invoice Amount</label>
+                <money3-component v-model.number="form.total_amount" v-bind="moneyConfig" disabled
                     class="form-control text-end" aria-describedby="input-total_amount-feedback"></money3-component>
                 <b-form-invalid-feedback id="input-total_amount-feedback" v-html="form.errors.total_amount"/>
             </div>
@@ -157,8 +157,8 @@
                                 </div>
                                 <div class="flex-shrink-0 ms-2">
                                     <div class="d-flex gap-1">
-                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none" @click="storageLink(attachment)" target="_blank" v-if="form.id"><i class="ri-download-2-line"></i></button>
-                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none" @click.stop.prevent="removeFile(index)" target="_blank"><i class="ri-delete-bin-line"></i></button>
+                                        <a class="btn btn-icon text-muted btn-sm fs-18 shadow-none" :href="storageLink(attachment)" target="_blank" v-if="form.id"><i class="ri-download-2-line"></i></a>
+                                        <button type="button" class="btn btn-icon text-muted btn-sm fs-18 shadow-none" @click.stop.prevent="removeFile(index)"><i class="ri-delete-bin-line"></i></button>
                                     </div>
                                 </div>
                             </div>

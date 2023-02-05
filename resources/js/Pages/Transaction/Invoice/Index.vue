@@ -36,40 +36,45 @@
                     <table class="table table-hover table-nowrap table-sm align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <th width="60">#</th>
-                                <Sort label="Invoice Date" attribute='invoice_date'/>
-                                <Sort label="Invoice Number" attribute='invoice_number'/>
-                                <Sort label="Vendor" attribute='vendor_id'/>
-                                <Sort label="Total Amount" attribute='total_amount' class="text-end"/>
-                                <Sort label="Total Amount Valid" attribute='total_amount_valid' class="text-end"/>
-                                <Sort label="Total Amount Invalid" attribute='total_amount_invalid' class="text-end"/>
-                                <th class="text-center">Approval Status</th>
-                                <th class="text-center">Document Status</th>
-                                <th width="120" class="text-center">Action</th>
+                                <th width="60" rowspan="2" class="align-middle">#</th>
+                                <Sort label="Invoice Number" attribute='invoice_number' rowspan="2" class="align-middle"/>
+                                <Sort label="Vendor" attribute='vendor_id' rowspan="2" class="align-middle"/>
+                                <th class="sort text-center" colspan="3">Amount  (after tax)</th>
+                                <th class="text-center" colspan="2">Status</th>
+                                <th class="text-center" colspan="2">Date</th>
+                                <th width="100" class="text-center align-middle" rowspan="2">Action</th>
+                            </tr>
+                            <tr>
+                                <Sort label="Total" attribute='total_amount' class="text-center"/>
+                                <Sort label="Valid" attribute='total_amount_valid' class="text-center"/>
+                                <Sort label="Invalid" attribute='total_amount_invalid' class="text-center"/>
+                                <th class="text-center">Approval</th>
+                                <th class="text-center">Document</th>
+                                <Sort width="110" label="Invoice" attribute='invoice_date' class="text-center"/>
+                                <Sort width="140" label="Created" attribute='created_at' class="text-center"/>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td>{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
                                 <td class="fw-medium">{{ item.invoice_number ? item.invoice_number : '--' }}</td>
                                 <td>{{ item.vendor ? `${item.vendor.code} - ${item.vendor.name}` : '--' }}</td>
                                 <td class="text-end">
                                     <h6 class="text-primary fs-11 mb-0">
-                                        <i class="ri-wallet-line align-middle me-1"></i>
-                                        {{ item.total_amount.toLocaleString() }}
+                                        {{ item.total_amount_after_tax.toLocaleString() }}
+                                        <i class="ri-wallet-line align-middle"></i>
                                     </h6>
                                 </td>
                                 <td class="text-end text-success">
                                     <h6 class="text-success fs-11 mb-0">
-                                        <i class="ri-check-line align-middle me-1"></i>
-                                        0,00
+                                        {{ item.total_amount_after_tax_valid.toLocaleString() }}
+                                        <i class="ri-check-line align-middle"></i>
                                     </h6>
                                 </td>
                                 <td class="text-end">
                                     <h6 class="text-danger fs-11 mb-0">
-                                        <i class="ri-close-line align-middle me-1"></i>
-                                        0,00
+                                        {{ item.total_amount_after_tax_invalid.toLocaleString() }}
+                                        <i class="ri-close-line align-middle"></i>
                                     </h6>
                                 </td>
                                 <td class="text-center">
@@ -84,6 +89,8 @@
                                     <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.document_status == 'cancelled'">{{ item.document_status }}</b-badge>
                                     <b-badge variant="success" class="rounded-pill text-capitalize" v-if="item.document_status == 'closed'">{{ item.document_status }}</b-badge>
                                 </td>
+                                <td class="text-center date">{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
+                                <td class="text-center date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
                                         <li class="list-inline-item edit" title="Edit" @click="() => {

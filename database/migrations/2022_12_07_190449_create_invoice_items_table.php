@@ -25,15 +25,6 @@ return new class extends Migration
             $table->uuid('uuid')->nullable();
             $table->integer('sequence_number')->nullable();
 
-            $table->string('code')->nullable();
-            $table->string('type')->nullable();
-            $table->string('awb')->nullable();
-            $table->string('smu')->nullable();
-            $table->string('route')->nullable();
-            $table->string('cost_center')->nullable();
-            $table->date('date_smu')->nullable();
-            $table->date('date_awb')->nullable();
-
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
             $table->foreignIdFor(Product::class)->nullable()->constrained();
@@ -41,27 +32,39 @@ return new class extends Migration
             $table->foreignIdFor(Tax::class)->nullable()->constrained();
             $table->foreignIdFor(Withholding::class)->nullable()->constrained();
 
-            $table->decimal('quantity',20,4)->nullable()->default(0);
-            $table->decimal('price',20,4)->nullable()->default(0);
+            $table->string('code')->nullable();
+            $table->string('type')->nullable();
+            $table->string('expense_code')->nullable();
+            $table->string('awb')->nullable();
+            $table->string('smu')->nullable();
+            $table->string('route')->nullable();
+            $table->string('cost_center')->nullable();
+            $table->date('date_smu')->nullable();
+            $table->date('date_awb')->nullable();
+
             $table->decimal('delta_weight_smu',20,4)->nullable()->default(0);
             $table->decimal('delta_weight_awb',20,4)->nullable()->default(0);
             $table->decimal('invoice_weight_smu',20,4)->nullable()->default(0);
             $table->decimal('invoice_weight_awb',20,4)->nullable()->default(0);
-            $table->decimal('withholding_tax',20,4)->nullable()->default(0);
-            $table->decimal('vat_tax',20,4)->nullable()->default(0);
-            $table->decimal('tax_base',20,4)->nullable()->default(0);
+
             $table->decimal('amount_awb',20,4)->nullable()->default(0);
             $table->decimal('amount_smu',20,4)->nullable()->default(0);
             $table->decimal('amount_awb_smu',20,4)->nullable()->default(0);
 
+            $table->decimal('withholding_tax',20,4)->nullable()->default(0);
+            $table->decimal('vat_tax',20,4)->nullable()->default(0);
+            $table->decimal('amount',20,4)->nullable()->default(0);
+
             $table->text('description')->nullable();
             $table->boolean('is_manual')->default(false);
+            $table->boolean('is_validated')->default(false);
 
-            $table->boolean('validation_reference')->nullable();
-            $table->boolean('validation_weight')->nullable();
-            $table->boolean('validation_scan_compliance')->nullable();
-            $table->boolean('validation_ops_plan')->nullable();
-            $table->boolean('validation_bill')->nullable();
+            $table->boolean('validation_reference')->nullable()->default(false);
+            $table->boolean('validation_weight')->nullable()->default(false);
+            $table->boolean('validation_scan_compliance')->nullable()->default(false);
+            $table->boolean('validation_ops_plan')->nullable()->default(false);
+            $table->boolean('validation_bill')->nullable()->default(false);
+            $table->integer('validation_score')->nullable()->default(0);
 
             $table->json('message')->nullable();
 

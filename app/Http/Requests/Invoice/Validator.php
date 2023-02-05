@@ -34,7 +34,7 @@ class Validator
             'posting_date'          => ['required','date'],
             'invoice_date'          => ['required','date'],
             'invoice_receipt_date'  => ['required','date'],
-            'total_amount'          => ['required','gt:0'],
+            // 'total_amount'          => ['required','gt:0'],
             'note'                  => ['required'],
 
             'items'                 => 'required|array',

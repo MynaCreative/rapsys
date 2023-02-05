@@ -27,17 +27,29 @@ export default {
         })
     },
     submitData(form, id){
-        let method = form.id ? 'patch' : 'post'
-        let action = form.id ? 
-            route(`${page.module}.${page.name}.update`, form.id) : 
-            route(`${page.module}.${page.name}.store`)
-        form.transform((data) => ({
-            ...data,
-            _method: method,
-        }))
-        .submit('post', action, {
-            preserveState: (page) => Object.keys(page.props.errors).length,
-            preserveScroll: (page) => Object.keys(page.props.errors).length,
+        Swal.fire({
+            title: `Are you sure you want to submit this item?`,
+            text: "After submitted, all data can't be changed.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#3577f1",
+            cancelButtonColor: "#f46a6a",
+            confirmButtonText: `Submit`,
+        }).then((result) => {
+            if (result.value) {
+                let method = form.id ? 'patch' : 'post'
+                let action = form.id ? 
+                    route(`${page.module}.${page.name}.update`, form.id) : 
+                    route(`${page.module}.${page.name}.store`)
+                form.transform((data) => ({
+                    ...data,
+                    _method: method,
+                }))
+                .submit('post', action, {
+                    preserveState: (page) => Object.keys(page.props.errors).length,
+                    preserveScroll: (page) => Object.keys(page.props.errors).length,
+                })
+            }
         })
     },
     deleteData(id, undo = false){

@@ -30,6 +30,11 @@
                                 Line
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#validation" role="tab">
+                                Validation
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -53,10 +58,15 @@
                         <PartialLine v-model:formData="form" :references="references"/>
                     </div>
                 </div>
+                <div class="tab-content text-muted">
+                    <div class="tab-pane" id="validation" role="tabpanel">
+                        <PartialValidation v-model:formData="form" :references="references"/>
+                    </div>
+                </div>
                 <div class="card-footer d-flex justify-content-between">
                     <div>
                         <b-button @click="submit" v-if="form.id && !(['published','closed','cancelled'].includes(form.document_status))"
-                        type="submit" variant="primary" class="btn-label waves-effect waves-light me-1" :disabled="form.processing">
+                        variant="primary" class="btn-label waves-effect waves-light me-1" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
                             {{ form.processing ? 'Processing' : 'Submit' }}
                         </b-button>
@@ -104,6 +114,7 @@ import PageHeader from '@/Components/PageHeader.vue'
 
 import PartialHeader from './Partials/Header.vue'
 import PartialLine from './Partials/Line.vue'
+import PartialValidation from './Partials/Validation.vue'
 import entityData from './entity'
 import service from './service'
 

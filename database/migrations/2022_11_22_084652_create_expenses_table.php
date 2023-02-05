@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->text('description')->nullable();
             $table->tinyInteger('type')->nullable();
-            $table->json('mandatory_scan')->nullable();
+            $table->string('mandatory_scan')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

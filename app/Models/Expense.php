@@ -33,7 +33,7 @@ class Expense extends Model
      * @var array
      */
     protected $casts = [
-        'mandatory_scan' => 'array',
+        // 'mandatory_scan' => 'array',
     ];
 
     /**

@@ -54,9 +54,14 @@ class Invoice extends Model
         'term_date',
         'due_date',
 
+        'total_item',
+        'total_item_validated',
         'total_amount',
         'total_amount_valid',
         'total_amount_invalid',
+        'total_amount_after_tax',
+        'total_amount_after_tax_valid',
+        'total_amount_after_tax_invalid',
         'expenses',
 
         'document_status',
@@ -79,14 +84,17 @@ class Invoice extends Model
      * @var array
      */
     protected $casts = [
-        'total_amount'              => 'float',
-        'total_amount_valid'        => 'float',
-        'total_amount_invalid'      => 'float',
-        'expenses'                  => 'array',
+        'total_amount'                      => 'float',
+        'total_amount_valid'                => 'float',
+        'total_amount_invalid'              => 'float',
+        'total_amount_after_tax'            => 'float',
+        'total_amount_after_tax_valid'      => 'float',
+        'total_amount_after_tax_invalid'    => 'float',
+        'expenses'                          => 'array',
 
-        'document_status_time'      => 'datetime',
-        'approval_status_time'      => 'datetime',
-        'published_at'              => 'datetime',
+        'document_status_time'              => 'datetime',
+        'approval_status_time'              => 'datetime',
+        'published_at'                      => 'datetime',
     ];
 
     /**

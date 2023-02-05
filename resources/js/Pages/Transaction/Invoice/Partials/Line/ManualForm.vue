@@ -18,14 +18,14 @@
                 <label for="invoice_weight_smu" class="form-label">Invoice Weight (kg)</label>
                 <money3-component v-model.number="item.invoice_weight_smu" v-bind="moneyConfig" class="form-control text-end" aria-describedby="input-invoice_weight_smu-feedback"></money3-component>
             </div>
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
                 <label for="amount_awb_smu" class="form-label">Amount AWB (SMU)</label>
                 <money3-component v-model.number="item.amount_awb_smu" v-bind="moneyConfig" class="form-control text-end" aria-describedby="input-amount_awb_smu-feedback"></money3-component>
             </div>
             <div class="col-lg-6">
                 <label for="delta_weight_smu" class="form-label">Delta Weight SMU (kg)</label>
                 <money3-component v-model.number="item.delta_weight_smu" v-bind="moneyConfig" class="form-control text-end" aria-describedby="input-delta_weight_smu-feedback"></money3-component>
-            </div>
+            </div> -->
         </template>
         <template v-if="type == 'AWB'">
             <div class="col-lg-6">

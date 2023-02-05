@@ -25,6 +25,7 @@ class InvoiceItem extends Model
 
         'code',
         'type',
+        'expense_code',
         'awb',
         'smu',
         'route',
@@ -41,27 +42,29 @@ class InvoiceItem extends Model
         'tax_id',
         'withholding_id',
 
-        'quantity',
-        'price',
         'delta_weight_smu',
         'delta_weight_awb',
         'invoice_weight_smu',
         'invoice_weight_awb',
-        'withholding_tax',
-        'vat_tax',
-        'tax_base',
+
         'amount_awb',
         'amount_smu',
         'amount_awb_smu',
 
+        'withholding_tax',
+        'vat_tax',
+        'amount',
+
         'description',
         'is_manual',
+        'is_validated',
 
         'validation_reference',
         'validation_weight',
         'validation_scan_compliance',
         'validation_ops_plan',
         'validation_bill',
+        'validation_score',
 
         'message',
 
@@ -75,20 +78,21 @@ class InvoiceItem extends Model
      * @var array
      */
     protected $casts = [
-        'quantity'                      => 'float',
-        'price'                         => 'float',
         'delta_weight_smu'              => 'float',
         'delta_weight_awb'              => 'float',
         'invoice_weight_smu'            => 'float',
         'invoice_weight_awb'            => 'float',
-        'withholding_tax'               => 'float',
-        'vat_tax'                       => 'float',
-        'tax_base'                      => 'float',
+
         'amount_awb'                    => 'float',
         'amount_smu'                    => 'float',
         'amount_awb_smu'                => 'float',
 
+        'withholding_tax'               => 'float',
+        'vat_tax'                       => 'float',
+        'amount'                        => 'float',
+
         'is_manual'                     => 'boolean',
+        'is_validated'                  => 'boolean',
         'validation_reference'          => 'boolean',
         'validation_weight'             => 'boolean',
         'validation_scan_compliance'    => 'boolean',

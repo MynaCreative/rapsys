@@ -1,5 +1,5 @@
 <template>
-    <div class="row g-2" v-if="!form.id || (form.id && form.items.filter((item) => !item.is_manual && item.type == expense.code).length == 0)">
+    <div class="row g-2" v-if="!form.id || (form.id && form.items.filter((item) => !item.is_manual && item.expense_code == expense.code).length == 0)">
         <div class="col-lg-12 p-4">
             <label for="excel_file" class="form-label">File</label>
             <div class="input-group">
@@ -35,9 +35,9 @@
                     <th>Route</th>
                 </tr>
             </thead>
-            <template v-if="form.items && form.items.length > 0 && form.items.filter((item) => !item.is_manual && item.type == expense.code).length > 0">
+            <template v-if="form.items && form.items.length > 0 && form.items.filter((item) => !item.is_manual && item.expense_code == expense.code).length > 0">
                 <tbody>
-                    <UploadItem v-for="(item, index) in form.items.filter((item) => !item.is_manual && item.type == expense.code)" :key="index"
+                    <UploadItem v-for="(item, index) in form.items.filter((item) => !item.is_manual && item.expense_code == expense.code)" :key="index"
                         :formData="form"
                         @update:formData="form = $event"
                         :itemData="item"
@@ -88,7 +88,8 @@ const getFile = (e) => {
         form.value.uploads.push({
             excel_file : e.target.files[0],
             expense_id : props.expense.id,
-            type : props.expense.code
+            expense_code : props.expense.code,
+            type : props.expense.type == 1 ? 'SMU' : 'AWB'
         })
     }else{
         remove(form.value.uploads, {expense_id:props.expense.id})

@@ -50,9 +50,10 @@
                             <tr>
                                 <td class="text-muted table-light">Mandatory Scan</td>
                                 <td colspan="3">
-                                    <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in form.mandatory_scan" :key="index">
+                                    <!-- <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in form.mandatory_scan" :key="index">
                                         {{ mandatory_scan }}
-                                    </span>
+                                    </span> -->
+                                    {{ form.mandatory_scan }}
                                 </td>
                             </tr>
                             <tr>

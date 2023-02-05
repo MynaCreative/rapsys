@@ -45,8 +45,10 @@
         </div>
         <div class="col-lg-12">
             <label for="mandatory_scan" class="form-label">Mandatory Scan</label>
-            <Multiselect id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }" :create-option="true" :close-on-select="false" :searchable="true" mode="tags"
-                aria-describedby="input-mandatory_scan-feedback" :options="mandatory_scans" placeholder="Select data"></Multiselect>
+            <!-- <Multiselect id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }" :create-option="true" :close-on-select="false" :searchable="true" mode="tags"
+                aria-describedby="input-mandatory_scan-feedback" :options="mandatory_scans" placeholder="Select data"></Multiselect> -->
+            <b-form-input id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }"
+                aria-describedby="input-mandatory_scan-feedback"/>
             <b-form-invalid-feedback id="input-mandatory_scan-feedback" v-html="form.errors.mandatory_scan"/>
         </div>
         <div class="col-lg-12">

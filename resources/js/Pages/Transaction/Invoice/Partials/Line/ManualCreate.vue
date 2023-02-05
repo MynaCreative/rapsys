@@ -69,18 +69,19 @@ const initialItem = () => ({
     is_manual: true,
     expense_id: 1,
     type: null,
+    expense_code: 'MNL',
 })
 
-const item = {...initialItem()}
+let item = {...initialItem()}
 
 const addItem = () => {
     form.value.items.push({ ...item, type: props.type})
-    Object.assign(item, initialItem())
+    item = initialItem()
     emit('update:show', false)
 }
 
 const closeModal = () => {
-    Object.assign(item, initialItem())
+    item = initialItem()
     emit('update:show', false)
 }
 </script>

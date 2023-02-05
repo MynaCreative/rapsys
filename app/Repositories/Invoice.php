@@ -4,16 +4,18 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Activitylog\Facades\LogBatch;
 
+use App\Jobs\DeltaValidation;
+
 use App\Models\Invoice as Model;
 use App\Imports\DataImport;
 use App\Helpers\Relationship;
 use App\Exports\Invoice\Sample as SampleTemplate;
-
 use App\Models\Area;
 use App\Models\Currency;
 use App\Models\Department;
@@ -64,21 +66,26 @@ class Invoice
         return $query->paginate($request->per_page ?? 10)->withQueryString()
         ->through(function ($item) {
             return [
-                'id'                    => $item->id,
-                'code'                  => $item->code,
-                'vendor'                => $item->vendor,
-                'document_status'       => $item->document_status,
-                'approval_status'       => $item->approval_status,
-                'total_amount'          => $item->total_amount,
-                'invoice_number'        => $item->invoice_number,
-                'invoice_date'          => $item->invoice_date,
-                'invoice_receipt_date'  => $item->invoice_receipt_date,
-                'description'           => $item->description,
-                'created_user'          => $item->createdUser,
-                'updated_user'          => $item->updatedUser,
-                'created_at'            => $item->created_at,
-                'updated_at'            => $item->updated_at,
-                'deleted_at'            => $item->deleted_at,
+                'id'                                => $item->id,
+                'code'                              => $item->code,
+                'vendor'                            => $item->vendor,
+                'document_status'                   => $item->document_status,
+                'approval_status'                   => $item->approval_status,
+                'total_amount'                      => $item->total_amount,
+                'total_amount_valid'                => $item->total_amount_valid,
+                'total_amount_invalid'              => $item->total_amount_invalid,
+                'total_amount_after_tax'            => $item->total_amount_after_tax,
+                'total_amount_after_tax_valid'      => $item->total_amount_after_tax_valid,
+                'total_amount_after_tax_invalid'    => $item->total_amount_after_tax_invalid,
+                'invoice_number'                    => $item->invoice_number,
+                'invoice_date'                      => $item->invoice_date,
+                'invoice_receipt_date'              => $item->invoice_receipt_date,
+                'description'                       => $item->description,
+                'created_user'                      => $item->createdUser,
+                'updated_user'                      => $item->updatedUser,
+                'created_at'                        => $item->created_at,
+                'updated_at'                        => $item->updated_at,
+                'deleted_at'                        => $item->deleted_at,
             ];
         });
     }
@@ -101,21 +108,26 @@ class Invoice
         return $query->paginate($request->per_page ?? 10)->withQueryString()
         ->through(function ($item) {
             return [
-                'id'                    => $item->id,
-                'code'                  => $item->code,
-                'vendor'                => $item->vendor,
-                'document_status'       => $item->document_status,
-                'approval_status'       => $item->approval_status,
-                'total_amount'          => $item->total_amount,
-                'invoice_number'        => $item->invoice_number,
-                'invoice_date'          => $item->invoice_date,
-                'invoice_receipt_date'  => $item->invoice_receipt_date,
-                'description'           => $item->description,
-                'created_user'          => $item->createdUser,
-                'updated_user'          => $item->updatedUser,
-                'created_at'            => $item->created_at,
-                'updated_at'            => $item->updated_at,
-                'deleted_at'            => $item->deleted_at,
+                'id'                                => $item->id,
+                'code'                              => $item->code,
+                'vendor'                            => $item->vendor,
+                'document_status'                   => $item->document_status,
+                'approval_status'                   => $item->approval_status,
+                'total_amount'                      => $item->total_amount,
+                'total_amount_valid'                => $item->total_amount_valid,
+                'total_amount_invalid'              => $item->total_amount_invalid,
+                'total_amount_after_tax'            => $item->total_amount_after_tax,
+                'total_amount_after_tax_valid'      => $item->total_amount_after_tax_valid,
+                'total_amount_after_tax_invalid'    => $item->total_amount_after_tax_invalid,
+                'invoice_number'                    => $item->invoice_number,
+                'invoice_date'                      => $item->invoice_date,
+                'invoice_receipt_date'              => $item->invoice_receipt_date,
+                'description'                       => $item->description,
+                'created_user'                      => $item->createdUser,
+                'updated_user'                      => $item->updatedUser,
+                'created_at'                        => $item->created_at,
+                'updated_at'                        => $item->updated_at,
+                'deleted_at'                        => $item->deleted_at,
             ];
         });
     }
@@ -154,8 +166,9 @@ class Invoice
                             ->map(function($item) use ($upload){
                                 return [
                                     ...$item,
-                                    'expense_id' => (int) $upload['expense_id'],
-                                    'type' => $upload['type']
+                                    'expense_id'    => (int) $upload['expense_id'],
+                                    'expense_code'  => $upload['expense_code'],
+                                    'type'          => $upload['type']
                                 ];
                             })
                             ->toArray();
@@ -167,6 +180,8 @@ class Invoice
                 * Document Attachment
                 */
                 self::saveDocumentAttachment($model, $request);
+
+                Queue::push(new DeltaValidation($model));
         
                 return $model;
             });
@@ -206,6 +221,8 @@ class Invoice
                 * Document Attachment
                 */
                 self::saveDocumentAttachment($model, $request);
+
+                Queue::push(new DeltaValidation($model));
 
                 return $model;
             });
@@ -280,6 +297,8 @@ class Invoice
                 */
                 self::deleteDocumentAttachment($this->model, $request);
                 self::saveDocumentAttachment($this->model, $request, true);
+
+                Queue::push(new DeltaValidation($this->model));
 
                 return $this->model;
             });

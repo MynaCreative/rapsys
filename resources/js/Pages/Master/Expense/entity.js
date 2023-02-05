@@ -13,7 +13,7 @@ export default () => {
             type: null,
             coa: null,
             coa_description: null,
-            mandatory_scan: [],
+            mandatory_scan: null,
             description: null,
             excel_file: null,
 
