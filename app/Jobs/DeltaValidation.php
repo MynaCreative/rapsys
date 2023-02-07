@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Approval;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use App\Models\Workflow;
 use App\Repositories\Delta;
 
 class DeltaValidation implements ShouldQueue
@@ -218,8 +220,8 @@ class DeltaValidation implements ShouldQueue
                     'amount' => $amountAfterTax,
                     'validation_score'  => $validation_score,
                     'code'              => implode('-', [
-                        $this->invoice->sbu->code ?? null,
-                        $item->area->code ?? null,
+                        $this->invoice->sbu->coa ?? null,
+                        $item->area->coa ?? null,
                         $item->cost_center ?? null,
                         $item->expense->coa ?? null,
                         '00000',
@@ -244,6 +246,39 @@ class DeltaValidation implements ShouldQueue
             'total_amount_after_tax_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score',5)->get()->sum('amount'),
             'total_amount_after_tax_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score','!=',5)->get()->sum('amount')
         ]);
+
+        if($this->invoice->document_status == 'published'){
+            $this->createApproval($this->invoice);
+        }
+    }
+
+    /**
+     * Create approval
+     */
+    public function createApproval(Invoice $model, $reset = false){
+        $workflows = Workflow::query()
+        ->whereBetween('range_from', [0, $model->total_amount])
+        ->orWhereBetween('range_to', [0, $model->total_amount])
+        ->orderBy('sequence')
+        ->get();
+
+        foreach($workflows as $index => $workflow){
+            $position = null;
+            if ($workflows->first()->id === $workflow->id) {
+                $position = 'first';
+            }
+            if ($workflows->last()->id === $workflow->id) {
+                $position = 'last';
+            }
+            Approval::create([
+                'workflow_id' => $workflow->id,
+                'invoice_id' => $model->id,
+                'user_id' => $workflow->user_id,
+                'current' => $workflows->first()->id === $workflow->id,
+                'position' => $position,
+                'sequence' => $index+1
+            ]);
+        }
     }
 
     public function operationPattern($tracking, $operation_pattern){

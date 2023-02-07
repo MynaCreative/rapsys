@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
                 'department' => optional($request->user())->department,
                 'roles' => $request->user() ? $request->user()->getRoleNames() : null,
                 'permissions' => $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name') : null,
+                'approvals' => $request->user() ? $request->user()->currentApprovals->load('invoice') : [],
             ],
             'url' => [
                 'previous' => url()->previous()

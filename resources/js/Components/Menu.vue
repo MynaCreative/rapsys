@@ -6,14 +6,7 @@
                 <span data-key="t-menu">General</span>
             </li>
             <MenuItem route-name="dashboard" name="Dashboard" icon="ri-home-3-line"/>
-            <!-- <MenuItem route-name="dashboard" name="Approval" icon="ri-mail-line" :permission="$page.props.auth.permissions.includes('approval')"/> -->
-            <li class="nav-item" v-if="$page.props.auth.roles.includes('Administrator') || $page.props.auth.permissions.includes('approval')">
-                <Link class="nav-link menu-link" href="/">
-                    <i class="ri-mail-line"></i>
-                    <span>Approval</span>
-                    <span class="badge badge-pill bg-success">0</span>
-                </Link>
-            </li>
+            <MenuItem route-name="approvals" name="Approval" icon="ri-mail-line" :permission="$page.props.auth.permissions.includes('approval')" :badge="$page.props.auth.approvals.length" :badge-color="$page.props.auth.approvals.length ? 'bg-warning' : 'bg-success'"/>
             <li class="menu-title" v-if="hasAnyPermission([
                 'invoice',
                 'report',

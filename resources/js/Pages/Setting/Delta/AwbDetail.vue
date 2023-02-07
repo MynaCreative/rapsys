@@ -4,6 +4,23 @@ s<template>
         <template #header>
             <PageHeader title="AWB Detail" :breadcrumbs="breadcrumbs" />
         </template>
+        <div class="alert alert-danger alert-dismissible alert-additional shadow fade show" role="alert" v-if="Object.keys($page.props.errors).length">
+            <div class="alert-body">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <i class="ri-error-warning-line fs-16 align-middle"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="alert-heading">Something is wrong!</h5>
+                        <p class="mb-0">{{ $page.props.errors.exception }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="alert-content">
+                <p class="mb-0">{{ $page.props.errors.error }}</p>
+            </div>
+        </div>
         <div class="card">
             <form @submit.prevent="form.get(route(`${page.module}.awb-detail`))" class="search-box">
                 <input type="search" class="form-control search border-0 py-3" v-model="form.code" placeholder="Search AWB code here ..." autofocus>

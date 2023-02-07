@@ -49,6 +49,80 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead class="table-light text-muted">
+                        <tr>
+                            <th class="text-center align-middle" width="40px" rowspan="2">#</th>
+                            <th class="align-middle" rowspan="2">Code</th>
+                            <th class="align-middle" rowspan="2">AWB</th>
+                            <th class="align-middle" rowspan="2">SMU</th>
+                            <th class="align-middle text-end" rowspan="2">Amount</th>
+                            <th class="align-middle text-end" rowspan="2">Weight</th>
+                            <th class="text-center" colspan="25">Validation</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">SMU/AWB</th>
+                            <th class="text-center">Weight</th>
+                            <th class="text-center">Scan Compliance</th>
+                            <th class="text-center">Ops Plan</th>
+                            <th class="text-center">Bill</th>
+                        </tr>
+                    </thead>
+                    <template v-if="form.items && form.items.length > 0">
+                        <tbody>
+                            <tr v-for="(item, index) in form.items" :key="index">
+                                <td>{{ index+1 }}</td>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.awb ?? '--' }}</td>
+                                <td>{{ item.smu ?? '--'}}</td>
+                                <td :class="['text-end', {'bg-soft-danger': form.errors[`items.${index}.amount_smu`] || form.errors[`items.${index}.amount_awb`] }]">
+                                    <template v-if="item.amount_smu">
+                                        {{ item.amount_smu ? item.amount_smu.toLocaleString() : '' }}
+                                    </template>
+                                    <template v-if="item.amount_awb">
+                                        {{ item.amount_awb ? item.amount_awb.toLocaleString() : '' }}
+                                    </template>
+                                </td>
+                                <td :class="['text-end', {'bg-soft-danger': form.errors[`items.${index}.invoice_weight_smu`] || form.errors[`items.${index}.invoice_weight_awb`] }]">
+                                    <template v-if="item.invoice_weight_smu">
+                                        {{ item.invoice_weight_smu ? item.invoice_weight_smu.toLocaleString() : '' }}
+                                    </template>
+                                    <template v-if="item.invoice_weight_awb">
+                                        {{ item.invoice_weight_awb ? item.invoice_weight_awb.toLocaleString() : '' }}
+                                    </template>
+                                </td>
+                                <td class="text-center">
+                                    <i class="ri-check-line text-success" v-if="item.validation_reference"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                                <td class="text-center">
+                                    <i class="ri-check-line text-success" v-if="item.validation_weight"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                                <td class="text-center">
+                                    <i class="ri-check-line text-success" v-if="item.validation_scan_compliance"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                                <td class="text-center">
+                                    <i class="ri-check-line text-success" v-if="item.validation_ops_plan"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                                <td class="text-center">
+                                    <i class="ri-check-line text-success" v-if="item.validation_bill"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </template>
+                    <tbody v-else>
+                        <td colspan="99" class="text-center text-muted">
+                            <em>There are no item in this table</em>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>

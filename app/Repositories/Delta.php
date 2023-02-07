@@ -32,16 +32,17 @@ class Delta
      */
     public static function awbDetail($code)
     {
-        $token = self::token();
-        return Http::withToken($token)
+        $request = [
+            'body' => [
+                'reference_number' => $code,
+                'tracking_status_id' => 'SMU'
+            ]
+        ];
+        $signature = '';
+        return Http::withToken(self::token())
             ->withBody(json_encode([
-                'request'=>[
-                    'body' => [
-                        'reference_number' => $code,
-                        'tracking_status_id' => 'SMU'
-                    ]
-                ],
-                'signature' => ''
+                'request'   => $request,
+                'signature' => $signature
             ]), 'application/json')
             ->get(config('delta.rest.url').'/v3/track/getTrackAwbDetail');
     }
@@ -51,15 +52,16 @@ class Delta
      */
     public static function awbBatch($awb)
     {
-        $token = self::token();
-        return Http::withToken($token)
+        $request = [
+            'body' => [
+                'awb' => $awb,
+            ]
+        ];
+        $signature = '';
+        return Http::withToken(self::token())
             ->withBody(json_encode([
-                'request'=>[
-                    'body' => [
-                        'awb' => $awb,
-                    ]
-                ],
-                'signature' => ''
+                'request'   => $request,
+                'signature' => $signature
             ]), 'application/json')
             ->get(config('delta.rest.url').'/v3/tracking/');
     }
@@ -69,15 +71,16 @@ class Delta
      */
     public static function smu($code)
     {
-        $token = self::token();
-        return Http::withToken($token)
+        $request = [
+            'body' => [
+                'smu_number' => $code
+            ]
+        ];
+        $signature = '';
+        return Http::withToken(self::token())
             ->withBody(json_encode([
-                'request'=>[
-                    'body' => [
-                        'smu_number' => $code
-                    ]
-                ],
-                'signature' => ''
+                'request'   => $request,
+                'signature' => $signature
             ]), 'application/json')
             ->get(config('delta.rest.url').'/v3/track/getSmuDetail');
     }
@@ -112,5 +115,14 @@ class Delta
         }
 
         return session('delta.rest.token');
+    }
+
+    public static function sign($payload) {
+        $signature = '';
+        $pem = storage_path('pem/rapsys.pem');
+        $privateKey = openssl_pkey_get_private($pem);
+        openssl_sign(json_encode($payload), $signature, $privateKey, 'sha256WithRSAEncryption');
+        
+        return $signature;
     }
 }

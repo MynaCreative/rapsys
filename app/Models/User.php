@@ -73,4 +73,20 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+
+    /**
+     * Get the approvals for the user.
+     */
+    public function approvals()
+    {
+        return $this->hasMany(Approval::class);
+    }
+
+    /**
+     * Get the approvals for the user.
+     */
+    public function currentApprovals()
+    {
+        return $this->hasMany(Approval::class)->where('current', true);
+    }
 }

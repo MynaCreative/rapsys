@@ -12,7 +12,9 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import BootstrapVueNext from 'bootstrap-vue-next'
 import {BToastPlugin} from 'bootstrap-vue-next'
 import VueApexCharts from 'vue3-apexcharts'
+
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel'
 
@@ -29,6 +31,7 @@ createInertiaApp({
             .use(BToastPlugin)
             .use(ZiggyVue, Ziggy)
             .use(VueApexCharts)
+        dayjs.extend(relativeTime)
         myApp.config.globalProperties.$dayjs = dayjs
         myApp.mount(el);
         return myApp

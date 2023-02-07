@@ -27,7 +27,13 @@
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bx bx-bell fs-22"></i>
-                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-success">0<span class="visually-hidden">unread messages</span></span>
+                        <span :class="['position-absolute topbar-badge fs-10 translate-middle badge rounded-pill', {
+                            'bg-success': $page.props.auth.approvals.length == 0,
+                            'bg-warning': $page.props.auth.approvals.length > 0
+                        }]">
+                            {{ $page.props.auth.approvals.length }}
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
                         <div class="dropdown-head bg-primary bg-pattern rounded-top">
@@ -47,7 +53,7 @@
                                 <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="false" @click.capture.stop>
-                                            Empty
+                                            {{ $page.props.auth.approvals.length ? $page.props.auth.approvals.length+' Invoices' : 'Empty' }}
                                         </a>
                                     </li>
                                 </ul>
@@ -58,31 +64,31 @@
         
                         <div class="tab-pane fade py-2 ps-2 show active" id="all-noti-tab" role="tabpanel">
                             <SimpleBar data-simplebar style="max-height: 300px" class="pe-2">
-                                <!-- <div class="text-reset notification-item d-block dropdown-item position-relative" v-for="(item,index) in 2" :key="index">
+                                <div class="text-reset notification-item d-block dropdown-item position-relative" v-for="(item,index) in $page.props.auth.approvals" :key="index">
                                     <div class="d-flex">
                                         <div class="avatar-xs me-3">
-                                            <span class="avatar-title bg-soft-danger text-danger rounded-circle fs-16">
-                                                <i class="bx bx-message-square-dots"></i>
+                                            <span class="avatar-title bg-soft-primary text-primary rounded-circle fs-16">
+                                                <i class="ri-newspaper-line"></i>
                                             </span>
                                         </div>
                                         <div class="flex-1">
                                             <a href="#!" class="stretched-link">
                                                 <h6 class="mt-0 mb-2 fs-13 lh-base">
-                                                    Invoice #50000{{ index+1 }}<br>Has been rejected
+                                                    Invoice #{{ item.invoice.invoice_number }}<br>Has been published
                                                 </h6>
                                             </a>
                                             <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
+                                                <span><i class="mdi mdi-clock-outline"></i> {{ $dayjs(item.invoice.created_at).fromNow() }}</span>
                                             </p>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
         
-                                <div class="my-3 text-center">
-                                    <button type="button" class="btn btn-soft-success">
-                                    View All Notifications
-                                    <i class="ri-arrow-right-line align-middle"></i>
-                                    </button>
+                                <div class="my-3 text-center" v-if="$page.props.auth.approvals.length">
+                                    <Link :href="route('approvals')" class="btn btn-soft-success">
+                                        View All Notifications
+                                        <i class="ri-arrow-right-line align-middle"></i>
+                                    </Link>
                                 </div>
                             </SimpleBar>
                         </div>
