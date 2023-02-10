@@ -79,7 +79,7 @@
                                 <td class="cursor-pointer" @click="() => {
                                     currentItem = item
                                     modalDetailVisible = true
-                                }">{{ item.smu ?? '--'}}</td>
+                                }"><a href="#">{{ item.smu ?? '--'}}</a></td>
                                 <td :class="['text-end', {'bg-soft-danger': form.errors[`items.${index}.amount_smu`] || form.errors[`items.${index}.amount_awb`] }]">
                                     <template v-if="item.amount_smu">
                                         {{ item.amount_smu ? item.amount_smu.toLocaleString() : '' }}
@@ -156,7 +156,7 @@ const form = computed({
 const currentItem = ref(null)
 const modalDetailVisible = ref(false)
 
-const validationReferences = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_reference)
+const validationReferences = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_reference)
 const validationReference = {
     count : validationReferences.length ?? 0,
     weight : sumBy(validationReferences, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
@@ -168,19 +168,19 @@ const validationBill = {
     weight : sumBy(validationBills, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
 }
 
-const validationWeights = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_weight)
+const validationWeights = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_weight)
 const validationWeight = {
     count : validationWeights.length ?? 0,
     weight : sumBy(validationWeights, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
 }
 
-const validationScanCompliances = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_scan_compliance)
+const validationScanCompliances = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_scan_compliance)
 const validationScanCompliance = {
     count : validationScanCompliances.length ?? 0,
     weight : sumBy(validationScanCompliances, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
 }
 
-const validationOpsPlans = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_ops_plan)
+const validationOpsPlans = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_ops_plan)
 const validationOpsPlan = {
     count : validationOpsPlans.length ?? 0,
     weight : sumBy(validationOpsPlans, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,

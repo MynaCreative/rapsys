@@ -13,7 +13,8 @@
                     <th class="text-end" width="160">Total SMU Weight (kg)</th>
                     <th class="text-end" width="180">Total All AWB Weight (kg)</th>
                     <th class="text-end" width="130">AWB Weight (kg)</th>
-                    <th class="text-end">Amount Distribution</th>
+                    <th class="text-end">Percentage</th>
+                    <th class="text-end">Amount</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,7 +24,8 @@
                     <td class="text-end">{{ item.invoice_weight_smu }}</td>
                     <td class="text-end">{{ detail.data.tot_weight_all_awb }}</td>
                     <td class="text-end">{{ airwaybill.total_weight_awb }}</td>
-                    <td class="text-end">{{ (item.amount_smu * (airwaybill.total_weight_awb / detail.data.tot_weight_all_awb)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 }) }}</td>
+                    <td class="text-end">{{ ((airwaybill.total_weight_awb / detail.data.tot_weight_all_awb) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                    <td class="text-end">{{ (item.amount_smu * (airwaybill.total_weight_awb / detail.data.tot_weight_all_awb)).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</td>
                 </tr>
             </tbody>
         </table>
