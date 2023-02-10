@@ -26,6 +26,7 @@ class InvoiceItem extends Model
         'code',
         'type',
         'expense_code',
+        'expense_coa',
         'awb',
         'smu',
         'route',
@@ -34,6 +35,7 @@ class InvoiceItem extends Model
         'date_smu',
         'date_awb',
 
+        'sales_channel_id',
         'invoice_id',
         'expense_id',
         'product_id',
@@ -146,6 +148,14 @@ class InvoiceItem extends Model
     public function withholding()
     {
         return $this->belongsTo(Withholding::class);
+    }
+
+    /**
+     * Get the sales channel tax that owns the invoice item.
+     */
+    public function salesChannel()
+    {
+        return $this->belongsTo(SalesChannel::class);
     }
 
     /**

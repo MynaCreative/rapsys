@@ -64,12 +64,15 @@ const initialItem = () => ({
     area: null,
     product_id: null,
     product: null,
+    sales_channel_id: null,
+    sales_channel: null,
     date_smu: null,
     date_awb: null,
     is_manual: true,
     expense_id: 1,
     type: null,
     expense_code: 'MNL',
+    expense_coa: null,
 })
 
 let item = {...initialItem()}

@@ -15,6 +15,8 @@ export default () => {
             invoice_number:null,
             supplier_tax_invoice:null,
             supplier_tax_invoice_date:null,
+            department_id: null,
+            department: null,
             sbu_id: null,
             sbu: null,
             invoice_type_id: null,

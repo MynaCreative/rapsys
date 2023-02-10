@@ -15,12 +15,11 @@
                     <th>SMU</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Weight</th>
+                    <th>Expense COA</th>
                     <th>Withholding</th>
                     <th>Tax</th>
-                    <th>Cost Center</th>
                     <th>Area</th>
                     <th>Product / Project</th>
-                    <th>Route</th>
                 </tr>
             </thead>
             <template v-if="form.items && form.items.length > 0 && form.items.filter((item) => item.is_manual).length > 0">

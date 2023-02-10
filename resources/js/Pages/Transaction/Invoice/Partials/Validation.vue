@@ -21,6 +21,13 @@
                     </tr>
                     <tr>
                         <td>Pickup</td>
+                        <td>Validation Bill</td>
+                        <td>Already Billed</td>
+                        <td class="text-end">{{ validationBill.count.toLocaleString() }}</td>
+                        <td class="text-end">{{ validationBill.weight.toLocaleString() }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pickup</td>
                         <td>Validation Weight SMU/AWB</td>
                         <td>Weight Not Match</td>
                         <td class="text-end">{{ validationWeight.count.toLocaleString() }}</td>
@@ -40,13 +47,6 @@
                         <td class="text-end">{{ validationOpsPlan.count.toLocaleString() }}</td>
                         <td class="text-end">{{ validationOpsPlan.weight.toLocaleString() }}</td>
                     </tr>
-                    <tr>
-                        <td>Pickup</td>
-                        <td>Validation Bill</td>
-                        <td>Already Billed</td>
-                        <td class="text-end">{{ validationBill.count.toLocaleString() }}</td>
-                        <td class="text-end">{{ validationBill.weight.toLocaleString() }}</td>
-                    </tr>
                 </tbody>
             </table>
 
@@ -64,10 +64,10 @@
                         </tr>
                         <tr>
                             <th class="text-center">SMU/AWB</th>
+                            <th class="text-center">Bill</th>
                             <th class="text-center">Weight</th>
                             <th class="text-center">Scan Compliance</th>
                             <th class="text-center">Ops Plan</th>
-                            <th class="text-center">Bill</th>
                         </tr>
                     </thead>
                     <template v-if="form.items && form.items.length > 0">
@@ -76,7 +76,10 @@
                                 <td>{{ index+1 }}</td>
                                 <td>{{ item.code }}</td>
                                 <td>{{ item.awb ?? '--' }}</td>
-                                <td>{{ item.smu ?? '--'}}</td>
+                                <td class="cursor-pointer" @click="() => {
+                                    currentItem = item
+                                    modalDetailVisible = true
+                                }">{{ item.smu ?? '--'}}</td>
                                 <td :class="['text-end', {'bg-soft-danger': form.errors[`items.${index}.amount_smu`] || form.errors[`items.${index}.amount_awb`] }]">
                                     <template v-if="item.amount_smu">
                                         {{ item.amount_smu ? item.amount_smu.toLocaleString() : '' }}
@@ -98,6 +101,10 @@
                                     <i class="ri-close-line text-danger" v-else></i>
                                 </td>
                                 <td class="text-center">
+                                    <i class="ri-check-line text-success" v-if="item.validation_bill"></i>
+                                    <i class="ri-close-line text-danger" v-else></i>
+                                </td>
+                                <td class="text-center">
                                     <i class="ri-check-line text-success" v-if="item.validation_weight"></i>
                                     <i class="ri-close-line text-danger" v-else></i>
                                 </td>
@@ -107,10 +114,6 @@
                                 </td>
                                 <td class="text-center">
                                     <i class="ri-check-line text-success" v-if="item.validation_ops_plan"></i>
-                                    <i class="ri-close-line text-danger" v-else></i>
-                                </td>
-                                <td class="text-center">
-                                    <i class="ri-check-line text-success" v-if="item.validation_bill"></i>
                                     <i class="ri-close-line text-danger" v-else></i>
                                 </td>
                             </tr>
@@ -125,9 +128,18 @@
             </div>
         </div>
     </div>
+    <ModalDetail
+        :show="modalDetailVisible"
+        @update:show="modalDetailVisible = $event"
+        :item="currentItem"
+        @update:item="currentItem = $event"
+    />
 </template>
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+import sumBy from 'lodash/sumBy'
+
+import ModalDetail from '../Modals/SmuPreview.vue'
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
@@ -141,33 +153,36 @@ const form = computed({
     },
 })
 
-const validationReferences = form.value.items.filter((item) => item.validation_reference)
+const currentItem = ref(null)
+const modalDetailVisible = ref(false)
+
+const validationReferences = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_reference)
 const validationReference = {
     count : validationReferences.length ?? 0,
-    weight : validationReferences.length ?? 0,
+    weight : sumBy(validationReferences, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
 }
 
-const validationWeights = form.value.items.filter((item) => item.validation_weight)
-const validationWeight = {
-    count : validationWeights.length ?? 0,
-    weight : validationWeights.length ?? 0,
-}
-
-const validationScanCompliances = form.value.items.filter((item) => item.validation_scan_compliance)
-const validationScanCompliance = {
-    count : validationScanCompliances.length ?? 0,
-    weight : validationScanCompliances.length ?? 0,
-}
-
-const validationOpsPlans = form.value.items.filter((item) => item.validation_ops_plan)
-const validationOpsPlan = {
-    count : validationOpsPlans.length ?? 0,
-    weight : validationOpsPlans.length ?? 0,
-}
-
-const validationBills = form.value.items.filter((item) => item.validation_bill)
+const validationBills = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_bill)
 const validationBill = {
     count : validationBills.length ?? 0,
-    weight : validationBills.length ?? 0,
+    weight : sumBy(validationBills, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+}
+
+const validationWeights = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_weight)
+const validationWeight = {
+    count : validationWeights.length ?? 0,
+    weight : sumBy(validationWeights, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+}
+
+const validationScanCompliances = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_scan_compliance)
+const validationScanCompliance = {
+    count : validationScanCompliances.length ?? 0,
+    weight : sumBy(validationScanCompliances, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+}
+
+const validationOpsPlans = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_ops_plan)
+const validationOpsPlan = {
+    count : validationOpsPlans.length ?? 0,
+    weight : sumBy(validationOpsPlans, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
 }
 </script>

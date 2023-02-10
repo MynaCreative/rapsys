@@ -10,6 +10,7 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Expense;
 use App\Models\Withholding;
+use App\Models\SalesChannel;
 
 return new class extends Migration
 {
@@ -27,6 +28,7 @@ return new class extends Migration
 
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
+            $table->foreignIdFor(SalesChannel::class)->nullable()->constrained();
             $table->foreignIdFor(Product::class)->nullable()->constrained();
             $table->foreignIdFor(Area::class)->nullable()->constrained();
             $table->foreignIdFor(Tax::class)->nullable()->constrained();
@@ -35,6 +37,7 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->string('type')->nullable();
             $table->string('expense_code')->nullable();
+            $table->string('expense_coa')->nullable();
             $table->string('awb')->nullable();
             $table->string('smu')->nullable();
             $table->string('route')->nullable();
@@ -60,10 +63,10 @@ return new class extends Migration
             $table->boolean('is_validated')->default(false);
 
             $table->boolean('validation_reference')->nullable()->default(false);
+            $table->boolean('validation_bill')->nullable()->default(false);
             $table->boolean('validation_weight')->nullable()->default(false);
             $table->boolean('validation_scan_compliance')->nullable()->default(false);
             $table->boolean('validation_ops_plan')->nullable()->default(false);
-            $table->boolean('validation_bill')->nullable()->default(false);
             $table->integer('validation_score')->nullable()->default(0);
 
             $table->json('message')->nullable();

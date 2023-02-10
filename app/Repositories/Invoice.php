@@ -23,6 +23,7 @@ use App\Models\Expense;
 use App\Models\Interco;
 use App\Models\InvoiceType;
 use App\Models\Product;
+use App\Models\SalesChannel;
 use App\Models\Sbu;
 use App\Models\Tax;
 use App\Models\Term;
@@ -316,13 +317,23 @@ class Invoice
         $model = $this->model->load([
             'createdUser:id,name',
             'updatedUser:id,name',
+            'department:id,name',
             'attachments',
             'items' => function($query){
-                $query->with(['withholding','tax','area','product']);
+                $query->with(['withholding','tax','area','product','salesChannel']);
             },
         ]);
         $model->uploads = [];
         return $model;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return Model
+     */
+    public static function smuPreview($code) {
+        return Delta::smu($code);
     }
 
     /**
@@ -377,6 +388,7 @@ class Invoice
             'departments' => Department::select('id','name')->get(),
             'taxes' => Tax::select('id','name')->get(),
             'withholdings' => Withholding::select('id','name')->get(),
+            'sales_channels' => SalesChannel::select('id','name')->get(),
         ];
     }
 

@@ -141,6 +141,27 @@ class InvoiceController extends Controller
 
     /**
      * 
+     * SMU Preview.
+     *
+     * @param   Request  $request
+     * 
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function smuPreview($code)
+    {
+        try {
+            return $this->repository::smuPreview($code);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * 
      * Import resource.
      *
      * @param   ImportRequest  $request

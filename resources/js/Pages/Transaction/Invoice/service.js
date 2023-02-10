@@ -13,6 +13,10 @@ export default {
             form[field] = fields[field]
         })
     },
+    async smuPreview (code) {
+        const { data : fields } = await axios.get(route(`${page.module}.${page.name}.smu-preview`, code))
+        return fields
+    },
     saveData(form, status){
         let method = form.id ? 'patch' : 'post'
         let action = route(`${page.module}.${page.name}.save`)

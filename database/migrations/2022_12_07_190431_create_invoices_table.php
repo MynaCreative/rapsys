@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Models\InvoiceType;
+use App\Models\Department;
 use App\Models\Currency;
 use App\Models\Interco;
 use App\Models\Vendor;
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->uuid('uuid')->nullable();
 
             $table->foreignIdFor(InvoiceType::class)->nullable()->constrained();
+            $table->foreignIdFor(Department::class)->nullable()->constrained();
             $table->foreignIdFor(Currency::class)->nullable()->constrained();
             $table->foreignIdFor(Interco::class)->nullable()->constrained();
             $table->foreignIdFor(Vendor::class)->nullable()->constrained();

@@ -1,29 +1,38 @@
 <template>
     <div class="card-body">
         <div class="row g-4 mb-4">
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
+                <label for="department" class="form-label required">Department</label>
+                <Multiselect id="department" v-model="form.department" :class="{'is-invalid' : form.errors.department_id }"
+                    @select="(option) => form.department_id = option.id" @clear="() => form.department_id = null" :object="true" label="name" valueProp="id"
+                    aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
+                <b-form-invalid-feedback id="input-department-feedback" v-html="form.errors.department_id"/>
+            </div>
+            <div class="col-md-6 col-lg-4">
                 <label for="sbu" class="form-label required">SBU</label>
                 <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }"
                     aria-describedby="input-sbu-feedback" :options="references.sbus" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-sbu-feedback" v-html="form.errors.sbu_id"/>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
+                <label for="interco" class="form-label required">Interco</label>
+                <Multiselect id="interco" v-model="form.interco_id" :class="{'is-invalid' : form.errors.interco_id }"
+                    aria-describedby="input-interco-feedback" :options="references.intercos" placeholder="Select data"></Multiselect>
+                <b-form-invalid-feedback id="input-interco-feedback" v-html="form.errors.interco_id"/>
+            </div>
+        </div>
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-4">
                 <label for="invoice_type" class="form-label required">Invoice Type</label>
                 <Multiselect id="invoice_type" v-model="form.invoice_type_id" :class="{'is-invalid' : form.errors.invoice_type_id }"
                     aria-describedby="input-invoice_type-feedback" :options="references.invoice_types" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-invoice_type-feedback" v-html="form.errors.invoice_type_id"/>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-4">
                 <label for="currency" class="form-label required">Currency</label>
                 <Multiselect id="currency" v-model="form.currency_id" :class="{'is-invalid' : form.errors.currency_id }"
                     aria-describedby="input-currency-feedback" :options="references.currencies" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-currency-feedback" v-html="form.errors.currency_id"/>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <label for="interco" class="form-label required">Interco</label>
-                <Multiselect id="interco" v-model="form.interco_id" :class="{'is-invalid' : form.errors.interco_id }"
-                    aria-describedby="input-interco-feedback" :options="references.intercos" placeholder="Select data"></Multiselect>
-                <b-form-invalid-feedback id="input-interco-feedback" v-html="form.errors.interco_id"/>
             </div>
         </div>
         <hr>

@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\Approval;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,9 +9,14 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-use App\Models\Invoice;
+use App\Models\SalesChannel;
 use App\Models\InvoiceItem;
 use App\Models\Workflow;
+use App\Models\Approval;
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\Area;
+
 use App\Repositories\Delta;
 
 class DeltaValidation implements ShouldQueue
@@ -46,58 +50,58 @@ class DeltaValidation implements ShouldQueue
         if($this->invoice->items){
             foreach($this->invoice->items as $item){
                 if($item->expense_code == 'MNL'){
-                    if($item->type == 'AWB'){
-                        $delta = Delta::awbDetail($item->awb);
+                    // if($item->type == 'AWB'){
+                    //     $delta = Delta::awbDetail($item->awb);
 
-                        $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
-                        if($validationReference){
-                            $item->update([
-                                'validation_reference' => $validationReference,
-                                'is_validated' => true,
-                            ]);
+                    //     $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
+                    //     if($validationReference){
+                    //         $item->update([
+                    //             'validation_reference' => $validationReference,
+                    //             'is_validated' => true,
+                    //         ]);
 
-                            $validationWeight = $delta['data'][0]['tot_weight'] == $item->invoice_weight_awb ? true : false;
-                            $item->update([
-                                'delta_weight_awb' => $delta['data'][0]['tot_weight'],
-                            ]);
+                    //         $validationWeight = $delta['data'][0]['tot_weight'] == $item->invoice_weight_awb ? true : false;
+                    //         $item->update([
+                    //             'delta_weight_awb' => $delta['data'][0]['tot_weight'],
+                    //         ]);
 
-                            if($validationWeight){
-                                $item->update([
-                                    'validation_weight' => $validationWeight,
-                                    'validation_scan_compliance' => true,
-                                    'validation_ops_plan' => true,
-                                    'validation_bill' => true,
-                                    'is_validated' => true,
-                                ]);
-                            }
-                        }
-                    }
-                    if($item->type == 'SMU'){
-                        $delta = Delta::smu($item->smu);
+                    //         if($validationWeight){
+                    //             $item->update([
+                    //                 'validation_weight' => $validationWeight,
+                    //                 'validation_scan_compliance' => true,
+                    //                 'validation_ops_plan' => true,
+                    //                 'validation_bill' => true,
+                    //                 'is_validated' => true,
+                    //             ]);
+                    //         }
+                    //     }
+                    // }
+                    // if($item->type == 'SMU'){
+                    //     $delta = Delta::smu($item->smu);
 
-                        $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
-                        if($validationReference){
-                            $item->update([
-                                'validation_reference' => $validationReference,
-                                'is_validated' => true,
-                            ]);
+                    //     $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
+                    //     if($validationReference){
+                    //         $item->update([
+                    //             'validation_reference' => $validationReference,
+                    //             'is_validated' => true,
+                    //         ]);
 
-                            $validationWeight = $delta['data']['total_weight_smu'] == $item->invoice_weight_smu ? true : false;
-                            $item->update([
-                                'delta_weight_smu' => $delta['data']['total_weight_smu'],
-                            ]);
+                    //         $validationWeight = $delta['data']['total_weight_smu'] == $item->invoice_weight_smu ? true : false;
+                    //         $item->update([
+                    //             'delta_weight_smu' => $delta['data']['total_weight_smu'],
+                    //         ]);
 
-                            if($validationWeight){
-                                $item->update([
-                                    'validation_weight' => $validationWeight,
-                                    'validation_scan_compliance' => true,
-                                    'validation_ops_plan' => true,
-                                    'validation_bill' => true,
-                                    'is_validated' => true,
-                                ]);
-                            }
-                        }
-                    }
+                    //         if($validationWeight){
+                    //             $item->update([
+                    //                 'validation_weight' => $validationWeight,
+                    //                 'validation_scan_compliance' => true,
+                    //                 'validation_ops_plan' => true,
+                    //                 'validation_bill' => true,
+                    //                 'is_validated' => true,
+                    //             ]);
+                    //         }
+                    //     }
+                    // }
                 }else{
                     if($item->type == 'AWB'){
                         $delta = Delta::awbDetail($item->awb);
@@ -105,41 +109,50 @@ class DeltaValidation implements ShouldQueue
                         $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
                         if($validationReference){
                             $item->update([
+                                'area_id' => $this->getArea($delta['data'][0]['origin']),
+                                'sales_channel_id' => $this->getSalesChannel($delta['data'][0]['sales_channel']),
+                                'product_id' => $this->getProduct($delta['data'][0]['service_type_id']),
                                 'validation_reference' => $validationReference,
                                 'is_validated' => true,
                             ]);
 
-                            $validationWeight = $delta['data'][0]['tot_weight'] == $item->invoice_weight_awb ? true : false;
-                            $item->update([
-                                'delta_weight_awb' => $delta['data'][0]['tot_weight'],
-                            ]);
-
-                            if($validationWeight){
+                            $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->awb, 'awb');
+                            if(!$validationBillExist){
                                 $item->update([
-                                    'validation_weight' => $validationWeight,
+                                    'validation_bill' => !$validationBillExist,
                                     'is_validated' => true,
                                 ]);
 
-                                if($item->expense->mandatory_scan){
-                                    $deltaBatch = Delta::awbBatch([$item->awb]);
-                                    $tracking = array_column($deltaBatch['data']['tracking'], 'tracking_id');
-                                    $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
-                                    if($referenceMandatoryScan){
+                                $validationWeight = $delta['data'][0]['tot_weight'] == $item->invoice_weight_awb ? true : false;
+                                $item->update([
+                                    'delta_weight_awb' => $delta['data'][0]['tot_weight'],
+                                ]);
+    
+                                if($validationWeight){
+                                    $item->update([
+                                        'validation_weight' => $validationWeight,
+                                        'is_validated' => true,
+                                    ]);
+    
+                                    if($item->expense->mandatory_scan){
+                                        $deltaBatch = Delta::awbBatch([$item->awb]);
+                                        $tracking = array_column($deltaBatch['data']['tracking'], 'tracking_id');
+                                        $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                                        if($referenceMandatoryScan){
+                                            $item->update([
+                                                'validation_scan_compliance' => $referenceMandatoryScan,
+                                                'validation_ops_plan' => true,
+                                                'is_validated' => true,
+                                            ]);
+                                        }
+                                    }else{
                                         $item->update([
-                                            'validation_scan_compliance' => $referenceMandatoryScan,
+                                            'validation_weight' => $validationWeight,
+                                            'validation_scan_compliance' => true,
                                             'validation_ops_plan' => true,
-                                            'validation_bill' => true,
                                             'is_validated' => true,
                                         ]);
                                     }
-                                }else{
-                                    $item->update([
-                                        'validation_weight' => $validationWeight,
-                                        'validation_scan_compliance' => true,
-                                        'validation_ops_plan' => true,
-                                        'validation_bill' => true,
-                                        'is_validated' => true,
-                                    ]);
                                 }
                             }
                         }
@@ -149,46 +162,63 @@ class DeltaValidation implements ShouldQueue
 
                         $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
                         if($validationReference){
+                            $awb = Delta::awbDetail($delta['data']['airwaybill'][0]['awb']);
                             $item->update([
+                                'area_id' => $this->getArea($awb['data'][0]['origin']),
+                                'sales_channel_id' => $this->getSalesChannel($awb['data'][0]['sales_channel']),
+                                'product_id' => $this->getProduct($awb['data'][0]['service_type_id']),
                                 'validation_reference' => $validationReference,
                                 'is_validated' => true,
                             ]);
 
-                            $validationWeight = $delta['data']['total_weight_smu'] == $item->invoice_weight_smu ? true : false;
-                            $item->update([
-                                'delta_weight_smu' => $delta['data']['total_weight_smu'],
-                            ]);
-
-                            if($validationWeight){
+                            $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->smu, 'smu');
+                            if(!$validationBillExist){
                                 $item->update([
-                                    'validation_weight' => $validationWeight,
+                                    'validation_bill' => !$validationBillExist,
                                     'is_validated' => true,
                                 ]);
 
-                                if($item->expense->mandatory_scan){
-                                    $awb = array_column($delta['data']['airwaybill'], 'awb');
-                                    $deltaBatch = Delta::awbBatch($awb);
-                                    $tracking = array_reduce($deltaBatch['data'], function ($carry, $item) {
-                                        return array_merge($carry, array_column($item['tracking'], 'tracking_id'));
-                                    }, []);
-                                    $tracking = array_column(array_unique($tracking), 'tracking_id');
-                                    $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
-                                    if($referenceMandatoryScan){
+                                $validationWeight = $delta['data']['total_weight_smu'] == $item->invoice_weight_smu ? true : false;
+                                $item->update([
+                                    'delta_weight_smu' => $delta['data']['total_weight_smu'],
+                                ]);
+    
+                                if($validationWeight){
+                                    $item->update([
+                                        'validation_weight' => $validationWeight,
+                                        'is_validated' => true,
+                                    ]);
+    
+                                    if($item->expense->mandatory_scan){
+                                        $awb = array_column($delta['data']['airwaybill'], 'awb');
+                                        $deltaBatch = Delta::awbBatch($awb);
+                                        /** Grouping Chek */
+                                        // $tracking = array_reduce($deltaBatch['data'], function ($carry, $item) {
+                                        //     return array_merge($carry, array_column($item['tracking'], 'tracking_id'));
+                                        // }, []);
+                                        // $tracking = array_column(array_unique($tracking), 'tracking_id');
+                                        // $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                                        $mandatoryScans = [];
+                                        foreach($deltaBatch['data'] as $perBatch){
+                                            $tracking = array_unique(array_column($perBatch['tracking'], 'tracking_id'));
+                                            $mandatoryScans[] = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                                        }
+                                        $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
+                                        if($referenceMandatoryScan){
+                                            $item->update([
+                                                'validation_scan_compliance' => $referenceMandatoryScan,
+                                                'validation_ops_plan' => true,
+                                                'is_validated' => true,
+                                            ]);
+                                        }
+                                    }else{
                                         $item->update([
-                                            'validation_scan_compliance' => $referenceMandatoryScan,
+                                            'validation_weight' => $validationWeight,
+                                            'validation_scan_compliance' => true,
                                             'validation_ops_plan' => true,
-                                            'validation_bill' => true,
                                             'is_validated' => true,
                                         ]);
                                     }
-                                }else{
-                                    $item->update([
-                                        'validation_weight' => $validationWeight,
-                                        'validation_scan_compliance' => true,
-                                        'validation_ops_plan' => true,
-                                        'validation_bill' => true,
-                                        'is_validated' => true,
-                                    ]);
                                 }
                             }
                         }
@@ -222,9 +252,9 @@ class DeltaValidation implements ShouldQueue
                     'code'              => implode('-', [
                         $this->invoice->sbu->coa ?? null,
                         $item->area->coa ?? null,
-                        $item->cost_center ?? null,
-                        $item->expense->coa ?? null,
-                        '00000',
+                        $this->invoice->department->cost_center ?? null,
+                        $item->expense->coa ?? $item->expense_coa,
+                        $item->salesChannel->coa ?? null,
                         $item->product->coa ?? null,
                         $this->invoice->interco->coa ?? null,
                         '0000',
@@ -279,6 +309,26 @@ class DeltaValidation implements ShouldQueue
                 'sequence' => $index+1
             ]);
         }
+    }
+
+    public function validationBill($id, $expense, $code, $type){
+        return false;
+        // return InvoiceItem::where('id','!=',$id)
+        //     ->where('expense_id', $expense)
+        //     ->where($type, $code)
+        //     ->exists();
+    }
+
+    public function getSalesChannel($code){
+        return SalesChannel::where('code', $code)->value('id');
+    }
+
+    public function getArea($code){
+        return Area::where('code', $code)->value('id');
+    }
+
+    public function getProduct($code){
+        return Product::where('code', $code)->value('id');
     }
 
     public function operationPattern($tracking, $operation_pattern){

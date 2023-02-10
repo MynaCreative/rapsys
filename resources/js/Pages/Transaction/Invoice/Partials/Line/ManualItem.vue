@@ -22,12 +22,11 @@
                 {{ item.invoice_weight_awb ? item.invoice_weight_awb.toLocaleString() : '' }}
             </template>
         </td>
+        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.expense_coa`] }]">{{ item.expense_coa ?? ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.withholding_id`] }]">{{ item.withholding ? item.withholding?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.tax_id`] }]">{{ item.tax ? item.tax?.name : ''  }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.cost_center`] }]">{{ item.cost_center ?? ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.area_id`] }]">{{ item.area ? item.area?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.product_id`] }]">{{ item.area ? item.product?.name : ''  }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.route`] }]">{{ item.route }}</td>
     </tr>
     <ManualUpdate
         :show="modalFormVisible"

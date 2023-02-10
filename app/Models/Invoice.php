@@ -37,6 +37,7 @@ class Invoice extends Model
         'code',
 
         'invoice_type_id',
+        'department_id',
         'currency_id',
         'interco_id',
         'vendor_id',
@@ -110,6 +111,14 @@ class Invoice extends Model
                 ->where('TABLE_NAME', (new self)->getTable())
                 ->value('id');
         $this->attributes['code'] = 'INV'.sprintf('%06d', $id);
+    }
+
+    /**
+     * Get the department tax that owns the invoice item.
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     /**

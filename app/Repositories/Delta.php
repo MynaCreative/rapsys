@@ -132,6 +132,6 @@ class Delta
         $privateKey = openssl_pkey_get_private(file_get_contents($pem));
         openssl_sign(json_encode($payload), $signature, $privateKey, 'sha256WithRSAEncryption');
         
-        return $signature;
+        return base64_encode($signature);
     }
 }

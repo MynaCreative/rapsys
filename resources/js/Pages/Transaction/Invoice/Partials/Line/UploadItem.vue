@@ -21,12 +21,10 @@
         </td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.withholding_id`] }]">{{ item.withholding ? item.withholding?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.tax_id`] }]">{{ item.tax ? item.tax?.name : ''  }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.cost_center`] }]">{{ item.cost_center ?? ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.area_id`] }]">{{ item.area ? item.area?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.product_id`] }]">{{ item.area ? item.product?.name : ''  }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.route`] }]">{{ item.route }}</td>
     </tr>
-    <ManualUpdate
+    <UploadUpdate
         :show="modalFormVisible"
         @update:show="modalFormVisible = $event"
         :formData="form"
@@ -38,7 +36,7 @@
 </template>
 <script setup>
 import { computed, ref } from 'vue'
-import ManualUpdate from './ManualUpdate.vue'
+import UploadUpdate from './UploadUpdate.vue'
 
 const props = defineProps(['formData','itemData','references','index','type'])
 const emit  = defineEmits(['update:formData','update:itemData'])
