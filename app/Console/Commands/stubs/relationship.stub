@@ -1,0 +1,4 @@
+    public function {{relationType}}({{relatedModel}}::class)
+    {
+        return $this->{{relationType}}('{{relatedModel}}', '{{relatedColumn}}', '{{primaryColumn}}');
+    }
