@@ -17,7 +17,7 @@ return new class extends Migration
             $table->boolean('login_successful')->default(false);
             $table->timestamp('logout_at')->nullable();
             $table->boolean('cleared_by_user')->default(false);
-            $table->json('location')->nullable();
+            $table->text('location')->nullable();
         });
     }
 };

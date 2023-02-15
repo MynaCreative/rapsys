@@ -54,7 +54,7 @@ return new class extends Migration
             $table->decimal('total_amount_after_tax_valid',20,4)->nullable()->default(0);
             $table->decimal('total_amount_after_tax_invalid',20,4)->nullable()->default(0);
 
-            $table->json('expenses')->nullable();
+            $table->text('expenses')->nullable();
 
             /** Standard Header Status **/
             $table->string('document_status')->default('draft')->nullable();

@@ -69,7 +69,7 @@ return new class extends Migration
             $table->boolean('validation_ops_plan')->nullable()->default(false);
             $table->integer('validation_score')->nullable()->default(0);
 
-            $table->json('message')->nullable();
+            $table->text('message')->nullable();
 
             /** Standard Item Timestamp **/
             $table->unsignedBigInteger('created_by')->nullable();
