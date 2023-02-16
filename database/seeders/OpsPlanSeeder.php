@@ -27,7 +27,7 @@ class OpsPlanSeeder extends Seeder
         // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_ndp.xlsx'));
         // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_phw.xlsx'));
         // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psc.xlsx'));
-        // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psm.xlsx'));
+        Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psm.xlsx'));
         // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_psn.xlsx'));
         // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_pss.xlsx'));
         // Excel::import(new OpsPlanImport, storage_path('imports/ops_plan_sdp.xlsx'));
