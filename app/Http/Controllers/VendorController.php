@@ -86,6 +86,30 @@ class VendorController extends Controller
      * @return  ApiResponse
      * @throws  Throwable
      */
+    public function synchronize()
+    {
+        try {
+            $this->repository::synchronize();
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+
+        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+            ->with('success', __('messages.success.update'));
+    }
+
+    /**
+     * 
+     * Store a newly created resource.
+     *
+     * @param   StoreRequest  $request
+     * 
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
     public function store(StoreRequest $request)
     {
         try {

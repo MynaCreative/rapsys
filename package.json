@@ -9,7 +9,7 @@
         "@vueform/multiselect": "2.3.1",
         "@vueform/slider": "2.0.8",
         "@zhuowenli/vue-feather-icons": "^5.0.2",
-        "apexcharts": "^3.37.1",
+        "apexcharts": "^3.37.2",
         "axios": "^1.3.4",
         "bootstrap": "^5.2.3",
         "bootstrap-vue-next": "^0.6.7",
@@ -20,8 +20,8 @@
         "simplebar": "5.3.8",
         "simplebar-vue3": "^0.2.0",
         "sweetalert2": "^11.7.3",
-        "terser": "^5.16.5",
-        "v-money3": "^3.23.0",
+        "terser": "^5.16.6",
+        "v-money3": "^3.24.0",
         "vue3-apexcharts": "^1.4.1",
         "vue3-count-to": "^1.1.2"
     },
@@ -29,8 +29,8 @@
         "@popperjs/core": "^2.11.6",
         "@vitejs/plugin-vue": "^3.2.0",
         "laravel-vite-plugin": "^0.7.4",
-        "sass": "^1.58.3",
-        "unplugin-vue-components": "^0.24.0",
+        "sass": "^1.59.3",
+        "unplugin-vue-components": "^0.24.1",
         "vite": "^3.2.5",
         "vue": "3.2.45"
     }

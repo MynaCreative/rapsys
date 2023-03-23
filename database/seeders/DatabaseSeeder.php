@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
                 $this->call(SbuSeeder::class);
                 $this->call(TaxSeeder::class);
                 $this->call(AreaSeeder::class);
-                $this->call(SiteSeeder::class);
                 $this->call(TermSeeder::class);
                 $this->call(IntercoSeeder::class);
                 $this->call(ExpenseSeeder::class);

@@ -9,6 +9,7 @@ use App\Models\Department;
 use App\Models\Currency;
 use App\Models\Interco;
 use App\Models\Vendor;
+use App\Models\VendorSite;
 use App\Models\Term;
 use App\Models\Sbu;
 
@@ -29,9 +30,13 @@ return new class extends Migration
             $table->foreignIdFor(Department::class)->nullable()->constrained();
             $table->foreignIdFor(Currency::class)->nullable()->constrained();
             $table->foreignIdFor(Interco::class)->nullable()->constrained();
-            $table->foreignIdFor(Vendor::class)->nullable()->constrained();
+            // $table->foreignIdFor(Vendor::class)->nullable()->constrained();
+            // $table->foreignIdFor(VendorSite::class)->nullable()->constrained();
             $table->foreignIdFor(Term::class)->nullable()->constrained();
             $table->foreignIdFor(Sbu::class)->nullable()->constrained();
+
+            $table->bigInteger('vendor_id')->unsigned();
+            $table->bigInteger('vendor_site_id')->unsigned();
 
             $table->string('code')->unique();
             $table->string('invoice_number')->nullable();

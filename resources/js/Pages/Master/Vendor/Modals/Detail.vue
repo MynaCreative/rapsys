@@ -16,8 +16,14 @@
                     <td colspan="3">{{ form.name }}</td>
                 </tr>
                 <tr>
-                    <td class="text-muted table-light">Site</td>
-                    <td colspan="3">{{ form.site?.name }}</td>
+                    <td class="text-muted table-light">Type</td>
+                    <td colspan="3">{{ form.type }}</td>
+                </tr>
+                <tr>
+                    <td class="text-muted table-light">Sites</td>
+                    <td colspan="3">
+                        <b-badge variant="light" class="rounded-pill mx-1" v-for="item,index in form.sites" :key="index">{{ item.name }} - {{ item.code }}</b-badge>
+                    </td>
                 </tr>
                 <tr>
                     <td class="text-muted table-light">SBU</td>

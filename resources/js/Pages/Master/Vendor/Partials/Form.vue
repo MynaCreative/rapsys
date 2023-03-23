@@ -15,10 +15,10 @@
             <b-form-invalid-feedback id="input-name-feedback" v-html="form.errors.name"/>
         </div>
         <div class="col-lg-12">
-            <label for="site" class="form-label">Site</label>
-            <Multiselect id="site" v-model="form.site_id" :class="{'is-invalid' : form.errors.site_id }"
+            <label for="site" class="form-label">Sites</label>
+            <Multiselect id="site" v-model="form.sites" :class="{'is-invalid' : form.errors.sites }"
                 aria-describedby="input-site-feedback" :options="references.sites" placeholder="Select data"></Multiselect>
-            <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.site_id"/>
+            <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.sites"/>
         </div>
         <div class="col-lg-12">
             <label for="sbu" class="form-label">SBU</label>

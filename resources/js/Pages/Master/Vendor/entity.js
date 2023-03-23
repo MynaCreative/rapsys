@@ -7,7 +7,6 @@ export default () => {
         },
         form: {
             id: null,
-            site_id: null,
             sbu_id: null,
             code: null,
             name: null,
@@ -18,6 +17,8 @@ export default () => {
             updated_at: null,
             created_user: null,
             updated_user: null,
+
+            sites: []
         }
     }
 }

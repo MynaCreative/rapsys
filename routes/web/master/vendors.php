@@ -11,6 +11,7 @@ Route::name("{$module}.")->prefix($module)
 ->group(function () use ($endpoint, $modelBinding){
     Route::match(['post','put'], $endpoint.'/save', [CurrentController::class, 'save'])->name($endpoint.'.save');
     Route::post("{$endpoint}/import", [CurrentController::class, 'import'])->name($endpoint.'.import');
+    Route::post("{$endpoint}/synchronize", [CurrentController::class, 'synchronize'])->name($endpoint.'.synchronize');
     Route::get("{$endpoint}/import-sample", [CurrentController::class, 'importSample'])->name($endpoint.'.import-sample');
     Route::delete("{$endpoint}/{{$modelBinding}}/restore", [CurrentController::class, 'restore'])->name($endpoint.'.restore')->withTrashed();
     Route::resource($endpoint, CurrentController::class);

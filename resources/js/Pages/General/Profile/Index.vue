@@ -78,34 +78,43 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="changePassword" role="tabpanel">
-                                <form action="javascript:void(0);">
+                                <form @submit.prevent="updatePassword">
                                     <div class="row g-2">
+                                        <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
+                                            <b-alert :modelValue="form.recentlySuccessful" variant="success">Password has been changed</b-alert>
+                                        </Transition>
                                         <div class="col-lg-4">
                                             <div>
-                                                <label for="oldpasswordInput" class="form-label">Old Password*</label>
-                                                <input type="password" class="form-control" id="oldpasswordInput" placeholder="Enter current password" />
+                                                <label for="current_password" class="form-label">Current Password*</label>
+                                                <b-form-input type="password" id="current_password" ref="currentPasswordInput" v-model="form.current_password" :class="{'is-invalid' : form.errors.current_password }"
+                                                    aria-describedby="input-current_password-feedback" placeholder="Enter current password" autocomplete="current-password" autofocus />
+                                                <b-form-invalid-feedback id="input-current_password-feedback" v-html="form.errors.current_password"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div>
-                                                <label for="newpasswordInput" class="form-label">New Password*</label>
-                                                <input type="password" class="form-control" id="newpasswordInput" placeholder="Enter new password" />
+                                                <label for="password" class="form-label">New Password*</label>
+                                                <b-form-input type="password" id="password" ref="passwordInput" v-model="form.password" :class="{'is-invalid' : form.errors.password }"
+                                                    aria-describedby="input-password-feedback" placeholder="Enter new password" autocomplete="new-password" />
+                                                <b-form-invalid-feedback id="input-password-feedback" v-html="form.errors.password"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div>
-                                                <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
-                                                <input type="password" class="form-control" id="confirmpasswordInput" placeholder="Confirm password" />
+                                                <label for="password_confirmation" class="form-label">Confirm Password*</label>
+                                                <b-form-input type="password" id="password_confirmation" v-model="form.password_confirmation" :class="{'is-invalid' : form.errors.password }"
+                                                    aria-describedby="input-password_confirmation-feedback" placeholder="Confirm password" autocomplete="new-password" />
+                                                <b-form-invalid-feedback id="input-password_confirmation-feedback" v-html="form.errors.password"/>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
+                                        <!-- <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <a href="javascript:void(0);" class="link-primary text-decoration-underline">Forgot Password ?</a>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="col-lg-12">
                                             <div class="text-end">
-                                                <button type="submit" class="btn btn-success">
+                                                <button type="submit" class="btn btn-success" :disabled="form.processing">
                                                 Change Password
                                                 </button>
                                             </div>
@@ -123,6 +132,7 @@
 <script setup>
 import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
 import { UserCheckIcon } from '@zhuowenli/vue-feather-icons'
+import { ref } from 'vue'
 
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -148,5 +158,31 @@ const implodedPermissions = (permissions) => {
     if(permissions){
         return permissions.join(', ')
     }
+}
+
+const passwordInput = ref(null)
+const currentPasswordInput = ref(null)
+
+const form = useForm({
+    current_password: '',
+    password: '',
+    password_confirmation: '',
+})
+
+const updatePassword = () => {
+    form.put(route('password.update'), {
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+        onError: () => {
+            if (form.errors.password) {
+                form.reset('password', 'password_confirmation')
+                passwordInput.value.focus()
+            }
+            if (form.errors.current_password) {
+                form.reset('current_password')
+                currentPasswordInput.value.focus()
+            }
+        },
+    })
 }
 </script>

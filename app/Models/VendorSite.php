@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -13,7 +12,7 @@ use Spatie\Activitylog\LogOptions;
 use App\Traits\Signature;
 use App\Traits\Scope as GeneralScope;
 
-class Vendor extends Model
+class VendorSite extends Model
 {
     use HasFactory, SoftDeletes, LogsActivity, GeneralScope, Signature;
 
@@ -30,11 +29,10 @@ class Vendor extends Model
      * @var array
      */
     protected $fillable = [
-        'sbu_id',
+        'vendor_id',
         'code',
         'name',
-        'type',
-        'description'
+        'description',
     ];
 
     /**
@@ -53,19 +51,11 @@ class Vendor extends Model
     }
 
     /**
-     * Get the sbu that owns the vendor.
+     * Get the vendor that owns the vendor.
      */
-    public function sbu()
+    public function vendor()
     {
-        return $this->belongsTo(Sbu::class);
-    }
-
-    /**
-     * Get the sites for the vendor.
-     */
-    public function sites()
-    {
-        return $this->hasMany(VendorSite::class);
+        return $this->belongsTo(Vendor::class);
     }
 
     /**

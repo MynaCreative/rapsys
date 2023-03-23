@@ -9,13 +9,17 @@
                 <div class="row g-4">
                     <div class="col-sm-auto">
                         <b-button-group>
-                            <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFormVisible = true, currentId = null">
+                            <!-- <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFormVisible = true, currentId = null">
                                 <i class="ri-add-line label-icon align-middle fs-16 me-2"></i>
                                 Create
                             </b-button>
                             <b-button variant="success" class="btn-label waves-effect waves-light right" @click="modalImportVisible = true">
                                 <i class="ri-upload-2-line label-icon align-middle fs-16"></i>
                                 Import
+                            </b-button> -->
+                            <b-button variant="warning" class="btn-label waves-effect waves-light right" @click="synchronize()" :disabled="loading">
+                                <i :class="['ri-download-cloud-2-line label-icon align-middle fs-16', {'ri-refresh-line' : loading}]"></i>
+                                {{ loading ? 'Synchronizing ...' : 'Synchronize' }}
                             </b-button>
                         </b-button-group>
                     </div>
@@ -43,11 +47,13 @@
                                 <th width="60">#</th>
                                 <Sort label="Code" attribute='code'/>
                                 <Sort label="Name" attribute='name'/>
-                                <Sort label="Site" attribute='site_id'/>
+                                <Sort label="Type" attribute='type'/>
                                 <Sort label="SBU" attribute='sbu_id'/>
+                                <Sort label="Sites" attribute='code'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
-                                <th width="140">Created By</th>
-                                <th width="70">Active</th>
+                                <Sort width="140" label="Updated At" attribute='updated_at'/>
+                                <!-- <th width="140">Created By</th>
+                                <th width="70">Active</th> -->
                                 <th width="120" class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -56,11 +62,18 @@
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
                                 <td>{{ item.code }}</td>
                                 <td>{{ item.name }}</td>
-                                <td>{{ item.site.name }}</td>
+                                <td>{{ item.type }}</td>
                                 <td>{{ item.sbu.name }}</td>
+                                <td>
+                                    <b-badge variant="light" class="rounded-pill mx-1 cursor-pointer" @click="() => {
+                                        currentId = item.id
+                                        modalDetailVisible = true
+                                    }">({{ item.sites.length }}) {{ item.sites[0].name }}</b-badge>
+                                </td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
-                                <td><DataUserName :data="item.created_user?.name"/></td>
-                                <td><DataActive :data="item.deleted_at"/></td>
+                                <td class="date"><DataTimestamp :data="item.updated_at"/></td>
+                                <!-- <td><DataUserName :data="item.created_user?.name"/></td>
+                                <td><DataActive :data="item.deleted_at"/></td> -->
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
                                         <template v-if="!item.deleted_at">
@@ -80,11 +93,11 @@
                                                     <i class="ri-pencil-fill fs-16"></i>
                                                 </a>
                                             </li>
-                                            <li class="list-inline-item" title="Remove">
+                                            <!-- <li class="list-inline-item" title="Remove">
                                                 <a href="javascript:void(0);" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                     <i class="ri-delete-bin-5-fill fs-16"></i>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                         </template>
                                         <template v-else>
                                             <li class="list-inline-item" title="Restore">
@@ -125,7 +138,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
+import { Head, Link, useForm, usePage, router  } from '@inertiajs/vue3'
 
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
@@ -157,6 +170,16 @@ const props = defineProps(['collection','filters','references'])
 const form = useForm({
     keyword: usePage().props.ziggy.query.keyword ?? null,
 })
+
+const loading = ref(false)
+const emit  = defineEmits(['update:loading'])
+const synchronize = () => {
+    router.post(route(`${page.module}.${page.name}.synchronize`), null, {
+        onBefore: () => loading.value = true,
+        onFinish: () => loading.value = false
+    })
+}
+
 const currentId = ref(null)
 const modalFormVisible = ref(false)
 const modalImportVisible = ref(false)

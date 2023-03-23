@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Vendor as Model;
-use App\Models\Site;
+use App\Models\VendorSite;
+use App\Models\Oracle\Vendor as OracleVendor;
+use App\Models\Oracle\VendorSite as OracleVendorSite;
 use App\Models\Sbu;
 
 use App\Imports\DataImport;
@@ -42,8 +44,8 @@ class Vendor
         $query = Model::withTrashed()
             ->ordering($request)
             ->filtering($request)
-            ->searching($request, ['code', 'name'])
-            ->with(['createdUser:id,name','updatedUser:id,name','site:id,name','sbu:id,name'])
+            ->searching($request, ['code', 'name', 'type'])
+            ->with(['createdUser:id,name','updatedUser:id,name','sites','sbu:id,name'])
             ->latest();
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
@@ -52,8 +54,9 @@ class Vendor
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
-                'site'          => $item->site,
+                'sites'         => $item->sites,
                 'sbu'           => $item->sbu,
+                'type'          => $item->type,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,
@@ -61,6 +64,48 @@ class Vendor
                 'updated_at'    => $item->updated_at,
                 'deleted_at'    => $item->deleted_at,
             ];
+        });
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public static function synchronize(): void
+    {
+        OracleVendor::select(['vendor_id','vendor_name','vendor_type_lookup_code'])->get()->each(function ($item) {
+            Model::updateOrCreate(
+                [
+                    'id' => $item->vendor_id,
+                    'code' => $item->vendor_id
+                ],
+                [
+                    'sbu_id' => 1,
+                    'name' => $item->vendor_name,
+                    'type' => $item->vendor_type_lookup_code
+                ],
+            );
+
+            // $sites = $item->sites->map(function($site){
+            //     return [
+            //         'id' => $site->vendor_site_id,
+            //         'code' => $site->vendor_site_id,
+            //         'name' => $site->vendor_site_code,
+            //     ];
+            // });
+            // $model->sites()->createMany($sites);
+        });
+
+        OracleVendorSite::select(['vendor_id','vendor_site_id','vendor_site_code'])->get()->each(function ($item) {
+            VendorSite::updateOrCreate(
+                [
+                    'id' => $item->vendor_site_id,
+                    'code' => $item->vendor_site_id
+                ],
+                [
+                    'vendor_id' => $item->vendor_id,
+                    'name' => $item->vendor_site_code,
+                ],
+            );
         });
     }
 
@@ -134,7 +179,7 @@ class Vendor
     public function show(): Model {
         return $this->model->load([
             'createdUser:id,name','updatedUser:id,name',
-            'site:id,name','sbu:id,name'
+            'sites','sbu:id,name'
         ]);
     }
 
@@ -176,7 +221,7 @@ class Vendor
     public static function reference(): array
     {
         return [
-            'sites' => Site::pluck('name','id'),
+            'sites' => VendorSite::pluck('name','id'),
             'sbus' => Sbu::pluck('name','id'),
         ];
     }
