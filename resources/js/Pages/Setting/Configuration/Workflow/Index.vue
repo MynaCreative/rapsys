@@ -40,6 +40,7 @@
                                 <Sort label="User" attribute='user_id'/>
                                 <Sort label="Email" attribute='user_id'/>
                                 <Sort label="Department" attribute='user_id'/>
+                                <Sort label="Position" attribute='user_id'/>
                                 <Sort label="Sequence" attribute='sequence'/>
                                 <Sort class="text-end" label="From" attribute='range_from'/>
                                 <Sort class="text-end" label="To" attribute='range_to'/>
@@ -53,6 +54,7 @@
                                 <td>{{ item.user.name }}</td>
                                 <td>{{ item.user.email }}</td>
                                 <td>{{ item.user.department?.name }}</td>
+                                <td>{{ item.user.position }}</td>
                                 <td>{{ item.sequence }}</td>
                                 <td class="text-end">{{ item.range_from.toLocaleString() }}</td>
                                 <td class="text-end">{{ item.range_to.toLocaleString() }}</td>

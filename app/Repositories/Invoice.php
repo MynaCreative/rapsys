@@ -406,7 +406,13 @@ class Invoice
                     'vendor_id' => $item->vendor_id,
                 ];
             }),
-            'terms' => Term::pluck('name', 'id'),
+            'terms' => Term::all()->map(function ($item) {
+                return [
+                    'value' => $item->id,
+                    'label' => $item->name,
+                    'day' => $item->day,
+                ];
+            }),
             /** Item */
             'expenses' => Expense::select('id', 'icon', 'code', 'name', 'type')->get()->append('type_text'),
             'products' => Product::select('id', 'name')->get(),

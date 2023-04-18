@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
@@ -33,26 +34,26 @@ class Workflow
     public static function all(Request $request)
     {
         $query = Model::withTrashed()
-            ->with(['createdUser:id,name','updatedUser:id,name','user:id,department_id,name,email','user.department'])
+            ->with(['createdUser:id,name', 'updatedUser:id,name', 'user:id,department_id,name,email,position', 'user.department'])
             ->orderBy('sequence');
 
         return $query->paginate($request->per_page ?? 10)
-        ->withQueryString()
-        ->through(function ($item) {
-            return [
-                'id'            => $item->id,
-                'user'          => $item->user,
-                'sequence'      => $item->sequence,
-                'range_from'    => $item->range_from,
-                'range_to'      => $item->range_to,
-                'description'   => $item->description,
-                'created_user'  => $item->createdUser,
-                'updated_user'  => $item->updatedUser,
-                'created_at'    => $item->created_at,
-                'updated_at'    => $item->updated_at,
-                'deleted_at'    => $item->deleted_at,
-            ];
-        });
+            ->withQueryString()
+            ->through(function ($item) {
+                return [
+                    'id'            => $item->id,
+                    'user'          => $item->user,
+                    'sequence'      => $item->sequence,
+                    'range_from'    => $item->range_from,
+                    'range_to'      => $item->range_to,
+                    'description'   => $item->description,
+                    'created_user'  => $item->createdUser,
+                    'updated_user'  => $item->updatedUser,
+                    'created_at'    => $item->created_at,
+                    'updated_at'    => $item->updated_at,
+                    'deleted_at'    => $item->deleted_at,
+                ];
+            });
     }
 
     /**
@@ -88,9 +89,10 @@ class Workflow
      *
      * @return Model
      */
-    public function show(): Model {
+    public function show(): Model
+    {
         return $this->model->load([
-            'createdUser:id,name','updatedUser:id,name','user:id,name,email'
+            'createdUser:id,name', 'updatedUser:id,name', 'user:id,name,email,department_id,position', 'user.department:id,name'
         ]);
     }
 
@@ -133,7 +135,7 @@ class Workflow
     {
         $booked = Model::pluck('user_id');
         return [
-            'users' => User::whereNotIn('id', $booked)->pluck('name','id'),
+            'users' => User::whereNotIn('id', $booked)->pluck('name', 'id'),
         ];
     }
 }

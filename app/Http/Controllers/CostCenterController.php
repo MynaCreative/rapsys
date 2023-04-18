@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Repositories\CostCenter as Repository;
 use App\Models\CostCenter as Model;
@@ -133,6 +134,23 @@ class CostCenterController extends Controller
     {
         try {
             return $this->repository::importSample();
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Export
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function export(Request $request)
+    {
+        try {
+            return $this->repository::export($request);
         } catch (Throwable $exception) {
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),

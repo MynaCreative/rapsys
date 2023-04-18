@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Repositories\LineType as Repository;
 use App\Models\LineType as Model;
@@ -49,7 +50,7 @@ class LineTypeController extends Controller
     public function index(IndexRequest $request)
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
-            'collection'=>$this->repository::all($request),
+            'collection' => $this->repository::all($request),
         ]);
     }
 
@@ -96,7 +97,7 @@ class LineTypeController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.store'));
     }
 
@@ -120,7 +121,7 @@ class LineTypeController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.import'));
     }
 
@@ -133,6 +134,23 @@ class LineTypeController extends Controller
     {
         try {
             return $this->repository::importSample();
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Export
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function export(Request $request)
+    {
+        try {
+            return $this->repository::export($request);
         } catch (Throwable $exception) {
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
@@ -162,7 +180,7 @@ class LineTypeController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.update'));
     }
 
@@ -187,7 +205,7 @@ class LineTypeController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.delete'));
     }
 
@@ -212,7 +230,7 @@ class LineTypeController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.restore'));
     }
 
@@ -222,7 +240,8 @@ class LineTypeController extends Controller
      * 
      * @return  String
      */
-    public function routeModule(){
+    public function routeModule()
+    {
         return str($this->module)->snake('-');
     }
 
@@ -232,7 +251,8 @@ class LineTypeController extends Controller
      * 
      * @return  String
      */
-    public function routePage(){
+    public function routePage()
+    {
         return str($this->page)->plural()->snake('-');
     }
 }

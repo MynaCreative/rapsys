@@ -1,12 +1,15 @@
 <?php
+
 namespace App\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Models\Vendor as Model;
+use App\Exports\Vendor\Resource as ModelExport;
 use App\Models\VendorSite;
 use App\Models\Oracle\Vendor as OracleVendor;
 use App\Models\Oracle\VendorSite as OracleVendorSite;
@@ -45,26 +48,26 @@ class Vendor
             ->ordering($request)
             ->filtering($request)
             ->searching($request, ['code', 'name', 'type'])
-            ->with(['createdUser:id,name','updatedUser:id,name','sites','sbu:id,name'])
+            ->with(['createdUser:id,name', 'updatedUser:id,name', 'sites', 'sbu:id,name'])
             ->latest();
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
-        ->through(function ($item) {
-            return [
-                'id'            => $item->id,
-                'name'          => $item->name,
-                'code'          => $item->code,
-                'sites'         => $item->sites,
-                'sbu'           => $item->sbu,
-                'type'          => $item->type,
-                'description'   => $item->description,
-                'created_user'  => $item->createdUser,
-                'updated_user'  => $item->updatedUser,
-                'created_at'    => $item->created_at,
-                'updated_at'    => $item->updated_at,
-                'deleted_at'    => $item->deleted_at,
-            ];
-        });
+            ->through(function ($item) {
+                return [
+                    'id'            => $item->id,
+                    'name'          => $item->name,
+                    'code'          => $item->code,
+                    'sites'         => $item->sites,
+                    'sbu'           => $item->sbu,
+                    'type'          => $item->type,
+                    'description'   => $item->description,
+                    'created_user'  => $item->createdUser,
+                    'updated_user'  => $item->updatedUser,
+                    'created_at'    => $item->created_at,
+                    'updated_at'    => $item->updated_at,
+                    'deleted_at'    => $item->deleted_at,
+                ];
+            });
     }
 
     /**
@@ -72,7 +75,7 @@ class Vendor
      */
     public static function synchronize(): void
     {
-        OracleVendor::select(['vendor_id','vendor_name','vendor_type_lookup_code'])->whereHas('sites', function($q){
+        OracleVendor::select(['vendor_id', 'vendor_name', 'vendor_type_lookup_code'])->whereHas('sites', function ($q) {
             $q->where('org_id', 103);
         })->get()->each(function ($item) {
             Model::updateOrCreate(
@@ -97,7 +100,7 @@ class Vendor
             // $model->sites()->createMany($sites);
         });
 
-        OracleVendorSite::select(['vendor_id','vendor_site_id','vendor_site_code','org_id'])->where('org_id', 103)->get()->each(function ($item) {
+        OracleVendorSite::select(['vendor_id', 'vendor_site_id', 'vendor_site_code', 'org_id'])->where('org_id', 103)->get()->each(function ($item) {
             VendorSite::updateOrCreate(
                 [
                     'id' => $item->vendor_site_id,
@@ -137,9 +140,9 @@ class Vendor
             ->first()
             ->toArray();
         DB::transaction(function () use ($rows) {
-            foreach($rows as $row){
+            foreach ($rows as $row) {
                 Model::updateOrCreate(
-                    ['code'=>$row['code']],
+                    ['code' => $row['code']],
                     $row
                 );
             }
@@ -157,6 +160,47 @@ class Vendor
         $date = now()->format('d-m-Y H:i:s');
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
         return Excel::download(new SampleTemplate(), "{$name}-import-sample-{$date}.xlsx");
+    }
+
+    /**
+     * Export a file from resource in storage.
+     */
+    public static function export($request)
+    {
+        $date = now()->format('Y-m-d');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        $extension = str($request->type)->replace('dom', '');
+        $fileName = "{$name}-{$date}.{$extension}";
+        $data = Model::query()->get();
+
+        if ($request->type != 'xlsx') {
+            return self::renderPDF($data);
+        } else {
+            return self::renderExcel($request, $fileName, $data);
+        }
+    }
+
+    /**
+     * Render excel file.
+     */
+    public static function renderExcel($request, $fileName, $data)
+    {
+        return Excel::download(new ModelExport($data), $fileName, ucfirst($request->type));
+    }
+
+    /**
+     * Render excel file.
+     */
+    public static function renderPDF($data)
+    {
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        $pdf = PDF::loadView("pdf.{$name}.resource", [
+            'rows' => $data,
+        ]);
+
+        $pdf->setOption('enable_php', true);
+
+        return $pdf->stream();
     }
 
     /**
@@ -178,10 +222,11 @@ class Vendor
      *
      * @return Model
      */
-    public function show(): Model {
+    public function show(): Model
+    {
         return $this->model->load([
-            'createdUser:id,name','updatedUser:id,name',
-            'sites','sbu:id,name'
+            'createdUser:id,name', 'updatedUser:id,name',
+            'sites', 'sbu:id,name'
         ]);
     }
 
@@ -223,8 +268,8 @@ class Vendor
     public static function reference(): array
     {
         return [
-            'sites' => VendorSite::pluck('name','id'),
-            'sbus' => Sbu::pluck('name','id'),
+            'sites' => VendorSite::pluck('name', 'id'),
+            'sbus' => Sbu::pluck('name', 'id'),
         ];
     }
 }

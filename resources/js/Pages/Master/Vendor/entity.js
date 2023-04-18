@@ -19,6 +19,9 @@ export default () => {
             updated_user: null,
 
             sites: []
+        },
+        formExport: {
+            type: 'xlsx'
         }
     }
 }

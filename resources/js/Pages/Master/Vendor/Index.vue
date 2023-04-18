@@ -17,9 +17,13 @@
                                 <i class="ri-upload-2-line label-icon align-middle fs-16"></i>
                                 Import
                             </b-button> -->
-                            <b-button variant="warning" class="btn-label waves-effect waves-light right" @click="synchronize()" :disabled="loading">
+                            <b-button variant="primary" class="btn-label waves-effect waves-light right" @click="synchronize()" :disabled="loading">
                                 <i :class="['ri-download-cloud-2-line label-icon align-middle fs-16', {'ri-refresh-line' : loading}]"></i>
                                 {{ loading ? 'Synchronizing ...' : 'Synchronize' }}
+                            </b-button>
+                            <b-button variant="warning" class="btn-label waves-effect waves-light right" @click="modalExportVisible = true">
+                                <i class="bx bx-export label-icon align-middle fs-16"></i>
+                                Export
                             </b-button>
                         </b-button-group>
                     </div>
@@ -128,6 +132,10 @@
             :show="modalImportVisible"
             @update:show="modalImportVisible = $event"
         />
+        <ModalExport
+            :show="modalExportVisible"
+            @update:show="modalExportVisible = $event"
+        />
         <ModalDetail
             :show="modalDetailVisible"
             @update:show="modalDetailVisible = $event"
@@ -155,6 +163,7 @@ import service from './service'
 
 import ModalForm from './Modals/Form.vue'
 import ModalImport from './Modals/Import.vue'
+import ModalExport from './Modals/Export.vue'
 import ModalDetail from './Modals/Detail.vue'
 
 const page = entityData().page
@@ -183,5 +192,6 @@ const synchronize = () => {
 const currentId = ref(null)
 const modalFormVisible = ref(false)
 const modalImportVisible = ref(false)
+const modalExportVisible = ref(false)
 const modalDetailVisible = ref(false)
 </script>

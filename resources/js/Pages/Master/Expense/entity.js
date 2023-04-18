@@ -21,6 +21,9 @@ export default () => {
             updated_at: null,
             created_user: null,
             updated_user: null,
+        },
+        formExport: {
+            type: 'xlsx'
         }
     }
 }

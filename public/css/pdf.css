@@ -1,0 +1,47 @@
+/* Pdf page container */
+.page {
+    page-break-after: always;
+}
+.page:last-of-type{
+    page-break-after: avoid;
+}
+
+/* Style */
+body {
+    font-size:10pt;
+    font-family:Calibri,sans-serif;
+}
+
+/* Table with borders */
+.table-bordered {
+    border-collapse: collapse;
+}
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid black;
+    padding: 5px 5px;
+}
+  
+/* Table without borders */
+.table-borderless th,
+.table-borderless td {
+    border: none;
+    padding: 5px 5px;
+}
+
+.bg-head{
+    background: gold;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.export-info th:first-child {
+    padding-left: 0;
+}
+
+.text-center{
+    text-align: center;
+}

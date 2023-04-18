@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Models\CostCenter as Model;
+use App\Exports\CostCenter\Resource as ModelExport;
 use App\Imports\DataImport;
 use App\Exports\CostCenter\Sample as SampleTemplate;
 
@@ -106,6 +108,47 @@ class CostCenter
         $date = now()->format('d-m-Y H:i:s');
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
         return Excel::download(new SampleTemplate(), "{$name}-import-sample-{$date}.xlsx");
+    }
+
+    /**
+     * Export a file from resource in storage.
+     */
+    public static function export($request)
+    {
+        $date = now()->format('Y-m-d');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        $extension = str($request->type)->replace('dom', '');
+        $fileName = "{$name}-{$date}.{$extension}";
+        $data = Model::query()->get();
+
+        if ($request->type != 'xlsx') {
+            return self::renderPDF($data);
+        } else {
+            return self::renderExcel($request, $fileName, $data);
+        }
+    }
+
+    /**
+     * Render excel file.
+     */
+    public static function renderExcel($request, $fileName, $data)
+    {
+        return Excel::download(new ModelExport($data), $fileName, ucfirst($request->type));
+    }
+
+    /**
+     * Render excel file.
+     */
+    public static function renderPDF($data)
+    {
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        $pdf = PDF::loadView("pdf.{$name}.resource", [
+            'rows' => $data,
+        ]);
+
+        $pdf->setOption('enable_php', true);
+
+        return $pdf->stream();
     }
 
     /**

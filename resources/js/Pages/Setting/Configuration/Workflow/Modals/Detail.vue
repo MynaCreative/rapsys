@@ -19,6 +19,10 @@
                     <td>{{ form.user?.department?.name }}</td>
                 </tr>
                 <tr>
+                    <td class="text-muted table-light">Position</td>
+                    <td>{{ form.user?.position }}</td>
+                </tr>
+                <tr>
                     <td class="text-muted table-light">Sequence</td>
                     <td>{{ form.sequence }}</td>
                 </tr>

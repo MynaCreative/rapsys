@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Repositories\Vendor as Repository;
 use App\Models\Vendor as Model;
@@ -49,7 +50,7 @@ class VendorController extends Controller
     public function index(IndexRequest $request)
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
-            'collection'=>$this->repository::all($request),
+            'collection' => $this->repository::all($request),
             'references' => $this->repository::reference(),
         ]);
     }
@@ -97,7 +98,7 @@ class VendorController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.update'));
     }
 
@@ -121,7 +122,7 @@ class VendorController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.store'));
     }
 
@@ -145,7 +146,7 @@ class VendorController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.import'));
     }
 
@@ -158,6 +159,23 @@ class VendorController extends Controller
     {
         try {
             return $this->repository::importSample();
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Export
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function export(Request $request)
+    {
+        try {
+            return $this->repository::export($request);
         } catch (Throwable $exception) {
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
@@ -187,7 +205,7 @@ class VendorController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.update'));
     }
 
@@ -212,7 +230,7 @@ class VendorController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.delete'));
     }
 
@@ -237,7 +255,7 @@ class VendorController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.restore'));
     }
 
@@ -247,7 +265,8 @@ class VendorController extends Controller
      * 
      * @return  String
      */
-    public function routeModule(){
+    public function routeModule()
+    {
         return str($this->module)->snake('-');
     }
 
@@ -257,7 +276,8 @@ class VendorController extends Controller
      * 
      * @return  String
      */
-    public function routePage(){
+    public function routePage()
+    {
         return str($this->page)->plural()->snake('-');
     }
 }
