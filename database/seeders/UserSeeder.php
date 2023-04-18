@@ -49,6 +49,7 @@ class UserSeeder extends Seeder
             'username'      => 'msyukri',
             'email'         => 'msyukri@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Manager'
         ]);
         $user->assignRole('Super User');
 
@@ -58,6 +59,7 @@ class UserSeeder extends Seeder
             'username'      => 'pradikta.putra',
             'email'         => 'pradikta.putra@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Senior Manager'
         ]);
         $user->assignRole('Approver');
 
@@ -67,6 +69,17 @@ class UserSeeder extends Seeder
             'username'      => 'wmunaiseche',
             'email'         => 'wmunaiseche@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Manager'
+        ]);
+        $user->assignRole('Approver');
+
+        $user = Model::factory()->create([
+            'department_id' => 7,
+            'name'          => 'Subiyantoro',
+            'username'      => 'subiyantoro',
+            'email'         => 'subiyantoro@rpxholding.com',
+            'password'      => 'password',
+            'position'      => 'General Manager'
         ]);
         $user->assignRole('Approver');
 

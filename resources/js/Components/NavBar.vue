@@ -44,9 +44,9 @@
                                         Notifications
                                         </h6>
                                     </div>
-                                    <!-- <div class="col-auto dropdown-tabs">
+                                    <div class="col-auto dropdown-tabs">
                                         <span class="badge badge-soft-light fs-13"> 4 New</span>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                             <div class="px-2 pt-2">

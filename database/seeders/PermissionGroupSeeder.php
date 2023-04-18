@@ -33,6 +33,7 @@ class PermissionGroupSeeder extends Seeder
             ['name' => 'area', 'label' => 'Area'],
             ['name' => 'product', 'label' => 'Product'],
             ['name' => 'department', 'label' => 'Department'],
+            ['name' => 'cost-center', 'label' => 'Cost Center'],
             ['name' => 'sales-channel', 'label' => 'Sales Channel'],
             ['name' => 'vendor', 'label' => 'Vendor'],
             ['name' => 'invoice-type', 'label' => 'Invoice Type'],

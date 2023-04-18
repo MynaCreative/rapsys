@@ -25,6 +25,12 @@
             <b-form-invalid-feedback id="input-password-feedback" v-html="form.errors.password"/>
         </div>
         <div class="col-lg-12">
+            <label for="position" class="form-label">Position</label>
+            <b-form-input id="position" v-model="form.position" :class="{'is-invalid' : form.errors.position }"
+                aria-describedby="input-position-feedback"/>
+            <b-form-invalid-feedback id="input-position-feedback" v-html="form.errors.position"/>
+        </div>
+        <div class="col-lg-12">
             <label for="department" class="form-label">Department</label>
             <Multiselect id="department" v-model="form.department_id" :class="{'is-invalid' : form.errors.department_id }"
                 aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>

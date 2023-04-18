@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Currency as Model;
+use App\Repositories\Oracle;
 
 class CurrencySeeder extends Seeder
 {
@@ -16,21 +17,29 @@ class CurrencySeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            [ ['code' => 'AUD'], ['name' => 'Australian Dollar'] ],
-            [ ['code' => 'EUR'], ['name' => 'Euro'] ],
-            [ ['code' => 'GBP'], ['name' => 'Pound Sterling'] ],
-            [ ['code' => 'IDR'], ['name' => 'Rupiah'] ],
-            [ ['code' => 'JPY'], ['name' => 'Yen'] ],
-            [ ['code' => 'SGD'], ['name' => 'Singapore Dollar'] ],
-            [ ['code' => 'USD'], ['name' => 'US Dollar'] ],
-            [ ['code' => 'STAT'], ['name' => 'Statistical'] ],
-        ];
-
-        foreach($data as $row) {
+        $items = Oracle::fetchQuery("
+            SELECT CURRENCY_CODE, NAME, DESCRIPTION
+            FROM APPS.FND_CURRENCIES_VL
+            WHERE CURRENCY_CODE IN (
+                'AUD',
+                'EUR',
+                'GBP',
+                'IDR',
+                'JPY',
+                'SGD',
+                'USD',
+                'STAT'
+            )
+        ");
+        foreach($items as $item){
             Model::updateOrCreate(
-                $row[0],
-                $row[1],
+                [
+                    'code' => $item['CURRENCY_CODE']
+                ],
+                [
+                    'name' => $item['NAME'],
+                    'description' => $item['DESCRIPTION'],
+                ],
             );
         }
     }

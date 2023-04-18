@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Tax as Model;
+use App\Repositories\Oracle;
 
 class TaxSeeder extends Seeder
 {
@@ -16,21 +17,19 @@ class TaxSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            [ ['code' => 'NO VAT'], ['name' => 'NO VAT', 'deduction' => 0.0000 ] ],
-            [ ['code' => 'VAT 1'], ['name' => 'VAT 1', 'deduction' => 0.0100 ] ],
-            [ ['code' => 'VAT 10'], ['name' => 'VAT 10', 'deduction' => 0.1000 ] ],
-            [ ['code' => 'VAT 1 (BATAM)'], ['name' => 'VAT 1 (BATAM)', 'deduction' => 0.0100 ] ],
-            [ ['code' => 'VAT 10 (BATAM)'], ['name' => 'VAT 10 (BATAM)', 'deduction' => 0.1000 ] ],
-            [ ['code' => 'VAT 1 NON REC'], ['name' => 'VAT 1 NON REC', 'deduction' => 0.0100 ] ],
-            [ ['code' => 'VAT 10 NON REC'], ['name' => 'VAT 10 NON REC', 'deduction' => 0.1000 ] ],
-            [ ['code' => 'PB 1'], ['name' => 'PB 1', 'deduction' => 0.0000 ] ],
-        ];
-
-        foreach($data as $row) {
+        $items = Oracle::fetchQuery("
+            SELECT TAX_RATE_ID, TAX, DESCRIPTION, PERCENTAGE_RATE
+            FROM APPS.ZX_RATES_VL
+        ");
+        foreach($items as $item){
             Model::updateOrCreate(
-                $row[0],
-                $row[1],
+                [
+                    'code' => $item['TAX_RATE_ID']
+                ],
+                [
+                    'name' => $item['TAX'],
+                    'deduction' => $item['PERCENTAGE_RATE'] / 100,
+                ],
             );
         }
     }

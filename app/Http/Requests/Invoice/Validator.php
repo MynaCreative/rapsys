@@ -12,6 +12,7 @@ use App\Models\Vendor;
 use App\Models\Term;
 use App\Models\Sbu;
 use App\Models\Tax;
+use App\Models\VendorSite;
 
 class Validator 
 {
@@ -31,6 +32,7 @@ class Validator
             'interco_id'                => ['required','exists:'.Interco::class.',id'],
             'term_id'                   => ['required','exists:'.Term::class.',id'],
             'vendor_id'                 => ['required','exists:'.Vendor::class.',id'],
+            'vendor_site_id'            => ['required','exists:'.VendorSite::class.',id'],
             'posting_date'              => ['required','date'],
             'invoice_date'              => ['required','date'],
             'invoice_receipt_date'      => ['required','date'],

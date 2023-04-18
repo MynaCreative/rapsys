@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 use App\Models\Term as Model;
+use App\Repositories\Oracle;
 
 class TermSeeder extends Seeder
 {
@@ -16,20 +17,21 @@ class TermSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            [ ['code' => '07D'], ['name' => '07 Days'] ],
-            [ ['code' => '14D'], ['name' => '14 Days'] ],
-            [ ['code' => '15D'], ['name' => '15 Days'] ],
-            [ ['code' => '21D'], ['name' => '21 Days'] ],
-            [ ['code' => '30D'], ['name' => '30 Days'] ],
-            [ ['code' => '60D'], ['name' => '60 Days'] ],
-            [ ['code' => 'IMD'], ['name' => 'Immediate'] ],
-        ];
-
-        foreach($data as $row) {
+        $items = Oracle::fetchQuery("
+            SELECT t.TERM_ID, t.NAME, t.DESCRIPTION, tl.DUE_DAYS
+            FROM AP.AP_TERMS_TL t
+            INNER JOIN AP.AP_TERMS_LINES tl ON t.TERM_ID = tl.TERM_ID
+        ");
+        foreach($items as $item){
             Model::updateOrCreate(
-                $row[0],
-                $row[1],
+                [
+                    'code' => $item['TERM_ID']
+                ],
+                [
+                    'name' => $item['NAME'],
+                    'day' => $item['DUE_DAYS'],
+                    'description' => $item['DESCRIPTION']
+                ],
             );
         }
     }

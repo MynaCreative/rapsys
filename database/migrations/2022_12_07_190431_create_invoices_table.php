@@ -35,8 +35,8 @@ return new class extends Migration
             $table->foreignIdFor(Term::class)->nullable()->constrained();
             $table->foreignIdFor(Sbu::class)->nullable()->constrained();
 
-            $table->bigInteger('vendor_id')->unsigned();
-            $table->bigInteger('vendor_site_id')->unsigned();
+            $table->bigInteger('vendor_id')->nullable()->unsigned();
+            $table->bigInteger('vendor_site_id')->nullable()->unsigned();
 
             $table->string('code')->unique();
             $table->string('invoice_number')->nullable();

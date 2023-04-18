@@ -17,14 +17,15 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        DB::transaction(function (){
+        DB::transaction(function () {
             activity()->withoutLogs(function () {
                 $this->call(DepartmentSeeder::class);
+                $this->call(CostCenterSeeder::class);
                 $this->call(PermissionGroupSeeder::class);
                 $this->call(RoleSeeder::class);
                 $this->call(UserSeeder::class);
                 $this->call(WorkflowSeeder::class);
-        
+
                 $this->call(SbuSeeder::class);
                 $this->call(TaxSeeder::class);
                 $this->call(AreaSeeder::class);
@@ -37,7 +38,7 @@ class DatabaseSeeder extends Seeder
                 $this->call(InvoiceTypeSeeder::class);
                 $this->call(WithholdingSeeder::class);
                 $this->call(SalesChannelSeeder::class);
-        
+
                 $this->call(VendorSeeder::class);
                 $this->call(OpsPlanSeeder::class);
             });

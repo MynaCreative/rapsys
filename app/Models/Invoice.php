@@ -41,6 +41,7 @@ class Invoice extends Model
         'currency_id',
         'interco_id',
         'vendor_id',
+        'vendor_site_id',
         'term_id',
         'sbu_id',
 
@@ -185,6 +186,13 @@ class Invoice extends Model
         return $this->hasMany(InvoiceAttachment::class);
     }
 
+    /**
+     * Get the approvals for the invoice.
+     */
+    public function approvals()
+    {
+        return $this->hasMany(Approval::class);
+    }
 
     /**
      * Logging activity history.

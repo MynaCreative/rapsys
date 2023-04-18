@@ -30,6 +30,7 @@ class RoleSeeder extends Seeder
             'area',
             'product',
             'department',
+            'cost-center',
             'sales-channel',
             'vendor',
             'invoice-type',

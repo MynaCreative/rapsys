@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
@@ -40,18 +41,19 @@ class User
             ->searching($request, ['name']);
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
-        ->through(function ($item) {
-            return [
-                'id'                => $item->id,
-                'name'              => $item->name,
-                'username'          => $item->username,
-                'email'             => $item->email,
-                'department'        => $item->department,
-                'created_at'        => $item->created_at,
-                'updated_at'        => $item->updated_at,
-                'online'            => Cache::tags(['user-online'])->has('user-is-online-' . $item->id) ?? false
-            ];
-        });
+            ->through(function ($item) {
+                return [
+                    'id'                => $item->id,
+                    'name'              => $item->name,
+                    'username'          => $item->username,
+                    'email'             => $item->email,
+                    'position'             => $item->position,
+                    'department'        => $item->department,
+                    'created_at'        => $item->created_at,
+                    'updated_at'        => $item->updated_at,
+                    'online'            => Cache::tags(['user-online'])->has('user-is-online-' . $item->id) ?? false
+                ];
+            });
     }
 
     /**
@@ -93,9 +95,10 @@ class User
      *
      * @return Model
      */
-    public function show(): Model {
-        $this->model->load(['roles','department:id,name']);
-        $this->model->roles_id = $this->model->roles->map(fn($item) => $item->id)->all();
+    public function show(): Model
+    {
+        $this->model->load(['roles', 'department:id,name']);
+        $this->model->roles_id = $this->model->roles->map(fn ($item) => $item->id)->all();
         return $this->model;
     }
 
@@ -117,8 +120,8 @@ class User
     public static function reference(): array
     {
         return [
-            'roles'         => Role::pluck('name','id'),
-            'departments'   => Department::pluck('name','id'),
+            'roles'         => Role::pluck('name', 'id'),
+            'departments'   => Department::pluck('name', 'id'),
         ];
     }
 }

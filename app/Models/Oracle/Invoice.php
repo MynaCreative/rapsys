@@ -21,6 +21,44 @@ class Invoice extends Eloquent
     protected $table = 'APPS.RAPSYS_AP_STG_HEADER';
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * Define the sequence name used for incrementing
+     * Default value would be {table}_{primaryKey}_seq if not set
+     */
+    public $sequence = null;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'staging_id',
+        'ledger_id',
+        'org_id',
+        'vendor_id',
+        'vendor_site_id',  
+        'trx_number',
+        'currency_code',
+        'description',
+        'amount',
+        'ap_invoice_date',
+        'ap_invoice_received_date',
+        'ap_gl_date',
+        'terms_id',
+        'ap_source',
+        'invoice_type_lookup_code',
+        'payment_method_lookup_code',
+        'status',
+    ];
+
+    /**
      * Get the items for the invoice.
      */
     public function items()

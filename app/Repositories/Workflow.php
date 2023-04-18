@@ -43,6 +43,8 @@ class Workflow
                 'id'            => $item->id,
                 'user'          => $item->user,
                 'sequence'      => $item->sequence,
+                'range_from'    => $item->range_from,
+                'range_to'      => $item->range_to,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 use App\Models\Tax;
 use App\Models\Area;
+use App\Models\CostCenter;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Expense;
@@ -28,6 +29,7 @@ return new class extends Migration
 
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
+            $table->foreignIdFor(CostCenter::class)->nullable()->constrained();
             $table->foreignIdFor(SalesChannel::class)->nullable()->constrained();
             $table->foreignIdFor(Product::class)->nullable()->constrained();
             $table->foreignIdFor(Area::class)->nullable()->constrained();
@@ -45,18 +47,18 @@ return new class extends Migration
             $table->date('date_smu')->nullable();
             $table->date('date_awb')->nullable();
 
-            $table->decimal('delta_weight_smu',20,4)->nullable()->default(0);
-            $table->decimal('delta_weight_awb',20,4)->nullable()->default(0);
-            $table->decimal('invoice_weight_smu',20,4)->nullable()->default(0);
-            $table->decimal('invoice_weight_awb',20,4)->nullable()->default(0);
+            $table->decimal('delta_weight_smu', 20, 4)->nullable()->default(0);
+            $table->decimal('delta_weight_awb', 20, 4)->nullable()->default(0);
+            $table->decimal('invoice_weight_smu', 20, 4)->nullable()->default(0);
+            $table->decimal('invoice_weight_awb', 20, 4)->nullable()->default(0);
 
-            $table->decimal('amount_awb',20,4)->nullable()->default(0);
-            $table->decimal('amount_smu',20,4)->nullable()->default(0);
-            $table->decimal('amount_awb_smu',20,4)->nullable()->default(0);
+            $table->decimal('amount_awb', 20, 4)->nullable()->default(0);
+            $table->decimal('amount_smu', 20, 4)->nullable()->default(0);
+            $table->decimal('amount_awb_smu', 20, 4)->nullable()->default(0);
 
-            $table->decimal('withholding_tax',20,4)->nullable()->default(0);
-            $table->decimal('vat_tax',20,4)->nullable()->default(0);
-            $table->decimal('amount',20,4)->nullable()->default(0);
+            $table->decimal('withholding_tax', 20, 4)->nullable()->default(0);
+            $table->decimal('vat_tax', 20, 4)->nullable()->default(0);
+            $table->decimal('amount', 20, 4)->nullable()->default(0);
 
             $table->text('description')->nullable();
             $table->boolean('is_manual')->default(false);

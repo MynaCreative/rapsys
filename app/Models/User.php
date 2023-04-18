@@ -17,7 +17,7 @@ use Exception;
 
 use App\Traits\Scope as GeneralScope;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, SoftDeletes, Notifiable, HasRoles, AuthenticationLoggable, GeneralScope;
 
@@ -30,6 +30,7 @@ class User extends Authenticatable
         'department_id',
         'name',
         'email',
+        'position',
         'username',
         'password',
         'seen_at'

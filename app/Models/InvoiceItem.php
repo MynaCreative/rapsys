@@ -35,6 +35,7 @@ class InvoiceItem extends Model
         'date_smu',
         'date_awb',
 
+        'cost_center_id',
         'sales_channel_id',
         'invoice_id',
         'expense_id',
@@ -116,6 +117,14 @@ class InvoiceItem extends Model
     public function expense()
     {
         return $this->belongsTo(Expense::class);
+    }
+
+    /**
+     * Get the cost center that owns the invoice item.
+     */
+    public function costCenter()
+    {
+        return $this->belongsTo(CostCenter::class);
     }
 
     /**

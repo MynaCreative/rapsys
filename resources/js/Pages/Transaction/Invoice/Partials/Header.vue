@@ -55,11 +55,17 @@
             </div>
         </div>
         <div class="row g-4 mb-2">
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <label for="vendor" class="form-label required">Vendor</label>
-                <Multiselect id="vendor" v-model="form.vendor_id" :class="{'is-invalid' : form.errors.vendor_id }"
+                <Multiselect id="vendor" v-model="form.vendor_id" :class="{'is-invalid' : form.errors.vendor_id }" :searchable="true"
                     aria-describedby="input-vendor-feedback" :options="references.vendors" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-vendor-feedback" v-html="form.errors.vendor_id"/>
+            </div>
+            <div class="col-lg-2">
+                <label for="vendor_site" class="form-label required">Vendor Site</label>
+                <Multiselect id="vendor_site" v-model="form.vendor_site_id" :class="{'is-invalid' : form.errors.vendor_site_id }"
+                    aria-describedby="input-vendor_site-feedback" :options="vendor_sites" placeholder="Select data"></Multiselect>
+                <b-form-invalid-feedback id="input-vendor_site-feedback" v-html="form.errors.vendor_site_id"/>
             </div>
             <div class="col-lg-4">
                 <label for="invoice_date" class="form-label required">Invoice Date</label>
@@ -199,6 +205,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { Money3Component } from 'v-money3'
+import filter from 'lodash/filter'
 import Multiselect from '@vueform/multiselect'
 
 const props = defineProps(['formData','references'])
@@ -214,6 +221,10 @@ const form = computed({
         emit("update:formData", val)
     },
 })
+
+const vendor_sites = computed(() => filter(props.references.vendor_sites, (item) => {
+    return item.vendor_id == form.value.vendor_id
+}))
 
 const getFile = (e) => {
     attachment_file.value.click()

@@ -21,6 +21,7 @@
                 'area',
                 'product',
                 'department',
+                'cost-center',
                 'sales-channel',
                 'vendor',
                 'invoice-type',
@@ -40,6 +41,7 @@
             <MenuItem route-name="master.areas.index" name="Area" icon="ri-map-pin-5-line" :permission="$page.props.auth.permissions.includes('area')"/>
             <MenuItem route-name="master.products.index" name="Product / Project" icon="ri-apps-line" :permission="$page.props.auth.permissions.includes('product')"/>
             <MenuItem route-name="master.departments.index" name="Department" icon="ri-building-2-line" :permission="$page.props.auth.permissions.includes('department')"/>
+            <MenuItem route-name="master.cost-centers.index" name="Cost Center" icon="ri-building-line" :permission="$page.props.auth.permissions.includes('cost-center')"/>
             <MenuItem route-name="master.sales-channels.index" name="Sales Channel" icon="ri-shopping-bag-2-line" :permission="$page.props.auth.permissions.includes('sales-channel')"/>
             <MenuItem route-name="master.vendors.index" name="Vendor" icon="ri-building-4-line" :permission="$page.props.auth.permissions.includes('vendor')"/>
             <MenuItem route-name="master.invoice-types.index" name="Invoice Type" icon="ri-notification-badge-line" :permission="$page.props.auth.permissions.includes('invoice-type')"/>

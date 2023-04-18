@@ -72,7 +72,9 @@ class Vendor
      */
     public static function synchronize(): void
     {
-        OracleVendor::select(['vendor_id','vendor_name','vendor_type_lookup_code'])->get()->each(function ($item) {
+        OracleVendor::select(['vendor_id','vendor_name','vendor_type_lookup_code'])->whereHas('sites', function($q){
+            $q->where('org_id', 103);
+        })->get()->each(function ($item) {
             Model::updateOrCreate(
                 [
                     'id' => $item->vendor_id,
@@ -95,7 +97,7 @@ class Vendor
             // $model->sites()->createMany($sites);
         });
 
-        OracleVendorSite::select(['vendor_id','vendor_site_id','vendor_site_code'])->get()->each(function ($item) {
+        OracleVendorSite::select(['vendor_id','vendor_site_id','vendor_site_code','org_id'])->where('org_id', 103)->get()->each(function ($item) {
             VendorSite::updateOrCreate(
                 [
                     'id' => $item->vendor_site_id,

@@ -22,8 +22,8 @@ return new class extends Migration
             $table->foreignIdFor(Workflow::class)->constrained();
             $table->foreignIdFor(Invoice::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
-            $table->boolean('current')->default(false);
             $table->string('position')->nullable();
+            $table->boolean('current')->default(false);
             $table->unsignedInteger('sequence');
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();

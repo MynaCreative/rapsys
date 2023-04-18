@@ -63,12 +63,12 @@
                                 <td>{{ item.code }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.type }}</td>
-                                <td>{{ item.sbu.name }}</td>
+                                <td>{{ item.sbu?.name }}</td>
                                 <td>
-                                    <b-badge variant="light" class="rounded-pill mx-1 cursor-pointer" @click="() => {
+                                    <b-badge v-if="item.sites" variant="light" class="rounded-pill mx-1 cursor-pointer" @click="() => {
                                         currentId = item.id
                                         modalDetailVisible = true
-                                    }">({{ item.sites.length }}) {{ item.sites[0].name }}</b-badge>
+                                    }">({{ item.sites.length }}) {{ item.sites[0]?.name }}</b-badge>
                                 </td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td class="date"><DataTimestamp :data="item.updated_at"/></td>

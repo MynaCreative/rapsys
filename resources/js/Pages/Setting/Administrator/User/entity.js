@@ -11,6 +11,7 @@ export default () => {
             name: null,
             username: null,
             email: null,
+            position: null,
             password: null,
             roles: [],
             roles_id: [],

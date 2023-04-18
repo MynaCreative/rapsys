@@ -41,6 +41,8 @@
                                 <Sort label="Email" attribute='user_id'/>
                                 <Sort label="Department" attribute='user_id'/>
                                 <Sort label="Sequence" attribute='sequence'/>
+                                <Sort class="text-end" label="From" attribute='range_from'/>
+                                <Sort class="text-end" label="To" attribute='range_to'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
                                 <th width="120" class="text-center">Action</th>
                             </tr>
@@ -52,6 +54,8 @@
                                 <td>{{ item.user.email }}</td>
                                 <td>{{ item.user.department?.name }}</td>
                                 <td>{{ item.sequence }}</td>
+                                <td class="text-end">{{ item.range_from.toLocaleString() }}</td>
+                                <td class="text-end">{{ item.range_to.toLocaleString() }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">

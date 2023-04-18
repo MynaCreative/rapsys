@@ -49,6 +49,7 @@ class Term
                 'id'            => $item->id,
                 'name'          => $item->name,
                 'code'          => $item->code,
+                'day'           => $item->day,
                 'description'   => $item->description,
                 'created_user'  => $item->createdUser,
                 'updated_user'  => $item->updatedUser,
