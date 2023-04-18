@@ -43,7 +43,7 @@
             <td>{{ $row->type }}</td>
             <td>{{ $row->sbu->name ?? '' }}</td>
             <td>{{ json_encode($row->sites->pluck('name')) }}</td>
-            <td>{{ $excelDate::dateTimeToExcel($row->created_at) }}</td>
+            <td>{{ $row->created_at->format('Y-m-d H:i:s') }}</td>
         </tr>
         @endforeach
     </tbody>

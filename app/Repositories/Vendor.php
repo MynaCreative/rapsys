@@ -198,7 +198,8 @@ class Vendor
             'rows' => $data,
         ]);
 
-        $pdf->setOption('enable_php', true);
+        $pdf->setPaper('a4', 'landscape')
+            ->setOption('enable_php', true);
 
         return $pdf->stream();
     }
