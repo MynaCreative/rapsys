@@ -10,6 +10,7 @@ use App\Models\CostCenter;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Expense;
+use App\Models\InvoiceExpense;
 use App\Models\Withholding;
 use App\Models\SalesChannel;
 
@@ -28,6 +29,8 @@ return new class extends Migration
             $table->integer('sequence_number')->nullable();
 
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
+            $table->foreignIdFor(InvoiceExpense::class)->nullable()->constrained();
+
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
             $table->foreignIdFor(CostCenter::class)->nullable()->constrained();
             $table->foreignIdFor(SalesChannel::class)->nullable()->constrained();
@@ -36,33 +39,23 @@ return new class extends Migration
             $table->foreignIdFor(Tax::class)->nullable()->constrained();
             $table->foreignIdFor(Withholding::class)->nullable()->constrained();
 
+            $table->string('dist')->nullable();
             $table->string('code')->nullable();
             $table->string('type')->nullable();
-            $table->string('expense_code')->nullable();
             $table->string('expense_coa')->nullable();
-            $table->string('awb')->nullable();
-            $table->string('smu')->nullable();
             $table->string('route')->nullable();
-            $table->string('cost_center')->nullable();
-            $table->date('date_smu')->nullable();
-            $table->date('date_awb')->nullable();
+            $table->date('date_item')->nullable();
 
-            $table->decimal('delta_weight_smu', 20, 4)->nullable()->default(0);
-            $table->decimal('delta_weight_awb', 20, 4)->nullable()->default(0);
-            $table->decimal('invoice_weight_smu', 20, 4)->nullable()->default(0);
-            $table->decimal('invoice_weight_awb', 20, 4)->nullable()->default(0);
-
-            $table->decimal('amount_awb', 20, 4)->nullable()->default(0);
-            $table->decimal('amount_smu', 20, 4)->nullable()->default(0);
-            $table->decimal('amount_awb_smu', 20, 4)->nullable()->default(0);
+            $table->decimal('weight', 20, 4)->nullable()->default(0);
+            $table->decimal('amount', 20, 4)->nullable()->default(0);
+            $table->decimal('delta_weight', 20, 4)->nullable()->default(0);
+            $table->decimal('delta_amount', 20, 4)->nullable()->default(0);
 
             $table->decimal('withholding_tax', 20, 4)->nullable()->default(0);
             $table->decimal('vat_tax', 20, 4)->nullable()->default(0);
-            $table->decimal('amount', 20, 4)->nullable()->default(0);
+            $table->decimal('total', 20, 4)->nullable()->default(0);
 
             $table->text('description')->nullable();
-            $table->boolean('is_manual')->default(false);
-            $table->boolean('is_validated')->default(false);
 
             $table->boolean('validation_reference')->nullable()->default(false);
             $table->boolean('validation_bill')->nullable()->default(false);
@@ -71,6 +64,7 @@ return new class extends Migration
             $table->boolean('validation_ops_plan')->nullable()->default(false);
             $table->integer('validation_score')->nullable()->default(0);
 
+            $table->boolean('is_validated')->default(false);
             $table->text('message')->nullable();
 
             /** Standard Item Timestamp **/

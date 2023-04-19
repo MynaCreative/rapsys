@@ -20,7 +20,7 @@
         "simplebar": "5.3.8",
         "simplebar-vue3": "^0.2.0",
         "sweetalert2": "^11.7.3",
-        "terser": "^5.17.0",
+        "terser": "^5.17.1",
         "v-money3": "^3.24.0",
         "vue3-apexcharts": "^1.4.1",
         "vue3-count-to": "^1.1.2"

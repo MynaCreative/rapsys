@@ -56,8 +56,7 @@
                         <tr>
                             <th class="text-center align-middle" width="40px" rowspan="2">#</th>
                             <th class="align-middle" rowspan="2">Code</th>
-                            <th class="align-middle" rowspan="2">AWB</th>
-                            <th class="align-middle" rowspan="2">SMU</th>
+                            <th class="align-middle" rowspan="2">Type</th>
                             <th class="align-middle text-end" rowspan="2">Amount</th>
                             <th class="align-middle text-end" rowspan="2">Weight</th>
                             <th class="text-center" colspan="25">Validation</th>
@@ -72,29 +71,23 @@
                     </thead>
                     <template v-if="form.items && form.items.length > 0">
                         <tbody>
-                            <tr v-for="(item, index) in form.items" :key="index">
+                            <tr v-for="(item, index) in form.items" :key="index" :class="{'bg-soft-success': item.validation_score == 5}">
                                 <td>{{ index+1 }}</td>
-                                <td>{{ item.code }}</td>
-                                <td>{{ item.awb ?? '--' }}</td>
-                                <td class="cursor-pointer" @click="() => {
-                                    currentItem = item
-                                    modalDetailVisible = true
-                                }"><a href="#">{{ item.smu ?? '--'}}</a></td>
-                                <td :class="['text-end', {'bg-soft-danger': form.errors[`items.${index}.amount_smu`] || form.errors[`items.${index}.amount_awb`] }]">
-                                    <template v-if="item.amount_smu">
-                                        {{ item.amount_smu ? item.amount_smu.toLocaleString() : '' }}
-                                    </template>
-                                    <template v-if="item.amount_awb">
-                                        {{ item.amount_awb ? item.amount_awb.toLocaleString() : '' }}
-                                    </template>
+                                <td>
+                                    <a v-if="item.type == 'SMU'" href="#" @click="() => {
+                                        currentItem = item
+                                        modalDetailVisible = true
+                                    }">{{ item.code }}</a>
+                                    <span v-else>{{ item.code }}</span>
                                 </td>
-                                <td :class="['text-end', {'bg-soft-danger': form.errors[`items.${index}.invoice_weight_smu`] || form.errors[`items.${index}.invoice_weight_awb`] }]">
-                                    <template v-if="item.invoice_weight_smu">
-                                        {{ item.invoice_weight_smu ? item.invoice_weight_smu.toLocaleString() : '' }}
-                                    </template>
-                                    <template v-if="item.invoice_weight_awb">
-                                        {{ item.invoice_weight_awb ? item.invoice_weight_awb.toLocaleString() : '' }}
-                                    </template>
+                                <td >
+                                    {{ item.type }}
+                                </td>
+                                <td :class="['text-end']">
+                                    {{ item.amount ? item.amount.toLocaleString() : '' }}
+                                </td>
+                                <td :class="['text-end']">
+                                    {{ item.weight ? item.weight.toLocaleString() : '' }}
                                 </td>
                                 <td class="text-center">
                                     <i class="ri-check-line text-success" v-if="item.validation_reference"></i>
@@ -156,33 +149,33 @@ const form = computed({
 const currentItem = ref(null)
 const modalDetailVisible = ref(false)
 
-const validationReferences = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_reference)
+const validationReferences = form.value.items.filter((item) => item.type !== 'MNL' && !item.validation_reference)
 const validationReference = {
     count : validationReferences.length ?? 0,
-    weight : sumBy(validationReferences, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+    weight : sumBy(validationReferences, (item) => item.weight) ?? 0,
 }
 
-const validationBills = form.value.items.filter((item) => item.expense_code !== 'MNL' && item.validation_bill)
+const validationBills = form.value.items.filter((item) => item.type !== 'MNL' && item.validation_bill)
 const validationBill = {
     count : validationBills.length ?? 0,
-    weight : sumBy(validationBills, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+    weight : sumBy(validationBills, (item) => item.weight) ?? 0,
 }
 
-const validationWeights = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_weight)
+const validationWeights = form.value.items.filter((item) => item.type !== 'MNL' && !item.validation_weight)
 const validationWeight = {
     count : validationWeights.length ?? 0,
-    weight : sumBy(validationWeights, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+    weight : sumBy(validationWeights, (item) => item.weight) ?? 0,
 }
 
-const validationScanCompliances = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_scan_compliance)
+const validationScanCompliances = form.value.items.filter((item) => item.type !== 'MNL' && !item.validation_scan_compliance)
 const validationScanCompliance = {
     count : validationScanCompliances.length ?? 0,
-    weight : sumBy(validationScanCompliances, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+    weight : sumBy(validationScanCompliances, (item) => item.weight) ?? 0,
 }
 
-const validationOpsPlans = form.value.items.filter((item) => item.expense_code !== 'MNL' && !item.validation_ops_plan)
+const validationOpsPlans = form.value.items.filter((item) => item.type !== 'MNL' && !item.validation_ops_plan)
 const validationOpsPlan = {
     count : validationOpsPlans.length ?? 0,
-    weight : sumBy(validationOpsPlans, (item) => item.invoice_weight_awb+item.invoice_weight_smu) ?? 0,
+    weight : sumBy(validationOpsPlans, (item) => item.weight) ?? 0,
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="row g-2" v-if="!form.id || (form.id && form.items.filter((item) => !item.is_manual && item.expense_code == expense.code).length == 0)">
+    <div class="row g-2" v-if="!form.id || (form.id && form.items.filter((item) =>  item.type !== 'MNL' && item.expense_id == expense.id).length == 0)">
         <div class="col-lg-12 p-4">
             <label for="excel_file" class="form-label">File</label>
             <div class="input-group">
@@ -23,8 +23,7 @@
             <thead class="table-light text-muted">
                 <tr>
                     <th class="text-center" width=40px>#</th>
-                    <th>AWB</th>
-                    <th>SMU</th>
+                    <th>{{ expense.type_text }}</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Weight</th>
                     <th>Withholding</th>
@@ -33,9 +32,9 @@
                     <th>Product / Project</th>
                 </tr>
             </thead>
-            <template v-if="form.items && form.items.length > 0 && form.items.filter((item) => !item.is_manual && item.expense_code == expense.code).length > 0">
+            <template v-if="form.items && form.items.length > 0 && form.items.filter((item) => item.type !== 'MNL' && item.expense_id == expense.id).length > 0">
                 <tbody>
-                    <UploadItem v-for="(item, index) in form.items.filter((item) => !item.is_manual && item.expense_code == expense.code)" :key="index"
+                    <UploadItem v-for="(item, index) in form.items.filter((item) => item.type !== 'MNL' && item.expense_id == expense.id)" :key="index"
                         :formData="form"
                         @update:formData="form = $event"
                         :itemData="item"

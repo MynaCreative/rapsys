@@ -1,10 +1,10 @@
 <table>
     <thead>
         <tr>
-            <th>SMU</th>
-            <th>SMU Date</th>
-            <th>Amount SMU</th>
-            <th>Invoice Weight SMU</th>
+            <th>Code</th>
+            <th>Date Item</th>
+            <th>Amount</th>
+            <th>Weight</th>
         </tr>
     </thead>
     <tbody></tbody>

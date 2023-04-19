@@ -11,8 +11,7 @@
                     @update:formData="form = $event"
                     :itemData="item"
                     @update:itemData="item = $event"
-                    :references="references"
-                    :type="type"/>
+                    :references="references"/>
             </div>
             <div class="modal-footer justify-content-between">
                 <b-button variant="light" @click="closeModal">
@@ -28,12 +27,12 @@
     </ModalContainer>
 </template>
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 import ModalContainer from '@/Components/Modal.vue'
 
 import PartialForm from './ManualForm.vue'
 
-const props = defineProps(['show','formData','references','type'])
+const props = defineProps(['show','formData','references'])
 const emit  = defineEmits(['update:show','update:formData'])
 
 const form = computed({
@@ -46,15 +45,12 @@ const form = computed({
 })
 
 const initialItem = () => ({
-    smu: null,
-    awb: null,
-    amount_smu: 0,
-    amount_awb: 0,
-    amount_awb_smu: 0,
-    invoice_weight_smu: 0,
-    invoice_weight_awb: 0,
-    delta_weight_smu: 0,
+    code: null,
+    amount: 0,
+    weight: 0,
     route: null,
+    expense_id: 1,
+    cost_center_id: null,
     cost_center: null,
     withholding_id: null,
     withholding: null,
@@ -66,19 +62,15 @@ const initialItem = () => ({
     product: null,
     sales_channel_id: null,
     sales_channel: null,
-    date_smu: null,
-    date_awb: null,
-    is_manual: true,
-    expense_id: 1,
-    type: null,
-    expense_code: 'MNL',
+    date_item: null,
+    type: 'MNL',
     expense_coa: null,
 })
 
 let item = {...initialItem()}
 
 const addItem = () => {
-    form.value.items.push({ ...item, type: props.type})
+    form.value.items.push({ ...item})
     item = initialItem()
     emit('update:show', false)
 }

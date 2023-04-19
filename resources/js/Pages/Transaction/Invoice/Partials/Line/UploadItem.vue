@@ -1,23 +1,12 @@
 <template>
     <tr>
         <td  @click="modalFormVisible = true" class="cursor-pointer text-center">{{ index+1 }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.awb`] }]">{{ item.awb }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.smu`] }]">{{ item.smu }}</td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer text-end', {'bg-soft-danger': form.errors[`items.${index}.amount_smu`] || form.errors[`items.${index}.amount_awb`] }]">
-            <template v-if="item.amount_smu">
-                {{ item.amount_smu ? item.amount_smu.toLocaleString() : '' }}
-            </template>
-            <template v-if="item.amount_awb">
-                {{ item.amount_awb ? item.amount_awb.toLocaleString() : '' }}
-            </template>
+        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.code`] }]">{{ item.code }}</td>
+        <td  @click="modalFormVisible = true" :class="['cursor-pointer text-end', {'bg-soft-danger': form.errors[`items.${index}.amount`] }]">
+            {{ item.amount ? item.amount.toLocaleString() : '' }}
         </td>
-        <td  @click="modalFormVisible = true" :class="['cursor-pointer text-end', {'bg-soft-danger': form.errors[`items.${index}.invoice_weight_smu`] || form.errors[`items.${index}.invoice_weight_awb`] }]">
-            <template v-if="item.invoice_weight_smu">
-                {{ item.invoice_weight_smu ? item.invoice_weight_smu.toLocaleString() : '' }}
-            </template>
-            <template v-if="item.invoice_weight_awb">
-                {{ item.invoice_weight_awb ? item.invoice_weight_awb.toLocaleString() : '' }}
-            </template>
+        <td  @click="modalFormVisible = true" :class="['cursor-pointer text-end', {'bg-soft-danger': form.errors[`items.${index}.weight`] }]">
+            {{ item.weight ? item.weight.toLocaleString() : '' }}
         </td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.withholding_id`] }]">{{ item.withholding ? item.withholding?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.tax_id`] }]">{{ item.tax ? item.tax?.name : ''  }}</td>
@@ -48,11 +37,6 @@ const form = computed({
     set(val) {
         emit("update:formData", val)
     },
-})
-
-const total = computed(() =>{
-    item.value.total = item.value.quantity * item.value.price
-    return item.value.total ?? 0
 })
 
 const item = computed({

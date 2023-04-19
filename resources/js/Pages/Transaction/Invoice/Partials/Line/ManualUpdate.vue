@@ -11,8 +11,7 @@
                     @update:formData="form = $event"
                     :itemData="item"
                     @update:itemData="item = $event"
-                    :references="references"
-                    :type="item.type"/>
+                    :references="references"/>
             </div>
             <div class="modal-footer justify-content-between">
                 <b-button variant="light" @click="emit('update:show', false)">

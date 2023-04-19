@@ -18,6 +18,7 @@ use App\Mail\Invoice as ModelMail;
 use App\Imports\DataImport;
 use App\Helpers\Relationship;
 use App\Exports\Invoice\Sample as SampleTemplate;
+use App\Jobs\InvoiceValidation;
 use App\Models\Approval;
 use App\Models\Area;
 use App\Models\Currency;
@@ -36,6 +37,9 @@ use App\Models\Vendor;
 use App\Models\VendorSite;
 use App\Models\Withholding;
 use App\Models\Workflow;
+
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Carbon\Carbon;
 
 class Invoice
 {
@@ -88,6 +92,8 @@ class Invoice
                     'invoice_number'                    => $item->invoice_number,
                     'invoice_date'                      => $item->invoice_date,
                     'invoice_receipt_date'              => $item->invoice_receipt_date,
+                    'items'                             => $item->items->count(),
+                    'validated_items'                   => $item->items()->where('is_validated', true)->count(),
                     'description'                       => $item->description,
                     'created_user'                      => $item->createdUser,
                     'updated_user'                      => $item->updatedUser,
@@ -150,6 +156,14 @@ class Invoice
     {
         $transaction = DB::transaction(function () use ($request) {
             return LogBatch::withinBatch(function (string $uuid) use ($request) {
+                if ($request->items) {
+                    $items = array_map(function ($item, $index) use ($uuid, $request) {
+                        return array_merge($item, [
+                            'uuid'                      => $uuid,
+                            'sequence_number'           => $index + 1,
+                        ]);
+                    }, $request->items, array_keys($request->items));
+                }
                 $request->merge([
                     'uuid'                          => $uuid,
                     'approval_status'               => Model::APPROVAL_STATUS_NONE,
@@ -165,18 +179,24 @@ class Invoice
                 /**
                  * Document Item
                  */
-                self::saveDocumentItem($model, $request->items);
+                self::saveDocumentItem($model, $items ?? []);
 
                 if ($request->uploads) {
                     foreach ($request->uploads as $upload) {
                         $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
                             ->first()
-                            ->map(function ($item) use ($upload) {
+                            ->map(function ($item, $index) use ($upload, $uuid) {
+                                $date_item = null;
+                                if (isset($item['date_item'])) {
+                                    $date_item = Carbon::instance(Date::excelToDateTimeObject($item['date_item']));
+                                }
                                 return [
                                     ...$item,
-                                    'expense_id'    => (int) $upload['expense_id'],
-                                    'expense_code'  => $upload['expense_code'],
-                                    'type'          => $upload['type']
+                                    'uuid'              => $uuid,
+                                    'sequence_number'   => $index + 1,
+                                    'date_item'         => $date_item,
+                                    'expense_id'        => (int) $upload['expense_id'],
+                                    'type'              => $upload['type']
                                 ];
                             })
                             ->toArray();
@@ -187,10 +207,17 @@ class Invoice
                 /**
                  * Document Attachment
                  */
-                self::saveDocumentAttachment($model, $request);
+                if ($request->id) {
+                    self::deleteDocumentAttachment($model, $request);
+                    self::saveDocumentAttachment($model, $request, true);
+                } else {
+                    self::saveDocumentAttachment($model, $request);
+                }
 
-                Queue::push(new DeltaValidation($model));
-
+                foreach ($model->items as $item) {
+                    DeltaValidation::dispatch($item);
+                }
+                InvoiceValidation::dispatch($model);
                 return $model;
             });
         });
@@ -208,6 +235,14 @@ class Invoice
     {
         $transaction = DB::transaction(function () use ($request) {
             return LogBatch::withinBatch(function (string $uuid) use ($request) {
+                if ($request->items) {
+                    $items = array_map(function ($item, $index) use ($uuid, $request) {
+                        return array_merge($item, [
+                            'uuid'                      => $uuid,
+                            'sequence_number'           => $index + 1,
+                        ]);
+                    }, $request->items, array_keys($request->items));
+                }
                 $request->merge([
                     'uuid'                          => $uuid,
                     'document_status'               => Model::DOCUMENT_STATUS_PUBLISHED,
@@ -223,7 +258,7 @@ class Invoice
                 /**
                  * Document Item
                  */
-                self::saveDocumentItem($model, $request->items);
+                self::saveDocumentItem($model, $items ?? []);
 
                 /**
                  * Document Attachment
@@ -235,7 +270,10 @@ class Invoice
                  */
                 self::saveDocumentApproval($model, $request);
 
-                Queue::push(new DeltaValidation($model));
+                foreach ($model->items as $item) {
+                    DeltaValidation::dispatch($item);
+                }
+                InvoiceValidation::dispatch($model);
 
                 return $model;
             });
@@ -288,6 +326,14 @@ class Invoice
     {
         $transaction = DB::transaction(function () use ($request) {
             return LogBatch::withinBatch(function (string $uuid) use ($request) {
+                if ($request->items) {
+                    $items = array_map(function ($item, $index) use ($uuid, $request) {
+                        return array_merge($item, [
+                            'uuid'                      => $uuid,
+                            'sequence_number'           => $index + 1,
+                        ]);
+                    }, $request->items, array_keys($request->items));
+                }
                 $request->merge([
                     'uuid'                          => $uuid,
                     'document_status'               => Model::DOCUMENT_STATUS_PUBLISHED,
@@ -303,7 +349,7 @@ class Invoice
                 /**
                  * Document Item
                  */
-                self::saveDocumentItem($this->model, $request->items);
+                self::saveDocumentItem($this->model, $items ?? []);
 
                 /**
                  * Document Attachment
@@ -316,7 +362,10 @@ class Invoice
                  */
                 self::saveDocumentApproval($this->model, $request);
 
-                Queue::push(new DeltaValidation($this->model));
+                // foreach ($this->model->items as $item) {
+                //     DeltaValidation::dispatch($item);
+                // }
+                // InvoiceValidation::dispatch($this->model);
 
                 return $this->model;
             });
@@ -338,7 +387,7 @@ class Invoice
             'department:id,name',
             'attachments',
             'items' => function ($query) {
-                $query->with(['withholding', 'tax', 'area', 'product', 'salesChannel']);
+                $query->with(['withholding', 'tax', 'area', 'product', 'salesChannel', 'costCenter']);
             },
         ]);
         $model->uploads = [];
@@ -430,62 +479,69 @@ class Invoice
     public static function saveDocumentApproval(Model $model, $request)
     {
         $workflows = Workflow::query()
-            // ->where('range_from', '<=', $model->total)
-            // ->where('range_to', '>=', $model->total)
+            ->where('range_from', '<=', $model->total_amount)
+            ->where('range_to', '>=', $model->total_amount)
             ->orderBy('sequence')
             ->get();
         foreach ($workflows as $index => $workflow) {
+            $position = null;
+            if ($workflows->first()->id === $workflow->id) {
+                $position = 'first';
+            }
+            if ($workflows->last()->id === $workflow->id) {
+                $position = 'last';
+            }
             Approval::create([
                 'user_id' => $workflow->user_id,
                 'workflow_id' => $workflow->id,
                 'invoice_id' => $model->id,
                 'current' => $index == 0,
                 'sequence' => $workflow->sequence,
-                'position' => 'pending',
+                'position' => $position,
             ]);
             if ($index == 0) {
-                Mail::to(auth()->user()->email)->send(new ModelMail($model, $workflow->user, 'created'));
+                Mail::to(auth()->user()->email)->send(new ModelMail($model, auth()->user()->email, 'created'));
                 Mail::to($model->createdUser->email)->send(new ModelMail($model, $workflow->user, 'approval'));
             }
         }
 
-        $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
-        Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
-            'staging_id' => $staging_id,
-            'ledger_id' => 2024,
-            'org_id' => 103,
-            'vendor_id' => $model->vendor_id,
-            'vendor_site_id' => $model->vendor_site_id,
-            'trx_number' => $model->invoice_number,
-            'currency_code' => $model->currency->code,
-            'description' => $model->description,
-            'amount' => $model->total_amount_after_tax,
-            'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
-            'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
-            'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
-            'ap_source' => 'RAPSYS',
-            'terms_id' => $model->term->code,
-            'invoice_type_lookup_code' => 'STANDARD',
-            'payment_method_lookup_code' => 'CHECK',
-            'status' => 'I',
-        ]);
+        // $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
+        // Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
+        //     'staging_id' => $staging_id,
+        //     'ledger_id' => 2024,
+        //     'org_id' => 103,
+        //     'vendor_id' => $model->vendor_id,
+        //     'vendor_site_id' => $model->vendor_site_id,
+        //     'trx_number' => $model->invoice_number,
+        //     'currency_code' => $model->currency->code,
+        //     'description' => $model->description,
+        //     'amount' => $model->total_amount_after_tax,
+        //     'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
+        //     'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
+        //     'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
+        //     'ap_source' => 'RAPSYS',
+        //     'terms_id' => $model->term->code,
+        //     'invoice_type_lookup_code' => 'STANDARD',
+        //     'payment_method_lookup_code' => 'CHECK',
+        //     'status' => 'I',
+        // ]);
 
-        foreach ($model->items as $key => $item) {
-            Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-                'staging_id' => $staging_id,
-                'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-                'ledger_id' => 2024,
-                'org_id' => 103,
-                'line_number' => $key + 1,
-                'description' => $item->expense->code,
-                'line_type_code' => 'ITEM',
-                'ppn_code' => null,
-                'tax_rate_id' => null,
-                'awt_group_id' => $item->withholding->code,
-                'amount' => $item->amount,
-                'dist_code_concat' => $item->code,
-            ]);
-        }
+        // foreach ($model->items as $key => $item) {
+        //     Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
+        //         'staging_id' => $staging_id,
+        //         'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
+        //         'ledger_id' => 2024,
+        //         'org_id' => 103,
+        //         'line_number' => $key + 1,
+        //         'description' => $item->expense->code,
+        //         'line_type_code' => 'ITEM',
+        //         'ppn_code' => null,
+        //         'tax_rate_id' => null,
+        //         'awt_group_id' => $item->withholding->code,
+        //         'amount' => $item->amount,
+        //         'dist_code_concat' => $item->code,
+        //     ]);
+        // }
 
         // begin
         //     fnd_request.submit_request(

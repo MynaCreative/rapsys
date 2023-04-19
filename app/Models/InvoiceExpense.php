@@ -10,7 +10,7 @@ use Spatie\Activitylog\LogOptions;
 
 use App\Traits\Signature;
 
-class InvoiceItem extends Model
+class InvoiceExpense extends Model
 {
     use HasFactory, LogsActivity, Signature;
 
@@ -24,7 +24,6 @@ class InvoiceItem extends Model
         'sequence_number',
 
         'invoice_id',
-        'invoice_expense_id',
         'expense_id',
         'cost_center_id',
         'sales_channel_id',
@@ -33,23 +32,16 @@ class InvoiceItem extends Model
         'tax_id',
         'withholding_id',
 
-        'dist',
-        'code',
         'type',
-        'expense_coa',
-        'route',
-        'date_item',
 
-        'weight',
-        'amount',
-        'delta_weight',
-        'delta_amount',
+        'total_weight',
+        'total_amount',
+        'total_delta_weight',
+        'total_delta_amount',
 
-        'withholding_tax',
-        'vat_tax',
-        'total',
-
-        'description',
+        'total_withholding_tax',
+        'total_vat_tax',
+        'grand_total',
 
         'validation_reference',
         'validation_weight',
@@ -57,9 +49,6 @@ class InvoiceItem extends Model
         'validation_ops_plan',
         'validation_bill',
         'validation_score',
-
-        'is_validated',
-        'message',
 
         'created_by',
         'updated_by'
@@ -71,21 +60,20 @@ class InvoiceItem extends Model
      * @var array
      */
     protected $casts = [
-        'weight'                        => 'float',
-        'amount'                        => 'float',
-        'delta_weight'                  => 'float',
-        'delta_amount'                  => 'float',
+        'total_weight'                  => 'float',
+        'total_amount'                  => 'float',
+        'total_delta_weight'            => 'float',
+        'total_delta_amount'            => 'float',
 
-        'withholding_tax'               => 'float',
-        'vat_tax'                       => 'float',
-        'total'                         => 'float',
+        'total_withholding_tax'         => 'float',
+        'total_vat_tax'                 => 'float',
+        'grand_total'                   => 'float',
 
         'validation_reference'          => 'boolean',
         'validation_weight'             => 'boolean',
         'validation_scan_compliance'    => 'boolean',
         'validation_ops_plan'           => 'boolean',
         'validation_bill'               => 'boolean',
-        'is_validated'                  => 'boolean',
     ];
 
     /**
@@ -94,14 +82,6 @@ class InvoiceItem extends Model
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
-    }
-
-    /**
-     * Get the invoice expense that owns the invoice item.
-     */
-    public function invoiceExpense()
-    {
-        return $this->belongsTo(InvoiceExpense::class);
     }
 
     /**

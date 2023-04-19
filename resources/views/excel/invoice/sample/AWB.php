@@ -1,9 +1,9 @@
 <table>
     <thead>
         <tr>
-            <th>AWB</th>
-            <th>Amount AWB</th>
-            <th>Invoice Weight AWB</th>
+            <th>Code</th>
+            <th>Amount</th>
+            <th>Weight</th>
         </tr>
     </thead>
     <tbody></tbody>
