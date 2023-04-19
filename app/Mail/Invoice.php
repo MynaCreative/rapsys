@@ -39,7 +39,7 @@ class Invoice extends Mailable implements ShouldQueue
     {
         $model = $this->model;
         return new Envelope(
-            subject: $this->title." [{$model->code}] - ".$this->action,
+            subject: $this->title . " [{$model->invoice_number}] - " . ucfirst($this->action),
         );
     }
 
@@ -51,7 +51,7 @@ class Invoice extends Mailable implements ShouldQueue
     public function content()
     {
         return new Content(
-            view: $this->template.'.'.$this->action,
+            view: $this->template . '.' . $this->action,
         );
     }
 

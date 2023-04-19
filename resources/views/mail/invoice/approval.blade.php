@@ -49,36 +49,96 @@
             <td>SMU</td>
             <td>Validation SMU/AWB</td>
             <td>Data not found</td>
-            <td class="text-right">0</td>
-            <td class="text-right">0</td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_reference'];
+                    })->count()) 
+                }}
+            </td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_reference'];
+                    })->sum('weight')) 
+                }}
+            </td>
         </tr>
         <tr>
             <td>Pickup</td>
             <td>Validation Bill</td>
             <td>Already Billed</td>
-            <td class="text-right">0</td>
-            <td class="text-right">0</td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_bill'];
+                    })->count()) 
+                }}
+            </td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_bill'];
+                    })->sum('weight')) 
+                }}
+            </td>
         </tr>
         <tr>
             <td>Pickup</td>
             <td>Validation Weight SMU/AWB</td>
             <td>Weight Not Match</td>
-            <td class="text-right">0</td>
-            <td class="text-right">0</td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_weight'];
+                    })->count()) 
+                }}
+            </td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_weight'];
+                    })->sum('weight')) 
+                }}
+            </td>
         </tr>
         <tr>
             <td>Pickup</td>
             <td>Validation Scan Compliance</td>
             <td>Scan Not Found</td>
-            <td class="text-right">0</td>
-            <td class="text-right">0</td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_scan_compliance'];
+                    })->count()) 
+                }}
+            </td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_scan_compliance'];
+                    })->sum('weight')) 
+                }}
+            </td>
         </tr>
         <tr>
             <td>Pickup</td>
             <td>Validation Ops Plan</td>
             <td>Warning RPX Area</td>
-            <td class="text-right">0</td>
-            <td class="text-right">0</td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_ops_plan'];
+                    })->count()) 
+                }}
+            </td>
+            <td class="text-right">
+                {{
+                    number_format($model->items->filter(function ($item) {
+                        return $item['type'] !== 'MNL' && !$item['validation_ops_plan'];
+                    })->sum('weight')) 
+                }}
+            </td>
         </tr>
     </tbody>
 </table><br><br>
