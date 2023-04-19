@@ -505,43 +505,75 @@ class Invoice
             }
         }
 
-        // $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
-        // Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
-        //     'staging_id' => $staging_id,
-        //     'ledger_id' => 2024,
-        //     'org_id' => 103,
-        //     'vendor_id' => $model->vendor_id,
-        //     'vendor_site_id' => $model->vendor_site_id,
-        //     'trx_number' => $model->invoice_number,
-        //     'currency_code' => $model->currency->code,
-        //     'description' => $model->description,
-        //     'amount' => $model->total_amount_after_tax,
-        //     'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
-        //     'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
-        //     'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
-        //     'ap_source' => 'RAPSYS',
-        //     'terms_id' => $model->term->code,
-        //     'invoice_type_lookup_code' => 'STANDARD',
-        //     'payment_method_lookup_code' => 'CHECK',
-        //     'status' => 'I',
-        // ]);
+        $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
+        Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
+            'staging_id' => $staging_id,
+            'ledger_id' => 2024,
+            'org_id' => 103,
+            'vendor_id' => $model->vendor_id,
+            'vendor_site_id' => $model->vendor_site_id,
+            'trx_number' => $model->invoice_number,
+            'currency_code' => $model->currency->code,
+            'description' => $model->note,
+            'amount' => $model->total_amount,
+            'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
+            'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
+            'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
+            'supplier_tax_invoice_date' => date('d-M-Y', strtotime($model->supplier_tax_invoice_date)),
+            'supplier_tax_invoice_number' => $model->supplier_tax_invoice,
+            'ap_source' => 'RAPSYS',
+            'terms_id' => $model->term->code,
+            'invoice_type_lookup_code' => strtoupper($model->invoiceType->name),
+            'payment_method_lookup_code' => 'CHECK',
+            'status' => 'I',
+        ]);
 
-        // foreach ($model->items as $key => $item) {
-        //     Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-        //         'staging_id' => $staging_id,
-        //         'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-        //         'ledger_id' => 2024,
-        //         'org_id' => 103,
-        //         'line_number' => $key + 1,
-        //         'description' => $item->expense->code,
-        //         'line_type_code' => 'ITEM',
-        //         'ppn_code' => null,
-        //         'tax_rate_id' => null,
-        //         'awt_group_id' => $item->withholding->code,
-        //         'amount' => $item->amount,
-        //         'dist_code_concat' => $item->code,
-        //     ]);
-        // }
+        $key = 1;
+        $model->items->groupBy('dist')->each(function ($group) use ($staging_id, &$key) {
+            $item = $group->first();
+            $awb = null;
+            if ($item->type == 'SMU') {
+                $smu = Delta::smu($item->code);
+                $awb = count($smu['data']['airwaybill']) . ' AWB';
+            }
+            $description = implode(' | ', array_filter([
+                $item->expense->code,
+                $group->count() . ' ' . $item->type,
+                $awb,
+                $item->area->code
+            ]));
+            $amount = $group->sum('amount');
+            Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
+                'staging_id' => $staging_id,
+                'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
+                'ledger_id' => 2024,
+                'org_id' => 103,
+                'line_number' => $key,
+                'description' => $description,
+                'line_type_code' => 'ITEM',
+                'ppn_code' => null,
+                'tax_rate_id' => null,
+                'awt_group_id' => $item->withholding->code,
+                'amount' => $amount,
+                'dist_code_concat' => $item->dist,
+            ]);
+            $key++;
+            if ($item->tax) {
+                Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
+                    'staging_id' => $staging_id,
+                    'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
+                    'ledger_id' => 2024,
+                    'org_id' => 103,
+                    'line_number' => $key,
+                    'description' => $description,
+                    'line_type_code' => 'TAX',
+                    'ppn_code' => $item->tax->name,
+                    'tax_rate_id' => $item->tax->code,
+                    'amount' => $amount,
+                ]);
+                $key++;
+            }
+        });
 
         // begin
         //     fnd_request.submit_request(
