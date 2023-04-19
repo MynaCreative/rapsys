@@ -155,7 +155,7 @@ const validationReference = {
     weight : sumBy(validationReferences, (item) => item.weight) ?? 0,
 }
 
-const validationBills = form.value.items.filter((item) => item.type !== 'MNL' && item.validation_bill)
+const validationBills = form.value.items.filter((item) => item.type !== 'MNL' && !item.validation_bill)
 const validationBill = {
     count : validationBills.length ?? 0,
     weight : sumBy(validationBills, (item) => item.weight) ?? 0,

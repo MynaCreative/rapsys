@@ -479,8 +479,8 @@ class Invoice
     public static function saveDocumentApproval(Model $model, $request)
     {
         $workflows = Workflow::query()
-            ->where('range_from', '<=', $model->total_amount)
-            ->where('range_to', '>=', $model->total_amount)
+            ->whereBetween('range_from', [0, $model->total_amount])
+            ->orWhereBetween('range_to', [0, $model->total_amount])
             ->orderBy('sequence')
             ->get();
         foreach ($workflows as $index => $workflow) {

@@ -1,96 +1,124 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style type="text/css">
-    /**
+        /**
      * ------------------------------------------------------------
      *  @author     : Muhammad Cahya
      *  @company    : RAPSYS
      * ------------------------------------------------------------
      */
-    @media only screen and (max-width: 620px) {
-        table.body h1 {
-            font-size: 28px !important;
-            margin-bottom: 10px !important;
-        }
-        table.body p,
-        table.body ul,
-        table.body ol,
-        table.body td,
-        table.body span,
-        table.body a {
-            font-size: 16px !important;
-        }
-        table.body .wrapper,
-        table.body .article {
-            padding: 10px !important;
-        }
-        table.body .content {
-            padding: 0 !important;
-        }
-        table.body .container {
-            padding: 0 !important;
-            width: 100% !important;
-        }
-        table.body .main {
-            border-left-width: 0 !important;
-            border-radius: 0 !important;
-            border-right-width: 0 !important;
-        }
-        table.body .btn table {
-            width: 100% !important;
-        }
-        table.body .btn a {
-            width: 100% !important;
-        }
-        table.body .img-responsive {
-            height: auto !important;
-            max-width: 100% !important;
-            width: auto !important;
-        }
-    }
-    @media all {
-        .ExternalClass {
-            width: 100%;
-        }
-        .ExternalClass,
-        .ExternalClass p,
-        .ExternalClass span,
-        .ExternalClass font,
-        .ExternalClass td,
-        .ExternalClass div {
-            line-height: 100%;
-        }
-        .apple-link a {
-            color: inherit !important;
-            font-family: inherit !important;
-            font-size: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-            text-decoration: none !important;
-        }
-        #MessageViewBody a {
-            color: inherit;
-            text-decoration: none;
-            font-size: inherit;
-            font-family: inherit;
-            font-weight: inherit;
-            line-height: inherit;
-        }
-        .btn-primary table td:hover {
-            background-color: #34495e !important;
+        table.table-content,
+        table.table-content th,
+        table.table-content td {
+            border: 1px solid #a3a3a3;
+            border-collapse: collapse;
+            padding: 5px 10px;
+            color: #404040;
         }
 
-        .btn-primary a:hover {
-            background-color: #34495e !important;
-            border-color: #34495e !important;
+        table.table-content td {
+            vertical-align: baseline;
         }
-    }
+
+        @media only screen and (max-width: 620px) {
+            table.body h1 {
+                font-size: 28px !important;
+                margin-bottom: 10px !important;
+            }
+
+            table.body p,
+            table.body ul,
+            table.body ol,
+            table.body td,
+            table.body span,
+            table.body a {
+                font-size: 16px !important;
+            }
+
+            table.body .wrapper,
+            table.body .article {
+                padding: 10px !important;
+            }
+
+            table.body .content {
+                padding: 0 !important;
+            }
+
+            table.body .container {
+                padding: 0 !important;
+                width: 100% !important;
+            }
+
+            table.body .main {
+                border-left-width: 0 !important;
+                border-radius: 0 !important;
+                border-right-width: 0 !important;
+            }
+
+            table.body .btn table {
+                width: 100% !important;
+            }
+
+            table.body .btn a {
+                width: 100% !important;
+            }
+
+            table.body .img-responsive {
+                height: auto !important;
+                max-width: 100% !important;
+                width: auto !important;
+            }
+        }
+
+        @media all {
+            .ExternalClass {
+                width: 100%;
+            }
+
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+                line-height: 100%;
+            }
+
+            .apple-link a {
+                color: inherit !important;
+                font-family: inherit !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+                text-decoration: none !important;
+            }
+
+            #MessageViewBody a {
+                color: inherit;
+                text-decoration: none;
+                font-size: inherit;
+                font-family: inherit;
+                font-weight: inherit;
+                line-height: inherit;
+            }
+
+            .btn-primary table td:hover {
+                background-color: #34495e !important;
+            }
+
+            .btn-primary a:hover {
+                background-color: #34495e !important;
+                border-color: #34495e !important;
+            }
+        }
     </style>
     <title>@yield('title')</title>
 </head>
+
 <body itemscope itemtype="http://schema.org/EmailMessage" style="background-color: #ebebeb; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px; line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ebebeb; width: 100%;" width="100%" bgcolor="#f6f6f6">
         <tr>
@@ -102,16 +130,16 @@
                         <!-- START MAIN CONTENT AREA -->
                         <tr>
                             <td class="wrapper" style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box; padding: 20px;" valign="top">
-                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
-                                <tr>
-                                <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">
-                                    @yield('content')
-                                </td>
-                                </tr>
-                            </table>
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
+                                    <tr>
+                                        <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;" valign="top">
+                                            @yield('content')
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
-                    <!-- END MAIN CONTENT AREA -->
+                        <!-- END MAIN CONTENT AREA -->
                     </table>
                     <!-- END CENTERED WHITE CONTAINER -->
                     <!-- START FOOTER -->
@@ -137,4 +165,5 @@
         </tr>
     </table>
 </body>
+
 </html>
