@@ -50,7 +50,7 @@ class InvoiceController extends Controller
     public function index(IndexRequest $request)
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
-            'collection'=>$this->repository::all($request),
+            'collection' => $this->repository::all($request),
         ]);
     }
 
@@ -68,6 +68,29 @@ class InvoiceController extends Controller
     {
         try {
             $data = $this->repository::init($invoice)->show($request);
+            return response()->json($data);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * 
+     * Display the specified resource.
+     *
+     * @param   ShowRequest  $request
+     * @param   Model $invoice
+     * 
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function approval(ShowRequest $request, Model $invoice)
+    {
+        try {
+            $data = $this->repository::init($invoice)->approval($request);
             return response()->json($data);
         } catch (Throwable $exception) {
             return redirect()->back()->withErrors([
@@ -110,7 +133,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.store'));
     }
 
@@ -135,7 +158,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.store'));
     }
 
@@ -180,7 +203,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.import'));
     }
 
@@ -237,7 +260,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.update'));
     }
 
@@ -263,7 +286,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.delete'));
     }
 
@@ -288,7 +311,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return redirect()->route(implode('.', [$this->routeModule(),$this->routePage(),'index']))
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
             ->with('success', __('messages.success.restore'));
     }
 
@@ -298,7 +321,8 @@ class InvoiceController extends Controller
      * 
      * @return  String
      */
-    public function routeModule(){
+    public function routeModule()
+    {
         return str($this->module)->snake('-');
     }
 
@@ -308,7 +332,8 @@ class InvoiceController extends Controller
      * 
      * @return  String
      */
-    public function routePage(){
+    public function routePage()
+    {
         return str($this->page)->plural()->snake('-');
     }
 }

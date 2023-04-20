@@ -13,6 +13,10 @@ export default {
             form[field] = fields[field]
         })
     },
+    async showApproval (id) {
+        const { data : response } = await axios.get(route(`${page.module}.${page.name}.approval`, id))
+        return response
+    },
     async smuPreview (code) {
         const { data : fields } = await axios.get(route(`${page.module}.${page.name}.smu-preview`, code))
         return fields

@@ -23,7 +23,7 @@
                         <i class="bx bx-moon fs-22"></i>
                     </button>
                 </div>
-                <div class="dropdown topbar-head-dropdown ms-1 header-item" v-if="$page.props.auth.roles.includes('Administrator') || $page.props.auth.permissions.includes('approval')">
+                <div class="dropdown topbar-head-dropdown ms-1 header-item" v-if="$page.props.auth?.approvals?.length > 0">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none"
                         id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bx bx-bell fs-22"></i>
@@ -45,7 +45,7 @@
                                         </h6>
                                     </div>
                                     <div class="col-auto dropdown-tabs">
-                                        <span class="badge badge-soft-light fs-13"> 4 New</span>
+                                        <span class="badge badge-soft-light fs-13">{{ $page.props.auth?.approvals?.length }} New</span>
                                     </div>
                                 </div>
                             </div>

@@ -90,9 +90,18 @@
                                 </td>
                                 <td class="text-center">
                                     <b-badge variant="light" class="text-capitalize" v-if="item.approval_status == 'none'">{{ item.approval_status }}</b-badge>
-                                    <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.approval_status == 'pending'">{{ item.approval_status }}</b-badge>
-                                    <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.approval_status == 'approved'">{{ item.approval_status }}</b-badge>
-                                    <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="item.approval_status == 'rejected'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-primary" class="text-primary text-capitalize cursor-pointer" v-if="item.approval_status == 'pending'" @click="() => {
+                                        currentId = item.id
+                                        modalApprovalVisible = true
+                                    }">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-success" class="text-success text-capitalize cursor-pointer" v-if="item.approval_status == 'approved'" @click="() => {
+                                        currentId = item.id
+                                        modalApprovalVisible = true
+                                    }">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-danger" class="text-danger text-capitalize cursor-pointer" v-if="item.approval_status == 'rejected'" @click="() => {
+                                        currentId = item.id
+                                        modalApprovalVisible = true
+                                    }">{{ item.approval_status }}</b-badge>
                                 </td>
                                 <td class="text-center date">{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
                                 <td class="text-center date"><DataTimestamp :data="item.created_at"/></td>
@@ -122,6 +131,12 @@
                 <Pagination :data="collection"/>
             </div>
         </div>
+        <ModalApproval
+            :show="modalApprovalVisible"
+            @update:show="modalApprovalVisible = $event"
+            :id="currentId"
+            @update:id="currentId = $event"
+        />
     </Layout>
 </template>
 <script setup>
@@ -131,12 +146,12 @@ import { Head, Link, useForm, usePage  } from '@inertiajs/vue3'
 import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import Pagination from '@/Components/Pagination.vue'
-import DataUserName from '@/Components/Data/UserName.vue'
 import DataTimestamp from '@/Components/Data/Timestamp.vue'
-import DataActive from '@/Components/Data/Active.vue'
 import PerPage from '@/Components/PerPage.vue'
 import Reload from '@/Components/Reload.vue'
 import Sort from '@/Components/Sort.vue'
+
+import ModalApproval from './Modals/Approval.vue'
 
 import entityData from './entity'
 import service from './service'
@@ -156,5 +171,5 @@ const form = useForm({
 })
 const currentId = ref(null)
 const modalFormVisible = ref(false)
-const modalDetailVisible = ref(false)
+const modalApprovalVisible = ref(false)
 </script>

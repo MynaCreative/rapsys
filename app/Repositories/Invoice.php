@@ -399,6 +399,22 @@ class Invoice
      *
      * @return Model
      */
+    public function approval(): Model
+    {
+        $model = $this->model->load([
+            'createdUser:id,name',
+            'updatedUser:id,name',
+            'department:id,name',
+            'approvals.user',
+        ]);
+        return $model;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return Model
+     */
     public static function smuPreview($code)
     {
         return Delta::smu($code);

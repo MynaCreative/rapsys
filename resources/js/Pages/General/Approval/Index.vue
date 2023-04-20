@@ -20,15 +20,12 @@
                                 <Sort label="Invoice Number" attribute='invoice_number' rowspan="2" class="align-middle"/>
                                 <Sort label="Vendor" attribute='vendor_id' rowspan="2" class="align-middle"/>
                                 <th class="sort text-center" colspan="3">Amount  (after tax)</th>
-                                <th class="text-center" colspan="2">Status</th>
                                 <th class="text-center" colspan="2">Date</th>
                             </tr>
                             <tr>
                                 <Sort label="Total" attribute='total_amount' class="text-center"/>
                                 <Sort label="Valid" attribute='total_amount_valid' class="text-center"/>
                                 <Sort label="Invalid" attribute='total_amount_invalid' class="text-center"/>
-                                <th class="text-center">Approval</th>
-                                <th class="text-center">Document</th>
                                 <Sort width="110" label="Invoice" attribute='invoice_date' class="text-center"/>
                                 <Sort width="140" label="Created" attribute='created_at' class="text-center"/>
                             </tr>
@@ -55,18 +52,6 @@
                                         {{ item.invoice.total_amount_after_tax_invalid.toLocaleString() }}
                                         <i class="ri-close-line align-middle"></i>
                                     </h6>
-                                </td>
-                                <td class="text-center">
-                                    <b-badge variant="light" class="text-capitalize" v-if="item.invoice.approval_status == 'none'">{{ item.invoice.approval_status }}</b-badge>
-                                    <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.invoice.approval_status == 'pending'">{{ item.invoice.approval_status }}</b-badge>
-                                    <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.invoice.approval_status == 'approved'">{{ item.invoice.approval_status }}</b-badge>
-                                    <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="item.invoice.approval_status == 'rejected'">{{ item.invoice.approval_status }}</b-badge>
-                                </td>
-                                <td class="text-center">
-                                    <b-badge variant="light" class="rounded-pill text-capitalize" v-if="item.invoice.document_status == 'draft'">{{ item.invoice.document_status }}</b-badge>
-                                    <b-badge variant="primary" class="rounded-pill text-capitalize" v-if="item.invoice.document_status == 'published'">{{ item.invoice.document_status }}</b-badge>
-                                    <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.invoice.document_status == 'cancelled'">{{ item.invoice.document_status }}</b-badge>
-                                    <b-badge variant="success" class="rounded-pill text-capitalize" v-if="item.invoice.document_status == 'closed'">{{ item.invoice.document_status }}</b-badge>
                                 </td>
                                 <td class="text-center date">{{ $dayjs(item.invoice.invoice_date).format('DD MMM, YYYY') }}</td>
                                 <td class="text-center date"><DataTimestamp :data="item.invoice.created_at"/></td>
