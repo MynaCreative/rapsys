@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Helpers\Relationship;
 
 use App\Models\Workflow as Model;
 use App\Models\User;
@@ -34,19 +36,18 @@ class Workflow
     public static function all(Request $request)
     {
         $query = Model::withTrashed()
-            ->with(['createdUser:id,name', 'updatedUser:id,name', 'user:id,department_id,name,email,position', 'user.department'])
-            ->orderBy('sequence');
+            ->with(['createdUser:id,name', 'updatedUser:id,name', 'department:id,name', 'items'])
+            ->latest();
 
         return $query->paginate($request->per_page ?? 10)
             ->withQueryString()
             ->through(function ($item) {
                 return [
                     'id'            => $item->id,
-                    'user'          => $item->user,
-                    'sequence'      => $item->sequence,
-                    'range_from'    => $item->range_from,
-                    'range_to'      => $item->range_to,
-                    'description'   => $item->description,
+                    'department'    => $item->department,
+                    'code'          => $item->code,
+                    'name'          => $item->name,
+                    'items'         => $item->items,
                     'created_user'  => $item->createdUser,
                     'updated_user'  => $item->updatedUser,
                     'created_at'    => $item->created_at,
@@ -67,6 +68,11 @@ class Workflow
         $model = new Model($request->sanitizedData());
         $model->saveOrFail();
 
+        /**
+         * Document Item
+         */
+        self::saveDocumentItem($model, $request->items ?? []);
+
         return $model;
     }
 
@@ -81,6 +87,11 @@ class Workflow
         $this->model->fill($request->sanitizedData());
         $this->model->updateOrFail();
 
+        /**
+         * Document Item
+         */
+        self::saveDocumentItem($this->model, $request->items ?? []);
+
         return $this->model;
     }
 
@@ -92,7 +103,7 @@ class Workflow
     public function show(): Model
     {
         return $this->model->load([
-            'createdUser:id,name', 'updatedUser:id,name', 'user:id,name,email,department_id,position', 'user.department:id,name'
+            'createdUser:id,name', 'updatedUser:id,name', 'department:id,name', 'items', 'items.user',
         ]);
     }
 
@@ -127,15 +138,28 @@ class Workflow
     }
 
     /**
+     * Save items
+     */
+    public static function saveDocumentItem(Model $model, $items)
+    {
+        if (!empty($items)) {
+            Relationship::proccesRelationWithRequest(
+                $model->items(),
+                $items
+            );
+        }
+    }
+
+    /**
      * Data reference resource for this resource.
      *
      * @return array|null
      */
     public static function reference(): array
     {
-        $booked = Model::pluck('user_id');
         return [
-            'users' => User::whereNotIn('id', $booked)->pluck('name', 'id'),
+            'departments' => Department::pluck('name', 'id'),
+            'users' => User::pluck('name', 'id'),
         ];
     }
 }

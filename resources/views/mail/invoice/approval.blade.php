@@ -65,7 +65,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Bill</td>
             <td>Already Billed</td>
             <td class="text-right">
@@ -84,7 +84,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Weight SMU/AWB</td>
             <td>Weight Not Match</td>
             <td class="text-right">
@@ -103,7 +103,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Scan Compliance</td>
             <td>Scan Not Found</td>
             <td class="text-right">
@@ -122,7 +122,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Ops Plan</td>
             <td>Warning RPX Area</td>
             <td class="text-right">
@@ -148,21 +148,27 @@
         <td>
             <img src="{{asset('img/submitted.png')}}" width="200" alt="submitted">
         </td>
-        <td>Waiting Approval</td>
-        <td>Waiting Approval</td>
-        <td>Waiting Approval</td>
+        @foreach ($model->approvals as $approval)
+        <td>
+            @if($approval->status == 'approved')
+            <img src="{{asset('img/approved.png')}}" width="200" alt="approved">
+            @else
+            {{ $approval->status }}
+            @endif
+        </td>
+        @endforeach
     </tr>
     <tr>
         <td>Requestor</td>
-        <td>Superior</td>
-        <td>Superior</td>
-        <td>Superior</td>
+        @foreach ($model->approvals as $approval)
+        <td>{{ $approval->description }}</td>
+        @endforeach
     </tr>
     <tr>
         <td>{{ $model->createdUser->name }} {{ $model->createdUser->position ? ' - '.$model->createdUser->position : ''  }}</td>
-        <td>{{ $recevier->name }} {{ $recevier->position ? ' - '.$recevier->position : ''  }}</td>
-        <td>Pradikta Putra - Senior Manager</td>
-        <td>Subiyantoro - General Manager</td>
+        @foreach ($model->approvals as $approval)
+        <td>{{ $approval->user->name }} {{ $approval->user->position ? ' - '.$approval->user->position : ''  }}</td>
+        @endforeach
     </tr>
 </table>
 <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;  margin-top: 15px; color: #555555;">Please note : This is an auto generated e-mail. Do not reply to this messge.</p>

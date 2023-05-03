@@ -37,7 +37,7 @@ use App\Models\Vendor;
 use App\Models\VendorSite;
 use App\Models\Withholding;
 use App\Models\Workflow;
-
+use App\Models\WorkflowItem;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
 
@@ -362,10 +362,10 @@ class Invoice
                  */
                 self::saveDocumentApproval($this->model, $request);
 
-                // foreach ($this->model->items as $item) {
-                //     DeltaValidation::dispatch($item);
-                // }
-                // InvoiceValidation::dispatch($this->model);
+                foreach ($this->model->items as $item) {
+                    DeltaValidation::dispatch($item);
+                }
+                InvoiceValidation::dispatch($this->model);
 
                 return $this->model;
             });
@@ -494,102 +494,106 @@ class Invoice
      */
     public static function saveDocumentApproval(Model $model, $request)
     {
-        $workflows = Workflow::query()
+        $workflows = WorkflowItem::query()
+            ->whereRelation('workflow', 'department_id', $model->department_id)
             ->whereBetween('range_from', [0, $model->total_amount])
             ->orWhereBetween('range_to', [0, $model->total_amount])
             ->orderBy('sequence')
             ->get();
-        foreach ($workflows as $index => $workflow) {
+        foreach ($workflows as $index => $item) {
             $position = null;
-            if ($workflows->first()->id === $workflow->id) {
+            if ($workflows->first()->id === $item->id) {
                 $position = 'first';
             }
-            if ($workflows->last()->id === $workflow->id) {
+            if ($workflows->last()->id === $item->id) {
                 $position = 'last';
             }
             Approval::create([
-                'user_id' => $workflow->user_id,
-                'workflow_id' => $workflow->id,
+                'user_id' => $item->user_id,
+                'workflow_id' => $item->workflow_id,
+                'sequence' => $item->sequence,
+                'workflow_item_id' => $item->id,
                 'invoice_id' => $model->id,
+                'status' => 'waiting approval',
+                'status' => $item->description,
                 'current' => $index == 0,
-                'sequence' => $workflow->sequence,
                 'position' => $position,
             ]);
             if ($index == 0) {
                 Mail::to(auth()->user()->email)->send(new ModelMail($model, auth()->user()->email, 'created'));
-                Mail::to($model->createdUser->email)->send(new ModelMail($model, $workflow->user, 'approval'));
+                Mail::to($item->user->email)->send(new ModelMail($model, $item->user, 'approval'));
             }
         }
 
-        $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
-        Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
-            'staging_id' => $staging_id,
-            'ledger_id' => 2024,
-            'org_id' => 103,
-            'vendor_id' => $model->vendor_id,
-            'vendor_site_id' => $model->vendor_site_id,
-            'trx_number' => $model->invoice_number,
-            'currency_code' => $model->currency->code,
-            'description' => $model->note,
-            'amount' => $model->total_amount,
-            'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
-            'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
-            'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
-            'supplier_tax_invoice_date' => date('d-M-Y', strtotime($model->supplier_tax_invoice_date)),
-            'supplier_tax_invoice_number' => $model->supplier_tax_invoice,
-            'ap_source' => 'RAPSYS',
-            'terms_id' => $model->term->code,
-            'invoice_type_lookup_code' => strtoupper($model->invoiceType->name),
-            'payment_method_lookup_code' => 'CHECK',
-            'status' => 'I',
-        ]);
+        // $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
+        // Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
+        //     'staging_id' => $staging_id,
+        //     'ledger_id' => 2024,
+        //     'org_id' => 103,
+        //     'vendor_id' => $model->vendor_id,
+        //     'vendor_site_id' => $model->vendor_site_id,
+        //     'trx_number' => $model->invoice_number,
+        //     'currency_code' => $model->currency->code,
+        //     'description' => $model->note,
+        //     'amount' => $model->total_amount,
+        //     'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
+        //     'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
+        //     'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
+        //     'supplier_tax_invoice_date' => date('d-M-Y', strtotime($model->supplier_tax_invoice_date)),
+        //     'supplier_tax_invoice_number' => $model->supplier_tax_invoice,
+        //     'ap_source' => 'RAPSYS',
+        //     'terms_id' => $model->term->code,
+        //     'invoice_type_lookup_code' => strtoupper($model->invoiceType->name),
+        //     'payment_method_lookup_code' => 'CHECK',
+        //     'status' => 'I',
+        // ]);
 
-        $key = 1;
-        $model->items->groupBy('dist')->each(function ($group) use ($staging_id, &$key) {
-            $item = $group->first();
-            $awb = null;
-            if ($item->type == 'SMU') {
-                $smu = Delta::smu($item->code);
-                $awb = count($smu['data']['airwaybill']) . ' AWB';
-            }
-            $description = implode(' | ', array_filter([
-                $item->expense->code,
-                $group->count() . ' ' . $item->type,
-                $awb,
-                $item->area->code
-            ]));
-            $amount = $group->sum('amount');
-            Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-                'staging_id' => $staging_id,
-                'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-                'ledger_id' => 2024,
-                'org_id' => 103,
-                'line_number' => $key,
-                'description' => $description,
-                'line_type_code' => 'ITEM',
-                'ppn_code' => null,
-                'tax_rate_id' => null,
-                'awt_group_id' => $item->withholding->code,
-                'amount' => $amount,
-                'dist_code_concat' => $item->dist,
-            ]);
-            $key++;
-            if ($item->tax) {
-                Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-                    'staging_id' => $staging_id,
-                    'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-                    'ledger_id' => 2024,
-                    'org_id' => 103,
-                    'line_number' => $key,
-                    'description' => $description,
-                    'line_type_code' => 'TAX',
-                    'ppn_code' => $item->tax->name,
-                    'tax_rate_id' => $item->tax->code,
-                    'amount' => $amount,
-                ]);
-                $key++;
-            }
-        });
+        // $key = 1;
+        // $model->items->groupBy('dist')->each(function ($group) use ($staging_id, &$key) {
+        //     $item = $group->first();
+        //     $awb = null;
+        //     if ($item->type == 'SMU') {
+        //         $smu = Delta::smu($item->code);
+        //         $awb = count($smu['data']['airwaybill']) . ' AWB';
+        //     }
+        //     $description = implode(' | ', array_filter([
+        //         $item->expense->code,
+        //         $group->count() . ' ' . $item->type,
+        //         $awb,
+        //         $item->area->code
+        //     ]));
+        //     $amount = $group->sum('amount');
+        //     Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
+        //         'staging_id' => $staging_id,
+        //         'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
+        //         'ledger_id' => 2024,
+        //         'org_id' => 103,
+        //         'line_number' => $key,
+        //         'description' => $description,
+        //         'line_type_code' => 'ITEM',
+        //         'ppn_code' => null,
+        //         'tax_rate_id' => null,
+        //         'awt_group_id' => $item->withholding->code,
+        //         'amount' => $amount,
+        //         'dist_code_concat' => $item->dist,
+        //     ]);
+        //     $key++;
+        //     if ($item->tax) {
+        //         Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
+        //             'staging_id' => $staging_id,
+        //             'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
+        //             'ledger_id' => 2024,
+        //             'org_id' => 103,
+        //             'line_number' => $key,
+        //             'description' => $description,
+        //             'line_type_code' => 'TAX',
+        //             'ppn_code' => $item->tax->name,
+        //             'tax_rate_id' => $item->tax->code,
+        //             'amount' => $amount,
+        //         ]);
+        //         $key++;
+        //     }
+        // });
 
         // begin
         //     fnd_request.submit_request(

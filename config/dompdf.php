@@ -64,7 +64,7 @@ return array(
          * The temporary directory is required to download remote images and when
          * using the PFDLib back end.
          */
-        "temp_dir" => sys_get_temp_dir(),
+        "temp_dir" => storage_path('tmp'),
 
         /**
          * ==== IMPORTANT ====
@@ -96,9 +96,9 @@ return array(
             "https://" => ["rules" => []]
         ],
 
-         /**
-          * @var string
-          */
+        /**
+         * @var string
+         */
         'log_output_file' => null,
 
         /**
@@ -171,13 +171,13 @@ return array(
          */
         "default_paper_size" => "a4",
 
-         /**
-          * The default paper orientation.
-          *
-          * The orientation of the page (portrait or landscape).
-          *
-          * @var string
-          */
+        /**
+         * The default paper orientation.
+         *
+         * The orientation of the page (portrait or landscape).
+         *
+         * @var string
+         */
         'default_paper_orientation' => "portrait",
 
         /**

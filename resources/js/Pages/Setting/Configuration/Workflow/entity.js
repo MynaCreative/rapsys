@@ -7,12 +7,11 @@ export default () => {
         },
         form: {
             id: null,
-            user_id: null,
-            sequence: null,
+            department_id: null,
+            code: null,
+            name: null,
             description: null,
-            range_from: 0,
-            range_to: 0,
-            range: [0,0],
+            items: [],
         }
     }
 }

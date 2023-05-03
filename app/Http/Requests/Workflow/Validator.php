@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Workflow;
 
 use App\Models\Workflow as Model;
+use App\Models\Department;
 use App\Models\User;
 
-class Validator 
+class Validator
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,8 +16,15 @@ class Validator
     public function rules($model = null): array
     {
         return [
-            'user_id'   => ['required','exists:'.User::class.',id'],
-            'sequence'  => ['required'],
+            'department_id'         => ['required', 'unique:' . Department::class . ',id' . ($model ? ',' . $model->department_id : ''), 'exists:' . Department::class . ',id'],
+            'code'                  => ['required'],
+            'name'                  => ['required'],
+            'items'                 => ['required', 'array'],
+            'items.*.user_id'       => ['required', 'exists:' . User::class . ',id'],
+            'items.*.sequence'      => ['required', 'gt:0'],
+            'items.*.range_from'    => ['required'],
+            'items.*.range_to'      => ['required', 'gt:0'],
+            'items.*.description'   => ['required'],
         ];
     }
 

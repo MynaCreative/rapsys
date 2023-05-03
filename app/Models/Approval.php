@@ -20,11 +20,14 @@ class Approval extends Model
      */
     protected $fillable = [
         'workflow_id',
+        'workflow_item_id',
         'invoice_id',
         'user_id',
         'current',
-        'position',
+        'status',
         'sequence',
+        'description',
+        'note',
         'approved_at',
         'rejected_at',
     ];
@@ -43,5 +46,21 @@ class Approval extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the workflow that owns the approval.
+     */
+    public function workflow()
+    {
+        return $this->belongsTo(Workflow::class);
+    }
+
+    /**
+     * Get the workflow item that owns the approval.
+     */
+    public function workflowItem()
+    {
+        return $this->belongsTo(WorkflowItem::class);
     }
 }

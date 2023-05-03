@@ -4,7 +4,7 @@
 
 @section('content')
 <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #555555;">Dear <strong>{{ $model->createdUser->name }}</strong>,</p>
-<p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #555555;">Your {{ $title }} <a href="{{ url(route('transaction.invoices.edit', $model->id)) }}" target="_blank" style="color:#1c1958;font-weight:bold;text-decoration: underline">{{ $model->invoice_number }}</a> has been sent to <strong>approver</strong> for approval.</p>
+<p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #555555;">Your {{ $title }} <a href="{{ url(route('transaction.invoices.edit', $model->id)) }}" target="_blank" style="color:#1c1958;font-weight:bold;text-decoration: underline">{{ $model->invoice_number }}</a> has been sent to approver for approval.</p>
 <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #555555;text-decoration-line: underline">This is to inform that you ({{ $model->createdUser->name }} {{ $model->createdUser->position ? ' - '.$model->createdUser->position : ''  }}) has submitted a Vendor Invoice below :</p>
 <table>
     <tr>
@@ -65,7 +65,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Bill</td>
             <td>Already Billed</td>
             <td class="text-right">
@@ -84,7 +84,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Weight SMU/AWB</td>
             <td>Weight Not Match</td>
             <td class="text-right">
@@ -103,7 +103,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Scan Compliance</td>
             <td>Scan Not Found</td>
             <td class="text-right">
@@ -122,7 +122,7 @@
             </td>
         </tr>
         <tr>
-            <td>Pickup</td>
+            <td>SMU</td>
             <td>Validation Ops Plan</td>
             <td>Warning RPX Area</td>
             <td class="text-right">

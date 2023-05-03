@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use App\Models\User;
+use App\Models\Department;
 
 return new class extends Migration
 {
@@ -17,10 +17,9 @@ return new class extends Migration
     {
         Schema::create('workflows', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->unsignedInteger('sequence');
-            $table->bigInteger('range_from')->default(0);
-            $table->bigInteger('range_to')->default(0);
+            $table->foreignIdFor(Department::class)->unique()->nullable()->constrained();
+            $table->string('code')->unique();
+            $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();

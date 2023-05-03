@@ -37,28 +37,24 @@
                         <thead class="table-light text-muted">
                             <tr>
                                 <th width="60">#</th>
-                                <Sort label="User" attribute='user_id'/>
-                                <Sort label="Email" attribute='user_id'/>
-                                <Sort label="Department" attribute='user_id'/>
-                                <Sort label="Position" attribute='user_id'/>
-                                <Sort label="Sequence" attribute='sequence'/>
-                                <Sort class="text-end" label="From" attribute='range_from'/>
-                                <Sort class="text-end" label="To" attribute='range_to'/>
+                                <Sort label="Code" attribute='code'/>
+                                <Sort label="Department" attribute='department_id'/>
+                                <Sort label="Name" attribute='name'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
+                                <th width="140">Created By</th>
+                                <th width="70">Active</th>
                                 <th width="120" class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td>{{ item.user.name }}</td>
-                                <td>{{ item.user.email }}</td>
-                                <td>{{ item.user.department?.name }}</td>
-                                <td>{{ item.user.position }}</td>
-                                <td>{{ item.sequence }}</td>
-                                <td class="text-end">{{ item.range_from.toLocaleString() }}</td>
-                                <td class="text-end">{{ item.range_to.toLocaleString() }}</td>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.department?.name }}</td>
+                                <td>{{ item.name }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
+                                <td><DataUserName :data="item.created_user?.name"/></td>
+                                <td><DataActive :data="item.deleted_at"/></td>
                                 <td>
                                     <ul class="list-inline gap-2 mb-0 text-center">
                                         <template v-if="!item.deleted_at">
