@@ -62,6 +62,8 @@ const initialItem = () => ({
     product: null,
     sales_channel_id: null,
     sales_channel: null,
+    cost_center_id: null,
+    cost_center: null,
     date_item: null,
     type: 'MNL',
     expense_coa: null,

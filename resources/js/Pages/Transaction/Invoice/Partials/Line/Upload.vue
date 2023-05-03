@@ -19,13 +19,14 @@
         </div>
     </div>
     <div class="table-responsive" v-else>
-        <table class="table table-sm">
+        <table class="table table-sm" v-if="form.items.filter((item) => item.type == 'SMU' && item.expense_id == expense.id).length > 0">
             <thead class="table-light text-muted">
                 <tr>
                     <th class="text-center" width=40px>#</th>
                     <th>{{ expense.type_text }}</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Weight</th>
+                    <th>Cost Center</th>
                     <th>Withholding</th>
                     <th>Tax</th>
                     <th>Area</th>

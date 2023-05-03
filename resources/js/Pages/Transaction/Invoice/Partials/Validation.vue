@@ -50,7 +50,7 @@
                 </tbody>
             </table>
 
-            <div class="table-responsive">
+            <div class="table-responsive" v-if="form.items.filter((item) => item.type == 'SMU').length > 0">
                 <table class="table table-sm">
                     <thead class="table-light text-muted">
                         <tr>

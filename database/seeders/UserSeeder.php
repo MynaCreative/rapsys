@@ -31,6 +31,7 @@ class UserSeeder extends Seeder
             'username'      => 'mrahayu1',
             'email'         => 'mrahayu1@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Position'
         ]);
         $user->assignRole('Administrator');
 
@@ -40,6 +41,7 @@ class UserSeeder extends Seeder
             'username'      => 'lsavitri',
             'email'         => 'lsavitri@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Position'
         ]);
         $user->assignRole('Administrator');
 
@@ -89,6 +91,7 @@ class UserSeeder extends Seeder
             'username'      => 'tharyati',
             'email'         => 'tharyati@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Position'
         ]);
         $user->assignRole('Requestor');
 
@@ -98,6 +101,7 @@ class UserSeeder extends Seeder
             'username'      => 'autama',
             'email'         => 'autama@rpxholding.com',
             'password'      => 'password',
+            'position'      => 'Position'
         ]);
         $user->assignRole('Master');
     }

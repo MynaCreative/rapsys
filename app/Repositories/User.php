@@ -47,7 +47,8 @@ class User
                     'name'              => $item->name,
                     'username'          => $item->username,
                     'email'             => $item->email,
-                    'position'             => $item->position,
+                    'roles'             => $item->roles,
+                    'position'          => $item->position,
                     'department'        => $item->department,
                     'created_at'        => $item->created_at,
                     'updated_at'        => $item->updated_at,
@@ -81,7 +82,8 @@ class User
      */
     public function update($request): Model
     {
-        $this->model->fill($request->sanitizedData());
+        $fillable = collect($request->sanitizedData())->forget('password')->toArray();
+        $this->model->fill($fillable);
         if (!empty($request->roles_id)) {
             $this->model->syncRoles($request->roles_id);
         }

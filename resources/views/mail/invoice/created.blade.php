@@ -20,10 +20,15 @@
     <tr>
         <td>Amount Invoice</td>
         <td>:</td>
+        <td>{{ number_format($model->total_amount) }}</td>
+    </tr>
+    <tr>
+        <td>Valid Amount</td>
+        <td>:</td>
         <td>{{ number_format($model->total_amount_valid) }}</td>
     </tr>
     <tr>
-        <td>Unvalidated Amount</td>
+        <td>Unvalid Amount</td>
         <td>:</td>
         <td>{{ number_format($model->total_amount_invalid) }}</td>
     </tr>

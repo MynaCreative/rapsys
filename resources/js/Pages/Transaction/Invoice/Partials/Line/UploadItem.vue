@@ -8,6 +8,7 @@
         <td  @click="modalFormVisible = true" :class="['cursor-pointer text-end', {'bg-soft-danger': form.errors[`items.${index}.weight`] }]">
             {{ item.weight ? item.weight.toLocaleString() : '' }}
         </td>
+        <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.cost_center_id`] }]">{{ item.cost_center ? item.cost_center?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.withholding_id`] }]">{{ item.withholding ? item.withholding?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.tax_id`] }]">{{ item.tax ? item.tax?.name : ''  }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.area_id`] }]">{{ item.area ? item.area?.name : ''  }}</td>

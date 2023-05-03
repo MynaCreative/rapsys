@@ -21,6 +21,7 @@ use App\Exports\Invoice\Sample as SampleTemplate;
 use App\Jobs\InvoiceValidation;
 use App\Models\Approval;
 use App\Models\Area;
+use App\Models\CostCenter;
 use App\Models\Currency;
 use App\Models\Department;
 use App\Models\Expense;
@@ -214,6 +215,9 @@ class Invoice
                     self::saveDocumentAttachment($model, $request);
                 }
 
+                $model->items()->where('validation_score', '!=', 5)->update([
+                    'is_validated' => false
+                ]);
                 foreach ($model->items as $item) {
                     DeltaValidation::dispatch($item);
                 }
@@ -270,6 +274,9 @@ class Invoice
                  */
                 self::saveDocumentApproval($model, $request);
 
+                $model->items()->where('validation_score', '!=', 5)->update([
+                    'is_validated' => false
+                ]);
                 foreach ($model->items as $item) {
                     DeltaValidation::dispatch($item);
                 }
@@ -362,6 +369,9 @@ class Invoice
                  */
                 self::saveDocumentApproval($this->model, $request);
 
+                $this->model->items()->where('validation_score', '!=', 5)->update([
+                    'is_validated' => false
+                ]);
                 foreach ($this->model->items as $item) {
                     DeltaValidation::dispatch($item);
                 }
@@ -486,6 +496,7 @@ class Invoice
             'taxes' => Tax::select('id', 'name')->get(),
             'withholdings' => Withholding::select('id', 'name')->get(),
             'sales_channels' => SalesChannel::select('id', 'name')->get(),
+            'cost_centers' => CostCenter::select('id', 'name')->get(),
         ];
     }
 
@@ -515,7 +526,7 @@ class Invoice
                 'workflow_item_id' => $item->id,
                 'invoice_id' => $model->id,
                 'status' => 'waiting approval',
-                'status' => $item->description,
+                'description' => $item->description,
                 'current' => $index == 0,
                 'position' => $position,
             ]);

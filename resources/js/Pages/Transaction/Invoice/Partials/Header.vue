@@ -68,7 +68,7 @@
             <div class="col-lg-4">
                 <label for="invoice_date" class="form-label required">Invoice Date</label>
                 <b-form-input id="invoice_date" v-model="form.invoice_date" :class="{'is-invalid' : form.errors.invoice_date }" type="date"
-                    aria-describedby="input-invoice_date-feedback"/>
+                    aria-describedby="input-invoice_date-feedback" @input="setInvoiceDate"/>
                 <b-form-invalid-feedback id="input-invoice_date-feedback" v-html="form.errors.invoice_date"/>
             </div>
             <div class="col-lg-4">
@@ -94,7 +94,7 @@
             <div class="col-lg-4">
                 <label for="term_date" class="form-label">Term Date</label>
                 <b-form-input id="term_date" v-model="form.term_date" :class="{'is-invalid' : form.errors.term_date }" type="date"
-                    aria-describedby="input-term_date-feedback" @input="setTermDate"/>
+                    aria-describedby="input-term_date-feedback"/>
                 <b-form-invalid-feedback id="input-term_date-feedback" v-html="form.errors.term_date"/>
             </div>
         </div>
@@ -234,7 +234,7 @@ const setTerm = (option) => {
     form.value.due_date =  dayjs(form.value.term_date).add(term.day, 'day').format('YYYY-MM-DD')
 }
 
-const setTermDate = (option) => {
+const setInvoiceDate = (option) => {
     let term = find(props.references.terms, { value: form.value.term_id })
     form.value.due_date =  dayjs(option).add(term.day, 'day').format('YYYY-MM-DD')
 }

@@ -10,6 +10,7 @@
                     <th>Item Number</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Weight</th>
+                    <th>Cost Center</th>
                     <th>Expense COA</th>
                     <th>Withholding</th>
                     <th>Tax</th>

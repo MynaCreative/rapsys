@@ -55,6 +55,12 @@
                 @select="(option) => item.sales_channel_id = option.id" @clear="() => item.sales_channel_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-sales_channel-feedback" :options="references.sales_channels" placeholder="Select data"></Multiselect>
         </div>
+        <div class="col-lg-6">
+            <label for="cost_center" class="form-label">Cost Center</label>
+            <Multiselect id="cost_center" v-model="item.cost_center" 
+                @select="(option) => item.cost_center_id = option.id" @clear="() => item.cost_center_id = null" :object="true" label="name" valueProp="id"
+                aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
+        </div>
     </div>
 </template>
 <script setup>

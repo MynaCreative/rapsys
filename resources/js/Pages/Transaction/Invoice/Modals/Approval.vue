@@ -6,7 +6,7 @@
         </div>
         <b-overlay :show="loading" :opacity="0.25" spinner-small rounded="sm">
             <div class="table-responsive">
-                <table class="table align-middle table-sm">
+                <table class="table align-middle">
                     <thead class="table-light">
                         <tr>
                             <th scope="col" style="width: 70px;" class="text-center">#</th>
@@ -23,9 +23,9 @@
                             <td><DataUserName :data="item.user.name"/></td>
                             <td>{{ item.user?.position ?? '-' }}</td>
                             <td class="text-center">
-                                <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="!item.approved_at && !item.rejected_at">Pending</b-badge>
-                                <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.approved_at && !item.rejected_at">Approved</b-badge>
-                                <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="!item.approved_at && item.rejected_at">Rejected</b-badge>
+                                <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="!item.approved_at && !item.rejected_at">{{ item.status }}</b-badge>
+                                <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.approved_at && !item.rejected_at">{{ item.status }}</b-badge>
+                                <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="!item.approved_at && item.rejected_at">{{ item.status }}</b-badge>
                             </td>
                             <td>
                                 <DataTimestamp :data="item.rejected_at" v-if="!item.approved_at && item.rejected_at"/>

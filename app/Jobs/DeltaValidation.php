@@ -55,7 +55,7 @@ class DeltaValidation implements ShouldQueue
     public function handle()
     {
         $item = $this->item;
-        if ($item->type == 'AWB') {
+        if ($item->validation_score != '5' && $item->type == 'AWB') {
             $delta = Delta::awbDetail($item->code);
 
             $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
@@ -104,7 +104,7 @@ class DeltaValidation implements ShouldQueue
                 }
             }
         }
-        if ($item->type == 'SMU') {
+        if ($item->validation_score != '5' && $item->type == 'SMU') {
             $delta = Delta::smu($item->code);
 
             $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
@@ -187,7 +187,7 @@ class DeltaValidation implements ShouldQueue
             'dist'              => implode('-', [
                 $item->invoice->sbu->coa ?? null,
                 $item->area->coa ?? null,
-                $item->invoice->department->cost_center ?? null,
+                $item->costCenter->cost_center ?? null,
                 $item->expense->coa ?? $item->expense_coa,
                 $item->salesChannel->coa ?? null,
                 $item->product->coa ?? null,
