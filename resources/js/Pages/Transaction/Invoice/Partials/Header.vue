@@ -3,32 +3,32 @@
         <div class="row g-4 mb-4">
             <div class="col-md-6 col-lg-2">
                 <label for="department" class="form-label required">Department</label>
-                <Multiselect id="department" v-model="form.department" :class="{'is-invalid' : form.errors.department_id }"
+                <Multiselect id="department" v-model="form.department" :class="{'is-invalid' : form.errors.department_id }" :searchable="true"
                     @select="(option) => form.department_id = option.id" @clear="() => form.department_id = null" :object="true" label="name" valueProp="id"
                     aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-department-feedback" v-html="form.errors.department_id"/>
             </div>
             <div class="col-md-6 col-lg-2">
                 <label for="sbu" class="form-label required">SBU</label>
-                <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }"
+                <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }" :searchable="true"
                     aria-describedby="input-sbu-feedback" :options="references.sbus" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-sbu-feedback" v-html="form.errors.sbu_id"/>
             </div>
             <div class="col-md-6 col-lg-2">
                 <label for="invoice_type" class="form-label required">Invoice Type</label>
-                <Multiselect id="invoice_type" v-model="form.invoice_type_id" :class="{'is-invalid' : form.errors.invoice_type_id }"
+                <Multiselect id="invoice_type" v-model="form.invoice_type_id" :class="{'is-invalid' : form.errors.invoice_type_id }" :searchable="true"
                     aria-describedby="input-invoice_type-feedback" :options="references.invoice_types" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-invoice_type-feedback" v-html="form.errors.invoice_type_id"/>
             </div>
             <div class="col-md-6 col-lg-2">
                 <label for="currency" class="form-label required">Currency</label>
-                <Multiselect id="currency" v-model="form.currency_id" :class="{'is-invalid' : form.errors.currency_id }"
+                <Multiselect id="currency" v-model="form.currency_id" :class="{'is-invalid' : form.errors.currency_id }" :searchable="true"
                     aria-describedby="input-currency-feedback" :options="references.currencies" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-currency-feedback" v-html="form.errors.currency_id"/>
             </div>
             <div class="col-md-6 col-lg-4">
                 <label for="interco" class="form-label required">Interco</label>
-                <Multiselect id="interco" v-model="form.interco_id" :class="{'is-invalid' : form.errors.interco_id }"
+                <Multiselect id="interco" v-model="form.interco_id" :class="{'is-invalid' : form.errors.interco_id }" :searchable="true"
                     aria-describedby="input-interco-feedback" :options="references.intercos" placeholder="Select data"></Multiselect>
                 <b-form-invalid-feedback id="input-interco-feedback" v-html="form.errors.interco_id"/>
             </div>
@@ -94,7 +94,7 @@
             <div class="col-lg-4">
                 <label for="term_date" class="form-label">Term Date</label>
                 <b-form-input id="term_date" v-model="form.term_date" :class="{'is-invalid' : form.errors.term_date }" type="date"
-                    aria-describedby="input-term_date-feedback"/>
+                    aria-describedby="input-term_date-feedback" disabled/>
                 <b-form-invalid-feedback id="input-term_date-feedback" v-html="form.errors.term_date"/>
             </div>
         </div>
@@ -232,11 +232,13 @@ const setVendor = () => {
 const setTerm = (option) => {
     let term = find(props.references.terms, { value: option })
     form.value.due_date =  dayjs(form.value.term_date).add(term.day, 'day').format('YYYY-MM-DD')
+    form.value.term_date =  dayjs(form.value.term_date).add(term.day, 'day').format('YYYY-MM-DD')
 }
 
 const setInvoiceDate = (option) => {
     let term = find(props.references.terms, { value: form.value.term_id })
     form.value.due_date =  dayjs(option).add(term.day, 'day').format('YYYY-MM-DD')
+    form.value.term_date =  dayjs(option).add(term.day, 'day').format('YYYY-MM-DD')
 }
 
 const vendor_sites = computed(() => filter(props.references.vendor_sites, (item) => {

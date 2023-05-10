@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Invoice;
 
+use App\Models\CostCenter;
 use App\Models\Invoice as Model;
 use App\Models\Withholding;
 use App\Models\InvoiceType;
@@ -39,6 +40,7 @@ class Validator
             'note'                      => ['required'],
 
             'items'                     => ['required', 'array'],
+            'items.*.cost_center_id'    => ['required', 'exists:' . CostCenter::class . ',id'],
             'items.*.withholding_id'    => ['required', 'exists:' . Withholding::class . ',id'],
             'items.*.tax_id'            => ['required', 'exists:' . Tax::class . ',id'],
         ];

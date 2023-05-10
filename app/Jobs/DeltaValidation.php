@@ -179,12 +179,13 @@ class DeltaValidation implements ShouldQueue
             $item->validation_bill,
         ]);
         $item->update([
-            'is_validated'      => true,
-            'vat_tax'           => $vatTax,
-            'withholding_tax'   => $withholdingTax,
-            'total'             => $amountAfterTax,
-            'validation_score'  => $validation_score,
-            'dist'              => implode('-', [
+            'validation_ops_plan'   => true,
+            'is_validated'          => true,
+            'vat_tax'               => $vatTax,
+            'withholding_tax'       => $withholdingTax,
+            'total'                 => $amountAfterTax,
+            'validation_score'      => $validation_score,
+            'dist'                  => implode('-', [
                 $item->invoice->sbu->coa ?? null,
                 $item->area->coa ?? null,
                 $item->costCenter->cost_center ?? null,

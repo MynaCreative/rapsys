@@ -31,6 +31,7 @@ export default () => {
             vendor_site_id: null,
             vendor: null,
             vendor_site: null,
+            cost_center_id: null,
             note: null,
             total_amount: 0,
             total_amount_valid: 0,

@@ -150,6 +150,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::store($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()

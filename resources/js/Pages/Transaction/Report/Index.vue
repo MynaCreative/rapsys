@@ -12,7 +12,7 @@
                             <div>
                                 <p class="fw-medium text-muted mb-0">All Invoice Receipt </p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
+                                    <count-to :startVal="0" :endVal="statistic.all" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
@@ -40,7 +40,7 @@
                             <div>
                                 <p class="fw-medium text-muted mb-0">Pending Invoice</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
+                                    <count-to :startVal="0" :endVal="statistic.pending" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
@@ -68,7 +68,7 @@
                             <div>
                                 <p class="fw-medium text-muted mb-0">Approved Invoice</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
+                                    <count-to :startVal="0" :endVal="statistic.approved" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
@@ -96,7 +96,7 @@
                             <div>
                                 <p class="fw-medium text-muted mb-0">Rejected Invoice</p>
                                 <h2 class="mt-4 ff-secondary fw-semibold">
-                                    <count-to :startVal="0" :endVal="0" :duration="5000"></count-to>
+                                    <count-to :startVal="0" :endVal="statistic.rejected" :duration="5000"></count-to>
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
@@ -154,46 +154,69 @@
                     <table class="table table-hover table-nowrap table-sm align-middle mb-0">
                         <thead class="table-light text-muted">
                             <tr>
-                                <th width="60" rowspan="2" class="align-middle">#</th>
-                                <Sort label="Invoice Number" attribute='invoice_number' rowspan="2" class="align-middle"/>
-                                <Sort label="Vendor" attribute='vendor_id' rowspan="2" class="align-middle"/>
-                                <th class="sort text-center" colspan="3">Amount  (after tax)</th>
-                                <th class="text-center" colspan="2">Status</th>
-                                <th class="text-center" colspan="2">Date</th>
-                            </tr>
-                            <tr>
-                                <Sort label="Total" attribute='total_amount' class="text-center"/>
-                                <Sort label="Valid" attribute='total_amount_valid' class="text-center"/>
-                                <Sort label="Invalid" attribute='total_amount_invalid' class="text-center"/>
-                                <th class="text-center">Approval</th>
-                                <th class="text-center">Document</th>
+                                <th width="60" class="text-center align-middle">#</th>
+                                <Sort label="Invoice Number" attribute='invoice_number' class="align-middle"/>
+                                <Sort label="Creator" attribute='created_by'/>
+                                <Sort label="Vendor" attribute='vendor_id' class="align-middle"/>
+                                <Sort label="Total Amount" attribute='total_amount' class="text-center"/>
+                                <Sort label="Validation" attribute='total_amount_valid' class="text-center"/>
                                 <Sort width="110" label="Invoice" attribute='invoice_date' class="text-center"/>
                                 <Sort width="140" label="Created" attribute='created_at' class="text-center"/>
+                                <th class="text-center">Approval</th>
+                                <th class="text-center">Document</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item, index in collection.data" :key="item.id">
                                 <td>{{ (collection.current_page - 1) * collection.per_page + index + 1 }}</td>
-                                <td class="fw-medium">{{ item.invoice_number ? item.invoice_number : '--' }}</td>
-                                <td>{{ item.vendor ? `${item.vendor.code} - ${item.vendor.name}` : '--' }}</td>
-                                <td class="text-end">
-                                    <h6 class="text-primary fs-11 mb-0">
-                                        {{ item.total_amount_after_tax.toLocaleString() }}
-                                        <i class="ri-wallet-line align-middle"></i>
-                                    </h6>
+                                <td>
+                                    <span>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <h5 class="fs-14 mb-1"><Link :href="route('approvals.edit', item.id)" class="text-dark">{{ item.invoice_number ? item.invoice_number : '--' }}</Link></h5>
+                                                <p class="text-muted mb-0">
+                                                    Department : <span class="fw-medium">{{ item?.department ? item?.department?.name : '--' }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </span>
                                 </td>
-                                <td class="text-end text-success">
-                                    <h6 class="text-success fs-11 mb-0">
-                                        {{ item.total_amount_after_tax_valid.toLocaleString() }}
-                                        <i class="ri-check-line align-middle"></i>
-                                    </h6>
+                                <td ><DataUserName :data="item.created_user?.name"/></td>
+                                <td>
+                                    <div class="flex-grow-1">
+                                        <h5 class="fs-14 mb-1">{{ item.vendor ? `${item.vendor.name}` : '--' }}</h5>
+                                        <p class="text-muted mb-0">
+                                            Site : <span class="fw-medium">{{ item?.vendor_site ? item?.vendor_site?.name : '--' }}</span>
+                                        </p>
+                                    </div>
                                 </td>
-                                <td class="text-end">
-                                    <h6 class="text-danger fs-11 mb-0">
-                                        {{ item.total_amount_after_tax_invalid.toLocaleString() }}
-                                        <i class="ri-close-line align-middle"></i>
-                                    </h6>
+                                <td class="text-center">
+                                    <div class="flex-grow-1">
+                                        <h6 class="text-primary fs-11 mb-1" title="Before Tax">
+                                            {{ item.total_amount.toLocaleString() }}
+                                            <i class="ri-wallet-line align-middle"></i>
+                                        </h6>
+                                        <h6 class="text-info fs-11 mb-0" title="After Tax">
+                                            {{ item.total_amount_after_tax.toLocaleString() }}
+                                            <i class="ri-wallet-3-line"></i>
+                                        </h6>
+                                    </div>
                                 </td>
+                                <td class="text-center text-success">
+                                    <div class="flex-grow-1">
+                                        <h6 class="text-success fs-11 mb-1" title="Valid Amount After Tax">
+                                            {{ item.total_amount_after_tax_valid.toLocaleString() }}
+                                            <i class="ri-check-line align-middle"></i>
+                                        </h6>
+                                        <h6 class="text-danger fs-11 mb-0" title="Invalid Amount After Tax">
+                                            {{ item.total_amount_after_tax_invalid.toLocaleString() }}
+                                            <i class="ri-close-line align-middle"></i>
+                                        </h6>
+                                    </div>
+                                </td>
+                                <td class="text-center date">{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
+                                <td class="text-center date"><DataTimestamp :data="item.created_at"/></td>
+                                
                                 <td class="text-center">
                                     <b-badge variant="light" class="text-capitalize" v-if="item.approval_status == 'none'">{{ item.approval_status }}</b-badge>
                                     <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.approval_status == 'pending'">{{ item.approval_status }}</b-badge>
@@ -206,8 +229,6 @@
                                     <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.document_status == 'cancelled'">{{ item.document_status }}</b-badge>
                                     <b-badge variant="success" class="rounded-pill text-capitalize" v-if="item.document_status == 'closed'">{{ item.document_status }}</b-badge>
                                 </td>
-                                <td class="text-center date">{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
-                                <td class="text-center date"><DataTimestamp :data="item.created_at"/></td>
                             </tr>
                         </tbody>
                     </table>
@@ -244,7 +265,7 @@ const breadcrumbs = [
     { text: page.title, active: true },
 ]
 
-const props = defineProps(['collection','filters'])
+const props = defineProps(['collection','filters','statistic'])
 
 const form = useForm({
     keyword: usePage().props.ziggy.query.keyword ?? null,

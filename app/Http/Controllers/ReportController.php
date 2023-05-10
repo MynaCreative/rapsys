@@ -43,7 +43,8 @@ class ReportController extends Controller
     public function index(IndexRequest $request)
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
-            'collection'=>$this->repository::report($request),
+            'collection' => $this->repository::report($request),
+            'statistic' => $this->repository::statistic($request),
         ]);
     }
 
@@ -53,7 +54,8 @@ class ReportController extends Controller
      * 
      * @return  String
      */
-    public function routeModule(){
+    public function routeModule()
+    {
         return str($this->module)->snake('-');
     }
 
@@ -63,7 +65,8 @@ class ReportController extends Controller
      * 
      * @return  String
      */
-    public function routePage(){
+    public function routePage()
+    {
         return str($this->page)->plural()->snake('-');
     }
 }

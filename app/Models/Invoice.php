@@ -108,10 +108,10 @@ class Invoice extends Model
     {
         $this->attributes['created_at'] = $value;
         $id = DB::table('INFORMATION_SCHEMA.TABLES')->select('AUTO_INCREMENT as id')
-                ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
-                ->where('TABLE_NAME', (new self)->getTable())
-                ->value('id');
-        $this->attributes['code'] = 'INV'.sprintf('%06d', $id);
+            ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
+            ->where('TABLE_NAME', (new self)->getTable())
+            ->value('id');
+        $this->attributes['code'] = 'INV' . sprintf('%06d', $id);
     }
 
     /**
@@ -155,6 +155,14 @@ class Invoice extends Model
     }
 
     /**
+     * Get the vendor site that owns the invoice.
+     */
+    public function vendorSite()
+    {
+        return $this->belongsTo(VendorSite::class);
+    }
+
+    /**
      * Get the term that owns the invoice.
      */
     public function term()
@@ -175,7 +183,7 @@ class Invoice extends Model
      */
     public function items()
     {
-        return $this->hasMany(InvoiceItem::class);
+        return $this->hasMany(InvoiceItem::class)->latest()->orderBy('validation_score');
     }
 
     /**

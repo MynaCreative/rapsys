@@ -15,17 +15,17 @@
                 <tr>
                     <td>Weight SMU</td>
                     <td>:</td>
-                    <th>{{ item ? item.weight : 0 }}</th>
+                    <th>{{ item ? item.weight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0 }}</th>
                 </tr>
                 <tr>
                     <td>Total Weight SMU</td>
                     <td>:</td>
-                    <th>{{ detail.data?.total_weight_smu ?? '-' }}</th>
+                    <th>{{ detail.data?.total_weight_smu ? detail.data?.total_weight_smu.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-' }}</th>
                 </tr>
                 <tr>
                     <td>Total Weight All AWB</td>
                     <td>:</td>
-                    <th>{{ detail.data?.tot_weight_all_awb ?? '-' }}</th>
+                    <th>{{ detail.data?.tot_weight_all_awb ? detail.data?.tot_weight_all_awb.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '-' }}</th>
                 </tr>
             </table>
         </div>
@@ -45,15 +45,15 @@
                     <td>{{ airwaybill.awb }}</td>
                     <td class="text-end">{{ airwaybill.total_weight_awb }}</td>
                     <td class="text-end">{{ ((airwaybill.total_weight_awb / detail.data.tot_weight_all_awb) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
-                    <td class="text-end">{{ (item.amount * (airwaybill.total_weight_awb / detail.data.tot_weight_all_awb)).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) }}</td>
+                    <td class="text-end">{{ (item.amount * (airwaybill.total_weight_awb / detail.data.tot_weight_all_awb)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <th class="text-end" colspan="2">Total</th>
-                    <th class="text-end">{{ detail.data?.airwaybill ? sumBy(detail.data.airwaybill, (item) => item.total_weight_awb).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0 }}</th>
+                    <th class="text-end">{{ detail.data?.airwaybill ? sumBy(detail.data.airwaybill, (item) => item.total_weight_awb).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0 }}</th>
                     <th class="text-end">100</th>
-                    <th class="text-end">{{ item ? item.amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0 }}</th>
+                    <th class="text-end">{{ item ? item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0 }}</th>
                 </tr>
             </tfoot>
         </table>

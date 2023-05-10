@@ -1,6 +1,6 @@
 <template>
     <div class="row g-2" v-if="!form.id || (form.id && form.items.filter((item) =>  item.type !== 'MNL' && item.expense_id == expense.id).length == 0)">
-        <div class="col-lg-12 p-4">
+        <div class="col-lg-6 p-4">
             <label for="excel_file" class="form-label">File</label>
             <div class="input-group">
                 <input id="excel_file" ref="excel_file" type="file" class="form-control" :class="{'is-invalid' : form.errors.excel_file }" @change="getFile($event)" accept=".xlsx"
@@ -16,6 +16,24 @@
                     Download Excel template [{{ expense.code }}]
                 </a>
             </div>
+        </div>
+        <div class="col-lg-6 p-4">
+            <label for="cost_center_upload" class="form-label">Cost Center</label>
+            <Multiselect id="cost_center_upload" v-model="form.cost_center_id" 
+                @select="(option) => item.cost_center_id = option.id" :object="true" label="name" valueProp="id"
+                aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
+        </div>
+        <div class="col-lg-6 px-4">
+            <label for="withholding" class="form-label">Withholding</label>
+            <Multiselect id="withholding" v-model="form.withholding_id" 
+                @select="(option) => item.withholding_id = option.id" :object="true" label="name" valueProp="id"
+                aria-describedby="input-withholding-feedback" :options="references.withholdings" placeholder="Select data"></Multiselect>
+        </div>
+        <div class="col-lg-6 px-4">
+            <label for="tax" class="form-label">Tax</label>
+            <Multiselect id="tax" v-model="form.tax_id"
+                @select="(option) => item.tax_id = option.id" :object="true" label="name" valueProp="id"
+                aria-describedby="input-tax-feedback" :options="references.taxes" placeholder="Select data"></Multiselect>
         </div>
     </div>
     <div class="table-responsive" v-else>
@@ -64,6 +82,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { remove } from 'lodash'
+import Multiselect from '@vueform/multiselect'
 
 import UploadItem from './UploadItem.vue'
 

@@ -78,7 +78,7 @@
                         <b-button @click="save('cancelled')" v-if="form.document_status == 'closed'"
                         type="submit" variant="danger" class="btn-label waves-effect waves-light right" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-close-line']"></i>
-                            {{ form.processing ? 'Processing' : 'Cancel' }}
+                            {{ form.processing ? 'Processing' : 'Void' }}
                         </b-button>
                         <!-- <b-button @click="submit" v-if="!(['published','closed','cancelled'].includes(form.document_status))"
                         type="submit" variant="primary" class="btn-label waves-effect waves-light me-1" :disabled="form.processing">
@@ -89,11 +89,6 @@
                         type="submit" variant="light" class="btn-label waves-effect waves-light right" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-save-2-line']"></i>
                             {{ form.processing ? 'Processing' : 'Draft' }}
-                        </b-button>
-                        <b-button @click="save('cancelled')" v-if="form.document_status == 'closed'"
-                        type="submit" variant="danger" class="btn-label waves-effect waves-light right" :disabled="form.processing">
-                            <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-close-line']"></i>
-                            {{ form.processing ? 'Processing' : 'Cancel' }}
                         </b-button> -->
                     </div>
                     <Link :href="route(`${page.module}.${page.name}.index`)" class="btn btn-info me-1">

@@ -72,7 +72,7 @@
                                             </span>
                                         </div>
                                         <div class="flex-1">
-                                            <a href="#!" class="stretched-link">
+                                            <a :href="route('approvals.edit', item.invoice.id)" class="stretched-link">
                                                 <h6 class="mt-0 mb-2 fs-13 lh-base">
                                                     Invoice #{{ item.invoice.invoice_number }}<br>Has been published
                                                 </h6>
@@ -85,7 +85,7 @@
                                 </div>
         
                                 <div class="my-3 text-center" v-if="$page.props.auth.approvals.length">
-                                    <Link :href="route('approvals')" class="btn btn-soft-success">
+                                    <Link :href="route('approvals.index')" class="btn btn-soft-success">
                                         View All Notifications
                                         <i class="ri-arrow-right-line align-middle"></i>
                                     </Link>

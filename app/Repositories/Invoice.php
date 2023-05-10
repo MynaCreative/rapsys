@@ -128,6 +128,8 @@ class Invoice
                     'vendor'                            => $item->vendor,
                     'document_status'                   => $item->document_status,
                     'approval_status'                   => $item->approval_status,
+                    'department'                        => $item->department,
+                    'vendor_site'                       => $item->vendorSite,
                     'total_amount'                      => $item->total_amount,
                     'total_amount_valid'                => $item->total_amount_valid,
                     'total_amount_invalid'              => $item->total_amount_invalid,
@@ -145,6 +147,22 @@ class Invoice
                     'deleted_at'                        => $item->deleted_at,
                 ];
             });
+    }
+
+    /**
+     * Display all of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function statistic(Request $request)
+    {
+        return [
+            'all' => Model::where('document_status', '!=', 'draft')->count(),
+            'pending' => Model::where('approval_status', 'pending')->count(),
+            'approved' => Model::where('approval_status', 'approved')->count(),
+            'rejected' => Model::where('approval_status', 'rejected')->count(),
+        ];
     }
 
     /**
@@ -373,7 +391,7 @@ class Invoice
                     'is_validated' => false
                 ]);
                 foreach ($this->model->items as $item) {
-                    DeltaValidation::dispatch($item);
+                    // DeltaValidation::dispatch($item);
                 }
                 InvoiceValidation::dispatch($this->model);
 
@@ -507,8 +525,8 @@ class Invoice
     {
         $workflows = WorkflowItem::query()
             ->whereRelation('workflow', 'department_id', $model->department_id)
-            ->whereBetween('range_from', [0, $model->total_amount])
-            ->orWhereBetween('range_to', [0, $model->total_amount])
+            ->whereBetween('range_from', [0, $model->total_amount_invalid])
+            ->orWhereBetween('range_to', [0, $model->total_amount_invalid])
             ->orderBy('sequence')
             ->get();
         foreach ($workflows as $index => $item) {
@@ -525,99 +543,16 @@ class Invoice
                 'sequence' => $item->sequence,
                 'workflow_item_id' => $item->id,
                 'invoice_id' => $model->id,
-                'status' => 'waiting approval',
+                'status' => 'pending',
                 'description' => $item->description,
                 'current' => $index == 0,
                 'position' => $position,
             ]);
             if ($index == 0) {
                 Mail::to(auth()->user()->email)->send(new ModelMail($model, auth()->user()->email, 'created'));
-                Mail::to($item->user->email)->send(new ModelMail($model, $item->user, 'approval'));
+                Mail::to($item->user->email)->send(new ModelMail($model, $item->user->email, 'approval'));
             }
         }
-
-        // $staging_id = Oracle::latestIdTable('APPS.RAPSYS_AP_STG_HEADER', 'staging_id');
-        // Oracle::insertTable('APPS.RAPSYS_AP_STG_HEADER', [
-        //     'staging_id' => $staging_id,
-        //     'ledger_id' => 2024,
-        //     'org_id' => 103,
-        //     'vendor_id' => $model->vendor_id,
-        //     'vendor_site_id' => $model->vendor_site_id,
-        //     'trx_number' => $model->invoice_number,
-        //     'currency_code' => $model->currency->code,
-        //     'description' => $model->note,
-        //     'amount' => $model->total_amount,
-        //     'ap_invoice_date' => date('d-M-Y', strtotime($model->invoice_date)),
-        //     'ap_invoice_received_date' => date('d-M-Y', strtotime($model->invoice_receipt_date)),
-        //     'ap_gl_date' => date('d-M-Y', strtotime($model->posting_date)),
-        //     'supplier_tax_invoice_date' => date('d-M-Y', strtotime($model->supplier_tax_invoice_date)),
-        //     'supplier_tax_invoice_number' => $model->supplier_tax_invoice,
-        //     'ap_source' => 'RAPSYS',
-        //     'terms_id' => $model->term->code,
-        //     'invoice_type_lookup_code' => strtoupper($model->invoiceType->name),
-        //     'payment_method_lookup_code' => 'CHECK',
-        //     'status' => 'I',
-        // ]);
-
-        // $key = 1;
-        // $model->items->groupBy('dist')->each(function ($group) use ($staging_id, &$key) {
-        //     $item = $group->first();
-        //     $awb = null;
-        //     if ($item->type == 'SMU') {
-        //         $smu = Delta::smu($item->code);
-        //         $awb = count($smu['data']['airwaybill']) . ' AWB';
-        //     }
-        //     $description = implode(' | ', array_filter([
-        //         $item->expense->code,
-        //         $group->count() . ' ' . $item->type,
-        //         $awb,
-        //         $item->area->code
-        //     ]));
-        //     $amount = $group->sum('amount');
-        //     Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-        //         'staging_id' => $staging_id,
-        //         'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-        //         'ledger_id' => 2024,
-        //         'org_id' => 103,
-        //         'line_number' => $key,
-        //         'description' => $description,
-        //         'line_type_code' => 'ITEM',
-        //         'ppn_code' => null,
-        //         'tax_rate_id' => null,
-        //         'awt_group_id' => $item->withholding->code,
-        //         'amount' => $amount,
-        //         'dist_code_concat' => $item->dist,
-        //     ]);
-        //     $key++;
-        //     if ($item->tax) {
-        //         Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-        //             'staging_id' => $staging_id,
-        //             'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-        //             'ledger_id' => 2024,
-        //             'org_id' => 103,
-        //             'line_number' => $key,
-        //             'description' => $description,
-        //             'line_type_code' => 'TAX',
-        //             'ppn_code' => $item->tax->name,
-        //             'tax_rate_id' => $item->tax->code,
-        //             'amount' => $amount,
-        //         ]);
-        //         $key++;
-        //     }
-        // });
-
-        // begin
-        //     fnd_request.submit_request(
-        //         'RPX Customization Application', -- application short name
-        //         'RPX - AP INSERT RAPSYS', -- concurrent program short name
-        //         'FEB-23', -- parameter string
-        //         null, -- description
-        //         null, -- start time
-        //         null, -- subrequest flag
-        //         null -- run alone flag
-        //     );
-        // end;
-
     }
 
     /**
