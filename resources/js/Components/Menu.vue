@@ -98,6 +98,7 @@
                         <MenuItem route-name="setting.delta.smu" name="SMU" :permission="$page.props.auth.permissions.includes('delta')"/>
                         <MenuItem route-name="setting.delta.awb" name="AWB" :permission="$page.props.auth.permissions.includes('delta')"/>
                         <MenuItem route-name="setting.delta.awb-detail" name="AWB Detail" :permission="$page.props.auth.permissions.includes('delta')"/>
+                        <MenuItem route-name="setting.delta.awb-scan-compliance" name="AWB Scan Compliance" :permission="$page.props.auth.permissions.includes('delta')"/>
                         <MenuItem route-name="setting.delta.awb-batch" name="AWB Batch" :permission="$page.props.auth.permissions.includes('delta')"/>
                     </ul>
                 </div>
@@ -210,7 +211,7 @@ export default {
             let hasAdministrator = this.$page.props.auth.roles.includes('Administrator')
             let allPermissions = this.$page.props.auth.permissions
             let hasPermission = false
-            for (const item of permissions) {  
+            for (const item of permissions) {
                 if (allPermissions.includes(item) || hasAdministrator){
                     hasPermission = true
                     break

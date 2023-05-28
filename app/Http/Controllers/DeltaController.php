@@ -24,15 +24,15 @@ class DeltaController extends Controller
     public function __construct(Repository $repository)
     {
         $this->repository   = $repository;
-        $this->middleware(['permission:delta','password.confirm']);
+        $this->middleware(['permission:delta', 'password.confirm']);
     }
 
     /**
-     * 
+     *
      * Display a smu test.
      *
      * @param   Request  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -40,13 +40,13 @@ class DeltaController extends Controller
     {
         $result = null;
         try {
-            if($request->code){
+            if ($request->code) {
                 $result = $this->repository::smu($request->code)->json();
             }
             return Inertia::render("{$this->module}/Smu", [
                 'result' => $result,
                 'information' => [
-                    'url' => config('delta.rest.url').'/v3/track/getSmuDetail',
+                    'url' => config('delta.rest.url') . '/v3/track/getSmuDetail',
                     'username' => config('delta.rest.username'),
                     'password' => config('delta.rest.password'),
                 ]
@@ -60,11 +60,11 @@ class DeltaController extends Controller
     }
 
     /**
-     * 
+     *
      * Display a awb test.
      *
      * @param   Request  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -72,7 +72,7 @@ class DeltaController extends Controller
     {
         $result = null;
         try {
-            if($request->code){
+            if ($request->code) {
                 $result = $this->repository::awb($request->code);
             }
             return Inertia::render("{$this->module}/Awb", [
@@ -92,11 +92,11 @@ class DeltaController extends Controller
     }
 
     /**
-     * 
+     *
      * Display a smu test.
      *
      * @param   Request  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -104,13 +104,13 @@ class DeltaController extends Controller
     {
         $result = null;
         try {
-            if($request->code){
+            if ($request->code) {
                 $result = $this->repository::awbDetail($request->code)->json();
             }
             return Inertia::render("{$this->module}/AwbDetail", [
                 'result' => $result,
                 'information' => [
-                    'url' => config('delta.rest.url').'/v3/track/getTrackAwbDetail',
+                    'url' => config('delta.rest.url') . '/v3/track/getTrackAwbDetail',
                     'username' => config('delta.rest.username'),
                     'password' => config('delta.rest.password'),
                 ]
@@ -124,11 +124,43 @@ class DeltaController extends Controller
     }
 
     /**
-     * 
+     *
      * Display a smu test.
      *
      * @param   Request  $request
-     * 
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function awbScanCompliance(Request $request)
+    {
+        $result = null;
+        try {
+            if ($request->code) {
+                $result = $this->repository::awbScanCompliance($request->code, $request->with_scan, $request->or_scan)->json();
+            }
+            return Inertia::render("{$this->module}/AwbScanCompliance", [
+                'result' => $result,
+                'information' => [
+                    'url' => config('delta.rest.url') . '/v3/getScanCompliance/',
+                    'username' => config('delta.rest.username'),
+                    'password' => config('delta.rest.password'),
+                ]
+            ]);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     *
+     * Display a smu test.
+     *
+     * @param   Request  $request
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -136,14 +168,14 @@ class DeltaController extends Controller
     {
         $result = null;
         try {
-            if($request->code){
+            if ($request->code) {
                 $awb = explode(',', $request->code);
                 $result = $this->repository::awbBatch($awb)->json();
             }
             return Inertia::render("{$this->module}/AwbBatch", [
                 'result' => $result,
                 'information' => [
-                    'url' => config('delta.rest.url').'/v3/tracking/',
+                    'url' => config('delta.rest.url') . '/v3/tracking/',
                     'username' => config('delta.rest.username'),
                     'password' => config('delta.rest.password'),
                 ]
@@ -157,14 +189,15 @@ class DeltaController extends Controller
     }
 
     /**
-     * 
+     *
      * Convert module string to route format.
-     * 
+     *
      * @return  String
      */
-    public function routeModule(){
+    public function routeModule()
+    {
         $splitter = array_map(
-            fn($item) => str($item)->snake('-'), 
+            fn ($item) => str($item)->snake('-'),
             explode('/', $this->module)
         );
         $merger = implode('.', $splitter);

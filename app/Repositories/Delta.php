@@ -46,6 +46,27 @@ class Delta
     /**
      * Get tracking AWB Detail
      */
+    public static function awbScanCompliance($code, $with_scan, $or_scan)
+    {
+        $payload = [
+            'body' => [
+                'awb' => $code,
+                'with_scan' => $with_scan,
+                'or_scan' => $or_scan,
+            ]
+        ];
+        $signature = self::sign($payload);
+        return Http::withToken(self::token())
+            ->withBody(json_encode([
+                'request'   => $payload,
+                'signature' => $signature
+            ]), 'application/json')
+            ->get(config('delta.rest.url') . '/v3/track/getScanCompliance');
+    }
+
+    /**
+     * Get tracking AWB Detail
+     */
     public static function awbBatch($awb)
     {
         $payload = [
