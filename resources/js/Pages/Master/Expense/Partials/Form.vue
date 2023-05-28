@@ -11,7 +11,7 @@
             <b-form-input id="code" v-model="form.code" :class="{'is-invalid' : form.errors.code }"
                 aria-describedby="input-code-feedback" autofocus/>
             <b-form-invalid-feedback id="input-code-feedback" v-html="form.errors.code"/>
-        </div>        
+        </div>
         <div class="col-lg-6">
             <label for="coa" class="form-label">COA</label>
             <b-form-input id="coa" v-model="form.coa" :class="{'is-invalid' : form.errors.coa }"
@@ -43,13 +43,25 @@
             ></b-form-radio-group>
             <b-form-invalid-feedback id="input-type-feedback" v-html="form.errors.type"/>
         </div>
-        <div class="col-lg-12">
+        <!-- <div class="col-lg-12">
             <label for="mandatory_scan" class="form-label">Mandatory Scan</label>
-            <!-- <Multiselect id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }" :create-option="true" :close-on-select="false" :searchable="true" mode="tags"
-                aria-describedby="input-mandatory_scan-feedback" :options="mandatory_scans" placeholder="Select data"></Multiselect> -->
+            <Multiselect id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }" :create-option="true" :close-on-select="false" :searchable="true" mode="tags"
+                aria-describedby="input-mandatory_scan-feedback" :options="mandatory_scans" placeholder="Select data"></Multiselect>
             <b-form-input id="mandatory_scan" v-model="form.mandatory_scan" :class="{'is-invalid' : form.errors.mandatory_scan }"
                 aria-describedby="input-mandatory_scan-feedback"/>
             <b-form-invalid-feedback id="input-mandatory_scan-feedback" v-html="form.errors.mandatory_scan"/>
+        </div> -->
+        <div class="col-lg-6">
+            <label for="with_scan" class="form-label">With Scan</label>
+            <b-form-input id="with_scan" v-model="form.with_scan" :class="{'is-invalid' : form.errors.with_scan }"
+                aria-describedby="input-with_scan-feedback"/>
+            <b-form-invalid-feedback id="input-with_scan-feedback" v-html="form.errors.with_scan"/>
+        </div>
+        <div class="col-lg-6">
+            <label for="or_scan" class="form-label">Or Scan</label>
+            <b-form-input id="or_scan" v-model="form.with_scan" :class="{'is-invalid' : form.errors.or_scan }"
+                aria-describedby="input-or_scan-feedback"/>
+            <b-form-invalid-feedback id="input-or_scan-feedback" v-html="form.errors.or_scan"/>
         </div>
         <div class="col-lg-12">
             <label class="form-label">Description</label>

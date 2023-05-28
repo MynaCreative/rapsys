@@ -135,13 +135,17 @@ class DeltaValidation implements ShouldQueue
 
                         if ($item->expense->mandatory_scan) {
                             $awbs = array_column($delta['data']['airwaybill'], 'awb');
-                            $mandatoryScans = [];
-                            foreach ($awbs as $awb) {
-                                $deltaBatch = Delta::awbBatch([$awb]);
-                                $tracking = array_unique(array_column($deltaBatch['data']['tracking'], 'tracking_id'));
-                                $mandatoryScans[] = $this->operationPattern($tracking, $item->expense->mandatory_scan);
-                            }
-                            $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
+                            // $mandatoryScans = [];
+                            // foreach ($awbs as $awb) {
+                            //     $deltaBatch = Delta::awbBatch([$awb]);
+                            //     $tracking = array_unique(array_column($deltaBatch['data']['tracking'], 'tracking_id'));
+                            //     $mandatoryScans[] = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                            // }
+                            // $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
+
+                            $deltaScanCompliance = Delta::awbScanCompliance($awbs, $item->expense->with_scan, $item->expense->or_scan);
+
+                            $referenceMandatoryScan = $deltaScanCompliance;
                             if ($referenceMandatoryScan) {
                                 $item->update([
                                     'validation_scan_compliance' => $referenceMandatoryScan,

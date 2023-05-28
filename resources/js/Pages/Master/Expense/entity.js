@@ -14,6 +14,8 @@ export default () => {
             coa: null,
             coa_description: null,
             mandatory_scan: null,
+            with_scan: null,
+            or_scan: null,
             description: null,
             excel_file: null,
 

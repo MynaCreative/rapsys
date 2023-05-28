@@ -25,7 +25,7 @@ class Expense extends Model
      *
      * @var array
      */
-    protected $fillable = ['code','name','coa','coa_description','mandatory_scan','icon','description','type'];
+    protected $fillable = ['code', 'name', 'coa', 'coa_description', 'mandatory_scan', 'with_scan', 'or_scan', 'icon', 'description', 'type'];
 
     /**
      * The attributes that should be cast.
@@ -55,7 +55,7 @@ class Expense extends Model
         return Attribute::make(
             get: function ($value, $attributes) {
                 $text = null;
-                if(isset($attributes['type'])){
+                if (isset($attributes['type'])) {
                     $type = $attributes['type'];
                     switch ($type) {
                         case self::TYPE_SMU:

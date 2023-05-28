@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->tinyInteger('type')->nullable();
             $table->string('mandatory_scan')->nullable();
+            $table->string('with_scan')->nullable();
+            $table->string('or_scan')->nullable();
             $table->unsignedInteger('created_by')->nullable();
             $table->unsignedInteger('updated_by')->nullable();
             $table->timestamps();

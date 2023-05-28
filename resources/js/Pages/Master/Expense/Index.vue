@@ -49,7 +49,9 @@
                                 <Sort label="Name" attribute='name'/>
                                 <Sort label="COA" attribute='coa'/>
                                 <Sort label="Type" attribute='type'/>
-                                <Sort label="Mandatory Scan" attribute='mandatory_scan'/>
+                                <!-- <Sort label="Mandatory Scan" attribute='mandatory_scan'/> -->
+                                <Sort label="With Scan" attribute='with_scan'/>
+                                <Sort label="Or Scan" attribute='or_scan'/>
                                 <Sort width="140" label="Created At" attribute='created_at'/>
                                 <th width="140">Created By</th>
                                 <th width="70">Active</th>
@@ -67,12 +69,14 @@
                                         <i class="mdi mdi-circle-medium"></i> {{ item.type_text }}
                                     </span>
                                 </td>
-                                <td>
-                                    <!-- <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in item.mandatory_scan" :key="index">
+                                <!-- <td>
+                                    <span class="badge badge-outline-info me-1" v-for="(mandatory_scan, index) in item.mandatory_scan" :key="index">
                                         {{ mandatory_scan }}
-                                    </span> -->
+                                    </span>
                                     {{ item.mandatory_scan }}
-                                </td>
+                                </td> -->
+                                <td>{{ item.with_scan }}</td>
+                                <td>{{ item.or_scan }}</td>
                                 <td class="date"><DataTimestamp :data="item.created_at"/></td>
                                 <td><DataUserName :data="item.created_user?.name"/></td>
                                 <td><DataActive :data="item.deleted_at"/></td>

@@ -39,7 +39,7 @@ class Resource implements FromView, WithStyles, WithEvents, ShouldAutoSize
                 $workSheet = $event->sheet->getDelegate();
                 $workSheet->freezePane('A' . $this->firstRow + 1);
                 $workSheet->setAutoFilter("A{$this->firstRow}:{$event->sheet->getHighestColumn()}{$this->firstRow}");
-                $event->sheet->getStyle('G' . ($this->firstRow + 1) . ':G' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('yyyy-mm-dd');
+                $event->sheet->getStyle('H' . ($this->firstRow + 1) . ':H' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('yyyy-mm-dd');
             },
         ];
     }

@@ -24,7 +24,8 @@
             <th>Name</th>
             <th>COA</th>
             <th>Type</th>
-            <th>Mandatory Scan</th>
+            <th>With Scan</th>
+            <th>Or Scan</th>
             <th>Created At</th>
         </tr>
     </thead>
@@ -39,7 +40,8 @@
                 {{ $row->type == 1 ? 'SMU' : '' }}
                 {{ $row->type == 2 ? 'AWB' : '' }}
             </td>
-            <td>{{ $row->mandatory_scan }}</td>
+            <td>{{ $row->with_scan }}</td>
+            <td>{{ $row->or_scan }}</td>
             <td>{{ $excelDate::dateTimeToExcel($row->created_at) }}</td>
         </tr>
         @endforeach
