@@ -70,6 +70,11 @@
                             <i :class="['label-icon align-middle fs-16 me-2', form.processing ? 'ri-refresh-line' : 'ri-save-line']"></i>
                             {{ form.processing ? 'Processing' : 'Submit' }}
                         </b-button>
+                        <b-button @click="deltaValidate" v-if="form.id || !['published','closed','cancelled'].includes(form.document_status)"
+                        type="submit" variant="warning" class="btn-label waves-effect waves-light right" :disabled="form.processing">
+                            <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-check-line']"></i>
+                            {{ form.processing ? 'Validating' : 'Validate' }}
+                        </b-button>
                         <b-button @click="save('draft')" v-if="!form.id || !['published','closed','cancelled'].includes(form.document_status)"
                         type="submit" variant="light" class="btn-label waves-effect waves-light right" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-save-2-line']"></i>
@@ -148,5 +153,9 @@ const submit = () => {
 
 const save = (status) => {
     service.saveData(form, status)
+}
+
+const deltaValidate = () => {
+    service.validateData(form)
 }
 </script>

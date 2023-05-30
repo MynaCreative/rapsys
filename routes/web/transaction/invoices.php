@@ -13,5 +13,6 @@ Route::name("{$module}.")->prefix($module)
         Route::get("{$endpoint}/import-sample/{expense}", [CurrentController::class, 'importSample'])->name($endpoint . '.import-sample');
         Route::get("{$endpoint}/smu-preview/{code}", [CurrentController::class, 'smuPreview'])->name($endpoint . '.smu-preview');
         Route::get("{$endpoint}/approval/{invoice}", [CurrentController::class, 'approval'])->name($endpoint . '.approval');
+        Route::post("{$endpoint}/delta-validate/{invoice}", [CurrentController::class, 'deltaValidate'])->name($endpoint . '.deltaValidate');
         Route::resource($endpoint, CurrentController::class);
     });

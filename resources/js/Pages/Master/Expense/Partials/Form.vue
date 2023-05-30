@@ -59,7 +59,7 @@
         </div>
         <div class="col-lg-6">
             <label for="or_scan" class="form-label">Or Scan</label>
-            <b-form-input id="or_scan" v-model="form.with_scan" :class="{'is-invalid' : form.errors.or_scan }"
+            <b-form-input id="or_scan" v-model="form.or_scan" :class="{'is-invalid' : form.errors.or_scan }"
                 aria-describedby="input-or_scan-feedback"/>
             <b-form-invalid-feedback id="input-or_scan-feedback" v-html="form.errors.or_scan"/>
         </div>

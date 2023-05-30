@@ -111,9 +111,9 @@ class DeltaValidation implements ShouldQueue
             if ($validationReference) {
                 $awb = Delta::awbDetail($delta['data']['airwaybill'][0]['awb']);
                 $item->update([
-                    'area_id' => $this->getArea($awb['data'][0]['origin']),
-                    'sales_channel_id' => $this->getSalesChannel($awb['data'][0]['sales_channel']),
-                    'product_id' => $this->getProduct($awb['data'][0]['service_type_id']),
+                    // 'area_id' => $this->getArea($awb['data'][0]['origin']),
+                    // 'sales_channel_id' => $this->getSalesChannel($awb['data'][0]['sales_channel']),
+                    // 'product_id' => $this->getProduct($awb['data'][0]['service_type_id']),
                     'validation_reference' => $validationReference,
                 ]);
 
@@ -134,7 +134,7 @@ class DeltaValidation implements ShouldQueue
                         ]);
 
                         if ($item->expense->mandatory_scan) {
-                            $awbs = array_column($delta['data']['airwaybill'], 'awb');
+                            $awbs = array_filter(array_column($delta['data']['airwaybill'], 'awb'));
                             // $mandatoryScans = [];
                             // foreach ($awbs as $awb) {
                             //     $deltaBatch = Delta::awbBatch([$awb]);
@@ -142,10 +142,8 @@ class DeltaValidation implements ShouldQueue
                             //     $mandatoryScans[] = $this->operationPattern($tracking, $item->expense->mandatory_scan);
                             // }
                             // $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
-
-                            $deltaScanCompliance = Delta::awbScanCompliance($awbs, $item->expense->with_scan, $item->expense->or_scan);
-
-                            $referenceMandatoryScan = $deltaScanCompliance;
+                            $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
+                            $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
                             if ($referenceMandatoryScan) {
                                 $item->update([
                                     'validation_scan_compliance' => $referenceMandatoryScan,

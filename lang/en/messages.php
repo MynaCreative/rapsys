@@ -21,6 +21,7 @@ return [
         'delete'    => 'The record has been successfully deleted.',
         'import'    => 'The record has been successfully imported.',
         'restore'   => 'The record has been successfully restored.',
+        'validate'   => 'The record has been successfully validated.',
     ]
 
 ];

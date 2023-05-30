@@ -34,6 +34,18 @@ export default {
             preserveScroll: (page) => Object.keys(page.props.errors).length,
         })
     },
+    validateData(form){
+        let method = 'post'
+        let action = route(`${page.module}.${page.name}.deltaValidate`, form.id)
+        form.transform((data) => ({
+            ...data,
+            _method: method
+        }))
+        .submit('post', action, {
+            preserveState: (page) => Object.keys(page.props.errors).length,
+            preserveScroll: (page) => Object.keys(page.props.errors).length,
+        })
+    },
     submitData(form, id){
         Swal.fire({
             title: `Are you sure you want to submit this item?`,
@@ -46,8 +58,8 @@ export default {
         }).then((result) => {
             if (result.value) {
                 let method = form.id ? 'patch' : 'post'
-                let action = form.id ? 
-                    route(`${page.module}.${page.name}.update`, form.id) : 
+                let action = form.id ?
+                    route(`${page.module}.${page.name}.update`, form.id) :
                     route(`${page.module}.${page.name}.store`)
                 form.transform((data) => ({
                     ...data,

@@ -236,9 +236,6 @@ class Invoice
                 $model->items()->where('validation_score', '!=', 5)->update([
                     'is_validated' => false
                 ]);
-                foreach ($model->items as $item) {
-                    DeltaValidation::dispatch($item);
-                }
                 InvoiceValidation::dispatch($model);
                 return $model;
             });
@@ -295,9 +292,7 @@ class Invoice
                 $model->items()->where('validation_score', '!=', 5)->update([
                     'is_validated' => false
                 ]);
-                foreach ($model->items as $item) {
-                    DeltaValidation::dispatch($item);
-                }
+
                 InvoiceValidation::dispatch($model);
 
                 return $model;
@@ -390,9 +385,6 @@ class Invoice
                 $this->model->items()->where('validation_score', '!=', 5)->update([
                     'is_validated' => false
                 ]);
-                foreach ($this->model->items as $item) {
-                    // DeltaValidation::dispatch($item);
-                }
                 InvoiceValidation::dispatch($this->model);
 
                 return $this->model;
@@ -400,6 +392,21 @@ class Invoice
         });
 
         return $transaction;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @return Model
+     */
+    public function deltaValidate(): Model
+    {
+        $items = $this->model->items->where('is_validated', false);
+        foreach ($items as $item) {
+            DeltaValidation::dispatch($item);
+        }
+
+        return $this->model;
     }
 
     /**

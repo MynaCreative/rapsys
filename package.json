@@ -19,7 +19,7 @@
         "lottie-web": "^5.11.0",
         "simplebar": "5.3.8",
         "simplebar-vue3": "^0.2.0",
-        "sweetalert2": "^11.7.5",
+        "sweetalert2": "^11.7.8",
         "terser": "^5.17.6",
         "v-money3": "^3.24.0",
         "vue3-apexcharts": "^1.4.1",

@@ -66,9 +66,9 @@ class InvoiceValidation implements ShouldQueue
             'total_amount_after_tax_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum('total')
         ]);
 
-        // if ($this->invoice->document_status == 'published') {
-        //     $this->createApproval($this->invoice);
-        // }
+        if ($this->invoice->document_status == 'published') {
+            $this->createApproval($this->invoice);
+        }
     }
 
     /**

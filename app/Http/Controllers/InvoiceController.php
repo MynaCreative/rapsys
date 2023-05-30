@@ -39,11 +39,11 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Display a listing of the resources.
      *
      * @param   IndexRequest  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -55,12 +55,12 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Display the specified resource.
      *
      * @param   ShowRequest  $request
      * @param   Model $invoice
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -78,12 +78,12 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Display the specified resource.
      *
      * @param   ShowRequest  $request
      * @param   Model $invoice
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -113,11 +113,11 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Save a resource.
      *
      * @param   DraftRequest  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -137,11 +137,11 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Store a newly created resource.
      *
      * @param   StoreRequest  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -162,11 +162,11 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * SMU Preview.
      *
      * @param   Request  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -183,11 +183,11 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Import resource.
      *
      * @param   ImportRequest  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -238,12 +238,12 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Update specified resource.
      *
      * @param   UpdateRequest  $request
      * @param   Model $invoice
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -263,12 +263,37 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
+     * Update specified resource.
+     *
+     * @param   UpdateRequest  $request
+     * @param   Model $invoice
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function deltaValidate(Model $invoice)
+    {
+        try {
+            $this->repository::init($invoice)->deltaValidate();
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+
+        return redirect()->route(implode('.', [$this->routeModule(), $this->routePage(), 'index']))
+            ->with('success', __('messages.success.validate'));
+    }
+
+    /**
+     *
      * Remove specified resource.
      *
      * @param   DestroyRequest  $request
      * @param   Model $invoice
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -288,12 +313,12 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Restore specified resource.
      *
      * @param   DestroyRequest  $request
      * @param   Model $invoice
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -313,9 +338,9 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Convert module string to route format.
-     * 
+     *
      * @return  String
      */
     public function routeModule()
@@ -324,9 +349,9 @@ class InvoiceController extends Controller
     }
 
     /**
-     * 
+     *
      * Convert page string to route format.
-     * 
+     *
      * @return  String
      */
     public function routePage()
