@@ -35,15 +35,16 @@ return new class extends Migration
 
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
             $table->foreignIdFor(CostCenter::class)->nullable()->constrained();
-            $table->foreignIdFor(SalesChannel::class)->nullable()->constrained();
-            $table->foreignIdFor(Product::class)->nullable()->constrained();
-            $table->foreignIdFor(Area::class)->nullable()->constrained();
+
             $table->foreignIdFor(Tax::class)->nullable()->constrained();
             $table->foreignIdFor(Withholding::class)->nullable()->constrained();
 
+            $table->foreignIdFor(SalesChannel::class)->nullable()->constrained();
+            $table->foreignIdFor(Product::class)->nullable()->constrained();
+            $table->foreignIdFor(Area::class)->nullable()->constrained();
+
             $table->string('dist')->nullable();
             $table->string('code')->nullable();
-            $table->string('type')->nullable();
             $table->string('route')->nullable();
             $table->date('date_item')->nullable();
 

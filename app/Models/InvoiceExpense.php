@@ -45,12 +45,18 @@ class InvoiceExpense extends Model
         'total_vat_tax',
         'grand_total',
 
-        'validation_reference',
-        'validation_weight',
-        'validation_scan_compliance',
-        'validation_ops_plan',
-        'validation_bill',
-        'validation_score',
+        'total_weight_validation_reference',
+        'total_weight_validation_weight',
+        'total_weight_validation_scan_compliance',
+        'total_weight_validation_ops_plan',
+        'total_weight_validation_bill',
+
+        'total_validation_reference',
+        'total_validation_weight',
+        'total_validation_scan_compliance',
+        'total_validation_ops_plan',
+        'total_validation_bill',
+        'total_validation_score',
 
         'created_by',
         'updated_by'
@@ -62,22 +68,28 @@ class InvoiceExpense extends Model
      * @var array
      */
     protected $casts = [
-        'total_weight'                  => 'float',
-        'total_amount'                  => 'float',
-        'total_weight_smu'              => 'float',
-        'total_weight_all_awb'          => 'float',
-        'total_weight_dim_all_awb'      => 'float',
-        'total_weight_actual_all_awb'   => 'float',
+        'total_weight'                              => 'float',
+        'total_amount'                              => 'float',
+        'total_weight_smu'                          => 'float',
+        'total_weight_all_awb'                      => 'float',
+        'total_weight_dim_all_awb'                  => 'float',
+        'total_weight_actual_all_awb'               => 'float',
 
-        'total_withholding_tax'         => 'float',
-        'total_vat_tax'                 => 'float',
-        'grand_total'                   => 'float',
+        'total_withholding_tax'                     => 'float',
+        'total_vat_tax'                             => 'float',
+        'grand_total'                               => 'float',
 
-        'validation_reference'          => 'boolean',
-        'validation_weight'             => 'boolean',
-        'validation_scan_compliance'    => 'boolean',
-        'validation_ops_plan'           => 'boolean',
-        'validation_bill'               => 'boolean',
+        'total_weight_validation_reference'         => 'float',
+        'total_weight_validation_weight'            => 'float',
+        'total_weight_validation_scan_compliance'   => 'float',
+        'total_weight_validation_ops_plan'          => 'float',
+        'total_weight_validation_bill'              => 'float',
+
+        'total_validation_reference'                => 'integer',
+        'total_validation_weight'                   => 'integer',
+        'total_validation_scan_compliance'          => 'integer',
+        'total_validation_ops_plan'                 => 'integer',
+        'total_validation_bill'                     => 'integer',
     ];
 
     /**
@@ -142,6 +154,22 @@ class InvoiceExpense extends Model
     public function withholding()
     {
         return $this->belongsTo(Withholding::class);
+    }
+
+    /**
+     * Get the smu items for the invoice.
+     */
+    public function smuItems()
+    {
+        return $this->hasMany(InvoiceSmu::class, 'invoice_expense_id')->latest()->orderBy('validation_score');
+    }
+
+    /**
+     * Get the awb items for the invoice.
+     */
+    public function awbItems()
+    {
+        return $this->hasMany(InvoiceAwb::class, 'invoice_expense_id')->latest()->orderBy('validation_score');
     }
 
     /**

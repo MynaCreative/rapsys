@@ -35,7 +35,6 @@ return new class extends Migration
             $table->foreignIdFor(Withholding::class)->nullable()->constrained();
 
             $table->string('code')->nullable();
-            $table->string('type')->nullable();
             $table->string('route')->nullable();
             $table->date('date_item')->nullable();
 

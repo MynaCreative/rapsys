@@ -93,8 +93,8 @@ class Invoice
                     'invoice_number'                    => $item->invoice_number,
                     'invoice_date'                      => $item->invoice_date,
                     'invoice_receipt_date'              => $item->invoice_receipt_date,
-                    'items'                             => $item->items->count(),
-                    'validated_items'                   => $item->items()->where('is_validated', true)->count(),
+                    'items'                             => 0,
+                    'validated_items'                   => 0,
                     'description'                       => $item->description,
                     'created_user'                      => $item->createdUser,
                     'updated_user'                      => $item->updatedUser,
@@ -200,26 +200,43 @@ class Invoice
                  */
                 self::saveDocumentItem($model, $items ?? []);
 
-                if ($request->uploads) {
-                    foreach ($request->uploads as $upload) {
-                        $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
-                            ->first()
-                            ->map(function ($item, $index) use ($upload, $uuid) {
-                                $date_item = null;
-                                if (isset($item['date_item'])) {
-                                    $date_item = Carbon::instance(Date::excelToDateTimeObject($item['date_item']));
-                                }
-                                return [
-                                    ...$item,
-                                    'uuid'              => $uuid,
-                                    'sequence_number'   => $index + 1,
-                                    'date_item'         => $date_item,
-                                    'expense_id'        => (int) $upload['expense_id'],
-                                    'type'              => $upload['type']
-                                ];
-                            })
-                            ->toArray();
-                        $model->items()->createMany($rows);
+                if ($request->id == null && $request->expenses) {
+                    foreach ($request->expenses as $upload) {
+                        $expense = $model->expenses()->create([
+                            'expense_id' => $upload['expense_id'],
+                            'cost_center_id' => $upload['cost_center_id'] ?? null,
+                            'withholding_id' => $upload['withholding_id']  ?? null,
+                            'tax_id' => $upload['tax_id']  ?? null,
+                            'type' => $upload['type']  ?? null
+                        ]);
+                        if (isset($upload['excel_file'])) {
+                            $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
+                                ->first()
+                                ->map(function ($item, $index) use ($upload, $uuid, $expense) {
+                                    $date_item = null;
+                                    if (isset($item['date_item'])) {
+                                        $date_item = Carbon::instance(Date::excelToDateTimeObject($item['date_item']));
+                                    }
+                                    return [
+                                        ...$item,
+                                        'uuid'                  => $uuid,
+                                        'sequence_number'       => $index + 1,
+                                        'date_item'             => $date_item,
+                                        'invoice_expense_id'    => $expense->id,
+                                        'expense_id'            => $upload['expense_id'],
+                                        'cost_center_id'        => $upload['cost_center_id'] ?? null,
+                                        'withholding_id'        => $upload['withholding_id']  ?? null,
+                                        'tax_id'                => $upload['tax_id']  ?? null,
+                                        'type'                  => $upload['type']  ?? null
+                                    ];
+                                })
+                                ->toArray();
+                            if ($upload['type'] == Expense::TYPE_SMU) {
+                                $model->smuItems()->createMany($rows);
+                            } else {
+                                $model->awbItems()->createMany($rows);
+                            }
+                        }
                     }
                 }
 
@@ -233,9 +250,9 @@ class Invoice
                     self::saveDocumentAttachment($model, $request);
                 }
 
-                $model->items()->where('validation_score', '!=', 5)->update([
-                    'is_validated' => false
-                ]);
+                // $model->items()->where('validation_score', '!=', 5)->update([
+                //     'is_validated' => false
+                // ]);
                 InvoiceValidation::dispatch($model);
                 return $model;
             });
@@ -289,9 +306,9 @@ class Invoice
                  */
                 self::saveDocumentApproval($model, $request);
 
-                $model->items()->where('validation_score', '!=', 5)->update([
-                    'is_validated' => false
-                ]);
+                // $model->items()->where('validation_score', '!=', 5)->update([
+                //     'is_validated' => false
+                // ]);
 
                 InvoiceValidation::dispatch($model);
 
@@ -382,9 +399,9 @@ class Invoice
                  */
                 self::saveDocumentApproval($this->model, $request);
 
-                $this->model->items()->where('validation_score', '!=', 5)->update([
-                    'is_validated' => false
-                ]);
+                // $this->model->items()->where('validation_score', '!=', 5)->update([
+                //     'is_validated' => false
+                // ]);
                 InvoiceValidation::dispatch($this->model);
 
                 return $this->model;
@@ -401,8 +418,13 @@ class Invoice
      */
     public function deltaValidate(): Model
     {
-        $items = $this->model->items->where('is_validated', false);
-        foreach ($items as $item) {
+        $sbuItems = $this->model->sbuItems->where('is_validated', false)->where('validation_score', '!=', 5);
+        foreach ($sbuItems as $item) {
+            DeltaValidation::dispatch($item);
+        }
+
+        $awbItems = $this->model->awbItems->where('is_validated', false)->where('validation_score', '!=', 5);
+        foreach ($awbItems as $item) {
             DeltaValidation::dispatch($item);
         }
 
@@ -423,6 +445,9 @@ class Invoice
             'attachments',
             'items' => function ($query) {
                 $query->with(['withholding', 'tax', 'area', 'product', 'salesChannel', 'costCenter']);
+            },
+            'expenses' => function ($query) {
+                $query->with(['expense', 'withholding', 'tax', 'costCenter']);
             },
         ]);
         $model->uploads = [];

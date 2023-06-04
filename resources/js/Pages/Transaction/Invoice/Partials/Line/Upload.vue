@@ -1,5 +1,5 @@
 <template>
-    <div class="row g-2" v-if="!form.id || (form.id && form.items.filter((item) =>  item.type !== 'MNL' && item.expense_id == expense.id).length == 0)">
+    <div class="row g-2" v-if="!form.id">
         <div class="col-lg-6 p-4">
             <label for="excel_file" class="form-label">File</label>
             <div class="input-group">
@@ -9,79 +9,39 @@
                     <i class="ri-delete-bin-5-line align-bottom me-1"></i>
                 </a>
             </div>
-            <b-form-invalid-feedback id="input-excel_file-feedback" v-html="form.errors.excel_file"/>
+            <b-form-invalid-feedback id="input-excel_file-feedback" v-html="expense.excel_file"/>
             <div class="form-text mt-4">
-                <a :href="route(`transaction.invoices.import-sample`, expense.code ?? '')" target="_blank">
+                <a :href="route(`transaction.invoices.import-sample`, expense.expense.code ?? '')" target="_blank">
                     <i class="ri-attachment-2 align-bottom"></i>
-                    Download Excel template [{{ expense.code }}]
+                    Download Excel template [{{ expense.expense.code }}]
                 </a>
             </div>
         </div>
         <div class="col-lg-6 p-4">
             <label for="cost_center_upload" class="form-label">Cost Center</label>
-            <Multiselect id="cost_center_upload" v-model="form.cost_center_id" 
-                @select="(option) => item.cost_center_id = option.id" :object="true" label="name" valueProp="id"
+            <Multiselect id="cost_center_upload" v-model="expense.cost_center"
+                @select="(option) => expense.cost_center_id = option.id" :object="true" label="name" valueProp="id"
                 aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6 px-4">
             <label for="withholding" class="form-label">Withholding</label>
-            <Multiselect id="withholding" v-model="form.withholding_id" 
-                @select="(option) => item.withholding_id = option.id" :object="true" label="name" valueProp="id"
+            <Multiselect id="withholding" v-model="expense.withholding"
+                @select="(option) => expense.withholding_id = option.id" :object="true" label="name" valueProp="id"
                 aria-describedby="input-withholding-feedback" :options="references.withholdings" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6 px-4">
             <label for="tax" class="form-label">Tax</label>
-            <Multiselect id="tax" v-model="form.tax_id"
-                @select="(option) => item.tax_id = option.id" :object="true" label="name" valueProp="id"
+            <Multiselect id="tax" v-model="expense.tax"
+                @select="(option) => expense.tax_id = option.id" :object="true" label="name" valueProp="id"
                 aria-describedby="input-tax-feedback" :options="references.taxes" placeholder="Select data"></Multiselect>
         </div>
     </div>
-    <div class="table-responsive" v-else>
-        <table class="table table-sm" v-if="form.items.filter((item) => item.type == 'SMU' && item.expense_id == expense.id).length > 0">
-            <thead class="table-light text-muted">
-                <tr>
-                    <th class="text-center" width=40px>#</th>
-                    <th>{{ expense.type_text }}</th>
-                    <th class="text-end">Amount</th>
-                    <th class="text-end">Weight</th>
-                    <th>Cost Center</th>
-                    <th>Withholding</th>
-                    <th>Tax</th>
-                    <th>Area</th>
-                    <th>Product / Project</th>
-                </tr>
-            </thead>
-            <template v-if="form.items && form.items.length > 0 && form.items.filter((item) => item.type !== 'MNL' && item.expense_id == expense.id).length > 0">
-                <tbody>
-                    <UploadItem v-for="(item, index) in form.items.filter((item) => item.type !== 'MNL' && item.expense_id == expense.id)" :key="index"
-                        :formData="form"
-                        @update:formData="form = $event"
-                        :itemData="item"
-                        @update:itemData="item = $event"
-                        :references="references"
-                        :index="index"
-                        :type="expense.code"
-                    />
-                </tbody>
-                <!-- <tfoot class="bg-soft-light text-muted">
-                    <tr>
-                        <td class="fw-medium text-end" colspan="9">Total</td>
-                        <td class="fw-medium text-end">0.00</td>
-                        <td class="fw-medium text-end">0.00</td>
-                    </tr>
-                </tfoot> -->
-            </template>
-            <tbody v-else>
-                <td colspan="99" class="text-center text-muted">
-                    <em>There are no item in this table</em>
-                </td>
-            </tbody>
-        </table>
-    </div>
+    <template v-else>
+        <UploadItem :formData="form" :expense="expense" :references="references"/>
+    </template>
 </template>
 <script setup>
 import { computed, ref } from 'vue'
-import { remove } from 'lodash'
 import Multiselect from '@vueform/multiselect'
 
 import UploadItem from './UploadItem.vue'
@@ -102,20 +62,15 @@ const excel_file = ref(null)
 
 const getFile = (e) => {
     if(e.target.files){
-        form.value.uploads.push({
-            excel_file : e.target.files[0],
-            expense_id : props.expense.id,
-            expense_code : props.expense.code,
-            type : props.expense.type == 1 ? 'SMU' : 'AWB'
-        })
+        props.expense.excel_file = e.target.files[0]
     }else{
-        remove(form.value.uploads, {expense_id:props.expense.id})
+        props.expense.excel_file = null
         excel_file.value.value = null
     }
 }
 
 const removeFile = () => {
-    remove(form.value.uploads, {expense_id:props.expense.id})
+    props.expense.excel_file = null
     excel_file.value.value = null
 }
 </script>

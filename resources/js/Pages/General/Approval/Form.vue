@@ -82,9 +82,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>                                            
+                                            </div>
 
-                                            <PartialValidation v-model:formData="form" :references="references"/>
+                                            <!-- <PartialValidation v-model:formData="form" :references="references"/> -->
 
                                             <h6 class="mb-3 fw-semibold text-uppercase">Note</h6>
                                             <p>{{ form.note }}</p>
@@ -92,7 +92,7 @@
                                             <div>
                                                 <Link :href="route('transaction.invoices.edit', form.id)" class="btn btn-link link-success p-0 shadow-none">Detail Invoice</Link>
                                             </div>
-                                            
+
                                             <div class="pt-3 border-top border-top-dashed mt-4">
                                                 <h6 class="mb-3 fw-semibold text-uppercase">Attachments</h6>
                                                 <div class="row g-3">
@@ -286,7 +286,7 @@ import Layout from '@/Layouts/Main.vue'
 import PageHeader from '@/Components/PageHeader.vue'
 import DataDate from '@/Components/Data/Date.vue'
 import DataTimestamp from '@/Components/Data/Timestamp.vue'
-import PartialValidation from '@/Pages/Transaction/Invoice/Partials/Validation.vue'
+// import PartialValidation from '@/Pages/Transaction/Invoice/Partials/Validation.vue'
 
 import entityData from './entity'
 import service from './service'

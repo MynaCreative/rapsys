@@ -37,7 +37,6 @@ class InvoiceAwb extends Model
 
         'dist',
         'code',
-        'type',
         'route',
         'date_item',
 

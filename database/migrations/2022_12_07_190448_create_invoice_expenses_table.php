@@ -30,11 +30,13 @@ return new class extends Migration
             $table->foreignIdFor(Invoice::class)->nullable()->constrained();
             $table->foreignIdFor(Expense::class)->nullable()->constrained();
             $table->foreignIdFor(CostCenter::class)->nullable()->constrained();
+
+            $table->foreignIdFor(Tax::class)->nullable()->constrained();
+            $table->foreignIdFor(Withholding::class)->nullable()->constrained();
+
             $table->foreignIdFor(SalesChannel::class)->nullable()->constrained();
             $table->foreignIdFor(Product::class)->nullable()->constrained();
             $table->foreignIdFor(Area::class)->nullable()->constrained();
-            $table->foreignIdFor(Tax::class)->nullable()->constrained();
-            $table->foreignIdFor(Withholding::class)->nullable()->constrained();
 
             $table->string('type')->nullable();
 
@@ -49,11 +51,17 @@ return new class extends Migration
             $table->decimal('total_vat_tax', 20, 4)->nullable()->default(0);
             $table->decimal('grand_total', 20, 4)->nullable()->default(0);
 
-            $table->boolean('total_validation_reference')->nullable()->default(false);
-            $table->boolean('total_validation_bill')->nullable()->default(false);
-            $table->boolean('total_validation_weight')->nullable()->default(false);
-            $table->boolean('total_validation_scan_compliance')->nullable()->default(false);
-            $table->boolean('total_validation_ops_plan')->nullable()->default(false);
+            $table->decimal('total_weight_validation_reference', 20, 4)->nullable()->default(0);
+            $table->decimal('total_weight_validation_bill', 20, 4)->nullable()->default(0);
+            $table->decimal('total_weight_validation_weight', 20, 4)->nullable()->default(0);
+            $table->decimal('total_weight_validation_scan_compliance', 20, 4)->nullable()->default(0);
+            $table->decimal('total_weight_validation_ops_plan', 20, 4)->nullable()->default(0);
+
+            $table->integer('total_validation_reference')->nullable()->default(0);
+            $table->integer('total_validation_bill')->nullable()->default(0);
+            $table->integer('total_validation_weight')->nullable()->default(0);
+            $table->integer('total_validation_scan_compliance')->nullable()->default(0);
+            $table->integer('total_validation_ops_plan')->nullable()->default(0);
             $table->integer('total_validation_score')->nullable()->default(0);
 
             /** Standard Item Timestamp **/

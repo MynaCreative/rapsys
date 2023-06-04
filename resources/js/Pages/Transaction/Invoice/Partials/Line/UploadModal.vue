@@ -10,12 +10,12 @@
                     <template v-for="(expense, index) in references.expenses.filter((item) => item.code != 'MNL')" :key="index">
                         <div class="col-lg-6" v-if="!form.expenses.includes(expense.code)">
                             <div class="form-check card-radio">
-                                <input :id="`expense-picker-${expense.code}`" v-model="expensePicker" :value="expense.code" type="radio" class="form-check-input">
+                                <input :id="`expense-picker-${expense.code}`" v-model="expensePicker" :value="expense" type="radio" class="form-check-input">
                                 <label class="form-check-label" :for="`expense-picker-${expense.code}`">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
                                             <div class="avatar-xs">
-                                                <div :class="['avatar-title fs-18 rounded', 
+                                                <div :class="['avatar-title fs-18 rounded',
                                                     {'bg-soft-info': expense.type == 1},
                                                     {'text-info': expense.type == 1},
                                                     {'bg-soft-primary': expense.type == 2},
@@ -27,7 +27,7 @@
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="mb-1">
                                                 {{ expense.name }}
-                                                <span :class="['badge rounded-pill', 
+                                                <span :class="['badge rounded-pill',
                                                     {'bg-soft-info': expense.type == 1},
                                                     {'text-info': expense.type == 1},
                                                     {'bg-soft-primary': expense.type == 2},
@@ -47,7 +47,7 @@
                     <div class="form-text mt-4">
                         <a :href="route(`transaction.invoices.import-sample`, expensePicker ?? '')" target="_blank">
                             <i class="ri-attachment-2 align-bottom"></i>
-                            Download Excel template [{{ expensePicker }}]
+                            Download Excel template [{{ expensePicker.name }}]
                         </a>
                         <br>
                         <span class="text-muted">Please using latest excel template above to import line item</span>
@@ -86,7 +86,18 @@ const form = computed({
 const expensePicker = ref(null)
 
 const addItem = () => {
-    form.value.expenses.push(expensePicker.value)
+    form.value.expenses.push({
+        excel_file: null,
+        type : expensePicker.value.type,
+        expense_id : expensePicker.value.id,
+        expense : expensePicker.value,
+        withholding_id : null,
+        withholding : null,
+        tax_id : null,
+        tax : null,
+        cost_center_id : null,
+        cost_center : null,
+    })
     expensePicker.value = null
     emit('update:show', false)
 }

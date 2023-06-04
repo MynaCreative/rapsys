@@ -57,16 +57,6 @@ return new class extends Migration
 
             $table->text('description')->nullable();
 
-            $table->boolean('validation_reference')->nullable()->default(false);
-            $table->boolean('validation_bill')->nullable()->default(false);
-            $table->boolean('validation_weight')->nullable()->default(false);
-            $table->boolean('validation_scan_compliance')->nullable()->default(false);
-            $table->boolean('validation_ops_plan')->nullable()->default(false);
-            $table->integer('validation_score')->nullable()->default(0);
-
-            $table->boolean('is_validated')->default(false);
-            $table->text('message')->nullable();
-
             /** Standard Item Timestamp **/
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

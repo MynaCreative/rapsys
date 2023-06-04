@@ -51,16 +51,6 @@ class InvoiceItem extends Model
 
         'description',
 
-        'validation_reference',
-        'validation_weight',
-        'validation_scan_compliance',
-        'validation_ops_plan',
-        'validation_bill',
-        'validation_score',
-
-        'is_validated',
-        'message',
-
         'created_by',
         'updated_by'
     ];
@@ -79,13 +69,6 @@ class InvoiceItem extends Model
         'withholding_tax'               => 'float',
         'vat_tax'                       => 'float',
         'total'                         => 'float',
-
-        'validation_reference'          => 'boolean',
-        'validation_weight'             => 'boolean',
-        'validation_scan_compliance'    => 'boolean',
-        'validation_ops_plan'           => 'boolean',
-        'validation_bill'               => 'boolean',
-        'is_validated'                  => 'boolean',
     ];
 
     /**

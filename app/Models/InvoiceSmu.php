@@ -32,7 +32,6 @@ class InvoiceSmu extends Model
         'withholding_id',
 
         'code',
-        'type',
         'route',
         'date_item',
 

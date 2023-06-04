@@ -6,7 +6,6 @@ export default () => {
             title   : 'Invoice'
         },
         form: {
-            id: null,
             due_date: null,
             term_date: null,
             posting_date: null,
@@ -36,7 +35,23 @@ export default () => {
             total_amount: 0,
             total_amount_valid: 0,
             total_amount_invalid: 0,
-            expenses: ['MNL'],
+            expenses: [
+                {
+                    cost_center_id: null,
+                    withholding_id: null,
+                    tax_id: null,
+                    area_id: null,
+                    product_id: null,
+                    sales_channel_id: null,
+                    expense_id: 1,
+                    expense: {
+                        id:1,
+                        code:'MNL',
+                        icon:'ri-picture-in-picture-line',
+                        name:'Manual',
+                    },
+                }
+            ],
             items: [],
             attachments: [],
 

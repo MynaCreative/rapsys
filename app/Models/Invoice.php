@@ -183,7 +183,31 @@ class Invoice extends Model
      */
     public function items()
     {
-        return $this->hasMany(InvoiceItem::class)->latest()->orderBy('validation_score');
+        return $this->hasMany(InvoiceItem::class)->latest();
+    }
+
+    /**
+     * Get the smu items for the invoice.
+     */
+    public function smuItems()
+    {
+        return $this->hasMany(InvoiceSmu::class)->latest()->orderBy('validation_score');
+    }
+
+    /**
+     * Get the awb items for the invoice.
+     */
+    public function awbItems()
+    {
+        return $this->hasMany(InvoiceAwb::class)->latest()->orderBy('validation_score');
+    }
+
+    /**
+     * Get the expenses for the invoice.
+     */
+    public function expenses()
+    {
+        return $this->hasMany(InvoiceExpense::class);
     }
 
     /**

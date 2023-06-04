@@ -2,14 +2,14 @@
     <div>
         <nav>
             <ul class="nav nav-tabs nav-tabs-custom nav-success" id="nav-tab" role="tablist" >
-                <li class="nav-item" v-for="expense in references.expenses" :key="`nav-item-${expense.id}`">
-                    <a :class="['nav-link', {active: expense.code == 'MNL', 'd-none': !form.expenses.includes(expense.code)}]" :id="`nav-${expense.code}-tab`" :title="expense.name"
-                        data-bs-toggle="tab" :href="`#nav-${expense.code}`" role="tab" :aria-controls="`nav-${expense.code}`" :aria-selected="expense.code == 'MNL'">
-                        <i :class="`me-1 align-bottom ${expense.icon}`"></i> {{ expense.name }}
+                <li class="nav-item" v-for="group in form.expenses" :key="`nav-item-${group.expense_id}`">
+                    <a :class="['nav-link', {active: group.expense.code == 'MNL'}]" :id="`nav-${group.expense.code}-tab`" :title="group.expense.name"
+                        data-bs-toggle="tab" :href="`#nav-${group.expense.code}`" role="tab" :aria-controls="`nav-${group.expense.code}`" :aria-selected="group.expense.code == 'MNL'">
+                        <i :class="`me-1 align-bottom ${group.expense.icon}`"></i> {{ group.expense.name }}
                         <!-- <span class="badge bg-danger align-middle ms-1" v-if="form.items.length > 0">{{ form.items.length }}</span> -->
                     </a>
                 </li>
-                <li class="nav-item" v-if="form.expenses.length < 6 && !(['published','closed','cancelled'].includes(form.document_status))">
+                <li class="nav-item" v-if="!form.id && form.expenses.length < 6 && !(['published','closed','cancelled'].includes(form.document_status))">
                     <a class="nav-link" href="javascript:void(0);" @click="modalFormVisible = true">
                         <i class="me-1 align-bottom ri-upload-fill"></i>
                         Upload
@@ -19,10 +19,11 @@
             </ul>
         </nav>
         <div class="tab-content">
-            <div :class="['tab-pane fade', {show: expense.code == 'MNL', active: expense.code == 'MNL'}]" :id="`nav-${expense.code}`"
-                role="tabpanel" :aria-labelledby="`nav-${expense.code}-tab`" v-for="expense in references.expenses" :key="`tab-item-${expense.id}`">
-                <LineManual :formData="form" :references="references" v-if="expense.code == 'MNL'"/>
-                <LineUpload :formData="form" :references="references" :expense="expense" v-if="expense.code != 'MNL'"/>
+            <div v-for="group in form.expenses" :key="`tab-item-${group.expense.id}`"
+                :class="['tab-pane fade', {show: group.expense.code == 'MNL', active: group.expense.code == 'MNL'}]" :id="`nav-${group.expense.code}`"
+                role="tabpanel" :aria-labelledby="`nav-${group.expense.code}-tab`" >
+                <LineManual :formData="form" :references="references" v-if="group.expense.code == 'MNL'"/>
+                <LineUpload :formData="form" :references="references" :expense="group" v-if="group.expense.code != 'MNL'"/>
             </div>
         </div>
     </div>
@@ -42,8 +43,6 @@ import UploadModal from './Line/UploadModal.vue'
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
-
-const expenses = ref([])
 
 const form = computed({
     get() {

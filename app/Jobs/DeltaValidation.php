@@ -84,9 +84,11 @@ class DeltaValidation implements ShouldQueue
                         ]);
 
                         if ($item->expense->mandatory_scan) {
-                            $deltaBatch = Delta::awbBatch([$item->code]);
-                            $tracking = array_column($deltaBatch['data']['tracking'], 'tracking_id');
-                            $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                            // $deltaBatch = Delta::awbBatch([$item->code]);
+                            // $tracking = array_column($deltaBatch['data']['tracking'], 'tracking_id');
+                            // $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                            $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $item->code), $item->expense->with_scan, $item->expense->or_scan);
+                            $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
                             if ($referenceMandatoryScan) {
                                 $item->update([
                                     'validation_scan_compliance' => $referenceMandatoryScan,
@@ -203,7 +205,6 @@ class DeltaValidation implements ShouldQueue
 
     public function validationBill($id, $expense, $code)
     {
-        // return false;
         return InvoiceItem::where('id', '!=', $id)
             ->where('expense_id', $expense)
             ->where('code', $code)

@@ -53,17 +53,11 @@
             </div>
         </div>
         <div class="row g-4 mb-2">
-            <div class="col-lg-2">
+            <div class="col-lg-4">
                 <label for="vendor" class="form-label required">Vendor</label>
                 <Multiselect id="vendor" v-model="form.vendor_id" :class="{'is-invalid' : form.errors.vendor_id }" :searchable="true"
                     aria-describedby="input-vendor-feedback" :options="references.vendors" placeholder="Select data" @change="setVendor"></Multiselect>
                 <b-form-invalid-feedback id="input-vendor-feedback" v-html="form.errors.vendor_id"/>
-            </div>
-            <div class="col-lg-2">
-                <label for="vendor_site" class="form-label required">Vendor Site</label>
-                <Multiselect id="vendor_site" v-model="form.vendor_site_id" :class="{'is-invalid' : form.errors.vendor_site_id }"
-                    aria-describedby="input-vendor_site-feedback" :options="vendor_sites" placeholder="Select data" ref="vendor_site_id"></Multiselect>
-                <b-form-invalid-feedback id="input-vendor_site-feedback" v-html="form.errors.vendor_site_id"/>
             </div>
             <div class="col-lg-4">
                 <label for="invoice_date" class="form-label required">Invoice Date</label>
@@ -80,10 +74,10 @@
         </div>
         <div class="row g-4 mb-2">
             <div class="col-lg-4">
-                <label for="term" class="form-label required">Payment Term</label>
-                <Multiselect id="term" v-model="form.term_id" :class="{'is-invalid' : form.errors.term_id }" @change="setTerm"
-                    aria-describedby="input-term-feedback" :options="references.terms" placeholder="Select data"></Multiselect>
-                <b-form-invalid-feedback id="input-term-feedback" v-html="form.errors.term_id"/>
+                <label for="vendor_site" class="form-label required">Vendor Site</label>
+                <Multiselect id="vendor_site" v-model="form.vendor_site_id" :class="{'is-invalid' : form.errors.vendor_site_id }"
+                    aria-describedby="input-vendor_site-feedback" :options="vendor_sites" placeholder="Select data" ref="vendor_site_id"></Multiselect>
+                <b-form-invalid-feedback id="input-vendor_site-feedback" v-html="form.errors.vendor_site_id"/>
             </div>
             <div class="col-lg-4">
                 <label for="invoice_receipt_date" class="form-label required">Receipt Date</label>
@@ -99,11 +93,17 @@
             </div>
         </div>
         <div class="row g-4 mb-2">
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <label for="supplier_tax_invoice" class="form-label">Supplier Tax Invoice</label>
                 <b-form-input id="supplier_tax_invoice" v-model="form.supplier_tax_invoice" :class="{'is-invalid' : form.errors.supplier_tax_invoice }"
                     aria-describedby="input-supplier_tax_invoice-feedback"/>
                 <b-form-invalid-feedback id="input-supplier_tax_invoice-feedback" v-html="form.errors.supplier_tax_invoice"/>
+            </div>
+            <div class="col-lg-2">
+                <label for="term" class="form-label required">Payment Term</label>
+                <Multiselect id="term" v-model="form.term_id" :class="{'is-invalid' : form.errors.term_id }" @change="setTerm"
+                    aria-describedby="input-term-feedback" :options="references.terms" placeholder="Select data"></Multiselect>
+                <b-form-invalid-feedback id="input-term-feedback" v-html="form.errors.term_id"/>
             </div>
             <div class="col-lg-4">
                 <label for="supplier_tax_invoice_date" class="form-label">Supplier Tax Invoice Date</label>
