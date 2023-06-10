@@ -40,8 +40,10 @@ return new class extends Migration
 
             $table->string('type')->nullable();
 
-            $table->decimal('total_weight', 20, 4)->nullable()->default(0);
             $table->decimal('total_amount', 20, 4)->nullable()->default(0);
+            $table->decimal('total_amount_after_tax', 20, 4)->nullable()->default(0);
+
+            $table->decimal('total_weight', 20, 4)->nullable()->default(0);
             $table->decimal('total_weight_smu', 20, 4)->nullable()->default(0);
             $table->decimal('total_weight_all_awb', 20, 4)->nullable()->default(0);
             $table->decimal('total_weight_dim_all_awb', 20, 4)->nullable()->default(0);

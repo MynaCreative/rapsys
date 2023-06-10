@@ -34,8 +34,10 @@ class InvoiceExpense extends Model
 
         'type',
 
-        'total_weight',
         'total_amount',
+        'total_amount_after_tax',
+
+        'total_weight',
         'total_weight_smu',
         'total_weight_all_awb',
         'total_weight_dim_all_awb',
@@ -68,8 +70,10 @@ class InvoiceExpense extends Model
      * @var array
      */
     protected $casts = [
-        'total_weight'                              => 'float',
         'total_amount'                              => 'float',
+        'total_amount_after_tax'                    => 'float',
+
+        'total_weight'                              => 'float',
         'total_weight_smu'                          => 'float',
         'total_weight_all_awb'                      => 'float',
         'total_weight_dim_all_awb'                  => 'float',

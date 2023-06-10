@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 
@@ -306,10 +307,6 @@ class Invoice
                  */
                 self::saveDocumentApproval($model, $request);
 
-                // $model->items()->where('validation_score', '!=', 5)->update([
-                //     'is_validated' => false
-                // ]);
-
                 InvoiceValidation::dispatch($model);
 
                 return $model;
@@ -399,9 +396,6 @@ class Invoice
                  */
                 self::saveDocumentApproval($this->model, $request);
 
-                // $this->model->items()->where('validation_score', '!=', 5)->update([
-                //     'is_validated' => false
-                // ]);
                 InvoiceValidation::dispatch($this->model);
 
                 return $this->model;
@@ -418,14 +412,50 @@ class Invoice
      */
     public function deltaValidate(): Model
     {
-        $sbuItems = $this->model->sbuItems->where('is_validated', false)->where('validation_score', '!=', 5);
-        foreach ($sbuItems as $item) {
-            DeltaValidation::dispatch($item);
+        if ($this->model->smuItems) {
+            $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
+            foreach ($smuItems as $item) {
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                DeltaValidation::dispatch($item, 'SMU');
+            }
         }
 
-        $awbItems = $this->model->awbItems->where('is_validated', false)->where('validation_score', '!=', 5);
-        foreach ($awbItems as $item) {
-            DeltaValidation::dispatch($item);
+        if ($this->model->awbItems) {
+            $awbItems = $this->model->awbItems->where('validation_score', '!=', 5);
+            foreach ($awbItems as $item) {
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                DeltaValidation::dispatch($item, 'AWB');
+            }
         }
 
         return $this->model;

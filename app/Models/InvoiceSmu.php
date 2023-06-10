@@ -35,15 +35,16 @@ class InvoiceSmu extends Model
         'route',
         'date_item',
 
-        'weight',
         'amount',
+        'vat_tax',
+        'withholding_tax',
+        'amount_after_tax',
+
+        'weight',
+        'total_weight_smu',
         'total_weight_awb',
         'total_weight_dim',
         'total_weight_actual',
-
-        'withholding_tax',
-        'vat_tax',
-        'total',
 
         'description',
 
@@ -67,15 +68,16 @@ class InvoiceSmu extends Model
      * @var array
      */
     protected $casts = [
-        'weight'                        => 'float',
         'amount'                        => 'float',
+        'vat_tax'                       => 'float',
+        'withholding_tax'               => 'float',
+        'amount_after_tax'              => 'float',
+
+        'weight'                        => 'float',
+        'total_weight_smu'              => 'float',
         'total_weight_awb'              => 'float',
         'total_weight_dim'              => 'float',
         'total_weight_actual'           => 'float',
-
-        'withholding_tax'               => 'float',
-        'vat_tax'                       => 'float',
-        'total'                         => 'float',
 
         'validation_reference'          => 'boolean',
         'validation_weight'             => 'boolean',
@@ -131,6 +133,14 @@ class InvoiceSmu extends Model
     public function withholding()
     {
         return $this->belongsTo(Withholding::class);
+    }
+
+    /**
+     * Get the awb items for the invoice smu.
+     */
+    public function awbItems()
+    {
+        return $this->hasMany(InvoiceAwb::class, 'invoice_smu_id')->latest()->orderBy('validation_score');
     }
 
     /**

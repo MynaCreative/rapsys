@@ -46,8 +46,10 @@ return new class extends Migration
             $table->string('route')->nullable();
             $table->date('date_item')->nullable();
 
-            $table->decimal('weight', 20, 4)->nullable()->default(0);
             $table->decimal('amount', 20, 4)->nullable()->default(0);
+            $table->decimal('amount_after_tax', 20, 4)->nullable()->default(0);
+
+            $table->decimal('weight', 20, 4)->nullable()->default(0);
             $table->decimal('delta_weight', 20, 4)->nullable()->default(0);
             $table->decimal('delta_amount', 20, 4)->nullable()->default(0);
 

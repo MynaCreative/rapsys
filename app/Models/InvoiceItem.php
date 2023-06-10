@@ -40,8 +40,10 @@ class InvoiceItem extends Model
         'route',
         'date_item',
 
-        'weight',
         'amount',
+        'amount_after_tax',
+
+        'weight',
         'delta_weight',
         'delta_amount',
 
@@ -61,8 +63,10 @@ class InvoiceItem extends Model
      * @var array
      */
     protected $casts = [
-        'weight'                        => 'float',
         'amount'                        => 'float',
+        'amount_after_tax'              => 'float',
+
+        'weight'                        => 'float',
         'delta_weight'                  => 'float',
         'delta_amount'                  => 'float',
 

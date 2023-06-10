@@ -40,17 +40,17 @@ class InvoiceAwb extends Model
         'route',
         'date_item',
 
-        'weight',
         'amount',
+        'vat_tax',
+        'withholding_tax',
+        'amount_after_tax',
+
+        'weight',
         'delta_weight',
         'delta_weight_dim',
         'delta_weight_actual',
         'delta_amount',
         'delta_percentage',
-
-        'withholding_tax',
-        'vat_tax',
-        'total',
 
         'description',
 
@@ -74,17 +74,17 @@ class InvoiceAwb extends Model
      * @var array
      */
     protected $casts = [
-        'weight'                        => 'float',
         'amount'                        => 'float',
+        'vat_tax'                       => 'float',
+        'withholding_tax'               => 'float',
+        'amount_after_tax'              => 'float',
+
+        'weight'                        => 'float',
         'delta_weight'                  => 'float',
         'delta_weight_dim'              => 'float',
         'delta_weight_actual'           => 'float',
         'delta_amount'                  => 'float',
         'delta_percentage'              => 'float',
-
-        'withholding_tax'               => 'float',
-        'vat_tax'                       => 'float',
-        'total'                         => 'float',
 
         'validation_reference'          => 'boolean',
         'validation_weight'             => 'boolean',

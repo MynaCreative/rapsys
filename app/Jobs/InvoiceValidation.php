@@ -54,16 +54,16 @@ class InvoiceValidation implements ShouldQueue
     {
         $this->invoice->update([
             'total_item' => count($this->invoice->items),
-            'total_amount' => $this->invoice->items->sum('amount'),
-            'total_amount_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', 5)->get()->sum(function ($item) {
-                return $item->amount;
-            }),
-            'total_amount_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum(function ($item) {
-                return $item->amount;
-            }),
-            'total_amount_after_tax' => $this->invoice->items->sum('total'),
-            'total_amount_after_tax_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', 5)->get()->sum('total'),
-            'total_amount_after_tax_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum('total')
+            // 'total_amount' => $this->invoice->items->sum('amount'),
+            // 'total_amount_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', 5)->get()->sum(function ($item) {
+            //     return $item->amount;
+            // }),
+            // 'total_amount_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum(function ($item) {
+            //     return $item->amount;
+            // }),
+            // 'total_amount_after_tax' => $this->invoice->items->sum('total'),
+            // 'total_amount_after_tax_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', 5)->get()->sum('total'),
+            // 'total_amount_after_tax_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum('total')
         ]);
 
         if ($this->invoice->document_status == 'published') {
