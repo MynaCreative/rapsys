@@ -14,6 +14,9 @@ class InvoiceExpense extends Model
 {
     use HasFactory, LogsActivity, Signature;
 
+    const TYPE_SMU = 1;
+    const TYPE_AWB = 2;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -95,6 +98,14 @@ class InvoiceExpense extends Model
         'total_validation_ops_plan'                 => 'integer',
         'total_validation_bill'                     => 'integer',
     ];
+
+    protected $appends = ['excel_file'];
+
+    public function getExcelFileAttribute()
+    {
+
+        return null;
+    }
 
     /**
      * Get the invoice that owns the invoice item.

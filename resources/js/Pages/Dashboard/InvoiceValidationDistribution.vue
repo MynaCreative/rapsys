@@ -93,7 +93,7 @@
                                     </Link>
                                 </div>
                                 <div class="col">
-                                    <Link :href="route('transaction.report.index')" class="btn btn-secondary btn-label waves-effect waves-light w-100 mb-2">
+                                    <Link :href="route('transaction.report.invoice-header')" class="btn btn-secondary btn-label waves-effect waves-light w-100 mb-2">
                                         <div class="d-flex">
                                             <div class="flex-shrink-0">
                                                 <i class="ri-newspaper-line label-icon align-middle fs-16 me-2"></i>

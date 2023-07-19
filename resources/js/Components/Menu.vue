@@ -15,7 +15,26 @@
                 <span data-key="t-pages">Transaction</span>
             </li>
             <MenuItem route-name="transaction.invoices.index" name="Invoice" icon="ri-newspaper-line" :permission="$page.props.auth.permissions.includes('invoice')"/>
-            <MenuItem route-name="transaction.report.index" name="Report" icon="ri-file-list-3-line" :permission="$page.props.auth.permissions.includes('report')"/>
+            <li class="nav-item" v-if="hasAnyPermission([
+                'report',
+            ])">
+                <a :class="['nav-link menu-link', {active: route().current().startsWith('transaction.report')}]"
+                :aria-expanded="route().current().startsWith('transaction.report')"
+                href="#setting-administrator" data-bs-toggle="collapse" role="button" aria-controls="setting-administrator">
+                    <i class="ri-file-list-3-line"></i>
+                    <span data-key="t-authentication">Report</span>
+                </a>
+                <div :class="['collapse menu-dropdown', {show: route().current().startsWith('transaction.report')}]" id="setting-administrator">
+                    <ul class="nav nav-sm flex-column">
+                        <MenuItem route-name="transaction.report.invoice-header" name="Invoice Header" :permission="$page.props.auth.permissions.includes('report')"/>
+                        <MenuItem route-name="transaction.report.invoice-line-manual" name="Invoice Line Manual" :permission="$page.props.auth.permissions.includes('report')"/>
+                        <MenuItem route-name="transaction.report.invoice-line-smu" name="Invoice Line SMU" :permission="$page.props.auth.permissions.includes('report')"/>
+                        <MenuItem route-name="transaction.report.invoice-line-awb" name="Invoice Line AWB" :permission="$page.props.auth.permissions.includes('report')"/>
+                        <MenuItem route-name="transaction.report.oracle-header" name="Oracle Header" :permission="$page.props.auth.permissions.includes('report')"/>
+                        <MenuItem route-name="transaction.report.oracle-line" name="Oracle Line" :permission="$page.props.auth.permissions.includes('report')"/>
+                    </ul>
+                </div>
+            </li>
             <li class="menu-title" v-if="hasAnyPermission([
                 'expense',
                 'area',

@@ -20,8 +20,9 @@ class TaxSeeder extends Seeder
         $items = Oracle::fetchQuery("
             SELECT TAX_RATE_ID, TAX, DESCRIPTION, PERCENTAGE_RATE
             FROM APPS.ZX_RATES_VL
+            WHERE RATE_TYPE_CODE = 'PERCENTAGE' AND ACTIVE_FLAG = 'Y'
         ");
-        foreach($items as $item){
+        foreach ($items as $item) {
             Model::updateOrCreate(
                 [
                     'code' => $item['TAX_RATE_ID']

@@ -7,45 +7,45 @@
                         <th>Item</th>
                         <th>Validation</th>
                         <th>Reason</th>
-                        <th class="text-end">Count of AWB/SMU</th>
+                        <th class="text-end">Count of Item</th>
                         <th class="text-end">Count of Weight (kg)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr :class="[{'table-danger':expense.total_validation_reference > 0}]">
                         <td>{{ expense.expense.name }}</td>
-                        <td>Validation SMU/AWB</td>
+                        <td>Validation Code</td>
                         <td>Data not found</td>
                         <td class="text-end">{{ expense.total_validation_reference.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
-                        <td class="text-end">{{ expense.total_validation_reference.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                        <td class="text-end">{{ expense.total_weight_validation_reference.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                     </tr>
-                    <tr>
+                    <tr :class="[{'table-danger':expense.total_validation_bill > 0}]">
                         <td>{{ expense.expense.name }}</td>
                         <td>Validation Bill</td>
                         <td>Already Billed</td>
                         <td class="text-end">{{ expense.total_validation_bill.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
-                        <td class="text-end">{{ expense.total_validation_bill.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                        <td class="text-end">{{ expense.total_weight_validation_bill.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                     </tr>
-                    <tr>
+                    <tr :class="[{'table-danger':expense.total_validation_weight > 0}]">
                         <td>{{ expense.expense.name }}</td>
-                        <td>Validation Weight SMU/AWB</td>
+                        <td>Validation Weight</td>
                         <td>Weight Not Match</td>
                         <td class="text-end">{{ expense.total_validation_weight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
-                        <td class="text-end">{{ expense.total_validation_weight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                        <td class="text-end">{{ expense.total_weight_validation_weight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                     </tr>
-                    <tr>
+                    <tr :class="[{'table-danger':expense.total_validation_scan_compliance > 0}]">
                         <td>{{ expense.expense.name }}</td>
                         <td>Validation Scan Compliance</td>
                         <td>Scan Not Found</td>
                         <td class="text-end">{{ expense.total_validation_scan_compliance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
-                        <td class="text-end">{{ expense.total_validation_scan_compliance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                        <td class="text-end">{{ expense.total_weight_validation_scan_compliance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                     </tr>
-                    <tr>
+                    <tr :class="[{'table-danger':expense.total_validation_ops_plan > 0}]">
                         <td>{{ expense.expense.name }}</td>
                         <td>Validation Ops Plan</td>
                         <td>Warning RPX Area</td>
                         <td class="text-end">{{ expense.total_validation_ops_plan.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
-                        <td class="text-end">{{ expense.total_validation_ops_plan.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                        <td class="text-end">{{ expense.total_weight_validation_ops_plan.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -11,6 +11,7 @@ use Spatie\Activitylog\LogOptions;
 
 use App\Traits\Signature;
 use App\Traits\Scope as GeneralScope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Invoice extends Model
 {
@@ -64,7 +65,6 @@ class Invoice extends Model
         'total_amount_after_tax',
         'total_amount_after_tax_valid',
         'total_amount_after_tax_invalid',
-        'expenses',
 
         'document_status',
         'approval_status',
@@ -92,12 +92,93 @@ class Invoice extends Model
         'total_amount_after_tax'            => 'float',
         'total_amount_after_tax_valid'      => 'float',
         'total_amount_after_tax_invalid'    => 'float',
-        'expenses'                          => 'array',
 
         'document_status_time'              => 'datetime',
         'approval_status_time'              => 'datetime',
         'published_at'                      => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'dists'
+    ];
+
+    /**
+     * Get the user's type text.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function dists(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                $items = [];
+                $taxes = [];
+                if ($this->awbItems || $this->items) {
+                    // $dists = collect([$this->awbItems])->reduce(function ($arr, $item) {
+                    //     if (empty($item) || $item->isEmpty())
+                    //         return $arr;
+                    //     return $arr->merge($item);
+                    // }, $this->items);
+                    $dists = $this->awbItems;
+                    $distGroups = $dists->groupBy('dist');
+                    foreach ($distGroups as $group) {
+                        $item = $group->first();
+                        $awb = $item->code;
+                        $description = implode('|', array_filter([
+                            $item->expense->code,
+                            $group->count() . $item->type,
+                            $awb,
+                            $item->area->code
+                        ]));
+                        $amount = $group->sum('amount');
+                        $withholding = ($item->withholding->deduction ?? 0) * $amount;
+                        $items[] = [
+                            'description' => $description,
+                            'line_type_code' => 'ITEM',
+                            'ppn_code' => null,
+                            'tax_rate_id' => null,
+                            'awt_group_id' => $item->withholding->code,
+                            'awt_group_name' => $item->withholding->name,
+                            'amount' => $amount,
+                            'amount_withholding' => $withholding,
+                            'amount_after_wht' => $amount - $withholding,
+                            'dist_code_concat' => $item->dist,
+                        ];
+                        if ($item->tax) {
+                            $taxes[] = [
+                                'description' => $description,
+                                'line_type_code' => 'TAX',
+                                'ppn_code' => $item->tax->name,
+                                'tax_rate_id' => $item->tax->code,
+                                'amount' => $item->tax->deduction * $amount,
+                            ];
+                        }
+                    };
+                }
+                if (count($taxes) > 0) {
+                    $taxes = collect($taxes)->groupBy('ppn_code')->map(function ($tax) {
+                        $item = $tax->first();
+                        return [
+                            'description' => $item['ppn_code'],
+                            'line_type_code' => 'TAX',
+                            'ppn_code' => $item['ppn_code'],
+                            'tax_rate_id' => $item['tax_rate_id'],
+                            'amount' => $tax->sum('amount'),
+                        ];
+                    })->values()->all();
+                }
+                return [
+                    'items' => $items,
+                    'taxes' => $taxes,
+                ];
+            },
+        );
+    }
 
     /**
      *

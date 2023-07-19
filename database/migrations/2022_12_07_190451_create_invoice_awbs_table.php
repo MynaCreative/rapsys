@@ -44,8 +44,10 @@ return new class extends Migration
             $table->foreignIdFor(Area::class)->nullable()->constrained();
 
             $table->string('dist')->nullable();
+            $table->string('smu')->nullable();
             $table->string('code')->nullable();
             $table->string('route')->nullable();
+            $table->json('scan_compliance')->nullable();
             $table->date('date_item')->nullable();
 
             $table->decimal('amount', 20, 4)->nullable()->default(0);

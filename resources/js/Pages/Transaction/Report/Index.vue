@@ -1,8 +1,8 @@
 <template>
     <Layout>
-        <Head :title="page.title" />
+        <Head title="Report - Invoice Header" />
         <template #header>
-            <PageHeader :title="page.title" :breadcrumbs="breadcrumbs" />
+            <PageHeader title="Report - Invoice Header" :breadcrumbs="breadcrumbs" />
         </template>
         <div class="row">
             <div class="col-xxl-3 col-sm-6">
@@ -16,11 +16,11 @@
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
-                                </p>                                
+                                </p>
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -44,7 +44,7 @@
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
@@ -72,7 +72,7 @@
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
@@ -100,7 +100,7 @@
                                 </h2>
                                 <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                        <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
@@ -123,11 +123,11 @@
                 <div class="row g-4">
                     <div class="col-sm-auto">
                         <b-button-group>
-                            <b-button variant="primary" class="btn-label waves-effect waves-light">
+                            <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFilterVisible = true">
                                 <i class="ri-filter-3-line label-icon align-middle fs-16 me-2"></i>
                                 Filter
                             </b-button>
-                            <b-button variant="success" class="btn-label waves-effect waves-light right">
+                            <b-button variant="success" class="btn-label waves-effect waves-light right" @click="modalExportVisible = true">
                                 <i class="ri-upload-2-line label-icon align-middle fs-16"></i>
                                 Export
                             </b-button>
@@ -136,7 +136,6 @@
                     <div class="col-sm">
                         <div class="d-flex justify-content-sm-end">
                             <b-button-group>
-                                <Reload :page="page"/>
                                 <PerPage v-if="collection.links.length > 3"/>
                             </b-button-group>
                         </div>
@@ -144,7 +143,7 @@
                 </div>
             </div>
             <div class="card-body p-0 border-2 border-top border-bottom">
-                <form @submit.prevent="form.get(route(`${page.module}.${page.name}.index`))" class="search-box">
+                <form @submit.prevent="form.get(route(`${page.module}.${page.name}.invoice-header`))" class="search-box">
                     <input type="search" class="form-control search border-0 py-3" :placeholder="`Search for ${page.title} ...`" v-model="form.keyword">
                     <i class="ri-search-line search-icon"></i>
                 </form>
@@ -216,7 +215,7 @@
                                 </td>
                                 <td class="text-center date">{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
                                 <td class="text-center date"><DataTimestamp :data="item.created_at"/></td>
-                                
+
                                 <td class="text-center">
                                     <b-badge variant="light" class="text-capitalize" v-if="item.approval_status == 'none'">{{ item.approval_status }}</b-badge>
                                     <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.approval_status == 'pending'">{{ item.approval_status }}</b-badge>
@@ -238,6 +237,14 @@
                 <Pagination :data="collection"/>
             </div>
         </div>
+        <ModalFilter
+            :show="modalFilterVisible"
+            @update:show="modalFilterVisible = $event"
+        />
+        <ModalExport
+            :show="modalExportVisible"
+            @update:show="modalExportVisible = $event"
+        />
     </Layout>
 </template>
 <script setup>
@@ -250,10 +257,12 @@ import PageHeader from '@/Components/PageHeader.vue'
 import Pagination from '@/Components/Pagination.vue'
 import DataUserName from '@/Components/Data/UserName.vue'
 import DataTimestamp from '@/Components/Data/Timestamp.vue'
-import DataActive from '@/Components/Data/Active.vue'
 import PerPage from '@/Components/PerPage.vue'
 import Reload from '@/Components/Reload.vue'
 import Sort from '@/Components/Sort.vue'
+
+import ModalFilter from './ModalInvoiceHeader/Filter.vue'
+import ModalExport from './ModalInvoiceHeader/Export.vue'
 
 import entityData from './entity'
 
@@ -262,7 +271,8 @@ const page = entityData().page
 const breadcrumbs = [
     { text: 'Dashboard', to: route('dashboard') },
     { text: 'Transaction' },
-    { text: page.title, active: true },
+    { text: page.title },
+    { text: 'Invoice Header', active: true },
 ]
 
 const props = defineProps(['collection','filters','statistic'])
@@ -270,4 +280,7 @@ const props = defineProps(['collection','filters','statistic'])
 const form = useForm({
     keyword: usePage().props.ziggy.query.keyword ?? null,
 })
+
+const modalFilterVisible = ref(false)
+const modalExportVisible = ref(false)
 </script>

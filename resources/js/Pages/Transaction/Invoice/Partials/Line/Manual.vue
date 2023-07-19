@@ -7,12 +7,13 @@
                         <i class="ri-add-line text-primary" @click="modalFormVisible = true" title="Create"></i>
                     </th>
                     <th class="text-center" width=40px>#</th>
+                    <th>Dist</th>
                     <th>Item Number</th>
                     <th class="text-end">Amount</th>
                     <th class="text-end">Weight</th>
                     <th>Cost Center</th>
                     <th>Expense COA</th>
-                    <th>Withholding</th>
+                    <th>WHT Code</th>
                     <th>Tax</th>
                     <th>Area</th>
                     <th>Product / Project</th>

@@ -44,8 +44,6 @@ class InvoiceItem extends Model
         'amount_after_tax',
 
         'weight',
-        'delta_weight',
-        'delta_amount',
 
         'withholding_tax',
         'vat_tax',
@@ -67,13 +65,48 @@ class InvoiceItem extends Model
         'amount_after_tax'              => 'float',
 
         'weight'                        => 'float',
-        'delta_weight'                  => 'float',
-        'delta_amount'                  => 'float',
 
         'withholding_tax'               => 'float',
         'vat_tax'                       => 'float',
         'total'                         => 'float',
     ];
+
+    /**
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setUpdatedAtAttribute($value)
+    {
+        $this->attributes['updated_at'] = $value;
+
+        $amount = $this->amount;
+        $tax = 0;
+        $withholding = 0;
+        $amountAfterTax = $amount;
+        if ($this->tax && $this->withholding) {
+            $tax = ($amount * $this->tax->deduction);
+            $withholding = ($amount * $this->withholding->deduction);
+
+            $amountAfterTax = $amount + $tax - $withholding;
+        }
+        $this->attributes['vat_tax'] = $tax;
+        $this->attributes['withholding_tax'] = $withholding;
+        $this->attributes['total'] = $amountAfterTax;
+        $this->attributes['amount_after_tax'] = $amountAfterTax;
+
+        $this->attributes['dist'] = implode('-', [
+            $this->invoice->sbu->coa ?? null,
+            $this->area->coa ?? null,
+            $this->costCenter->cost_center ?? null,
+            $this->expense_coa ?? null,
+            $this->salesChannel->coa ?? null,
+            $this->product->coa ?? null,
+            $this->invoice->interco->coa ?? null,
+            '0000',
+            '0000',
+        ]);
+    }
 
     /**
      * Get the invoice that owns the invoice item.

@@ -36,9 +36,11 @@ class InvoiceAwb extends Model
         'withholding_id',
 
         'dist',
+        'smu',
         'code',
         'route',
         'date_item',
+        'scan_compliance',
 
         'amount',
         'vat_tax',
@@ -92,6 +94,7 @@ class InvoiceAwb extends Model
         'validation_ops_plan'           => 'boolean',
         'validation_bill'               => 'boolean',
         'is_validated'                  => 'boolean',
+        'scan_compliance'               => 'json',
     ];
 
     /**

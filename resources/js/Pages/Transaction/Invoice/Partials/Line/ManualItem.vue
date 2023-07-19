@@ -4,6 +4,7 @@
             <i class="ri-close-line text-danger" title="Remove" @click="remove"></i>
         </td>
         <td  @click="modalFormVisible = true" class="cursor-pointer text-center">{{ index+1 }}</td>
+        <td  @click="modalFormVisible = true" :class="['cursor-pointer']">{{ item.dist }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer', {'bg-soft-danger': form.errors[`items.${index}.code`] }]">{{ item.code }}</td>
         <td  @click="modalFormVisible = true" :class="['cursor-pointer text-end', {'bg-soft-danger': form.errors[`items.${index}.amount`] }]">
             {{ item.amount ? item.amount.toLocaleString() : 0 }}

@@ -39,10 +39,20 @@ class Validator
             'invoice_receipt_date'      => ['required', 'date'],
             'note'                      => ['required'],
 
-            'items'                     => ['required', 'array'],
-            'items.*.cost_center_id'    => ['required', 'exists:' . CostCenter::class . ',id'],
-            'items.*.withholding_id'    => ['required', 'exists:' . Withholding::class . ',id'],
-            'items.*.tax_id'            => ['required', 'exists:' . Tax::class . ',id'],
+            // 'items' => ['required_without_all:awbItems,smuItems', 'array'],
+            // 'items.*.cost_center_id'    => ['required', 'exists:' . CostCenter::class . ',id'],
+            // 'items.*.withholding_id'    => ['required', 'exists:' . Withholding::class . ',id'],
+            // 'items.*.tax_id'            => ['required', 'exists:' . Tax::class . ',id'],
+
+            // 'awbItems' => ['required_without_all:items,smuItems', 'array'],
+            // 'awbItems.*.cost_center_id' => ['required', 'exists:' . CostCenter::class . ',id'],
+            // 'awbItems.*.withholding_id' => ['required', 'exists:' . Withholding::class . ',id'],
+            // 'awbItems.*.tax_id'         => ['required', 'exists:' . Tax::class . ',id'],
+
+            // 'smuItems' => ['required_without_all:items,awbItems', 'array'],
+            // 'smuItems.*.cost_center_id' => ['required', 'exists:' . CostCenter::class . ',id'],
+            // 'smuItems.*.withholding_id' => ['required', 'exists:' . Withholding::class . ',id'],
+            // 'smuItems.*.tax_id'         => ['required', 'exists:' . Tax::class . ',id'],
         ];
     }
 

@@ -19,6 +19,8 @@ use App\Mail\Invoice as ModelMail;
 use App\Imports\DataImport;
 use App\Helpers\Relationship;
 use App\Exports\Invoice\Sample as SampleTemplate;
+use App\Exports\Invoice\Revision as RevisionTemplate;
+use App\Jobs\ExpenseValidation;
 use App\Jobs\InvoiceValidation;
 use App\Models\Approval;
 use App\Models\Area;
@@ -27,6 +29,9 @@ use App\Models\Currency;
 use App\Models\Department;
 use App\Models\Expense;
 use App\Models\Interco;
+use App\Models\InvoiceAwb;
+use App\Models\InvoiceExpense;
+use App\Models\InvoiceSmu;
 use App\Models\InvoiceType;
 use App\Models\Oracle\Invoice as OracleInvoice;
 use App\Models\Oracle\InvoiceItem;
@@ -201,41 +206,70 @@ class Invoice
                  */
                 self::saveDocumentItem($model, $items ?? []);
 
-                if ($request->id == null && $request->expenses) {
-                    foreach ($request->expenses as $upload) {
-                        $expense = $model->expenses()->create([
-                            'expense_id' => $upload['expense_id'],
-                            'cost_center_id' => $upload['cost_center_id'] ?? null,
-                            'withholding_id' => $upload['withholding_id']  ?? null,
-                            'tax_id' => $upload['tax_id']  ?? null,
-                            'type' => $upload['type']  ?? null
-                        ]);
-                        if (isset($upload['excel_file'])) {
-                            $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
-                                ->first()
-                                ->map(function ($item, $index) use ($upload, $uuid, $expense) {
-                                    $date_item = null;
-                                    if (isset($item['date_item'])) {
-                                        $date_item = Carbon::instance(Date::excelToDateTimeObject($item['date_item']));
-                                    }
-                                    return [
-                                        ...$item,
-                                        'uuid'                  => $uuid,
-                                        'sequence_number'       => $index + 1,
-                                        'date_item'             => $date_item,
-                                        'invoice_expense_id'    => $expense->id,
-                                        'expense_id'            => $upload['expense_id'],
-                                        'cost_center_id'        => $upload['cost_center_id'] ?? null,
-                                        'withholding_id'        => $upload['withholding_id']  ?? null,
-                                        'tax_id'                => $upload['tax_id']  ?? null,
-                                        'type'                  => $upload['type']  ?? null
-                                    ];
-                                })
-                                ->toArray();
-                            if ($upload['type'] == Expense::TYPE_SMU) {
-                                $model->smuItems()->createMany($rows);
-                            } else {
-                                $model->awbItems()->createMany($rows);
+                if ($request->expenses) {
+                    if ($request->id == null) {
+                        foreach ($request->expenses as $upload) {
+                            $expense = $model->expenses()->create([
+                                'expense_id' => $upload['expense_id'],
+                                'cost_center_id' => $upload['cost_center_id'] ?? null,
+                                'withholding_id' => $upload['withholding_id']  ?? null,
+                                'tax_id' => $upload['tax_id']  ?? null,
+                                'type' => $upload['type']  ?? null
+                            ]);
+                            if (isset($upload['excel_file'])) {
+                                $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
+                                    ->first()
+                                    ->map(function ($item, $index) use ($upload, $uuid, $expense) {
+                                        $date_item = null;
+                                        if (isset($item['date_item'])) {
+                                            $date_item = Carbon::instance(Date::excelToDateTimeObject($item['date_item']));
+                                        }
+                                        return [
+                                            ...$item,
+                                            'uuid'                  => $uuid,
+                                            'sequence_number'       => $index + 1,
+                                            'date_item'             => $date_item,
+                                            'invoice_expense_id'    => $expense->id,
+                                            'expense_id'            => $upload['expense_id'],
+                                            'cost_center_id'        => $upload['cost_center_id'] ?? null,
+                                            'withholding_id'        => $upload['withholding_id']  ?? null,
+                                            'tax_id'                => $upload['tax_id']  ?? null,
+                                            'type'                  => $upload['type']  ?? null
+                                        ];
+                                    })
+                                    ->toArray();
+                                if ($upload['type'] == Expense::TYPE_SMU) {
+                                    $model->smuItems()->createMany($rows);
+                                } else {
+                                    $model->awbItems()->createMany($rows);
+                                }
+                            }
+                        }
+                    } else {
+                        foreach ($request->expenses as $upload) {
+                            $expense = $model->expenses()->where('id', $upload['id'])->first();
+                            $expense->update([
+                                'cost_center_id' => $upload['cost_center_id'] ?? null,
+                                'withholding_id' => $upload['withholding_id']  ?? null,
+                                'tax_id' => $upload['tax_id']  ?? null,
+                            ]);
+                            if (isset($upload['excel_file'])) {
+                                $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
+                                    ->first()
+                                    ->map(function ($item) use ($upload) {
+                                        return [
+                                            ...$item,
+                                            'cost_center_id'    => $upload['cost_center_id'] ?? null,
+                                            'withholding_id'    => $upload['withholding_id']  ?? null,
+                                            'tax_id'            => $upload['tax_id']  ?? null,
+                                        ];
+                                    })
+                                    ->toArray();
+                                if ($upload['type'] == Expense::TYPE_SMU) {
+                                    self::saveSmuItem($model, $rows ?? []);
+                                } else {
+                                    self::saveAwbItem($model, $rows ?? []);
+                                }
                             }
                         }
                     }
@@ -251,9 +285,6 @@ class Invoice
                     self::saveDocumentAttachment($model, $request);
                 }
 
-                // $model->items()->where('validation_score', '!=', 5)->update([
-                //     'is_validated' => false
-                // ]);
                 InvoiceValidation::dispatch($model);
                 return $model;
             });
@@ -348,6 +379,27 @@ class Invoice
         $date = now()->format('d-m-Y H:i:s');
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
         return Excel::download(new SampleTemplate($expense), "{$name}-{$expense}-line-import-sample-{$date}.xlsx");
+    }
+
+    /**
+     * Revision to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public function revision($expense_id)
+    {
+        $date = now()->format('d-m-Y H:i:s');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        $expense = $this->model->expenses()->where('id', $expense_id)->first();
+        $items = [];
+        if ($expense->type == InvoiceExpense::TYPE_AWB) {
+            $items = $expense->awbItems()->where('validation_score', '!=', 5)->get();
+        }
+        if ($expense->type == InvoiceExpense::TYPE_SMU) {
+            $items = $expense->smuItems()->where('validation_score', '!=', 5)->get();
+        }
+        return Excel::download(new RevisionTemplate($items), "{$name}-{$expense->expense->code}-line-import-revision-{$date}.xlsx");
     }
 
     /**
@@ -455,6 +507,15 @@ class Invoice
                     'amount_after_tax' => $amountAfterTax
                 ]);
                 DeltaValidation::dispatch($item, 'AWB');
+            }
+        }
+
+        $expenses = InvoiceExpense::where('invoice_id', $this->model->id)->get();
+        if ($expenses) {
+            foreach ($expenses as $expense) {
+                if ($expense->expense_id != 1) {
+                    ExpenseValidation::dispatch($expense);
+                }
             }
         }
 
@@ -572,7 +633,10 @@ class Invoice
             'expenses' => Expense::select('id', 'icon', 'code', 'name', 'type')->get()->append('type_text'),
             'products' => Product::select('id', 'name')->get(),
             'areas' => Area::select('id', 'name')->get(),
-            'departments' => Department::select('id', 'name')->get(),
+            'departments' => Department::select('id', 'name')->whereIn('id', function ($query) {
+                $query->select('department_id')
+                    ->from('workflows');
+            })->get(),
             'taxes' => Tax::select('id', 'name')->get(),
             'withholdings' => Withholding::select('id', 'name')->get(),
             'sales_channels' => SalesChannel::select('id', 'name')->get(),
@@ -627,6 +691,34 @@ class Invoice
                 $model->items(),
                 $items
             );
+        }
+    }
+
+    /**
+     * Save awb items
+     */
+    public static function saveAwbItem(Model $model, $items)
+    {
+        if (!empty($items)) {
+            foreach ($items as $item) {
+                InvoiceAwb::find($item['id'])->update(
+                    $item
+                );
+            }
+        }
+    }
+
+    /**
+     * Save awb items
+     */
+    public static function saveSmuItem(Model $model, $items)
+    {
+        if (!empty($items)) {
+            foreach ($items as $item) {
+                InvoiceSmu::find($item['id'])->update(
+                    $item
+                );
+            }
         }
     }
 

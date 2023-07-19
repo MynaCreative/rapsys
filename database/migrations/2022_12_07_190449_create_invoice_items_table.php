@@ -50,8 +50,6 @@ return new class extends Migration
             $table->decimal('amount_after_tax', 20, 4)->nullable()->default(0);
 
             $table->decimal('weight', 20, 4)->nullable()->default(0);
-            $table->decimal('delta_weight', 20, 4)->nullable()->default(0);
-            $table->decimal('delta_amount', 20, 4)->nullable()->default(0);
 
             $table->decimal('withholding_tax', 20, 4)->nullable()->default(0);
             $table->decimal('vat_tax', 20, 4)->nullable()->default(0);

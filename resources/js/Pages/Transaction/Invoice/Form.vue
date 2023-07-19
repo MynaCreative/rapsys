@@ -8,7 +8,7 @@
             <div class="card-header align-items-center d-flex">
                 <div class="flex-grow-1 oveflow-hidden">
                     <h5 class="modal-title">
-                        Form {{ form.id ? 'Update' : 'Create' }} - {{ page.title }} {{ form.code ? ` [${form.code}]` : '' }}
+                        Form {{ form.id ? 'Update' : 'Create' }} - {{ page.title }} {{ form.invoice_number ? ` [${form.invoice_number}]` : '' }}
                         <template v-if="form.id">
                             <b-badge variant="light" class="text-capitalize" v-if="form.document_status == 'draft'">{{ form.document_status }}</b-badge>
                             <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="form.document_status == 'published'">{{ form.document_status }}</b-badge>
@@ -28,6 +28,11 @@
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="tab" href="#line" role="tab">
                                 Line
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#dist" role="tab">
+                                Dist
                             </a>
                         </li>
                     </ul>
@@ -51,6 +56,11 @@
                 <div class="tab-content text-muted">
                     <div class="tab-pane" id="line" role="tabpanel">
                         <PartialLine v-model:formData="form" :references="references"/>
+                    </div>
+                </div>
+                <div class="tab-content text-muted">
+                    <div class="tab-pane" id="dist" role="tabpanel">
+                        <PartialDist v-model:formData="form" :references="references"/>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">
@@ -104,6 +114,7 @@ import PageHeader from '@/Components/PageHeader.vue'
 
 import PartialHeader from './Partials/Header.vue'
 import PartialLine from './Partials/Line.vue'
+import PartialDist from './Partials/Dist.vue'
 import entityData from './entity'
 import service from './service'
 

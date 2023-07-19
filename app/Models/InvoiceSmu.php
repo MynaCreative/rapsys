@@ -34,6 +34,7 @@ class InvoiceSmu extends Model
         'code',
         'route',
         'date_item',
+        'scan_compliance',
 
         'amount',
         'vat_tax',
@@ -85,6 +86,7 @@ class InvoiceSmu extends Model
         'validation_ops_plan'           => 'boolean',
         'validation_bill'               => 'boolean',
         'is_validated'                  => 'boolean',
+        'scan_compliance'               => 'json',
     ];
 
     /**

@@ -32,15 +32,15 @@ class ReportController extends Controller
     }
 
     /**
-     * 
+     *
      * Display a listing of the resources.
      *
      * @param   IndexRequest  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
-    public function index(IndexRequest $request)
+    public function invoiceHeader(IndexRequest $request)
     {
         return Inertia::render("{$this->module}/{$this->page}/Index", [
             'collection' => $this->repository::report($request),
@@ -49,9 +49,94 @@ class ReportController extends Controller
     }
 
     /**
-     * 
+     *
+     * Display a listing of the resources.
+     *
+     * @param   IndexRequest  $request
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function invoiceLineManual(IndexRequest $request)
+    {
+        return Inertia::render("{$this->module}/{$this->page}/Index", [
+            'collection' => $this->repository::report($request),
+            'statistic' => $this->repository::statistic($request),
+        ]);
+    }
+
+    /**
+     *
+     * Display a listing of the resources.
+     *
+     * @param   IndexRequest  $request
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function invoiceLineAwb(IndexRequest $request)
+    {
+        return Inertia::render("{$this->module}/{$this->page}/Index", [
+            'collection' => $this->repository::report($request),
+            'statistic' => $this->repository::statistic($request),
+        ]);
+    }
+
+    /**
+     *
+     * Display a listing of the resources.
+     *
+     * @param   IndexRequest  $request
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function invoiceLineSmu(IndexRequest $request)
+    {
+        return Inertia::render("{$this->module}/{$this->page}/Index", [
+            'collection' => $this->repository::report($request),
+            'statistic' => $this->repository::statistic($request),
+        ]);
+    }
+
+    /**
+     *
+     * Display a listing of the resources.
+     *
+     * @param   IndexRequest  $request
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function oracleHeader(IndexRequest $request)
+    {
+        return Inertia::render("{$this->module}/{$this->page}/Index", [
+            'collection' => $this->repository::report($request),
+            'statistic' => $this->repository::statistic($request),
+        ]);
+    }
+
+    /**
+     *
+     * Display a listing of the resources.
+     *
+     * @param   IndexRequest  $request
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function oracleLine(IndexRequest $request)
+    {
+        return Inertia::render("{$this->module}/{$this->page}/Index", [
+            'collection' => $this->repository::report($request),
+            'statistic' => $this->repository::statistic($request),
+        ]);
+    }
+
+    /**
+     *
      * Convert module string to route format.
-     * 
+     *
      * @return  String
      */
     public function routeModule()
@@ -60,9 +145,9 @@ class ReportController extends Controller
     }
 
     /**
-     * 
+     *
      * Convert page string to route format.
-     * 
+     *
      * @return  String
      */
     public function routePage()
