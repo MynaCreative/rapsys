@@ -180,7 +180,7 @@ class WorkflowSeeder extends Seeder
                         'user_id' => $this->getUser($row['employee_email']),
                         'sequence' => $row['sequence'],
                         'range_from' => $row['amount_from'] != '' ? $row['amount_from'] : 0,
-                        'range_to' => $row['amount_to'] != '' ? $row['amount_from'] : 0,
+                        'range_to' => $row['amount_to'] != '' ? $row['amount_to'] : 0,
                         'description' => 'superior'
                     ];
                 })->all();
