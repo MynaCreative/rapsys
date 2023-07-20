@@ -36,7 +36,7 @@ return new class extends Migration
 
             $table->string('code')->nullable();
             $table->string('route')->nullable();
-            $table->json('scan_compliance')->nullable();
+            $table->text('scan_compliance')->nullable();
             $table->date('date_item')->nullable();
 
             $table->decimal('amount', 20, 4)->nullable()->default(0);
