@@ -13,7 +13,7 @@
                         </p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">24.58%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
                 <div class="d-flex">
@@ -23,7 +23,7 @@
                         </p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">17.58%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
             </div>
@@ -63,10 +63,10 @@ const chartSeries = ref([])
 watchEffect(() => {
     chartSeries.value = [{
         name: 'Valid',
-        data: [12.45, 16.2, 8.9, 11.42, 12.6, 18.1, 18.2, 14.16]
+        data: [0]
     }, {
         name: 'Invalid',
-        data: [-11.45, -15.42, -7.9, -12.42, -12.6, -18.1, -18.2, -14.16]
+        data: [0]
     }]
 })
 

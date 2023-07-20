@@ -201,17 +201,17 @@ class DeltaValidation implements ShouldQueue
                     $salesChannel = $this->getSalesChannel($deltaAwb['data'][0]['sales_channel']);
                     $product = $this->getProduct($deltaAwb['data'][0]['service_type_id']);
 
-                    $amount = ($item->amount * ($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']));
                     $percentage = (($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']) * 100);
+                    $amount = (float) ($item->amount * ($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']));
 
                     $tax = 0;
                     $withholding = 0;
                     $amountAfterTax = $amount;
                     if ($item->tax && $item->withholding) {
-                        $tax = ($amount * $item->tax->deduction);
-                        $withholding = ($amount * $item->withholding->deduction);
+                        $tax = (float) ($amount * $item->tax->deduction);
+                        $withholding = (float) ($amount * $item->withholding->deduction);
 
-                        $amountAfterTax = $amount + $tax - $withholding;
+                        $amountAfterTax = (float) ($amount + $tax - $withholding);
                     }
 
                     $awbItems[] = [

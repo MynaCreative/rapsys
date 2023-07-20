@@ -12,9 +12,9 @@
             <div class="row align-items-center">
                 <div class="col-6">
                     <h6 class="text-muted text-uppercase fw-semibold text-truncate fs-12 mb-3">Total Vendor by Invoice</h6>
-                    <h4 class="fs- mb-0">725</h4>
+                    <h4 class="fs- mb-0">0</h4>
                     <p class="mb-0 mt-2 text-muted"><span class="badge badge-soft-success mb-0">
-                        <i class="ri-arrow-up-line align-middle"></i> 15.72 %
+                        <i class="ri-arrow-up-line align-middle"></i> 0 %
                     </span> vs. prev month</p>
                 </div>
                 <div class="col-6">
@@ -25,20 +25,20 @@
             </div>
             <div class="mt-3 pt-2">
                 <div class="progress progress-lg rounded-pill">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 18%" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100"></div>
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 22%" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100"></div>
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 16%" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 19%" aria-valuenow="19" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-info" role="progressbar" style="width: 18%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 22%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 16%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 19%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-            <div class="mt-3 pt-2">
+            <!-- <div class="mt-3 pt-2">
                 <div class="d-flex mb-2">
                     <div class="flex-grow-1">
                         <p class="text-truncate text-muted fs-14 mb-0"><i class="mdi mdi-circle align-middle text-primary me-2"></i>Garuda Indonesia</p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">24.58%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
                 <div class="d-flex mb-2">
@@ -46,7 +46,7 @@
                         <p class="text-truncate text-muted fs-14 mb-0"><i class="mdi mdi-circle align-middle text-info me-2"></i>Kereta Api Indonesia</p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">17.51%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
                 <div class="d-flex mb-2">
@@ -54,7 +54,7 @@
                         <p class="text-truncate text-muted fs-14 mb-0"><i class="mdi mdi-circle align-middle text-success me-2"></i>Waskita Karya</p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">23.05%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
                 <div class="d-flex mb-2">
@@ -62,7 +62,7 @@
                         <p class="text-truncate text-muted fs-14 mb-0"><i class="mdi mdi-circle align-middle text-warning me-2"></i>Jasa Marga</p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">12.22%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
                 <div class="d-flex">
@@ -70,13 +70,13 @@
                         <p class="text-truncate text-muted fs-14 mb-0"><i class="mdi mdi-circle align-middle text-danger me-2"></i>Other</p>
                     </div>
                     <div class="flex-shrink-0">
-                        <p class="mb-0">17.58%</p>
+                        <p class="mb-0">0%</p>
                     </div>
                 </div>
             </div>
             <div class="mt-2 text-center">
                 <a href="javascript:void(0);" class="text-muted text-decoration-underline">Show All</a>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

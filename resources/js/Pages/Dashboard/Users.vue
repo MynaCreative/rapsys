@@ -29,12 +29,12 @@
                             </td>
                             <td>
                                 <p class="text-muted mb-0">
-                                <UsersIcon class="me-2 icon-sm"></UsersIcon>78
+                                <UsersIcon class="me-2 icon-sm"></UsersIcon>0
                                 </p>
                             </td>
                             <td class="text-end">
                                 <p class="text-success fw-medium fs-12 mb-0">
-                                <i class="ri-arrow-up-s-fill fs-5 align-middle"></i>2.08%
+                                <i class="ri-arrow-up-s-fill fs-5 align-middle"></i>0%
                                 </p>
                             </td>
                         </tr>
@@ -46,12 +46,12 @@
                             </td>
                             <td>
                                 <p class="text-muted mb-0">
-                                <UsersIcon class="me-2 icon-sm"></UsersIcon>105
+                                <UsersIcon class="me-2 icon-sm"></UsersIcon>0
                                 </p>
                             </td>
                             <td class="text-end">
                                 <p class="text-danger fw-medium fs-12 mb-0">
-                                <i class="ri-arrow-down-s-fill fs-5 align-middle"></i>10.52%
+                                <i class="ri-arrow-down-s-fill fs-5 align-middle"></i>0%
                                 </p>
                             </td>
                         </tr>
@@ -63,12 +63,12 @@
                             </td>
                             <td>
                                 <p class="text-muted mb-0">
-                                <UsersIcon class="me-2 icon-sm"></UsersIcon>42
+                                <UsersIcon class="me-2 icon-sm"></UsersIcon>0
                                 </p>
                             </td>
                             <td class="text-end">
                                 <p class="text-danger fw-medium fs-12 mb-0">
-                                <i class="ri-arrow-down-s-fill fs-5 align-middle"></i>7.36%
+                                <i class="ri-arrow-down-s-fill fs-5 align-middle"></i>0%
                                 </p>
                             </td>
                         </tr>

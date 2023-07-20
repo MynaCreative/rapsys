@@ -39,6 +39,78 @@
 </table><br><br>
 <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #555555;">Which requires your action. Please log in to your AP Validation System (<a href="{{ config('app.url') }}" target="_blank" style="color:#1c1958;font-weight:bold;text-decoration: none">{{ config('app.url') }}</a>) to approve this request<br>so that AP Department Can Process Payables this Invoice.</p>
 <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px; color: #555555;">Summary Unvalidated Item</p>
+@if($model->expenses)
+@foreach ($model->expenses as $expense)
+<table class="table-content">
+    <thead>
+        <tr>
+            <th>Item Tagihan</th>
+            <th>Validation Item</th>
+            <th>Reason</th>
+            <th class="text-right">Count of AWB/SMU</th>
+            <th class="text-right">Count of Weight</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{$expense->expense->name}}</td>
+            <td>Validation SMU/AWB</td>
+            <td>Data not found</td>
+            <td class="text-right">
+                {{ number_format($expense->total_validation_reference) }}
+            </td>
+            <td class="text-right">
+                {{ number_format($expense->total_weight_validation_reference) }}
+            </td>
+        </tr>
+        <tr>
+            <td>SMU</td>
+            <td>Validation Bill</td>
+            <td>Already Billed</td>
+            <td class="text-right">
+                {{ number_format($expense->total_validation_bill) }}
+            </td>
+            <td class="text-right">
+                {{ number_format($expense->total_weight_validation_bill) }}
+            </td>
+        </tr>
+        <tr>
+            <td>SMU</td>
+            <td>Validation Weight SMU/AWB</td>
+            <td>Weight Not Match</td>
+            <td class="text-right">
+                {{ number_format($expense->total_validation_weight) }}
+            </td>
+            <td class="text-right">
+                {{ number_format($expense->total_weight_validation_weight) }}
+            </td>
+        </tr>
+        <tr>
+            <td>SMU</td>
+            <td>Validation Scan Compliance</td>
+            <td>Scan Not Found</td>
+            <td class="text-right">
+                {{ number_format($expense->total_validation_scan_compliance) }}
+            </td>
+            <td class="text-right">
+                {{ number_format($expense->total_weight_validation_scan_compliance) }}
+            </td>
+        </tr>
+        <tr>
+            <td>SMU</td>
+            <td>Validation Ops Plan</td>
+            <td>Warning RPX Area</td>
+            <td class="text-right">
+                {{ number_format($expense->total_validation_ops_plan) }}
+            </td>
+            <td class="text-right">
+                {{ number_format($expense->total_weight_validation_ops_plan) }}
+            </td>
+        </tr>
+    </tbody>
+</table><br><br>
+@endforeach
+@endif
 <table class="table-content">
     <thead>
         <tr>
@@ -58,14 +130,14 @@
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_reference'];
-                    })->count()) 
+                    })->count())
                 }}
             </td>
             <td class="text-right">
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_reference'];
-                    })->sum('weight')) 
+                    })->sum('weight'))
                 }}
             </td>
         </tr>
@@ -77,14 +149,14 @@
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_bill'];
-                    })->count()) 
+                    })->count())
                 }}
             </td>
             <td class="text-right">
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_bill'];
-                    })->sum('weight')) 
+                    })->sum('weight'))
                 }}
             </td>
         </tr>
@@ -96,14 +168,14 @@
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_weight'];
-                    })->count()) 
+                    })->count())
                 }}
             </td>
             <td class="text-right">
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_weight'];
-                    })->sum('weight')) 
+                    })->sum('weight'))
                 }}
             </td>
         </tr>
@@ -115,14 +187,14 @@
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_scan_compliance'];
-                    })->count()) 
+                    })->count())
                 }}
             </td>
             <td class="text-right">
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_scan_compliance'];
-                    })->sum('weight')) 
+                    })->sum('weight'))
                 }}
             </td>
         </tr>
@@ -134,14 +206,14 @@
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_ops_plan'];
-                    })->count()) 
+                    })->count())
                 }}
             </td>
             <td class="text-right">
                 {{
                     number_format($model->items->filter(function ($item) {
                         return $item['type'] !== 'MNL' && !$item['validation_ops_plan'];
-                    })->sum('weight')) 
+                    })->sum('weight'))
                 }}
             </td>
         </tr>
@@ -158,7 +230,7 @@
             @if($approval->status == 'approved')
             <img src="{{asset('img/approved.png')}}" width="200" alt="approved">
             @else
-            {{ $approval->status }}
+            <img src="{{asset('img/pending.png')}}" width="200" alt="approved">
             @endif
         </td>
         @endforeach

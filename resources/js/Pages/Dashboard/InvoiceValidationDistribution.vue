@@ -25,19 +25,19 @@
                             <div class="col-6 col-sm-4">
                                 <div class="p-3 border border-dashed border-start-0">
                                     <h5 class="mb-1">
-                                        <count-to :startVal='0' :endVal='36000000' :duration='5000'></count-to></h5>
+                                        <count-to :startVal='0' :endVal='0' :duration='5000'></count-to></h5>
                                     <p class="text-muted mb-0">Total</p>
                                 </div>
                             </div>
                             <div class="col-6 col-sm-4">
                                 <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1"><count-to :startVal='0' :endVal='9200000' :duration='5000'></count-to></h5>
+                                    <h5 class="mb-1"><count-to :startVal='0' :endVal='0' :duration='5000'></count-to></h5>
                                     <p class="text-muted mb-0">Valid</p>
                                 </div>
                             </div>
                             <div class="col-6 col-sm-4">
                                 <div class="p-3 border border-dashed border-end-0">
-                                    <h5 class="mb-1"><count-to :startVal='0' :endVal='800000' :duration='5000'></count-to></h5>
+                                    <h5 class="mb-1"><count-to :startVal='0' :endVal='0' :duration='5000'></count-to></h5>
                                     <p class="text-muted mb-0">Invalid</p>
                                 </div>
                             </div>
@@ -145,15 +145,15 @@ watchEffect(() => {
     chartSeries.value = [
         {
             name: "Total",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+            data: [0],
         },
         {
             name: "Valid",
-            data: [40, 120, 83, 45, 31, 74, 35, 34, 78],
+            data: [0],
         },
         {
             name: "Invalid",
-            data: [95, 35, 20, 130, 64, 22, 43, 45, 31],
+            data: [0],
         },
     ]
 })

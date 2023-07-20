@@ -292,6 +292,14 @@ class Invoice extends Model
     }
 
     /**
+     * Get the expenses for the invoice.
+     */
+    public function invoiceExpenses()
+    {
+        return $this->hasMany(InvoiceExpense::class);
+    }
+
+    /**
      * Get the attachments for the invoice.
      */
     public function attachments()

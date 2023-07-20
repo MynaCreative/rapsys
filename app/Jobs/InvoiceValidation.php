@@ -10,10 +10,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Http\Client\Response;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\Invoice as ModelMail;
+
 use App\Models\InvoiceItem;
 use App\Models\Workflow;
 use App\Models\Approval;
 use App\Models\Invoice;
+use App\Models\WorkflowItem;
 
 class InvoiceValidation implements ShouldQueue
 {
@@ -54,21 +58,15 @@ class InvoiceValidation implements ShouldQueue
     {
         $this->invoice->update([
             'total_item' => count($this->invoice->items),
-            // 'total_amount' => $this->invoice->items->sum('amount'),
-            // 'total_amount_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', 5)->get()->sum(function ($item) {
-            //     return $item->amount;
-            // }),
-            // 'total_amount_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum(function ($item) {
-            //     return $item->amount;
-            // }),
-            // 'total_amount_after_tax' => $this->invoice->items->sum('total'),
-            // 'total_amount_after_tax_valid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', 5)->get()->sum('total'),
-            // 'total_amount_after_tax_invalid' => InvoiceItem::where('invoice_id', $this->invoice->id)->where('validation_score', '!=', 5)->get()->sum('total')
+            'total_amount' => $this->invoice->invoiceExpenses->sum('total_amount'),
+            'total_amount_after_tax' => $this->invoice->invoiceExpenses->sum('total_amount_after_tax'),
+            'total_amount_valid' => $this->invoice->invoiceExpenses->sum('total_valid_amount'),
+            'total_amount_invalid' => $this->invoice->invoiceExpenses->sum('total_invalid_amount'),
         ]);
 
-        if ($this->invoice->document_status == 'published') {
-            $this->createApproval($this->invoice);
-        }
+        // if ($this->invoice->document_status == 'published') {
+        // $this->createApproval($this->invoice);
+        // }
     }
 
     /**
@@ -76,28 +74,36 @@ class InvoiceValidation implements ShouldQueue
      */
     public function createApproval(Invoice $model, $reset = false)
     {
-        $workflows = Workflow::query()
-            ->whereBetween('range_from', [0, $model->total_amount])
-            ->orWhereBetween('range_to', [0, $model->total_amount])
+        $workflows = WorkflowItem::query()
+            ->whereRelation('workflow', 'department_id', $model->department_id)
+            ->whereBetween('range_from', [0, $model->total_amount_invalid])
+            ->orWhereBetween('range_to', [0, $model->total_amount_invalid])
             ->orderBy('sequence')
             ->get();
 
-        foreach ($workflows as $index => $workflow) {
+        foreach ($workflows as $index => $item) {
             $position = null;
-            if ($workflows->first()->id === $workflow->id) {
+            if ($workflows->first()->id === $item->id) {
                 $position = 'first';
             }
-            if ($workflows->last()->id === $workflow->id) {
+            if ($workflows->last()->id === $item->id) {
                 $position = 'last';
             }
             Approval::create([
-                'workflow_id' => $workflow->id,
+                'user_id' => $item->user_id,
+                'workflow_id' => $item->workflow_id,
+                'sequence' => $item->sequence,
+                'workflow_item_id' => $item->id,
                 'invoice_id' => $model->id,
-                'user_id' => $workflow->user_id,
-                'current' => $workflows->first()->id === $workflow->id,
+                'status' => 'pending',
+                'description' => $item->description,
+                'current' => $index == 0,
                 'position' => $position,
-                'sequence' => $index + 1
             ]);
+            if ($index == 0) {
+                Mail::to(auth()->user()->email)->send(new ModelMail($model, auth()->user()->email, 'created'));
+                Mail::to($item->user->email)->send(new ModelMail($model, $item->user->email, 'approval'));
+            }
         }
     }
 }

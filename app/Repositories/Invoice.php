@@ -84,6 +84,8 @@ class Invoice
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
             ->through(function ($item) {
+                $items = $item->smuItems->count() + $item->awbItems()->count();
+                $validated_items = $item->smuItems()->where('is_validated', true)->count() + $item->awbItems()->where('is_validated', true)->count();
                 return [
                     'id'                                => $item->id,
                     'code'                              => $item->code,
@@ -99,8 +101,8 @@ class Invoice
                     'invoice_number'                    => $item->invoice_number,
                     'invoice_date'                      => $item->invoice_date,
                     'invoice_receipt_date'              => $item->invoice_receipt_date,
-                    'items'                             => 0,
-                    'validated_items'                   => 0,
+                    'items'                             => $items,
+                    'validated_items'                   => $validated_items,
                     'description'                       => $item->description,
                     'created_user'                      => $item->createdUser,
                     'updated_user'                      => $item->updatedUser,
@@ -519,6 +521,8 @@ class Invoice
             }
         }
 
+        InvoiceValidation::dispatch($this->model);
+
         return $this->model;
     }
 
@@ -651,8 +655,10 @@ class Invoice
     {
         $workflows = WorkflowItem::query()
             ->whereRelation('workflow', 'department_id', $model->department_id)
-            ->whereBetween('range_from', [0, $model->total_amount_invalid])
-            ->orWhereBetween('range_to', [0, $model->total_amount_invalid])
+            ->where(function ($query) use ($model) {
+                $query->whereBetween('range_from', [0, $model->total_amount_invalid])
+                    ->orWhereBetween('range_to', [0, $model->total_amount_invalid]);
+            })
             ->orderBy('sequence')
             ->get();
         foreach ($workflows as $index => $item) {
@@ -675,8 +681,8 @@ class Invoice
                 'position' => $position,
             ]);
             if ($index == 0) {
-                Mail::to(auth()->user()->email)->send(new ModelMail($model, auth()->user()->email, 'created'));
-                Mail::to($item->user->email)->send(new ModelMail($model, $item->user->email, 'approval'));
+                Mail::to(auth()->user()->email)->send(new ModelMail($model, auth()->user(), 'created'));
+                Mail::to($item->user->email)->send(new ModelMail($model, $item->user, 'approval'));
             }
         }
     }

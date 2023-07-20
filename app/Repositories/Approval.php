@@ -131,7 +131,7 @@ class Approval
                     'reject_remarks' => $request->reject_remarks
                 ]);
 
-                Mail::to($this->model->createdUser->email)->send(new ModelMail($this->model, $this->model->createdUser->email, 'rejected'));
+                Mail::to($this->model->createdUser->email)->send(new ModelMail($this->model, $this->model->createdUser, 'rejected'));
             }
             if ($nextReleaser && $request->approval_status !== 'rejected') {
                 ModelsApproval::where('id', $nextReleaser->id)->update(['current' => true, 'rejected_at' => null, 'approved_at' => null]);
@@ -424,9 +424,9 @@ class Approval
                             $key++;
                         }
                     });
-                    Mail::to($this->model->createdUser->email)->send(new ModelMail($this->model, $this->model->createdUser->email, 'approved'));
+                    Mail::to($this->model->createdUser->email)->send(new ModelMail($this->model, $this->model->createdUser, 'approved'));
                 } else {
-                    Mail::to($nextReleaser->user->email)->send(new ModelMail($this->model, $nextReleaser->user->email, 'approval'));
+                    Mail::to($nextReleaser->user->email)->send(new ModelMail($this->model, $nextReleaser->user, 'approval'));
 
                     // begin
                     //     fnd_request.submit_request(
@@ -448,7 +448,7 @@ class Approval
                     'reject_remarks' => $request->reject_remarks
                 ]);
 
-                Mail::to($this->model->createdUser->email)->send(new ModelMail($this->model, $this->model->createdUser->email, 'rejected'));
+                Mail::to($this->model->createdUser->email)->send(new ModelMail($this->model, $this->model->createdUser, 'rejected'));
             }
             if ($nextReleaser && $request->approval_status !== 'rejected') {
                 ModelsApproval::where('id', $nextReleaser->id)->update(['current' => true, 'rejected_at' => null, 'approved_at' => null]);

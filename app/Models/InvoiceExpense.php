@@ -50,6 +50,12 @@ class InvoiceExpense extends Model
         'total_vat_tax',
         'grand_total',
 
+        'total_valid_validation_reference',
+        'total_valid_validation_weight',
+        'total_valid_validation_scan_compliance',
+        'total_valid_validation_ops_plan',
+        'total_valid_validation_bill',
+
         'total_weight_validation_reference',
         'total_weight_validation_weight',
         'total_weight_validation_scan_compliance',
@@ -97,6 +103,18 @@ class InvoiceExpense extends Model
         'total_validation_scan_compliance'          => 'integer',
         'total_validation_ops_plan'                 => 'integer',
         'total_validation_bill'                     => 'integer',
+
+        'total_valid_amount_validation_reference'          => 'float',
+        'total_valid_amount_validation_weight'             => 'float',
+        'total_valid_amount_validation_scan_compliance'    => 'float',
+        'total_valid_amount_validation_ops_plan'           => 'float',
+        'total_valid_amount_validation_bill'               => 'float',
+
+        'total_invalid_amount_validation_reference'          => 'float',
+        'total_invalid_amount_validation_weight'             => 'float',
+        'total_invalid_amount_validation_scan_compliance'    => 'float',
+        'total_invalid_amount_validation_ops_plan'           => 'float',
+        'total_invalid_amount_validation_bill'               => 'float',
     ];
 
     protected $appends = ['excel_file'];

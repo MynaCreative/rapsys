@@ -72,6 +72,21 @@ class ExpenseValidation implements ShouldQueue
             'total_vat_tax' => $expense->awbItems->sum('vat_tax'),
             'grand_total' => $expense->awbItems->sum('amount_after_tax'),
 
+            'total_valid_amount' => $expense->awbItems->where('validation_reference', 1)->sum('amount'),
+            'total_invalid_amount' => $expense->awbItems->where('validation_reference', 0)->sum('amount'),
+
+            'total_valid_amount_validation_reference' => $expense->awbItems->where('validation_reference', 1)->sum('amount'),
+            'total_valid_amount_validation_weight' => $expense->awbItems->where('validation_weight', 1)->sum('amount'),
+            'total_valid_amount_validation_scan_compliance' => $expense->awbItems->where('validation_scan_compliance', 1)->sum('amount'),
+            'total_valid_amount_validation_ops_plan' => $expense->awbItems->where('validation_ops_plan', 1)->sum('amount'),
+            'total_valid_amount_validation_bill' => $expense->awbItems->where('validation_bill', 1)->sum('amount'),
+
+            'total_invalid_amount_validation_reference' => $expense->awbItems->where('validation_reference', 0)->sum('amount'),
+            'total_invalid_amount_validation_weight' => $expense->awbItems->where('validation_weight', 0)->sum('amount'),
+            'total_invalid_amount_validation_scan_compliance' => $expense->awbItems->where('validation_scan_compliance', 0)->sum('amount'),
+            'total_invalid_amount_validation_ops_plan' => $expense->awbItems->where('validation_ops_plan', 0)->sum('amount'),
+            'total_invalid_amount_validation_bill' => $expense->awbItems->where('validation_bill', 0)->sum('amount'),
+
             'total_weight_validation_reference' => $expense->awbItems->where('validation_reference', 0)->sum('weight'),
             'total_weight_validation_weight' => $expense->awbItems->where('validation_weight', 0)->sum('weight'),
             'total_weight_validation_scan_compliance' => $expense->awbItems->where('validation_scan_compliance', 0)->sum('weight'),
@@ -93,6 +108,9 @@ class ExpenseValidation implements ShouldQueue
             'total_amount' => $expense->smuItems->sum('amount'),
             'total_amount_after_tax' => $expense->smuItems->sum('amount_after_tax'),
 
+            'total_valid_amount' => $expense->smuItems->where('validation_reference', 1)->sum('amount'),
+            'total_invalid_amount' => $expense->smuItems->where('validation_reference', 0)->sum('amount'),
+
             'total_weight' => $expense->smuItems->sum('weight'),
             'total_weight_smu' => $expense->smuItems->sum('total_weight_smu'),
             'total_weight_all_awb' => $expense->smuItems->sum('total_weight_awb'),
@@ -102,6 +120,18 @@ class ExpenseValidation implements ShouldQueue
             'total_withholding_tax' => $expense->smuItems->sum('withholding_tax'),
             'total_vat_tax' => $expense->smuItems->sum('vat_tax'),
             'grand_total' => $expense->smuItems->sum('amount_after_tax'),
+
+            'total_valid_amount_validation_reference' => $expense->smuItems->where('validation_reference', 1)->sum('amount'),
+            'total_valid_amount_validation_weight' => $expense->smuItems->where('validation_weight', 1)->sum('amount'),
+            'total_valid_amount_validation_scan_compliance' => $expense->smuItems->where('validation_scan_compliance', 1)->sum('amount'),
+            'total_valid_amount_validation_ops_plan' => $expense->smuItems->where('validation_ops_plan', 1)->sum('amount'),
+            'total_valid_amount_validation_bill' => $expense->smuItems->where('validation_bill', 1)->sum('amount'),
+
+            'total_invalid_amount_validation_reference' => $expense->smuItems->where('validation_reference', 0)->sum('amount'),
+            'total_invalid_amount_validation_weight' => $expense->smuItems->where('validation_weight', 0)->sum('amount'),
+            'total_invalid_amount_validation_scan_compliance' => $expense->smuItems->where('validation_scan_compliance', 0)->sum('amount'),
+            'total_invalid_amount_validation_ops_plan' => $expense->smuItems->where('validation_ops_plan', 0)->sum('amount'),
+            'total_invalid_amount_validation_bill' => $expense->smuItems->where('validation_bill', 0)->sum('amount'),
 
             'total_weight_validation_reference' => $expense->smuItems->where('validation_reference', 0)->sum('weight'),
             'total_weight_validation_weight' => $expense->smuItems->where('validation_weight', 0)->sum('weight'),

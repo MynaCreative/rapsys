@@ -10,7 +10,7 @@
                                 <div class="flex-grow-1">
                                     <h4 class="fs-18 lh-base fw-bold mb-0">RPX AP Invoice System <span class="text-primary">RAPsys.</span> </h4>
                                     <p class="mb-0 mt-2 pt-1 text-muted">If you are just starting out, please learn the link below.</p>
-                                    <div class="d-flex gap-3 mt-4">
+                                    <!-- <div class="d-flex gap-3 mt-4">
                                         <a href="javascript:void(0);" class="btn btn-primary btn-label rounded-pill waves-effect waves-light">
                                             <i class="ri-book-3-line label-icon align-middle rounded-pill fs-16 me-2"></i> Dictionary
                                         </a>
@@ -19,7 +19,7 @@
                                         </a>
                                     </div>
                                     <br>
-                                    <small class="text-muted">* dictionary and user manual will available when all revision release</small>
+                                    <small class="text-muted">* dictionary and user manual will available when all revision release</small> -->
                                 </div>
                                 <img src="@/Assets/images/logo-sm.png" alt="" class="img-fluid" style="width: 15%; height: 15%" />
                             </div>
@@ -44,7 +44,7 @@
                                     </h4>
                                     <p class="mt-4 mb-0 text-muted">
                                         <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                            <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                            <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                         </span>
                                         vs. prev month
                                     </p>
@@ -71,7 +71,7 @@
                                     </h4>
                                     <p class="mt-4 mb-0 text-muted">
                                         <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                            <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                            <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                         </span>
                                         vs. prev month
                                     </p>
@@ -98,7 +98,7 @@
                                     </h4>
                                     <p class="mt-4 mb-0 text-muted">
                                         <span class="badge bg-soft-primary text-primary mb-0 me-1">
-                                            <i class="ri-arrow-left-right-line align-middle"></i> 0 % 
+                                            <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                         </span>
                                         vs. prev month
                                     </p>

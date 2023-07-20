@@ -43,6 +43,9 @@ return new class extends Migration
             $table->decimal('total_amount', 20, 4)->nullable()->default(0);
             $table->decimal('total_amount_after_tax', 20, 4)->nullable()->default(0);
 
+            $table->decimal('total_valid_amount', 20, 4)->nullable()->default(0);
+            $table->decimal('total_invalid_amount', 20, 4)->nullable()->default(0);
+
             $table->decimal('total_weight', 20, 4)->nullable()->default(0);
             $table->decimal('total_weight_smu', 20, 4)->nullable()->default(0);
             $table->decimal('total_weight_all_awb', 20, 4)->nullable()->default(0);
@@ -52,6 +55,18 @@ return new class extends Migration
             $table->decimal('total_withholding_tax', 20, 4)->nullable()->default(0);
             $table->decimal('total_vat_tax', 20, 4)->nullable()->default(0);
             $table->decimal('grand_total', 20, 4)->nullable()->default(0);
+
+            $table->integer('total_valid_amount_validation_reference')->nullable()->default(0);
+            $table->integer('total_valid_amount_validation_bill')->nullable()->default(0);
+            $table->integer('total_valid_amount_validation_weight')->nullable()->default(0);
+            $table->integer('total_valid_amount_validation_scan_compliance')->nullable()->default(0);
+            $table->integer('total_valid_amount_validation_ops_plan')->nullable()->default(0);
+
+            $table->integer('total_invalid_amount_validation_reference')->nullable()->default(0);
+            $table->integer('total_invalid_amount_validation_bill')->nullable()->default(0);
+            $table->integer('total_invalid_amount_validation_weight')->nullable()->default(0);
+            $table->integer('total_invalid_amount_validation_scan_compliance')->nullable()->default(0);
+            $table->integer('total_invalid_amount_validation_ops_plan')->nullable()->default(0);
 
             $table->decimal('total_weight_validation_reference', 20, 4)->nullable()->default(0);
             $table->decimal('total_weight_validation_bill', 20, 4)->nullable()->default(0);

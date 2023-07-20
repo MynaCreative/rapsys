@@ -166,7 +166,6 @@ class WorkflowSeeder extends Seeder
             ['dept_name' => 'Project Spec DG Handling', 'employee_name' => 'Riza Triyadi', 'user_id' => 'rtriyadi', 'employee_email' => 'rtriyadi@rpxholding.com', 'position_name' => 'Chief Operation Officer', 'sequence' => '3', 'amount_from' => '5000000', 'amount_to' => '10000000000', 'employee_id' => '2040928'],
             ['dept_name' => 'Project Spec DG Handling', 'employee_name' => 'Ahsan Syahrir', 'user_id' => 'asyahrir', 'employee_email' => 'asyahrir@rpxholding.com', 'position_name' => 'Budget', 'sequence' => '4', 'amount_from' => '0', 'amount_to' => '10000000000', 'employee_id' => '2228246'],
             ['dept_name' => 'Network Operation', 'employee_name' => 'Ridha Faried Firdaus', 'user_id' => 'rfaried', 'employee_email' => 'rfaried@rpxholding.com', 'position_name' => 'General Manager', 'sequence' => '3', 'amount_from' => '0', 'amount_to' => '10000000000', 'employee_id' => '7111559'],
-            ['dept_name' => 'Branch SUB', 'employee_name' => 'Arwiyanto ', 'user_id' => 'arwiyanto', 'employee_email' => 'arwiyanto@rpxholding.com', 'position_name' => 'General Manager', 'sequence' => '2', 'amount_from' => '', 'amount_to' => '', 'employee_id' => '1141058'],
         ]);
 
         $grouped = $data->groupBy('dept_name');
