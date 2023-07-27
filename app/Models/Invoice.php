@@ -133,7 +133,7 @@ class Invoice extends Model
                             $item->expense->code,
                             $group->count() . $item->type,
                             $awb,
-                            $item->area->code
+                            $item->area->code ?? null
                         ]));
                         $amount = $group->sum('amount');
                         $withholding = ($item->withholding->deduction ?? 0) * $amount;
