@@ -126,6 +126,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::save($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
@@ -150,6 +151,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::store($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
@@ -232,6 +234,7 @@ class InvoiceController extends Controller
         try {
             return $this->repository::init($invoice)->revision($expense);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
@@ -268,6 +271,7 @@ class InvoiceController extends Controller
         try {
             $this->repository::init($invoice)->update($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
