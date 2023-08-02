@@ -80,7 +80,7 @@
                             <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-save-2-line']"></i>
                             {{ form.processing ? 'Processing' : 'Save as Draft' }}
                         </b-button>
-                        <b-button @click="save('cancelled')" v-if="form.document_status == 'closed'"
+                        <b-button @click="save('void')" v-if="form.document_status == 'closed'"
                         type="submit" variant="danger" class="btn-label waves-effect waves-light right" :disabled="form.processing">
                             <i :class="['label-icon align-middle fs-16 ms-2', form.processing ? 'ri-refresh-line' : 'ri-close-line']"></i>
                             {{ form.processing ? 'Processing' : 'Void' }}

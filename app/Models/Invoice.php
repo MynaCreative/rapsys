@@ -118,60 +118,101 @@ class Invoice extends Model
             get: function ($value, $attributes) {
                 $items = [];
                 $taxes = [];
-                if ($this->awbItems || $this->items) {
-                    // $dists = collect([$this->awbItems])->reduce(function ($arr, $item) {
-                    //     if (empty($item) || $item->isEmpty())
-                    //         return $arr;
-                    //     return $arr->merge($item);
-                    // }, $this->items);
-                    $dists = $this->awbItems;
-                    $distGroups = $dists->groupBy('dist');
-                    foreach ($distGroups as $group) {
-                        $item = $group->first();
-                        $awb = $item->code;
-                        $description = implode('|', array_filter([
-                            $item->expense->code,
-                            $group->count() . $item->type,
-                            $awb,
-                            $item->area->code ?? null
-                        ]));
-                        $amount = $group->sum('amount');
-                        $withholding = ($item->withholding->deduction ?? 0) * $amount;
-                        $items[] = [
-                            'description' => $description,
-                            'line_type_code' => 'ITEM',
-                            'ppn_code' => null,
-                            'tax_rate_id' => null,
-                            'awt_group_id' => $item->withholding->code,
-                            'awt_group_name' => $item->withholding->name,
-                            'amount' => $amount,
-                            'amount_withholding' => $withholding,
-                            'amount_after_wht' => $amount - $withholding,
-                            'dist_code_concat' => $item->dist,
-                        ];
-                        if ($item->tax) {
-                            $taxes[] = [
-                                'description' => $description,
-                                'line_type_code' => 'TAX',
-                                'ppn_code' => $item->tax->name,
-                                'tax_rate_id' => $item->tax->code,
-                                'amount' => $item->tax->deduction * $amount,
-                            ];
+                if ($this->invoiceExpenses) {
+                    foreach ($this->invoiceExpenses as $expense) {
+                        if ($expense->type == InvoiceExpense::TYPE_AWB) {
+                            $dists = $expense->awbItems;
+                            $distGroups = $dists->groupBy('dist');
+                            foreach ($distGroups as $group) {
+                                $item = $group->first();
+                                if ($item->product && $item->area) {
+                                    $description = implode('|', array_filter([
+                                        $expense->code,
+                                        $group->count() . $item->type,
+                                        $item->product->code ?? null,
+                                        $item->area->code ?? null
+                                    ]));
+                                    $amount = $group->sum('amount');
+                                    $withholding = ($item->withholding->deduction ?? 0) * $amount;
+                                    $tax = ($item->tax->deduction ?? 0) * $amount;
+                                    $items[] = [
+                                        'description' => $description,
+                                        'line_type_code' => 'ITEM',
+                                        'ppn_code' => $item->tax->name,
+                                        'tax_rate_id' => $item->tax->code,
+                                        'awt_group_id' => $item->withholding->code,
+                                        'awt_group_name' => $item->withholding->name,
+                                        'ppn_code' => $item->tax->name,
+                                        'amount' => $amount,
+                                        'amount_withholding' => $withholding,
+                                        'amount_tax' => $tax,
+                                        'amount_after_tax' => $amount + $tax,
+                                        'amount_after_wht' => $amount - $withholding + $tax,
+                                        'dist_code_concat' => $item->dist,
+                                    ];
+                                }
+                            };
                         }
-                    };
+                    }
                 }
-                if (count($taxes) > 0) {
-                    $taxes = collect($taxes)->groupBy('ppn_code')->map(function ($tax) {
-                        $item = $tax->first();
-                        return [
-                            'description' => $item['ppn_code'],
-                            'line_type_code' => 'TAX',
-                            'ppn_code' => $item['ppn_code'],
-                            'tax_rate_id' => $item['tax_rate_id'],
-                            'amount' => $tax->sum('amount'),
-                        ];
-                    })->values()->all();
-                }
+                // if ($this->awbItems || $this->items) {
+                //     $dists = collect([$this->awbItems])->reduce(function ($arr, $item) {
+                //         if (empty($item) || $item->isEmpty())
+                //             return $arr;
+                //         return $arr->merge($item);
+                //     }, $this->items);
+                //     $dists = $this->awbItems;
+                //     $distGroups = $dists->groupBy('dist');
+                //     foreach ($distGroups as $group) {
+                //         $item = $group->first();
+                //         $awb = $item->code;
+                //         $description = implode('|', array_filter([
+                //             $item->expense->code,
+                //             $group->count() . $item->type,
+                //             $awb,
+                //             $item->area->code ?? null
+                //         ]));
+                //         $amount = $group->sum('amount');
+                //         $withholding = ($item->withholding->deduction ?? 0) * $amount;
+                //         $tax = ($item->tax->deduction ?? 0) * $amount;
+                //         $items[] = [
+                //             'description' => $description,
+                //             'line_type_code' => 'ITEM',
+                //             'ppn_code' => $item->tax->name,
+                //             'tax_rate_id' => $item->tax->code,
+                //             'awt_group_id' => $item->withholding->code,
+                //             'awt_group_name' => $item->withholding->name,
+                //             'ppn_code' => $item->tax->name,
+                //             'amount' => $amount,
+                //             'amount_withholding' => $withholding,
+                //             'amount_tax' => $tax,
+                //             'amount_after_tax' => $amount + $tax,
+                //             'amount_after_wht' => $amount - $withholding + $tax,
+                //             'dist_code_concat' => $item->dist,
+                //         ];
+                //         if ($item->tax) {
+                //             $taxes[] = [
+                //                 'description' => $description,
+                //                 'line_type_code' => 'TAX',
+                //                 'ppn_code' => $item->tax->name,
+                //                 'tax_rate_id' => $item->tax->code,
+                //                 'amount' => $item->tax->deduction * $amount,
+                //             ];
+                //         }
+                //     };
+                // }
+                // if (count($taxes) > 0) {
+                //     $taxes = collect($taxes)->groupBy('ppn_code')->map(function ($tax) {
+                //         $item = $tax->first();
+                //         return [
+                //             'description' => $item['ppn_code'],
+                //             'line_type_code' => 'TAX',
+                //             'ppn_code' => $item['ppn_code'],
+                //             'tax_rate_id' => $item['tax_rate_id'],
+                //             'amount' => $tax->sum('amount'),
+                //         ];
+                //     })->values()->all();
+                // }
                 return [
                     'items' => $items,
                     'taxes' => $taxes,

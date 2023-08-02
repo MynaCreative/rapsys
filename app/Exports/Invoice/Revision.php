@@ -40,7 +40,9 @@ class Revision implements FromView, WithStyles, WithEvents, ShouldAutoSize
 
     public function columnFormats(): array
     {
-        return [];
+        return [
+            'C' => '#',
+        ];
     }
 
     /**

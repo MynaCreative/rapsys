@@ -98,29 +98,29 @@ class Approval
                             'line_number' => $key,
                             'description' => $line['description'],
                             'line_type_code' => 'ITEM',
-                            'ppn_code' => null,
-                            'tax_rate_id' => null,
+                            'ppn_code' => $line['ppn_code'],
+                            'tax_rate_id' => $line['tax_rate_id'],
                             'awt_group_id' => $line['awt_group_id'],
                             'amount' => $line['amount'],
                             'dist_code_concat' => $line['dist_code_concat'],
                         ]);
                         $key++;
                     }
-                    foreach ($this->model->dists['taxes'] as $tax) {
-                        Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
-                            'staging_id' => $staging_id,
-                            'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
-                            'ledger_id' => 2024,
-                            'org_id' => 103,
-                            'line_number' => $key,
-                            'description' => $tax['description'],
-                            'line_type_code' => 'TAX',
-                            'ppn_code' => $tax['ppn_code'],
-                            'tax_rate_id' => $tax['tax_rate_id'],
-                            'amount' => $tax['amount'],
-                        ]);
-                        $key++;
-                    }
+                    // foreach ($this->model->dists['taxes'] as $tax) {
+                    //     Oracle::insertTable('APPS.RAPSYS_AP_STG_LINE', [
+                    //         'staging_id' => $staging_id,
+                    //         'staging_line_id' => Oracle::latestIdTable('APPS.RAPSYS_AP_STG_LINE', 'staging_line_id'),
+                    //         'ledger_id' => 2024,
+                    //         'org_id' => 103,
+                    //         'line_number' => $key,
+                    //         'description' => $tax['description'],
+                    //         'line_type_code' => 'TAX',
+                    //         'ppn_code' => $tax['ppn_code'],
+                    //         'tax_rate_id' => $tax['tax_rate_id'],
+                    //         'amount' => $tax['amount'],
+                    //     ]);
+                    //     $key++;
+                    // }
                 } else {
                 }
             } else if ($request->approval_status === 'rejected') {

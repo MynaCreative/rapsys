@@ -82,6 +82,7 @@
                                     <b-badge variant="light" class="rounded-pill text-capitalize" v-if="item.document_status == 'draft'">{{ item.document_status }}</b-badge>
                                     <b-badge variant="primary" class="rounded-pill text-capitalize" v-if="item.document_status == 'published'">{{ item.document_status }}</b-badge>
                                     <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.document_status == 'cancelled'">{{ item.document_status }}</b-badge>
+                                    <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.document_status == 'void'">{{ item.document_status }}</b-badge>
                                     <b-badge variant="success" class="rounded-pill text-capitalize" v-if="item.document_status == 'closed'">{{ item.document_status }}</b-badge>
                                 </td>
                                 <td class="text-center">

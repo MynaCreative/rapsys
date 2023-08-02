@@ -76,14 +76,36 @@ class DeltaValidation implements ShouldQueue
         $validationWeight = false;
         $referenceMandatoryScan = false;
         $referenceOpsPlan = true;
+        $area = null;
+        $product = null;
+        $salesChannel = null;
+        $areaId = null;
+        $productId = null;
+        $salesChannelId = null;
+        $messages = [];
 
         $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
         if ($validationReference) {
             $area = $this->getArea($delta['data'][0]['origin']);
+            if ($area) {
+                $areaId = optional($area)->id;
+            } else {
+                $messages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+            }
             $salesChannel = $this->getSalesChannel($delta['data'][0]['sales_channel']);
+            if ($salesChannel) {
+                $salesChannelId = optional($salesChannel)->id;
+            } else {
+                $messages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+            }
             $product = $this->getProduct($delta['data'][0]['service_type_id']);
+            if ($product) {
+                $productId = optional($product)->id;
+            } else {
+                $messages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+            }
             $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
-            if (!$validationBillExist) {
+            if (!$validationBillExist && $area && $salesChannel && $product) {
                 $validationWeight = $delta['data'][0]['tot_weight'] == $item->weight ? true : false;
                 if ($validationWeight) {
                     if ($item->expense->mandatory_scan) {
@@ -92,15 +114,45 @@ class DeltaValidation implements ShouldQueue
                         // $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
                         $deltaScanCompliance = Delta::awbScanCompliance($item->code, $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
+                        if (!$referenceMandatoryScan) {
+                            $messages[] = "AWB: '" . $item->code . "' not passed scan compliance";
+                        }
+                    } else {
+                        $messages[] = "Expense doesn't have mandatory scan";
                     }
+                } else {
+                    $messages[] = "AWB: '" . $item->code . "' weight is : {$item->weight} but delta is : " . $delta['data'][0]['tot_weight'];
                 }
+            } else {
+                $messages[] = "AWB: '" . $item->code . "' already billed";
             }
+        } else {
+            $messages[] = "AWB: '" . $item->code . "' not found in Delta API";
         }
         $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
+
+        $tax = 0;
+        $withholding = 0;
+        $amountAfterTax = $item->amount;
+        if ($item->tax && $item->withholding) {
+            $tax = (float) ($item->amount * $item->tax->deduction);
+            $withholding = (float) ($item->amount * $item->withholding->deduction);
+
+            $amountAfterTax = (float) ($item->amount + $tax - $withholding);
+        }
+
         $item->update([
-            'area_id' => optional($area)->id,
-            'sales_channel_id' => optional($salesChannel)->id,
-            'product_id' => optional($product)->id,
+            'area_id' => $areaId,
+            'product_id' => $productId,
+            'sales_channel_id' => $salesChannelId,
+
+            'amount' => $item->amount,
+            'delta_amount' => $item->amount,
+            'delta_percentage' => 0,
+
+            'vat_tax' => $tax,
+            'withholding_tax' => $withholding,
+            'amount_after_tax' => $amountAfterTax,
 
             'validation_reference' => $validationReference,
             'validation_bill' => !$validationBillExist,
@@ -108,20 +160,21 @@ class DeltaValidation implements ShouldQueue
             'validation_scan_compliance' => $referenceMandatoryScan,
             'validation_ops_plan' => $referenceOpsPlan,
 
-            'delta_weight' => $delta['data'][0]['tot_weight'],
-            'delta_weight_dim' => $delta['data'][0]['tot_dimensi'],
-            'delta_weight_actual' => $delta['data'][0]['tot_act_weight'],
+            'delta_weight' => $delta['data'][0]['tot_weight'] ?? null,
+            'delta_weight_dim' => $delta['data'][0]['tot_dimensi'] ?? null,
+            'delta_weight_actual' => $delta['data'][0]['tot_act_weight'] ?? null,
 
             'validation_score' => $validation_score,
             'is_validated' => true,
+            'message' => count($messages) > 0 ? implode(', ', $messages) : null,
 
             'dist' => implode('-', [
                 $item->invoice->sbu->coa ?? null,
-                optional($area)->coa ?? null,
+                $area ? optional($area)->coa : null,
                 $item->costCenter->cost_center ?? null,
                 $item->expense->coa ?? $item->expense_coa,
-                optional($salesChannel)->coa ?? null,
-                optional($product)->coa ?? null,
+                $salesChannel ? optional($salesChannel)->coa : null,
+                $product ? optional($product)->coa : null,
                 $item->invoice->interco->coa ?? null,
                 '0000',
                 '0000',
@@ -266,17 +319,20 @@ class DeltaValidation implements ShouldQueue
 
     public function getSalesChannel($code)
     {
-        return SalesChannel::where('code', $code)->select(['id', 'coa'])->first();
+        $data = SalesChannel::where('code', $code)->select(['id', 'coa'])->first();
+        return $data ?? false;
     }
 
     public function getArea($code)
     {
-        return Area::where('code', $code)->select(['id', 'coa'])->first();
+        $data = Area::where('code', $code)->select(['id', 'coa'])->first();
+        return $data ?? false;
     }
 
     public function getProduct($code)
     {
-        return Product::where('code', $code)->select(['id', 'coa'])->first();
+        $data = Product::where('code', $code)->select(['id', 'coa'])->first();
+        return $data ?? false;
     }
 
     public function operationPattern($tracking, $operation_pattern)

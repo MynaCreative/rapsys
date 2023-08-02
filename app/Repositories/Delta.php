@@ -36,6 +36,10 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
+            ->connectTimeout(10000)
+            ->withOptions([
+                'stream' => true,
+            ])
             ->withBody(json_encode([
                 'request'   => $payload,
                 'signature' => $signature
@@ -57,6 +61,10 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
+            ->connectTimeout(10000)
+            ->withOptions([
+                'stream' => true,
+            ])
             ->withBody(json_encode([
                 'request'   => $payload,
                 'signature' => $signature
@@ -76,6 +84,10 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
+            ->connectTimeout(10000)
+            ->withOptions([
+                'stream' => true,
+            ])
             ->withBody(json_encode([
                 'request'   => $payload,
                 'signature' => $signature
@@ -95,6 +107,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
+            ->connectTimeout(10000)
             ->withOptions([
                 'stream' => true,
             ])
@@ -117,6 +130,10 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
+            ->connectTimeout(10000)
+            ->withOptions([
+                'stream' => true,
+            ])
             ->withBody(json_encode([
                 'request'   => $payload,
                 'signature' => $signature

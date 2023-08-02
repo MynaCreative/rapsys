@@ -490,7 +490,7 @@ class Invoice
         }
 
         if ($this->model->awbItems) {
-            $awbItems = $this->model->awbItems->where('validation_score', '!=', 5);
+            $awbItems = $this->model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
             foreach ($awbItems as $item) {
                 $amount = $item->amount;
                 $tax = 0;

@@ -36,11 +36,11 @@ class ApprovalController extends Controller
     }
 
     /**
-     * 
+     *
      * Display a listing of the resources.
      *
      * @param   IndexRequest  $request
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -52,12 +52,12 @@ class ApprovalController extends Controller
     }
 
     /**
-     * 
+     *
      * Display the specified resource.
      *
      * @param   ShowRequest  $request
      * @param   Model $approval
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -88,12 +88,12 @@ class ApprovalController extends Controller
     }
 
     /**
-     * 
+     *
      * Update specified resource.
      *
      * @param   UpdateRequest  $request
      * @param   Model $approval
-     * 
+     *
      * @return  ApiResponse
      * @throws  Throwable
      */
@@ -102,6 +102,7 @@ class ApprovalController extends Controller
         try {
             $this->repository::init($approval)->update($request);
         } catch (Throwable $exception) {
+            info($exception);
             return redirect()->back()->withErrors([
                 'error' => __('messages.error.internal_server'),
                 'exception' => $exception->getMessage()
@@ -113,9 +114,9 @@ class ApprovalController extends Controller
     }
 
     /**
-     * 
+     *
      * Convert module string to route format.
-     * 
+     *
      * @return  String
      */
     public function routeModule()
@@ -124,9 +125,9 @@ class ApprovalController extends Controller
     }
 
     /**
-     * 
+     *
      * Convert page string to route format.
-     * 
+     *
      * @return  String
      */
     public function routePage()

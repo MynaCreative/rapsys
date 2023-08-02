@@ -19,7 +19,7 @@
         <!-- <div class="col-lg-6">
             <label for="cost_center" class="form-label">Department</label>
             <b-form-input id="cost_center" v-model="item.cost_center" aria-describedby="input-cost_center-feedback"/>
-            <Multiselect id="cost_center" v-model="item.department" 
+            <Multiselect id="cost_center" v-model="item.department"
                 @select="(option) => item.department_id = option.id" @clear="() => item.department_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-cost_center-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
         </div>
@@ -29,7 +29,7 @@
         </div> -->
         <div class="col-lg-6">
             <label for="withholding" class="form-label">Withholding</label>
-            <Multiselect id="withholding" v-model="item.withholding" 
+            <Multiselect id="withholding" v-model="item.withholding"
                 @select="(option) => item.withholding_id = option.id" @clear="() => item.withholding_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-withholding-feedback" :options="references.withholdings" placeholder="Select data"></Multiselect>
         </div>
@@ -41,7 +41,7 @@
         </div>
         <div class="col-lg-6">
             <label for="area" class="form-label">Area</label>
-            <Multiselect id="area" v-model="item.area" 
+            <Multiselect id="area" v-model="item.area"
                 @select="(option) => item.area_id = option.id" @clear="() => item.area_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-area-feedback" :options="references.areas" placeholder="Select data"></Multiselect>
         </div>
@@ -53,19 +53,23 @@
         </div>
         <div class="col-lg-6">
             <label for="sales_channel" class="form-label">Sales Channel</label>
-            <Multiselect id="sales_channel" v-model="item.sales_channel" 
+            <Multiselect id="sales_channel" v-model="item.sales_channel"
                 @select="(option) => item.sales_channel_id = option.id" @clear="() => item.sales_channel_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-sales_channel-feedback" :options="references.sales_channels" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="cost_center" class="form-label">Cost Center</label>
-            <Multiselect id="cost_center" v-model="item.cost_center" 
+            <Multiselect id="cost_center" v-model="item.cost_center"
                 @select="(option) => item.cost_center_id = option.id" @clear="() => item.cost_center_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="expense_coa" class="form-label">Expense COA</label>
             <b-form-input id="expense_coa" v-model="item.expense_coa" aria-describedby="input-expense_coa-feedback"/>
+        </div>
+        <div class="col-lg-6">
+            <label for="description" class="form-label">Description</label>
+            <b-form-input id="expense_coa" v-model="item.description" aria-describedby="input-description-feedback"/>
         </div>
     </div>
 </template>

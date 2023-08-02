@@ -14,6 +14,7 @@
             <th>Delta Validation Scan Compliance</th>
             <th>Delta Validation Ops Plan</th>
             <th>Delta Validation Score</th>
+            <th>Message</th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +43,7 @@
             <td>{{ $row->validation_scan_compliance ? '✓' : '✗' }}</td>
             <td>{{ $row->validation_ops_plan ? '✓' : '✗' }}</td>
             <td>{{ $row->validation_score }}</td>
+            <td>{{ $row->message }}</td>
         </tr>
         @endforeach
     </tbody>
