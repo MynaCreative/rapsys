@@ -85,7 +85,7 @@ class DeltaValidation implements ShouldQueue
         $messages = [];
 
         $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
-        if ($validationReference) {
+        if ($validationReference || $item->validation_reference) {
             $area = $this->getArea($delta['data'][0]['origin']);
             if ($area) {
                 $areaId = optional($area)->id;
@@ -105,9 +105,9 @@ class DeltaValidation implements ShouldQueue
                 $messages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
             }
             $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
-            if (!$validationBillExist && $area && $salesChannel && $product) {
+            if ((!$validationBillExist && $area && $salesChannel && $product) || $item->validation_bill) {
                 $validationWeight = $delta['data'][0]['tot_weight'] == $item->weight ? true : false;
-                if ($validationWeight) {
+                if ($validationWeight || $item->validation_weight) {
                     if ($item->expense->mandatory_scan) {
                         // $deltaBatch = Delta::awbBatch([$item->code]);
                         // $tracking = array_column($deltaBatch['data']['tracking'], 'tracking_id');
