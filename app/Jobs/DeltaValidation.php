@@ -104,7 +104,8 @@ class DeltaValidation implements ShouldQueue
             } else {
                 $messages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
             }
-            $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
+            // $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
+            $validationBillExist = false;
             if ((!$validationBillExist && $area && $salesChannel && $product) || $item->validation_bill) {
                 $validationWeight = $delta['data'][0]['tot_weight'] == $item->weight ? true : false;
                 if ($validationWeight || $item->validation_weight) {
