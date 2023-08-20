@@ -75,7 +75,7 @@ export default {
     deleteData(id, undo = false){
         Swal.fire({
             title: `Are you sure you want to ${undo ? 'Restore' : 'Delete'} this item?`,
-            text: undo ? false : "Don't worry, you can restore it again.",
+            text: undo ? false : "After deleted, you can't restore it again.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: "#34c38f",

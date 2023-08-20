@@ -76,11 +76,11 @@
                                 <td class="text-center text-success">
                                     <div class="flex-grow-1">
                                         <h6 class="text-success fs-11 mb-1" title="Valid Amount After Tax">
-                                            {{ item.invoice.total_amount_after_tax_valid.toLocaleString() }}
+                                            {{ item.invoice.total_amount_valid.toLocaleString() }}
                                             <i class="ri-check-line align-middle"></i>
                                         </h6>
                                         <h6 class="text-danger fs-11 mb-0" title="Invalid Amount After Tax">
-                                            {{ item.invoice.total_amount_after_tax_invalid.toLocaleString() }}
+                                            {{ item.invoice.total_amount_invalid.toLocaleString() }}
                                             <i class="ri-close-line align-middle"></i>
                                         </h6>
                                     </div>

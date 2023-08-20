@@ -68,13 +68,13 @@
                                 </td>
                                 <td class="text-end text-success">
                                     <h6 class="text-success fs-11 mb-0">
-                                        {{ item.total_amount_after_tax_valid.toLocaleString() }}
+                                        {{ item.total_amount_valid.toLocaleString() }}
                                         <i class="ri-check-line align-middle"></i>
                                     </h6>
                                 </td>
                                 <td class="text-end">
                                     <h6 class="text-danger fs-11 mb-0">
-                                        {{ item.total_amount_after_tax_invalid.toLocaleString() }}
+                                        {{ item.total_amount_invalid.toLocaleString() }}
                                         <i class="ri-close-line align-middle"></i>
                                     </h6>
                                 </td>
@@ -116,11 +116,11 @@
                                                 <i class="ri-pencil-fill fs-16"></i>
                                             </Link>
                                         </li>
-                                        <!-- <li class="list-inline-item" title="Remove">
+                                        <li class="list-inline-item" title="Remove" v-if="item.document_status != 'closed'">
                                             <a href="javascript:void(0);" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>
-                                        </li> -->
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>

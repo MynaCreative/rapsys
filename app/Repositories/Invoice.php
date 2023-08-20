@@ -84,8 +84,8 @@ class Invoice
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
             ->through(function ($item) {
-                $items = $item->smuItems->count() + $item->awbItems()->count();
-                $validated_items = $item->smuItems()->where('is_validated', true)->count() + $item->awbItems()->where('is_validated', true)->count();
+                $items = $item->smuItems->count() + $item->awbItems()->where('invoice_smu_id', null)->count();
+                $validated_items = $item->smuItems()->where('is_validated', true)->count() + $item->awbItems()->where('is_validated', true)->where('invoice_smu_id', null)->count();
                 return [
                     'id'                                => $item->id,
                     'code'                              => $item->code,

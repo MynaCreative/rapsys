@@ -127,7 +127,40 @@ class Invoice extends Model
                                 $item = $group->first();
                                 if ($item->product && $item->area) {
                                     $description = implode('|', array_filter([
-                                        $expense->code,
+                                        $expense->expense->code,
+                                        $group->count() . $item->type,
+                                        $item->product->code ?? null,
+                                        $item->area->code ?? null
+                                    ]));
+                                    $amount = $group->sum('amount');
+                                    $withholding = ($item->withholding->deduction ?? 0) * $amount;
+                                    $tax = ($item->tax->deduction ?? 0) * $amount;
+                                    $items[] = [
+                                        'description' => $description,
+                                        'line_type_code' => 'ITEM',
+                                        'ppn_code' => $item->tax->name,
+                                        'tax_rate_id' => $item->tax->code,
+                                        'awt_group_id' => $item->withholding->code,
+                                        'awt_group_name' => $item->withholding->name,
+                                        'ppn_code' => $item->tax->name,
+                                        'amount' => $amount,
+                                        'amount_withholding' => $withholding,
+                                        'amount_tax' => $tax,
+                                        'amount_after_tax' => $amount + $tax,
+                                        'amount_after_wht' => $amount - $withholding + $tax,
+                                        'dist_code_concat' => $item->dist,
+                                    ];
+                                }
+                            };
+                        }
+                        if ($expense->type == InvoiceExpense::TYPE_SMU) {
+                            $dists = $expense->awbItems;
+                            $distGroups = $dists->groupBy('dist');
+                            foreach ($distGroups as $group) {
+                                $item = $group->first();
+                                if ($item->product && $item->area) {
+                                    $description = implode('|', array_filter([
+                                        $expense->expense->code,
                                         $group->count() . $item->type,
                                         $item->product->code ?? null,
                                         $item->area->code ?? null
@@ -154,6 +187,39 @@ class Invoice extends Model
                             };
                         }
                     }
+                }
+                if ($this->items) {
+                    $dists = $this->items;
+                    $distGroups = $dists->groupBy('dist');
+                    foreach ($distGroups as $group) {
+                        $item = $group->first();
+                        if ($item->product && $item->area) {
+                            $description = implode('|', array_filter([
+                                $item->expense->code,
+                                $group->count(),
+                                $item->product->code ?? null,
+                                $item->area->code ?? null
+                            ]));
+                            $amount = $group->sum('amount');
+                            $withholding = ($item->withholding->deduction ?? 0) * $amount;
+                            $tax = ($item->tax->deduction ?? 0) * $amount;
+                            $items[] = [
+                                'description' => $description,
+                                'line_type_code' => 'ITEM',
+                                'ppn_code' => $item->tax->name,
+                                'tax_rate_id' => $item->tax->code,
+                                'awt_group_id' => $item->withholding->code ?? null,
+                                'awt_group_name' => $item->withholding->name ?? null,
+                                'ppn_code' => $item->tax->name,
+                                'amount' => $amount,
+                                'amount_withholding' => $withholding,
+                                'amount_tax' => $tax,
+                                'amount_after_tax' => $amount + $tax,
+                                'amount_after_wht' => $amount - $withholding + $tax,
+                                'dist_code_concat' => $item->dist,
+                            ];
+                        }
+                    };
                 }
                 // if ($this->awbItems || $this->items) {
                 //     $dists = collect([$this->awbItems])->reduce(function ($arr, $item) {

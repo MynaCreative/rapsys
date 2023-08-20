@@ -50,6 +50,9 @@ class InvoiceExpense extends Model
         'total_vat_tax',
         'grand_total',
 
+        'total_valid_amount',
+        'total_invalid_amount',
+
         'total_valid_validation_reference',
         'total_valid_validation_weight',
         'total_valid_validation_scan_compliance',
@@ -91,6 +94,9 @@ class InvoiceExpense extends Model
         'total_withholding_tax'                     => 'float',
         'total_vat_tax'                             => 'float',
         'grand_total'                               => 'float',
+
+        'total_valid_amount'                        => 'float',
+        'total_invalid_amount'                      => 'float',
 
         'total_weight_validation_reference'         => 'float',
         'total_weight_validation_weight'            => 'float',

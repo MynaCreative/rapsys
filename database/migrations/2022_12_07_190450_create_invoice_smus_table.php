@@ -61,6 +61,7 @@ return new class extends Migration
 
             $table->boolean('is_validated')->default(false);
             $table->text('message')->nullable();
+            $table->text('awb_message')->nullable();
 
             /** Standard Item Timestamp **/
             $table->unsignedBigInteger('created_by')->nullable();

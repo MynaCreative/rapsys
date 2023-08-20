@@ -200,7 +200,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    <div class="card-body p-4 border-top border-top-dashed">
+                                    <!-- <div class="card-body p-4 border-top border-top-dashed">
                                         <h6 class="text-muted text-uppercase fw-semibold mb-4">Amount Before Tax</h6>
                                         <div class="table-responsive">
                                             <table class="table mb-0 table-borderless">
@@ -220,7 +220,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="card-body p-4 border-top border-top-dashed">
                                         <h6 class="text-muted text-uppercase fw-semibold mb-4">Amount After Tax</h6>
                                         <div class="table-responsive">
@@ -232,11 +232,11 @@
                                                     </tr>
                                                     <tr>
                                                         <th><span class="fw-medium">Total Valid</span></th>
-                                                        <td class="text-end">{{ form.total_amount_after_tax_valid.toLocaleString() }}</td>
+                                                        <td class="text-end">{{ form.total_amount_valid.toLocaleString() }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th><span class="fw-medium">Total Invalid</span></th>
-                                                        <td class="text-end">{{ form.total_amount_after_tax_invalid.toLocaleString() }}</td>
+                                                        <td class="text-end">{{ form.total_amount_invalid.toLocaleString() }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

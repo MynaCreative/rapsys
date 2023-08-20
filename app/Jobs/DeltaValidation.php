@@ -204,6 +204,8 @@ class DeltaValidation implements ShouldQueue
         $totalWeightDim = 0;
         $totalWeightActual = 0;
 
+        $messages = [];
+
         $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
         if ($validationReference) {
             $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
@@ -226,34 +228,54 @@ class DeltaValidation implements ShouldQueue
                         // $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
                         $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
+                        if (!$referenceMandatoryScan) {
+                            $messages[] = "SMU: '" . $item->code . "' not passed scan compliance";
+                        }
+                    } else {
+                        $messages[] = "Expense doesn't have mandatory scan";
                     }
+                } else {
+                    $messages[] = "SMU: '" . $item->code . "' weight is : {$item->weight} but delta is : " . $delta['data']['total_weight_smu'];
                 }
             }
+        } else {
+            $messages[] = "SMU: '" . $item->code . "' not found in Delta API";
         }
         $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
-        $item->update([
-            'validation_reference' => $validationReference,
-            'validation_bill' => !$validationBillExist,
-            'validation_weight' => $validationWeight,
-            'validation_scan_compliance' => $referenceMandatoryScan,
-            'validation_ops_plan' => $referenceOpsPlan,
-
-            'total_weight_smu' => $totalWeightSmu,
-            'total_weight_awb' => $totalWeightAwb,
-            'total_weight_dim' => $totalWeightDim,
-            'total_weight_actual' => $totalWeightActual,
-
-            'validation_score' => $validation_score,
-            'is_validated' => true,
-        ]);
         if ($validation_score == 5) {
             $awbItems = [];
             foreach ($delta['data']['airwaybill'] as $awbItem) {
+                $awbMessages = [];
+                $area = null;
+                $product = null;
+                $salesChannel = null;
+                $areaId = null;
+                $productId = null;
+                $salesChannelId = null;
                 if ($awbItem['awb']) {
                     $deltaAwb = Delta::awbDetail($awbItem['awb']);
-                    $area = $this->getArea($deltaAwb['data'][0]['origin']);
-                    $salesChannel = $this->getSalesChannel($deltaAwb['data'][0]['sales_channel']);
-                    $product = $this->getProduct($deltaAwb['data'][0]['service_type_id']);
+                    if (trim($deltaAwb['msg']) == 'Data Found') {
+                        $area = $this->getArea($deltaAwb['data'][0]['origin']);
+                        if ($area) {
+                            $areaId = optional($area)->id;
+                        } else {
+                            $awbMessages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+                        }
+                        $salesChannel = $this->getSalesChannel($deltaAwb['data'][0]['sales_channel']);
+                        if ($salesChannel) {
+                            $salesChannelId = optional($salesChannel)->id;
+                        } else {
+                            $awbMessages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+                        }
+                        $product = $this->getProduct($deltaAwb['data'][0]['service_type_id']);
+                        if ($product) {
+                            $productId = optional($product)->id;
+                        } else {
+                            $awbMessages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                        }
+                    } else {
+                        $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' not found in Delta API";
+                    }
 
                     $percentage = (($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']) * 100);
                     $amount = (float) ($item->amount * ($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']));
@@ -271,18 +293,20 @@ class DeltaValidation implements ShouldQueue
                     $awbItems[] = [
                         'invoice_id' => $item->invoice_id,
                         'expense_id' => $item->expense_id,
+                        'invoice_expense_id' => $item->invoice_expense_id,
                         'cost_center_id' => $item->cost_center_id,
                         'tax_id' => $item->tax_id,
                         'withholding_id' => $item->withholding_id,
+                        'smu' => $item->code,
                         'code' => $awbItem['awb'],
                         'weight' => $awbItem['total_weight_awb'],
                         'delta_weight' => $awbItem['total_weight_awb'],
                         'delta_weight_actual' => $awbItem['total_weight_actual'],
                         'delta_weight_dim' => $awbItem['total_weight_dim'],
 
-                        'area_id' => $area->id,
-                        'sales_channel_id' => $salesChannel->id,
-                        'product_id' => $product->id,
+                        'area_id' => $areaId,
+                        'product_id' => $productId,
+                        'sales_channel_id' => $salesChannelId,
 
                         'amount' => $amount,
                         'delta_amount' => $amount,
@@ -291,6 +315,10 @@ class DeltaValidation implements ShouldQueue
                         'vat_tax' => $tax,
                         'withholding_tax' => $withholding,
                         'amount_after_tax' => $amountAfterTax,
+
+                        'message' => count($awbMessages) > 0 ? implode(', ', $awbMessages) : null,
+                        'validation_score' => count($awbMessages) > 0 ? 0 : 5,
+                        'is_validated' => 1,
 
                         'dist' => implode('-', [
                             $item->invoice->sbu->coa ?? null,
@@ -308,6 +336,24 @@ class DeltaValidation implements ShouldQueue
             }
             $item->awbItems()->createMany($awbItems);
         }
+        $item->update([
+            'validation_reference' => $validationReference,
+            'validation_bill' => !$validationBillExist,
+            'validation_weight' => $validationWeight,
+            'validation_scan_compliance' => $referenceMandatoryScan,
+            'validation_ops_plan' => $referenceOpsPlan,
+
+            'total_weight_smu' => $totalWeightSmu,
+            'total_weight_awb' => $totalWeightAwb,
+            'total_weight_dim' => $totalWeightDim,
+            'total_weight_actual' => $totalWeightActual,
+
+            'validation_score' => $validation_score,
+            'is_validated' => true,
+
+            'message' => count($messages) > 0 ? implode(', ', $messages) : null,
+            'awb_message' => count($awbItems) > 0 ? implode(', ', array_column($awbItems, 'message')) : null,
+        ]);
     }
 
     public function validationBill($id, $expense, $code)

@@ -58,6 +58,7 @@ class InvoiceSmu extends Model
 
         'is_validated',
         'message',
+        'awb_message',
 
         'created_by',
         'updated_by'
