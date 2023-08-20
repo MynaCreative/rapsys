@@ -36,7 +36,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->connectTimeout(50000)
+            ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
             ])
@@ -61,7 +61,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->connectTimeout(50000)
+            ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
             ])
@@ -84,7 +84,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->connectTimeout(50000)
+            ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
             ])
@@ -107,7 +107,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->connectTimeout(50000)
+            ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
             ])
@@ -130,7 +130,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->connectTimeout(50000)
+            ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
             ])
