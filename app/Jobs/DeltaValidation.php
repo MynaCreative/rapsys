@@ -242,8 +242,8 @@ class DeltaValidation implements ShouldQueue
             $messages[] = "SMU: '" . $item->code . "' not found in Delta API";
         }
         $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
+        $awbItems = [];
         if ($validation_score == 5) {
-            $awbItems = [];
             foreach ($delta['data']['airwaybill'] as $awbItem) {
                 $awbMessages = [];
                 $area = null;
