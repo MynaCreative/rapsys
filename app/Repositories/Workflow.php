@@ -36,6 +36,8 @@ class Workflow
     public static function all(Request $request)
     {
         $query = Model::withTrashed()
+            ->filtering($request)
+            ->searching($request, ['code', 'name'])
             ->with(['createdUser:id,name', 'updatedUser:id,name', 'department:id,name', 'items'])
             ->latest();
 
@@ -157,8 +159,9 @@ class Workflow
      */
     public static function reference(): array
     {
+        $usedDepartmentIds = Model::pluck('department_id')->toArray();
         return [
-            'departments' => Department::pluck('name', 'id'),
+            'departments' => Department::whereNotIn('id', $usedDepartmentIds)->pluck('name', 'id'),
             'users' => User::pluck('name', 'id'),
         ];
     }

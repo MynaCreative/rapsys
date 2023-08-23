@@ -8,6 +8,7 @@ export default () => {
         form: {
             id: null,
             department_id: null,
+            department: null,
             code: null,
             name: null,
             description: null,
