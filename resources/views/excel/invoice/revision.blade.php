@@ -9,7 +9,7 @@
             <th>Weight</th>
             <th width=10></th>
             <th>Delta Validation Code</th>
-            <th>Delta Validation Already Bill</th>
+            <th>Delta Validation Not Already Bill</th>
             <th>Delta Validation Weight</th>
             <th>Delta Validation Scan Compliance</th>
             <th>Delta Validation Ops Plan</th>
