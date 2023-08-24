@@ -31,12 +31,12 @@ class Delta
         $payload = [
             'body' => [
                 'reference_number' => $code,
-                'tracking_status_id' => 'SMU'
+                'tracking_status_id' => 'MDE'
             ]
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->retry(2, 1500)
+            // ->retry(2, 1500)
             ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
@@ -62,7 +62,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->retry(2, 1500)
+            // ->retry(2, 1500)
             ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
@@ -86,7 +86,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->retry(2, 1500)
+            // ->retry(2, 1500)
             ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
@@ -110,7 +110,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->retry(2, 1500)
+            // ->retry(2, 1500)
             ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
@@ -134,7 +134,7 @@ class Delta
         ];
         $signature = self::sign($payload);
         return Http::withToken(self::token())
-            ->retry(2, 1500)
+            // ->retry(2, 1500)
             ->connectTimeout(100000)
             ->withOptions([
                 'stream' => true,
