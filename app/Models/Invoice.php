@@ -379,7 +379,7 @@ class Invoice extends Model
      */
     public function smuItems()
     {
-        return $this->hasMany(InvoiceSmu::class)->latest()->orderBy('validation_score')->orderByDesc('message');
+        return $this->hasMany(InvoiceSmu::class)->orderBy('is_validated')->latest()->orderBy('validation_score')->orderByDesc('message');
     }
 
     /**
@@ -387,7 +387,7 @@ class Invoice extends Model
      */
     public function awbItems()
     {
-        return $this->hasMany(InvoiceAwb::class)->latest()->orderBy('validation_score')->orderByDesc('message');
+        return $this->hasMany(InvoiceAwb::class)->orderBy('is_validated')->latest()->orderBy('validation_score')->orderByDesc('message');
     }
 
     /**
