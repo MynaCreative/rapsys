@@ -86,23 +86,35 @@ class DeltaValidation implements ShouldQueue
 
         $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
         if ($validationReference || $item->validation_reference) {
-            $area = $this->getArea($delta['data'][0]['origin']);
-            if ($area) {
-                $areaId = optional($area)->id;
+            if (isset($delta['data'][0]['origin'])) {
+                $area = $this->getArea($delta['data'][0]['origin']);
+                if ($area) {
+                    $areaId = optional($area)->id;
+                } else {
+                    $messages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+                }
             } else {
-                $messages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+                $messages[] = "AWB: '" . $item->code . "' doesn't have origin";
             }
-            $salesChannel = $this->getSalesChannel($delta['data'][0]['sales_channel']);
-            if ($salesChannel) {
-                $salesChannelId = optional($salesChannel)->id;
+            if (isset($delta['data'][0]['sales_channel'])) {
+                $salesChannel = $this->getSalesChannel($delta['data'][0]['sales_channel']);
+                if ($salesChannel) {
+                    $salesChannelId = optional($salesChannel)->id;
+                } else {
+                    $messages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+                }
             } else {
-                $messages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+                $messages[] = "AWB: '" . $item->code . "' doesn't have sales_channel";
             }
-            $product = $this->getProduct($delta['data'][0]['service_type_id']);
-            if ($product) {
-                $productId = optional($product)->id;
+            if (isset($delta['data'][0]['service_type_id'])) {
+                $product = $this->getProduct($delta['data'][0]['service_type_id']);
+                if ($product) {
+                    $productId = optional($product)->id;
+                } else {
+                    $messages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                }
             } else {
-                $messages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                $messages[] = "AWB: '" . $item->code . "' doesn't have service_type_id";
             }
             // $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
             $validationBillExist = false;
@@ -255,23 +267,35 @@ class DeltaValidation implements ShouldQueue
                 if ($awbItem['awb']) {
                     $deltaAwb = Delta::awbDetail($awbItem['awb']);
                     if (trim($deltaAwb['msg']) == 'Data Found') {
-                        $area = $this->getArea($deltaAwb['data'][0]['origin']);
-                        if ($area) {
-                            $areaId = optional($area)->id;
+                        if (isset($deltaAwb['data'][0]['origin'])) {
+                            $area = $this->getArea($deltaAwb['data'][0]['origin']);
+                            if ($area) {
+                                $areaId = optional($area)->id;
+                            } else {
+                                $awbMessages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+                            }
                         } else {
-                            $awbMessages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+                            $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have origin";
                         }
-                        $salesChannel = $this->getSalesChannel($deltaAwb['data'][0]['sales_channel']);
-                        if ($salesChannel) {
-                            $salesChannelId = optional($salesChannel)->id;
+                        if (isset($deltaAwb['data'][0]['sales_channel'])) {
+                            $salesChannel = $this->getSalesChannel($deltaAwb['data'][0]['sales_channel']);
+                            if ($salesChannel) {
+                                $salesChannelId = optional($salesChannel)->id;
+                            } else {
+                                $awbMessages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+                            }
                         } else {
-                            $awbMessages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+                            $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have sales_channel";
                         }
-                        $product = $this->getProduct($deltaAwb['data'][0]['service_type_id']);
-                        if ($product) {
-                            $productId = optional($product)->id;
+                        if (isset($deltaAwb['data'][0]['service_type_id'])) {
+                            $product = $this->getProduct($deltaAwb['data'][0]['service_type_id']);
+                            if ($product) {
+                                $productId = optional($product)->id;
+                            } else {
+                                $awbMessages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                            }
                         } else {
-                            $awbMessages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                            $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have service_type_id";
                         }
                     } else {
                         $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' not found in Delta API";
