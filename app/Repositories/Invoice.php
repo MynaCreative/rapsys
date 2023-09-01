@@ -469,7 +469,8 @@ class Invoice
     public function deltaValidate(): Model
     {
         if ($this->model->smuItems) {
-            $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
+            // $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
+            $smuItems = $this->model->smuItems->where('is_validated', false);
             foreach ($smuItems as $item) {
                 $amount = $item->amount;
                 $tax = 0;
@@ -492,7 +493,8 @@ class Invoice
         }
 
         if ($this->model->awbItems) {
-            $awbItems = $this->model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
+            // $awbItems = $this->model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
+            $awbItems = $this->model->awbItems->where('is_validated', false)->where('uuid', '!=', null);
             foreach ($awbItems as $item) {
                 $amount = $item->amount;
                 $tax = 0;
