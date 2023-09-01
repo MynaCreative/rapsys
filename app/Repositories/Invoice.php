@@ -236,7 +236,8 @@ class Invoice
                                             'cost_center_id'        => $upload['cost_center_id'] ?? null,
                                             'withholding_id'        => $upload['withholding_id']  ?? null,
                                             'tax_id'                => $upload['tax_id']  ?? null,
-                                            'type'                  => $upload['type']  ?? null
+                                            'type'                  => $upload['type']  ?? null,
+                                            'is_validated'          => 0,
                                         ];
                                     })
                                     ->toArray();
@@ -264,6 +265,7 @@ class Invoice
                                             'cost_center_id'    => $upload['cost_center_id'] ?? null,
                                             'withholding_id'    => $upload['withholding_id']  ?? null,
                                             'tax_id'            => $upload['tax_id']  ?? null,
+                                            'is_validated'      => 0,
                                         ];
                                     })
                                     ->toArray();
@@ -480,7 +482,7 @@ class Invoice
                     $amountAfterTax = $amount + $tax - $withholding;
                 }
                 $item->update([
-                    'is_validated' => false,
+                    // 'is_validated' => false,
                     'vat_tax' => $tax,
                     'withholding_tax' => $withholding,
                     'amount_after_tax' => $amountAfterTax
@@ -503,7 +505,7 @@ class Invoice
                     $amountAfterTax = $amount + $tax - $withholding;
                 }
                 $item->update([
-                    'is_validated' => false,
+                    // 'is_validated' => false,
                     'vat_tax' => $tax,
                     'withholding_tax' => $withholding,
                     'amount_after_tax' => $amountAfterTax
