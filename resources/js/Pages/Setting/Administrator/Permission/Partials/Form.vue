@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-12">
             <label for="permission-group" class="form-label">Permission Group</label>
-            <Multiselect id="permission-group" v-model="form.permission_group_id" :class="{'is-invalid' : form.errors.permission_group_id }"
+            <Multiselect id="permission-group" v-model="form.permission_group_id" :class="{'is-invalid' : form.errors.permission_group_id }" :searchable="true"
                 aria-describedby="input-permission-group-feedback" :options="references.permission_groups" placeholder="Select data"></Multiselect>
             <b-form-invalid-feedback id="input-permission-group-feedback" v-html="form.errors.permission_group_id"/>
         </div>

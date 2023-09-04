@@ -18,7 +18,7 @@
         "lodash": "^4.17.21",
         "lottie-web": "^5.12.2",
         "simplebar": "5.3.8",
-        "simplebar-vue3": "^0.2.1",
+        "simplebar-vue3": "0.2.0",
         "sweetalert2": "^11.7.27",
         "terser": "^5.19.3",
         "v-money3": "^3.24.0",

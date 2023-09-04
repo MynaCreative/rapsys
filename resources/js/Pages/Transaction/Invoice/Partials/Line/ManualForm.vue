@@ -29,37 +29,37 @@
         </div> -->
         <div class="col-lg-6">
             <label for="withholding" class="form-label">Withholding</label>
-            <Multiselect id="withholding" v-model="item.withholding"
+            <Multiselect id="withholding" v-model="item.withholding" :searchable="true"
                 @select="(option) => item.withholding_id = option.id" @clear="() => item.withholding_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-withholding-feedback" :options="references.withholdings" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="tax" class="form-label">Tax</label>
-            <Multiselect id="tax" v-model="item.tax"
+            <Multiselect id="tax" v-model="item.tax" :searchable="true"
                 @select="(option) => item.tax_id = option.id" @clear="() => item.tax_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-tax-feedback" :options="references.taxes" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="area" class="form-label">Area</label>
-            <Multiselect id="area" v-model="item.area"
+            <Multiselect id="area" v-model="item.area" :searchable="true"
                 @select="(option) => item.area_id = option.id" @clear="() => item.area_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-area-feedback" :options="references.areas" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="product" class="form-label">Product / Project</label>
-            <Multiselect id="product" v-model="item.product"
+            <Multiselect id="product" v-model="item.product" :searchable="true"
                 @select="(option) => item.product_id = option.id" @clear="() => item.product_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-product-feedback" :options="references.products" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="sales_channel" class="form-label">Sales Channel</label>
-            <Multiselect id="sales_channel" v-model="item.sales_channel"
+            <Multiselect id="sales_channel" v-model="item.sales_channel" :searchable="true"
                 @select="(option) => item.sales_channel_id = option.id" @clear="() => item.sales_channel_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-sales_channel-feedback" :options="references.sales_channels" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6">
             <label for="cost_center" class="form-label">Cost Center</label>
-            <Multiselect id="cost_center" v-model="item.cost_center"
+            <Multiselect id="cost_center" v-model="item.cost_center" :searchable="true"
                 @select="(option) => item.cost_center_id = option.id" @clear="() => item.cost_center_id = null" :object="true" label="name" valueProp="id"
                 aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
         </div>

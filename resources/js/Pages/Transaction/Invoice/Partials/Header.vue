@@ -88,7 +88,7 @@
             <div class="col-lg-4">
                 <label for="term_date" class="form-label">Term Date</label>
                 <b-form-input id="term_date" v-model="form.term_date" :class="{'is-invalid' : form.errors.term_date }" type="date"
-                    aria-describedby="input-term_date-feedback" disabled/>
+                    aria-describedby="input-term_date-feedback"/>
                 <b-form-invalid-feedback id="input-term_date-feedback" v-html="form.errors.term_date"/>
             </div>
         </div>
@@ -114,7 +114,7 @@
             <div class="col-lg-4">
                 <label for="due_date" class="form-label">Due Date</label>
                 <b-form-input id="due_date" v-model="form.due_date" :class="{'is-invalid' : form.errors.due_date }" type="date"
-                    aria-describedby="input-due_date-feedback" disabled/>
+                    aria-describedby="input-due_date-feedback" />
                 <b-form-invalid-feedback id="input-due_date-feedback" v-html="form.errors.due_date"/>
             </div>
         </div>

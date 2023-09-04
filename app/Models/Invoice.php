@@ -295,11 +295,22 @@ class Invoice extends Model
     public function setCreatedAtAttribute($value)
     {
         $this->attributes['created_at'] = $value;
-        $id = DB::table('INFORMATION_SCHEMA.TABLES')->select('AUTO_INCREMENT as id')
-            ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
-            ->where('TABLE_NAME', (new self)->getTable())
-            ->value('id');
-        $this->attributes['code'] = 'INV' . sprintf('%06d', $id);
+        // $id = DB::table('INFORMATION_SCHEMA.TABLES')->select('AUTO_INCREMENT as id')
+        //     ->where('TABLE_SCHEMA', DB::connection()->getDatabaseName())
+        //     ->where('TABLE_NAME', (new self)->getTable())
+        //     ->value('id');
+        $prefix = 'INV';
+        $identifier = 'code';
+        $formattedDate = now()->format('Ymd');
+
+        $lastData = static::select([$identifier])
+            ->where($identifier, 'like', "{$prefix}{$formattedDate}%")
+            ->orderBy($identifier, 'desc')
+            ->first();
+
+        $nextNumber = $lastData ? ((int)substr($lastData[$identifier], -3)) + 1 : 1;
+
+        $this->attributes['code'] = "{$prefix}{$formattedDate}" . sprintf('%03d', $nextNumber);
     }
 
     /**

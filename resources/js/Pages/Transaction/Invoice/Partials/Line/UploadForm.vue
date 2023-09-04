@@ -15,27 +15,33 @@
                     <i class="ri-attachment-2 align-bottom"></i>
                     Download Excel template [{{ expense.expense.code }}]
                 </a>
-                <a :href="route(`transaction.invoices.revision`, { invoice : form.id, expense : expense.id })" target="_blank" v-else>
-                    <i class="ri-attachment-2 align-bottom"></i>
-                    Download Invalid Data [{{ expense.expense.code }}]
-                </a>
+                <template v-else>
+                    <a :href="route(`transaction.invoices.revision`, { invoice : form.id, expense : expense.id })" target="_blank" >
+                        <i class="ri-attachment-2 align-bottom"></i>
+                        Download Invalid Data [{{ expense.expense.code }}]
+                    </a><br>
+                    <a :href="route(`transaction.invoices.revision`, { invoice : form.id, expense : expense.id, all: true })" target="_blank" >
+                        <i class="ri-attachment-2 align-bottom"></i>
+                        Download All Data [{{ expense.expense.code }}]
+                    </a>
+                </template>
             </div>
         </div>
         <div class="col-lg-6 p-4">
             <label for="cost_center_upload" class="form-label">Cost Center</label>
-            <Multiselect id="cost_center_upload" v-model="expense.cost_center"
+            <Multiselect id="cost_center_upload" v-model="expense.cost_center" :searchable="true"
                 @select="(option) => expense.cost_center_id = option.id" :object="true" label="name" valueProp="id"
                 aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6 px-4">
             <label for="withholding" class="form-label">Withholding</label>
-            <Multiselect id="withholding" v-model="expense.withholding"
+            <Multiselect id="withholding" v-model="expense.withholding" :searchable="true"
                 @select="(option) => expense.withholding_id = option.id" :object="true" label="name" valueProp="id"
                 aria-describedby="input-withholding-feedback" :options="references.withholdings" placeholder="Select data"></Multiselect>
         </div>
         <div class="col-lg-6 px-4">
             <label for="tax" class="form-label">Tax</label>
-            <Multiselect id="tax" v-model="expense.tax"
+            <Multiselect id="tax" v-model="expense.tax" :searchable="true"
                 @select="(option) => expense.tax_id = option.id" :object="true" label="name" valueProp="id"
                 aria-describedby="input-tax-feedback" :options="references.taxes" placeholder="Select data"></Multiselect>
         </div>

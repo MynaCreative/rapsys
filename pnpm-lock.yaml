@@ -41,8 +41,8 @@ dependencies:
     specifier: 5.3.8
     version: 5.3.8
   simplebar-vue3:
-    specifier: ^0.2.1
-    version: 0.2.1(simplebar@5.3.8)(vue@3.2.45)
+    specifier: 0.2.0
+    version: 0.2.0(simplebar@5.3.8)(vue@3.2.45)
   sweetalert2:
     specifier: ^11.7.27
     version: 11.7.27
@@ -867,7 +867,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001525
-      electron-to-chromium: 1.4.507
+      electron-to-chromium: 1.4.508
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
     dev: false
@@ -1029,8 +1029,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /electron-to-chromium@1.4.507:
-    resolution: {integrity: sha512-brvPFnO1lu3UYBpBht2qWw9qqhdG4htTjT90/9oOJmxQ77VvTxL9+ghErFqQzgj7n8268ONAmlebqjBR/S+qgA==}
+  /electron-to-chromium@1.4.508:
+    resolution: {integrity: sha512-FFa8QKjQK/A5QuFr2167myhMesGrhlOBD+3cYNxO9/S4XzHEXesyTD/1/xF644gC8buFPz3ca6G1LOQD0tZrrg==}
     dev: false
 
   /enhanced-resolve@4.5.0:
@@ -1695,8 +1695,8 @@ packages:
       object-inspect: 1.12.3
     dev: false
 
-  /simplebar-vue3@0.2.1(simplebar@5.3.8)(vue@3.2.45):
-    resolution: {integrity: sha512-0VZj0M5qE48IVXhNV3qybgTELkdWyk0uPb9mLJ9zmT4bmGdiTFL6su31QX8mUXQvroGXdZiBlZycmGBuvgOh0g==}
+  /simplebar-vue3@0.2.0(simplebar@5.3.8)(vue@3.2.45):
+    resolution: {integrity: sha512-07v1y9g4G9Z88uJXsGAM9G4UDhAMVJABthRrnmMNjJstA1KjfmCzYhmUMyYQfEo+6lyhNfhU0d3La9rUB3lShQ==}
     deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     peerDependencies:
       simplebar: 5.3.8

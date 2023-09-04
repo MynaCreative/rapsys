@@ -32,7 +32,7 @@
         </div>
         <div class="col-lg-12">
             <label for="department" class="form-label">Department</label>
-            <Multiselect id="department" v-model="form.department_id" :class="{'is-invalid' : form.errors.department_id }"
+            <Multiselect id="department" v-model="form.department_id" :class="{'is-invalid' : form.errors.department_id }" :searchable="true"
                 aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
             <b-form-invalid-feedback id="input-department-feedback" v-html="form.errors.department"/>
         </div>

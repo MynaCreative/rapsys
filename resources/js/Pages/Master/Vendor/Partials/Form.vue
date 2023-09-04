@@ -16,13 +16,13 @@
         </div>
         <div class="col-lg-12">
             <label for="site" class="form-label">Sites</label>
-            <Multiselect id="site" v-model="form.sites" :class="{'is-invalid' : form.errors.sites }"
+            <Multiselect id="site" v-model="form.sites" :class="{'is-invalid' : form.errors.sites }" :searchable="true"
                 aria-describedby="input-site-feedback" :options="references.sites" placeholder="Select data"></Multiselect>
             <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.sites"/>
         </div>
         <div class="col-lg-12">
             <label for="sbu" class="form-label">SBU</label>
-            <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }"
+            <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }" :searchable="true"
                 aria-describedby="input-sbu-feedback" :options="references.sbus" placeholder="Select data"></Multiselect>
             <b-form-invalid-feedback id="input-sbu-feedback" v-html="form.errors.sbu_id"/>
         </div>

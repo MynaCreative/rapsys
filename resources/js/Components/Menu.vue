@@ -141,17 +141,17 @@
                 <i class="ri-more-fill"></i>
                 <span data-key="t-components">Helps</span>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <Link class="nav-link menu-link" href="/">
                     <i class="ri-book-3-line"></i>
                     <span>Dictionary</span>
                 </Link>
-            </li>
+            </li> -->
             <li class="nav-item">
-                <Link class="nav-link menu-link" href="/">
+                <a class="nav-link menu-link" href="/storage/user-manuals/user-manual.pdf" target="_blank">
                     <i class="ri-book-open-line"></i>
                     <span>User Manual</span>
-                </Link>
+                </a>
             </li>
         </ul>
     </div>

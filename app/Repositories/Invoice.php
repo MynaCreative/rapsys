@@ -398,12 +398,21 @@ class Invoice
         $expense = $this->model->expenses()->where('id', $expense_id)->first();
         $items = [];
         if ($expense->type == InvoiceExpense::TYPE_AWB) {
-            $items = $expense->awbItems()->where('validation_score', '!=', 5)->get();
+            $items = $expense->awbItems()
+                ->when(!request()->get('all'), function ($query) {
+                    $query->where('validation_score', '!=', 5);
+                })
+                ->get();
         }
         if ($expense->type == InvoiceExpense::TYPE_SMU) {
-            $items = $expense->smuItems()->where('validation_score', '!=', 5)->get();
+            $items = $expense->smuItems()
+                ->when(!request()->get('all'), function ($query) {
+                    $query->where('validation_score', '!=', 5);
+                })
+                ->get();
         }
-        return Excel::download(new RevisionTemplate($items), "{$name}-{$expense->expense->code}-line-import-revision-{$date}.xlsx");
+        $name = request()->get('all') ? 'all' : 'revision-invalid';
+        return Excel::download(new RevisionTemplate($items), "{$name}-{$expense->expense->code}-line-import-{$name}-{$date}.xlsx");
     }
 
     /**
