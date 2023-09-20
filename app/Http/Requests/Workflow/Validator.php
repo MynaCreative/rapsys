@@ -16,7 +16,7 @@ class Validator
     public function rules($model = null): array
     {
         return [
-            'department_id'         => ['required', 'unique:' . Department::class . ',id' . ($model ? ',' . $model->department_id : ''), 'exists:' . Department::class . ',id'],
+            'department_id'         => ['required', 'exists:' . Department::class . ',id'],
             'code'                  => ['required'],
             'name'                  => ['required'],
             'items'                 => ['required', 'array'],
