@@ -255,7 +255,7 @@ class DeltaValidation implements ShouldQueue
         }
         $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
         $awbItems = [];
-        if ($validation_score == 5) {
+        if ($validation_score >= 2) {
             foreach ($delta['data']['airwaybill'] as $awbItem) {
                 $awbMessages = [];
                 $area = null;
