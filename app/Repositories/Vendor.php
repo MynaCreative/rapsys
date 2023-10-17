@@ -81,10 +81,10 @@ class Vendor
             Model::updateOrCreate(
                 [
                     'id' => $item->vendor_id,
-                    'code' => $item->vendor_id
                 ],
                 [
                     'sbu_id' => 1,
+                    'code' => $item->vendor_id,
                     'name' => $item->vendor_name,
                     'type' => $item->vendor_type_lookup_code
                 ],
@@ -104,9 +104,9 @@ class Vendor
             VendorSite::updateOrCreate(
                 [
                     'id' => $item->vendor_site_id,
-                    'code' => $item->vendor_site_id
                 ],
                 [
+                    'code' => $item->vendor_site_id,
                     'vendor_id' => $item->vendor_id,
                     'name' => $item->vendor_site_code,
                 ],

@@ -1,18 +1,35 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Staudenmeir\LaravelMigrationViews\Facades\Schema;
 
-return new class extends Migration
+class UpdateView extends Command
 {
-    private $viewName = 'view_invoice_awbs';
     /**
-     * Run the migrations.
+     * The name and signature of the console command.
      *
-     * @return void
+     * @var string
      */
-    public function up()
+    protected $signature = 'update:view';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Update view';
+
+    private $viewName = 'view_invoice_awbs';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
         $query = DB::table('invoice_awbs')
             ->join('invoices', 'invoices.id', '=', 'invoice_awbs.invoice_id')
@@ -20,14 +37,4 @@ return new class extends Migration
 
         Schema::createOrReplaceView($this->viewName, $query);
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropViewIfExists($this->viewName);
-    }
-};
+}
