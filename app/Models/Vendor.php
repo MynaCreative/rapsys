@@ -30,6 +30,7 @@ class Vendor extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'sbu_id',
         'code',
         'name',
