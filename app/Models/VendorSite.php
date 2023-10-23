@@ -29,6 +29,7 @@ class VendorSite extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'vendor_id',
         'code',
         'name',
