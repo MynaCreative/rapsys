@@ -33,7 +33,22 @@ class UpdateView extends Command
     {
         $query = DB::table('invoice_awbs')
             ->join('invoices', 'invoices.id', '=', 'invoice_awbs.invoice_id')
-            ->select('invoices.code as invoice_code', 'invoices.invoice_number', 'invoices.supplier_tax_invoice', 'invoices.invoice_date', 'invoices.posting_date', 'invoices.term_date', 'invoices.document_status', 'invoices.approval_status', 'invoice_awbs.*');
+            ->select([
+                'invoices.code as invoice_code',
+                'invoices.invoice_number',
+                'invoices.supplier_tax_invoice',
+                'invoices.invoice_date',
+                'invoices.posting_date',
+                'invoices.term_date',
+                'invoices.document_status',
+                'invoices.approval_status',
+                DB::raw('(CASE
+                    WHEN invoices.document_status = "closed" THEN "N"
+                    WHEN invoices.document_status = "cancelled" THEN "Y"
+                    ELSE null
+                END) AS void_status'),
+                'invoice_awbs.*'
+            ]);
 
         Schema::createOrReplaceView($this->viewName, $query);
     }
