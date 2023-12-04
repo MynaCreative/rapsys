@@ -36,8 +36,8 @@ class DeltaValidation implements ShouldQueue
      *
      * @var int
      */
-    public $timeout = 6300;
-    public $memory = 1024;
+    public $timeout = 10000;
+    public $memory = 2048;
 
     /**
      * Create a new job instance.

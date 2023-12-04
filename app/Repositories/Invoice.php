@@ -505,8 +505,8 @@ class Invoice
         if ($this->model->smuItems) {
             $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
             // $smuItems = $this->model->smuItems->where('is_validated', false);
-            $this->model->awbItems()->delete();
             foreach ($smuItems as $item) {
+                $item->awbItems()->delete();
                 $amount = $item->amount;
                 $tax = 0;
                 $withholding = 0;
