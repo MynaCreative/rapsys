@@ -34,6 +34,7 @@ class Invoice extends Model
      * @var array
      */
     protected $fillable = [
+        'job_batch',
         'uuid',
         'code',
 

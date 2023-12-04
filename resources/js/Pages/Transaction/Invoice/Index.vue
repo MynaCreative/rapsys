@@ -39,13 +39,13 @@
                                 <th width="60" rowspan="2" class="align-middle">#</th>
                                 <Sort label="Invoice Number" attribute='invoice_number' rowspan="2" class="align-middle"/>
                                 <Sort label="Vendor" attribute='vendor_id' rowspan="2" class="align-middle"/>
-                                <th class="sort text-center" colspan="3">Amount  (after tax)</th>
+                                <Sort label="Total after tax" attribute='total_amount'  rowspan="2" class="text-center align-middle"/>
+                                <th class="sort text-center align-middle" colspan="2" >Validation (before tax)</th>
                                 <th class="text-center" colspan="3">Status</th>
                                 <th class="text-center" colspan="2">Date</th>
                                 <th width="100" class="text-center align-middle" rowspan="2">Action</th>
                             </tr>
                             <tr>
-                                <Sort label="Total" attribute='total_amount' class="text-center"/>
                                 <Sort label="Valid" attribute='total_amount_valid' class="text-center"/>
                                 <Sort label="Invalid" attribute='total_amount_invalid' class="text-center"/>
                                 <th class="text-center">Document</th>
@@ -116,7 +116,7 @@
                                                 <i class="ri-pencil-fill fs-16"></i>
                                             </Link>
                                         </li>
-                                        <li class="list-inline-item" title="Remove" v-if="item.document_status != 'closed'">
+                                        <li class="list-inline-item" title="Remove" v-if="item.document_status == 'draft'">
                                             <a href="javascript:void(0);" class="text-danger d-inline-block" @click="service.deleteData(item.id)">
                                                 <i class="ri-delete-bin-5-fill fs-16"></i>
                                             </a>

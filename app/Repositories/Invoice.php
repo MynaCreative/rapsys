@@ -20,6 +20,7 @@ use App\Imports\DataImport;
 use App\Helpers\Relationship;
 use App\Exports\Invoice\Sample as SampleTemplate;
 use App\Exports\Invoice\Revision as RevisionTemplate;
+use App\Exports\Invoice\RevisionAll as RevisionTemplateAll;
 use App\Jobs\ExpenseValidation;
 use App\Jobs\InvoiceValidation;
 use App\Models\Approval;
@@ -47,6 +48,7 @@ use App\Models\Workflow;
 use App\Models\WorkflowItem;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
 
 class Invoice
 {
@@ -84,8 +86,17 @@ class Invoice
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
             ->through(function ($item) {
-                $items = $item->smuItems->count() + $item->awbItems()->where('invoice_smu_id', null)->count();
-                $validated_items = $item->smuItems()->where('is_validated', true)->count() + $item->awbItems()->where('is_validated', true)->where('invoice_smu_id', null)->count();
+                $items = 0;
+                $validated_items = 0;
+                if ($item->job_batch) {
+                    $batch = Bus::findBatch($item->job_batch);
+                    if ($batch) {
+                        $items = $batch->totalJobs;
+                        $validated_items = $batch->totalJobs - $batch->pendingJobs;
+                    }
+                }
+                // $items = $item->smuItems->count() + $item->awbItems()->where('invoice_smu_id', null)->count();
+                // $validated_items = $item->smuItems()->where('is_validated', true)->count() + $item->awbItems()->where('is_validated', true)->where('invoice_smu_id', null)->count();
                 return [
                     'id'                                => $item->id,
                     'code'                              => $item->code,
@@ -397,22 +408,35 @@ class Invoice
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
         $expense = $this->model->expenses()->where('id', $expense_id)->first();
         $items = [];
+        $awbs = [];
+        $smus = [];
         if ($expense->type == InvoiceExpense::TYPE_AWB) {
-            $items = $expense->awbItems()
+            $awbs = $expense->awbItems()
                 ->when(!request()->get('all'), function ($query) {
                     $query->where('validation_score', '!=', 5);
                 })
                 ->get();
+            $items = $awbs;
         }
         if ($expense->type == InvoiceExpense::TYPE_SMU) {
-            $items = $expense->smuItems()
+            $awbs = $expense->awbItems()
                 ->when(!request()->get('all'), function ($query) {
                     $query->where('validation_score', '!=', 5);
                 })
                 ->get();
+            $smus = $expense->smuItems()
+                ->when(!request()->get('all'), function ($query) {
+                    $query->where('validation_score', '!=', 5);
+                })
+                ->get();
+            $items = $smus;
         }
         $name = request()->get('all') ? 'all' : 'revision-invalid';
-        return Excel::download(new RevisionTemplate($items), "{$name}-{$expense->expense->code}-line-import-{$name}-{$date}.xlsx");
+        if (request()->get('all')) {
+            return Excel::download(new RevisionTemplateAll($smus, $awbs), "{$name}-{$expense->expense->code}-line-import-{$name}-{$date}.xlsx");
+        } else {
+            return Excel::download(new RevisionTemplate($items), "{$name}-{$expense->expense->code}-line-import-{$name}-{$date}.xlsx");
+        }
     }
 
     /**
@@ -477,9 +501,11 @@ class Invoice
      */
     public function deltaValidate(): Model
     {
+        $jobs = [];
         if ($this->model->smuItems) {
             $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
             // $smuItems = $this->model->smuItems->where('is_validated', false);
+            $this->model->awbItems()->delete();
             foreach ($smuItems as $item) {
                 $amount = $item->amount;
                 $tax = 0;
@@ -497,7 +523,7 @@ class Invoice
                     'withholding_tax' => $withholding,
                     'amount_after_tax' => $amountAfterTax
                 ]);
-                DeltaValidation::dispatch($item, 'SMU');
+                $jobs[] = new DeltaValidation($item, 'SMU');
             }
         }
 
@@ -521,7 +547,7 @@ class Invoice
                     'withholding_tax' => $withholding,
                     'amount_after_tax' => $amountAfterTax
                 ]);
-                DeltaValidation::dispatch($item, 'AWB');
+                $jobs[] = new DeltaValidation($item, 'AWB');
             }
         }
 
@@ -529,12 +555,18 @@ class Invoice
         if ($expenses) {
             foreach ($expenses as $expense) {
                 if ($expense->expense_id != 1) {
-                    ExpenseValidation::dispatch($expense);
+                    $jobs[] = new ExpenseValidation($expense);
                 }
             }
         }
 
-        InvoiceValidation::dispatch($this->model);
+        $jobs[] = new InvoiceValidation($this->model);
+
+        $batch = Bus::batch($jobs)->dispatch();
+
+        $this->model->update([
+            'job_batch' => $batch->id
+        ]);
 
         return $this->model;
     }

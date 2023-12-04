@@ -76,6 +76,7 @@ class InvoiceAwb extends Model
      * @var array
      */
     protected $casts = [
+        'code'                          => 'string',
         'amount'                        => 'float',
         'vat_tax'                       => 'float',
         'withholding_tax'               => 'float',

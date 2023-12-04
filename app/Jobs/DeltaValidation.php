@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,7 +20,7 @@ use App\Repositories\Delta;
 
 class DeltaValidation implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * The invoice instance.
@@ -255,7 +256,8 @@ class DeltaValidation implements ShouldQueue
         }
         $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
         $awbItems = [];
-        if ($validation_score >= 2) {
+        // if ($validation_score >= 2) {
+        if (isset($delta['data']['airwaybill'])) {
             foreach ($delta['data']['airwaybill'] as $awbItem) {
                 $awbMessages = [];
                 $area = null;
@@ -341,7 +343,7 @@ class DeltaValidation implements ShouldQueue
                         'amount_after_tax' => $amountAfterTax,
 
                         'message' => count($awbMessages) > 0 ? implode(', ', $awbMessages) : null,
-                        'validation_score' => count($awbMessages) > 0 ? 0 : 5,
+                        'validation_score' => count($awbMessages),
                         'is_validated' => 1,
 
                         'dist' => implode('-', [

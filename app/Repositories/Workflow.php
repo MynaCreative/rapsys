@@ -161,7 +161,7 @@ class Workflow
     {
         $usedDepartmentIds = Model::pluck('department_id')->toArray();
         return [
-            'departments' => Department::whereNotIn('id', $usedDepartmentIds)->pluck('name', 'id'),
+            'departments' => Department::whereNotIn('id', $usedDepartmentIds)->select(['name', 'id'])->get(),
             'users' => User::pluck('name', 'id'),
         ];
     }

@@ -5,12 +5,14 @@ namespace App\Exports\Invoice;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class Revision implements FromView, WithStyles, WithEvents, ShouldAutoSize
+class RevisionAWB implements FromView, WithStyles, WithEvents, WithTitle, ShouldAutoSize, WithColumnFormatting
 {
     private $rows;
 
@@ -19,11 +21,16 @@ class Revision implements FromView, WithStyles, WithEvents, ShouldAutoSize
         $this->rows = $rows;
     }
 
+    public function title(): string
+    {
+        return 'AWB';
+    }
+
     public function view(): View
     {
         $name = str(ltrim(strrchr(__NAMESPACE__, '\\'), '\\'))->kebab();
 
-        return view("excel.{$name}.revision", [
+        return view("excel.{$name}.revision-awb", [
             'rows' => $this->rows,
         ]);
     }
@@ -43,6 +50,7 @@ class Revision implements FromView, WithStyles, WithEvents, ShouldAutoSize
         return [
             'B' => '#',
             'C' => '#',
+            'D' => '#',
         ];
     }
 

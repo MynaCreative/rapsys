@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Http\Client\Response;
+use Illuminate\Bus\Batchable;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Invoice as ModelMail;
@@ -21,7 +22,7 @@ use App\Models\WorkflowItem;
 
 class InvoiceValidation implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * The invoice instance.
