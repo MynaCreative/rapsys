@@ -22,7 +22,7 @@ use App\Models\WorkflowItem;
 
 class InvoiceValidation implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * The invoice instance.

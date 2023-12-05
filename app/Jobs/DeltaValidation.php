@@ -20,7 +20,7 @@ use App\Repositories\Delta;
 
 class DeltaValidation implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * The invoice instance.
@@ -198,6 +198,7 @@ class DeltaValidation implements ShouldQueue
 
     public function validationSMU($item)
     {
+        info($item);
         $delta = Delta::smu($item->code);
 
         /**

@@ -564,11 +564,7 @@ class Invoice
 
         $jobs[] = new InvoiceValidation($this->model);
 
-        $batch = Bus::batch($jobs)->catch(function (Batch $batch, Throwable $e) {
-            info($batch);
-            info($e);
-            // First batch job failure detected...
-        })->dispatch();
+        $batch = Bus::batch($jobs)->dispatch();
 
         $this->model->update([
             'job_batch' => $batch->id

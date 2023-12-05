@@ -13,7 +13,7 @@ use App\Repositories\Vendor;
 
 class SynchronizeVendor implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * The number of seconds the job can run before timing out.

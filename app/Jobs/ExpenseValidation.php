@@ -15,7 +15,7 @@ use App\Models\InvoiceExpense;
 
 class ExpenseValidation implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * The invoice instance.
