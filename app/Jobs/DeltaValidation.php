@@ -16,8 +16,6 @@ use App\Models\InvoiceItem;
 use App\Models\Product;
 use App\Models\Area;
 use App\Models\Invoice;
-use App\Models\InvoiceAwb;
-use App\Models\InvoiceSmu;
 use App\Repositories\Delta;
 
 class DeltaValidation implements ShouldQueue
@@ -29,7 +27,6 @@ class DeltaValidation implements ShouldQueue
      *
      * @var \App\Models\Invoice
      */
-    public $type;
     public $modelId;
 
     /**
@@ -46,10 +43,9 @@ class DeltaValidation implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($modelId, $type)
+    public function __construct($modelId)
     {
         $this->modelId = $modelId;
-        $this->type = $type;
     }
 
     /**
@@ -59,46 +55,54 @@ class DeltaValidation implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->type == 'AWB') {
-            $item = InvoiceAwb::where('id', $this->modelId)->first();
-            $item->awbItems()->delete();
-            $amount = $item->amount;
-            $tax = 0;
-            $withholding = 0;
-            $amountAfterTax = $amount;
-            if ($item->tax && $item->withholding) {
-                $tax = ($amount * $item->tax->deduction);
-                $withholding = ($amount * $item->withholding->deduction);
+        $model = Invoice::where('id', $this->modelId)->first();
+        if ($model->smuItems) {
+            $smuItems = $model->smuItems->where('validation_score', '!=', 5);
+            // $smuItems = $model->smuItems->where('is_validated', false);
+            foreach ($smuItems as $item) {
+                $item->awbItems()->delete();
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
 
-                $amountAfterTax = $amount + $tax - $withholding;
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                $this->validationSMU($item);
             }
-            $item->update([
-                'is_validated' => false,
-                'vat_tax' => $tax,
-                'withholding_tax' => $withholding,
-                'amount_after_tax' => $amountAfterTax
-            ]);
-            $this->validationAWB($item);
         }
-        if ($this->type == 'SMU') {
-            $item = InvoiceSmu::where('id', $this->modelId)->first();
-            $amount = $item->amount;
-            $tax = 0;
-            $withholding = 0;
-            $amountAfterTax = $amount;
-            if ($item->tax && $item->withholding) {
-                $tax = ($amount * $item->tax->deduction);
-                $withholding = ($amount * $item->withholding->deduction);
 
-                $amountAfterTax = $amount + $tax - $withholding;
+        if ($model->awbItems) {
+            $awbItems = $model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
+            // $awbItems = $model->awbItems->where('is_validated', false)->where('uuid', '!=', null);
+            foreach ($awbItems as $item) {
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                $this->validationAWB($item);
             }
-            $item->update([
-                'is_validated' => false,
-                'vat_tax' => $tax,
-                'withholding_tax' => $withholding,
-                'amount_after_tax' => $amountAfterTax
-            ]);
-            $this->validationSMU($item);
         }
     }
 

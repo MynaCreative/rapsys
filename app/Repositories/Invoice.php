@@ -504,21 +504,56 @@ class Invoice
     public function deltaValidate(): Model
     {
         $jobs = [];
-        if ($this->model->smuItems) {
-            $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
-            // $smuItems = $this->model->smuItems->where('is_validated', false);
-            foreach ($smuItems as $item) {
-                $jobs[] = new DeltaValidation($item->id, 'SMU');
-            }
-        }
+        // if ($this->model->smuItems) {
+        //     $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
+        //     // $smuItems = $this->model->smuItems->where('is_validated', false);
+        //     foreach ($smuItems as $item) {
+        //         $item->awbItems()->delete();
+        //         $amount = $item->amount;
+        //         $tax = 0;
+        //         $withholding = 0;
+        //         $amountAfterTax = $amount;
+        //         if ($item->tax && $item->withholding) {
+        //             $tax = ($amount * $item->tax->deduction);
+        //             $withholding = ($amount * $item->withholding->deduction);
 
-        if ($this->model->awbItems) {
-            $awbItems = $this->model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
-            // $awbItems = $this->model->awbItems->where('is_validated', false)->where('uuid', '!=', null);
-            foreach ($awbItems as $item) {
-                $jobs[] = new DeltaValidation($item->id, 'AWB');
-            }
-        }
+        //             $amountAfterTax = $amount + $tax - $withholding;
+        //         }
+        //         $item->update([
+        //             'is_validated' => false,
+        //             'vat_tax' => $tax,
+        //             'withholding_tax' => $withholding,
+        //             'amount_after_tax' => $amountAfterTax
+        //         ]);
+        //         $jobs[] = new DeltaValidation($item, 'SMU');
+        //     }
+        // }
+
+        // if ($this->model->awbItems) {
+        //     $awbItems = $this->model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
+        //     // $awbItems = $this->model->awbItems->where('is_validated', false)->where('uuid', '!=', null);
+        //     foreach ($awbItems as $item) {
+        //         $amount = $item->amount;
+        //         $tax = 0;
+        //         $withholding = 0;
+        //         $amountAfterTax = $amount;
+        //         if ($item->tax && $item->withholding) {
+        //             $tax = ($amount * $item->tax->deduction);
+        //             $withholding = ($amount * $item->withholding->deduction);
+
+        //             $amountAfterTax = $amount + $tax - $withholding;
+        //         }
+        //         $item->update([
+        //             'is_validated' => false,
+        //             'vat_tax' => $tax,
+        //             'withholding_tax' => $withholding,
+        //             'amount_after_tax' => $amountAfterTax
+        //         ]);
+        //         $jobs[] = new DeltaValidation($item, 'AWB');
+        //     }
+        // }
+
+        $jobs[] = new DeltaValidation($this->model->id);
 
         $expenses = InvoiceExpense::where('invoice_id', $this->model->id)->get();
         if ($expenses) {
