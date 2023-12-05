@@ -198,7 +198,6 @@ class DeltaValidation implements ShouldQueue
 
     public function validationSMU($item)
     {
-        info($item->code);
         $delta = Delta::smu($item->code);
 
         /**

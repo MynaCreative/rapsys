@@ -48,7 +48,9 @@ use App\Models\Workflow;
 use App\Models\WorkflowItem;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
+use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
+use Throwable;
 
 class Invoice
 {
@@ -562,7 +564,11 @@ class Invoice
 
         $jobs[] = new InvoiceValidation($this->model);
 
-        $batch = Bus::batch($jobs)->dispatch();
+        $batch = Bus::batch($jobs)->catch(function (Batch $batch, Throwable $e) {
+            info($batch);
+            info($e);
+            // First batch job failure detected...
+        })->dispatch();
 
         $this->model->update([
             'job_batch' => $batch->id
