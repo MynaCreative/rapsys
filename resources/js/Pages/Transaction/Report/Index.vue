@@ -14,13 +14,13 @@
                                 <h2 class="mt-4 ff-secondary fw-semibold">
                                     <count-to :startVal="0" :endVal="statistic.all" :duration="5000"></count-to>
                                 </h2>
-                                <p class="mb-0 text-muted">
+                                <!-- <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                         <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
-                                </p>
+                                </p> -->
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -42,13 +42,13 @@
                                 <h2 class="mt-4 ff-secondary fw-semibold">
                                     <count-to :startVal="0" :endVal="statistic.pending" :duration="5000"></count-to>
                                 </h2>
-                                <p class="mb-0 text-muted">
+                                <!-- <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                         <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
-                                </p>
+                                </p> -->
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -70,13 +70,13 @@
                                 <h2 class="mt-4 ff-secondary fw-semibold">
                                     <count-to :startVal="0" :endVal="statistic.approved" :duration="5000"></count-to>
                                 </h2>
-                                <p class="mb-0 text-muted">
+                                <!-- <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                         <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
-                                </p>
+                                </p> -->
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -98,13 +98,13 @@
                                 <h2 class="mt-4 ff-secondary fw-semibold">
                                     <count-to :startVal="0" :endVal="statistic.rejected" :duration="5000"></count-to>
                                 </h2>
-                                <p class="mb-0 text-muted">
+                                <!-- <p class="mb-0 text-muted">
                                     <span class="badge bg-soft-primary text-primary mb-0 me-1">
                                         <i class="ri-arrow-left-right-line align-middle"></i> 0 %
                                     </span>
                                     vs. prev month
                                     <br><small class="text-muted">* available when full release</small>
-                                </p>
+                                </p> -->
                             </div>
                             <div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -123,10 +123,10 @@
                 <div class="row g-4">
                     <div class="col-sm-auto">
                         <b-button-group>
-                            <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFilterVisible = true">
+                            <!-- <b-button variant="primary" class="btn-label waves-effect waves-light" @click="modalFilterVisible = true">
                                 <i class="ri-filter-3-line label-icon align-middle fs-16 me-2"></i>
                                 Filter
-                            </b-button>
+                            </b-button> -->
                             <b-button variant="success" class="btn-label waves-effect waves-light right" @click="modalExportVisible = true">
                                 <i class="ri-upload-2-line label-icon align-middle fs-16"></i>
                                 Export
@@ -155,14 +155,16 @@
                             <tr>
                                 <th width="60" class="text-center align-middle">#</th>
                                 <Sort label="Invoice Number" attribute='invoice_number' class="align-middle"/>
-                                <Sort label="Creator" attribute='created_by'/>
                                 <Sort label="Vendor" attribute='vendor_id' class="align-middle"/>
-                                <Sort label="Total Amount" attribute='total_amount' class="text-center"/>
-                                <Sort label="Validation" attribute='total_amount_valid' class="text-center"/>
-                                <Sort width="110" label="Invoice" attribute='invoice_date' class="text-center"/>
+                                <Sort label="Total Amount" attribute='total_amount' class="text-end"/>
+                                <!-- <Sort label="Validation" attribute='total_amount_valid' class="text-center"/> -->
+                                <Sort width="110" label="Invoice Date" attribute='invoice_date' class="text-center"/>
+                                <Sort width="110" label="Posting Date" attribute='posting_date' class="text-center"/>
                                 <Sort width="140" label="Created" attribute='created_at' class="text-center"/>
-                                <th class="text-center">Approval</th>
-                                <th class="text-center">Document</th>
+                                <th class="text-center">Data Type</th>
+                                <th class="text-center">Document Status</th>
+                                <th class="text-center">Approval Status</th>
+                                <Sort label="Creator" attribute='created_by'/>
                             </tr>
                         </thead>
                         <tbody>
@@ -180,7 +182,6 @@
                                         </div>
                                     </span>
                                 </td>
-                                <td ><DataUserName :data="item.created_user?.name"/></td>
                                 <td>
                                     <div class="flex-grow-1">
                                         <h5 class="fs-14 mb-1">{{ item.vendor ? `${item.vendor.name}` : '--' }}</h5>
@@ -189,19 +190,10 @@
                                         </p>
                                     </div>
                                 </td>
-                                <td class="text-center">
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-primary fs-11 mb-1" title="Before Tax">
-                                            {{ item.total_amount.toLocaleString() }}
-                                            <i class="ri-wallet-line align-middle"></i>
-                                        </h6>
-                                        <h6 class="text-info fs-11 mb-0" title="After Tax">
-                                            {{ item.total_amount_after_tax.toLocaleString() }}
-                                            <i class="ri-wallet-3-line"></i>
-                                        </h6>
-                                    </div>
+                                <td class="text-end">
+                                    {{ item.total_amount.toLocaleString() }}
                                 </td>
-                                <td class="text-center text-success">
+                                <!-- <td class="text-center text-success">
                                     <div class="flex-grow-1">
                                         <h6 class="text-success fs-11 mb-1" title="Valid Amount After Tax">
                                             {{ item.total_amount_after_tax_valid.toLocaleString() }}
@@ -212,15 +204,17 @@
                                             <i class="ri-close-line align-middle"></i>
                                         </h6>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td class="text-center date">{{ $dayjs(item.invoice_date).format('DD MMM, YYYY') }}</td>
+                                <td class="text-center date">{{ $dayjs(item.posting_date).format('DD MMM, YYYY') }}</td>
                                 <td class="text-center date"><DataTimestamp :data="item.created_at"/></td>
-
                                 <td class="text-center">
-                                    <b-badge variant="light" class="text-capitalize" v-if="item.approval_status == 'none'">{{ item.approval_status }}</b-badge>
-                                    <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.approval_status == 'pending'">{{ item.approval_status }}</b-badge>
-                                    <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.approval_status == 'approved'">{{ item.approval_status }}</b-badge>
-                                    <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="item.approval_status == 'rejected'">{{ item.approval_status }}</b-badge>
+                                    <span :class="['badge badge-label bg-info']" v-if="item.expense?.type == 1">
+                                        SMU
+                                    </span>
+                                    <span :class="['badge badge-label bg-secondary']" v-if="item.expense?.type == 2">
+                                        AWB
+                                    </span>
                                 </td>
                                 <td class="text-center">
                                     <b-badge variant="light" class="rounded-pill text-capitalize" v-if="item.document_status == 'draft'">{{ item.document_status }}</b-badge>
@@ -228,6 +222,13 @@
                                     <b-badge variant="danger" class="rounded-pill text-capitalize" v-if="item.document_status == 'cancelled'">{{ item.document_status }}</b-badge>
                                     <b-badge variant="success" class="rounded-pill text-capitalize" v-if="item.document_status == 'closed'">{{ item.document_status }}</b-badge>
                                 </td>
+                                <td class="text-center">
+                                    <b-badge variant="light" class="text-capitalize" v-if="item.approval_status == 'none'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-primary" class="text-primary text-capitalize" v-if="item.approval_status == 'pending'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-success" class="text-success text-capitalize" v-if="item.approval_status == 'approved'">{{ item.approval_status }}</b-badge>
+                                    <b-badge variant="soft-danger" class="text-danger text-capitalize" v-if="item.approval_status == 'rejected'">{{ item.approval_status }}</b-badge>
+                                </td>
+                                <td ><DataUserName :data="item.created_user?.name"/></td>
                             </tr>
                         </tbody>
                     </table>

@@ -97,6 +97,9 @@ class Invoice extends Model
         'document_status_time'              => 'datetime',
         'approval_status_time'              => 'datetime',
         'published_at'                      => 'datetime',
+
+        'invoice_date'                      => 'date:Y-m-d',
+        'posting_date'                      => 'date:Y-m-d',
     ];
 
     /**
@@ -400,6 +403,16 @@ class Invoice extends Model
     public function awbItems()
     {
         return $this->hasMany(InvoiceAwb::class)->orderBy('validation_score')->orderBy('is_validated')->orderBy('message');
+    }
+
+    /**
+     * Get the expenses for the invoice.
+     */
+    public function expense()
+    {
+        return $this->hasOne(InvoiceExpense::class)->whereHas('expense', function ($query) {
+            $query->where('code', '!=', 'MNL');
+        });
     }
 
     /**

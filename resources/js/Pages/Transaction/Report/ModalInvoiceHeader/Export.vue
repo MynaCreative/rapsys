@@ -5,18 +5,53 @@
             <button type="button" class="btn-close" aria-label="Close" @click="emit('update:show', false)"></button>
         </div>
         <div class="modal-body">
-            <div class="row g-2">
-                <div class="col-lg-12">
-                    <b-form-group label="Type" v-slot="{ ariaDescribedby }">
-                        <b-form-radio-group v-model="form.type" stacked
-                            aria-describedby="ariaDescribedby"
-                            :options="[
-                                { text: 'Excel', value: 'xlsx' },
-                                { text: 'PDF', value: 'dompdf' },
-                            ]"
-                        ></b-form-radio-group>
-                    </b-form-group>
-                </div>
+            <!-- <div class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <b-form-radio-group
+                    v-model="form.type"
+                    :options="[
+                        { text: 'Excel', value: 'xlsx' },
+                        { text: 'PDF', value: 'dompdf' },
+                    ]"
+                    aria-describedby="input-type-feedback"
+                ></b-form-radio-group>
+            </div> -->
+            <div class="mb-3">
+                <label for="type" class="form-label">Document Status</label>
+                <b-form-checkbox-group
+                    v-model="form.document_status"
+                    :options="[
+                        { text: 'Draft', value: 'draft' },
+                        { text: 'Published', value: 'published' },
+                        { text: 'Void', value: 'void' },
+                        { text: 'Closed', value: 'closed' },
+                    ]"
+                    aria-describedby="input-type-feedback"
+                ></b-form-checkbox-group>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Approval Status</label>
+                <b-form-checkbox-group
+                    v-model="form.approval_status"
+                    :options="[
+                        { text: 'None', value: 'none' },
+                        { text: 'Pending', value: 'pending' },
+                        { text: 'Approved', value: 'approved' },
+                        { text: 'Rejected', value: 'rejected' },
+                    ]"
+                    aria-describedby="input-type-feedback"
+                ></b-form-checkbox-group>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Data Type</label>
+                <b-form-checkbox-group
+                    v-model="form.data_type"
+                    :options="[
+                        { text: 'SMU', value: 1 },
+                        { text: 'AWB', value: 2 },
+                    ]"
+                    aria-describedby="input-type-feedback"
+                ></b-form-checkbox-group>
             </div>
         </div>
         <div class="modal-footer justify-content-between">
@@ -42,6 +77,9 @@ const props = defineProps(['show'])
 const emit  = defineEmits(['update:show'])
 
 const form = reactive({
-    type: 'xlsx'
+    type: 'xlsx',
+    document_status: ['draft','published','void','closed'],
+    approval_status: ['none','pending','approved','rejected'],
+    data_type: [1,2],
 })
 </script>

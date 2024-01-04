@@ -19,6 +19,7 @@ use App\Mail\Invoice as ModelMail;
 use App\Imports\DataImport;
 use App\Helpers\Relationship;
 use App\Exports\Invoice\Sample as SampleTemplate;
+use App\Exports\Invoice\Header as HeaderReport;
 use App\Exports\Invoice\Revision as RevisionTemplate;
 use App\Exports\Invoice\RevisionAll as RevisionTemplateAll;
 use App\Jobs\ExpenseValidation;
@@ -137,8 +138,8 @@ class Invoice
         $query = Model::ordering($request)
             ->filtering($request)
             ->searching($request, ['code', 'invoice_number'])
-            ->with(['createdUser:id,name', 'updatedUser:id,name'])
-            ->where('document_status', '!=', Model::DOCUMENT_STATUS_DRAFT)
+            ->with(['createdUser:id,name', 'updatedUser:id,name', 'expense'])
+            // ->where('document_status', '!=', Model::DOCUMENT_STATUS_DRAFT)
             ->latest();
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
@@ -163,6 +164,7 @@ class Invoice
                     'description'                       => $item->description,
                     'created_user'                      => $item->createdUser,
                     'updated_user'                      => $item->updatedUser,
+                    'expense'                           => $item->expense,
                     'created_at'                        => $item->created_at,
                     'updated_at'                        => $item->updated_at,
                     'deleted_at'                        => $item->deleted_at,
@@ -179,7 +181,7 @@ class Invoice
     public static function statistic(Request $request)
     {
         return [
-            'all' => Model::where('document_status', '!=', 'draft')->count(),
+            'all' => Model::count(),
             'pending' => Model::where('approval_status', 'pending')->count(),
             'approved' => Model::where('approval_status', 'approved')->count(),
             'rejected' => Model::where('approval_status', 'rejected')->count(),
@@ -396,6 +398,19 @@ class Invoice
         $date = now()->format('d-m-Y H:i:s');
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
         return Excel::download(new SampleTemplate($expense), "{$name}-{$expense}-line-import-sample-{$date}.xlsx");
+    }
+
+    /**
+     * Export to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function invoiceHeaderExport($request)
+    {
+        $date = now()->format('d-m-Y H:i:s');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        return Excel::download(new HeaderReport($request), "{$name}-header-{$date}.xlsx");
     }
 
     /**

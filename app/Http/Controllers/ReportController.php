@@ -49,6 +49,23 @@ class ReportController extends Controller
     }
 
     /**
+     * Export
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function invoiceHeaderExport(IndexRequest $request)
+    {
+        try {
+            return $this->repository::invoiceHeaderExport($request);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
      *
      * Display a listing of the resources.
      *
