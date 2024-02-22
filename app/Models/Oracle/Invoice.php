@@ -76,10 +76,10 @@ class Invoice extends Eloquent
     ];
 
     /**
-     * Get the items for the invoice.
+     * Get the lines for the invoice.
      */
-    public function items()
+    public function lines()
     {
-        return $this->hasMany(InvoiceItem::class);
+        return $this->hasMany(InvoiceLine::class, 'staging_id', 'staging_id');
     }
 }

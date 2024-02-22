@@ -2,7 +2,7 @@
 
 namespace App\Exports\Oracle;
 
-use App\Models\Oracle\Invoice;
+use App\Models\Oracle\InvoiceLine;
 use Illuminate\Contracts\View\View;
 
 use Maatwebsite\Excel\Concerns\FromView;
@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class Header implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithColumnFormatting
+class Line implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithColumnFormatting
 {
     private $firstRow = 6;
 
@@ -31,20 +31,17 @@ class Header implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithCo
     {
         $name = str(ltrim(strrchr(__NAMESPACE__, '\\'), '\\'))->kebab();
 
-        $rows = Invoice::latest('creation_date')
+        $rows = InvoiceLine::latest('creation_date')
             ->when($this->request->period, function ($query) {
                 $period = explode('-', $this->request->period);
                 $query->whereYear('creation_date', $period[0])->whereMonth('creation_date', $period[1]);
-            })
-            ->when($this->request->payment_method_lookup_code, function ($query) {
-                $query->whereIn('payment_method_lookup_code', $this->request->payment_method_lookup_code);
             })
             ->when($this->request->status, function ($query) {
                 $query->whereIn('status', $this->request->status);
             })
             ->get();
 
-        return view("excel.{$name}.header", [
+        return view("excel.{$name}.line", [
             'rows' => $rows,
         ]);
     }

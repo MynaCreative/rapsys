@@ -4,8 +4,12 @@ namespace App\Models\Oracle;
 
 use Yajra\Oci8\Eloquent\OracleEloquent as Eloquent;
 
-class InvoiceItem extends Eloquent
+use App\Traits\Scope as GeneralScope;
+
+class InvoiceLine extends Eloquent
 {
+    use GeneralScope;
+
     /**
      * The database connection that should be used by the model.
      *
@@ -38,13 +42,13 @@ class InvoiceItem extends Eloquent
      *
      * @var array
      */
-    protected $fillable = [        
+    protected $fillable = [
         'staging_id',
         'staging_line_id',
         'ledger_id',
         'org_id',
         'line_number',
-        'description', 
+        'description',
         'line_type_code',
         'ppn_code',
         'tax_rate_id',
@@ -54,10 +58,20 @@ class InvoiceItem extends Eloquent
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'amount' => 'float',
+        'creation_date' => 'dateTime',
+    ];
+
+    /**
      * Get the invoice that owns the model.
      */
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Invoice::class, 'staging_id', 'staging_id');
     }
 }

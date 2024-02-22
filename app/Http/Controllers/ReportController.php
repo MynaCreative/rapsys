@@ -163,10 +163,26 @@ class ReportController extends Controller
      */
     public function oracleLine(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/InvoiceHeader/Index", [
-            'collection' => $this->repository::report($request),
-            'statistic' => $this->repository::statistic($request),
+        return Inertia::render("{$this->module}/{$this->page}/OracleLine/Index", [
+            'collection' => $this->repositoryOracle::line($request),
         ]);
+    }
+
+    /**
+     * Export
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function oracleLineExport(IndexRequest $request)
+    {
+        try {
+            return $this->repositoryOracle::lineExport($request);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
     }
 
     /**

@@ -8,7 +8,10 @@ use PDOException;
 use PDO;
 
 use App\Models\Oracle\Invoice as Model;
+use App\Models\Oracle\InvoiceLine as ModelLine;
+
 use App\Exports\Oracle\Header as HeaderReport;
+use App\Exports\Oracle\Line as LineReport;
 
 class Oracle
 {
@@ -67,6 +70,36 @@ class Oracle
         $date = now()->format('d-m-Y H:i:s');
         $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
         return Excel::download(new HeaderReport($request), "{$name}-header-{$date}.xlsx");
+    }
+
+    /**
+     * Display all of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function line(Request $request)
+    {
+        $query = ModelLine::with('invoice:staging_id,trx_number,status')
+            ->ordering($request)
+            ->filtering($request)
+            ->searching($request, ['dist_code_concat', 'description', 'ppn_code', 'tax_rate_id', 'error_message'])
+            ->latest('creation_date');
+
+        return $query->paginate($request->per_page ?? 10)->withQueryString();
+    }
+
+    /**
+     * Export to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function lineExport($request)
+    {
+        $date = now()->format('d-m-Y H:i:s');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        return Excel::download(new LineReport($request), "{$name}-line-{$date}.xlsx");
     }
 
     /**
