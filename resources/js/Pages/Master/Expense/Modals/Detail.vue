@@ -42,7 +42,7 @@
                             <tr>
                                 <td class="text-muted table-light">Type</td>
                                 <td colspan="3">
-                                    <span :class="['badge badge-label',{'bg-info': form.type == 1}, {'bg-secondary': form.type == 2}]" v-if="form.type != null">
+                                    <span :class="['badge badge-label',{'bg-info': form.type == 1}, {'bg-secondary': form.type == 2}, {'bg-success': form.type == 3}]" v-if="form.type != null">
                                         <i class="mdi mdi-circle-medium"></i> {{ form.type_text }}
                                     </span>
                                 </td>

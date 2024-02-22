@@ -16,10 +16,10 @@
                                         <div class="flex-shrink-0">
                                             <div class="avatar-xs">
                                                 <div :class="['avatar-title fs-18 rounded',
-                                                    {'bg-soft-info': expense.type == 1},
-                                                    {'text-info': expense.type == 1},
-                                                    {'bg-soft-primary': expense.type == 2},
-                                                    {'text-primary': expense.type == 2}]">
+                                                    {'bg-soft-info text-info': expense.type == 1},
+                                                    {'bg-soft-primary text-primary': expense.type == 2},
+                                                    {'bg-soft-success text-success': expense.type == 3},
+                                                    ]">
                                                     <i :class="expense.icon"></i>
                                                 </div>
                                             </div>
@@ -28,10 +28,9 @@
                                             <h6 class="mb-1">
                                                 {{ expense.name }}
                                                 <span :class="['badge rounded-pill',
-                                                    {'bg-soft-info': expense.type == 1},
-                                                    {'text-info': expense.type == 1},
-                                                    {'bg-soft-primary': expense.type == 2},
-                                                    {'text-primary': expense.type == 2}
+                                                    {'bg-soft-info text-info': expense.type == 1},
+                                                    {'bg-soft-primary text-primary': expense.type == 2},
+                                                    {'bg-soft-success text-success': expense.type == 3},
                                                 ]">{{ expense.type_text }}</span>
                                             </h6>
                                             <b class="pay-amount">{{ expense.code }}</b>

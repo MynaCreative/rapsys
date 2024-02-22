@@ -1,5 +1,5 @@
 <template>
-    <ModalContainer :visible="show" @update:visible="show = $event">
+    <ModalContainer :visible="show" @update:visible="show = $event" size="modal-lg">
         <div class="modal-header p-3 bg-soft-primary">
             <h5 class="modal-title">Form {{ id ? 'Update' : 'Create' }} - {{ page.title }}</h5>
             <button type="button" class="btn-close" aria-label="Close" @click="emit('update:show', false)"></button>

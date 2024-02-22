@@ -19,6 +19,7 @@ class Expense extends Model
 
     const TYPE_SMU  = 1;
     const TYPE_AWB  = 2;
+    const TYPE_CONS  = 3;
 
     /**
      * The attributes that are mass assignable.
@@ -63,6 +64,9 @@ class Expense extends Model
                             break;
                         case self::TYPE_AWB:
                             $text = 'AWB';
+                            break;
+                        case self::TYPE_CONS:
+                            $text = 'CONS';
                             break;
                         default:
                             $text = '';

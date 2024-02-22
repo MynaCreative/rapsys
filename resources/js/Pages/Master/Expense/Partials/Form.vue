@@ -38,6 +38,7 @@
                     { text: 'None', value: null },
                     { text: 'SMU', value: 1 },
                     { text: 'AWB', value: 2 },
+                    { text: 'CONS', value: 3 },
                 ]"
                 aria-describedby="input-type-feedback"
             ></b-form-radio-group>

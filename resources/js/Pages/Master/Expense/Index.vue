@@ -65,7 +65,7 @@
                                 <td>{{ item.name }}</td>
                                 <td>{{ item.coa }}</td>
                                 <td>
-                                    <span :class="['badge badge-label',{'bg-info': item.type == 1}, {'bg-secondary': item.type == 2}]" v-if="item.type != null">
+                                    <span :class="['badge badge-label',{'bg-info': item.type == 1}, {'bg-secondary': item.type == 2}, {'bg-success': item.type == 3}]" v-if="item.type != null">
                                         <i class="mdi mdi-circle-medium"></i> {{ item.type_text }}
                                     </span>
                                 </td>
