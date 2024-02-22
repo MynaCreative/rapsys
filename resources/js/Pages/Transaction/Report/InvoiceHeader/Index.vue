@@ -262,8 +262,8 @@ import PerPage from '@/Components/PerPage.vue'
 import Reload from '@/Components/Reload.vue'
 import Sort from '@/Components/Sort.vue'
 
-import ModalFilter from './ModalInvoiceHeader/Filter.vue'
-import ModalExport from './ModalInvoiceHeader/Export.vue'
+import ModalFilter from './Modal/Filter.vue'
+import ModalExport from './Modal/Export.vue'
 
 import entityData from './entity'
 

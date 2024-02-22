@@ -4,8 +4,12 @@ namespace App\Models\Oracle;
 
 use Yajra\Oci8\Eloquent\OracleEloquent as Eloquent;
 
+use App\Traits\Scope as GeneralScope;
+
 class Invoice extends Eloquent
 {
+
+    use GeneralScope;
     /**
      * The database connection that should be used by the model.
      *
@@ -43,7 +47,7 @@ class Invoice extends Eloquent
         'ledger_id',
         'org_id',
         'vendor_id',
-        'vendor_site_id',  
+        'vendor_site_id',
         'trx_number',
         'currency_code',
         'description',
@@ -56,6 +60,19 @@ class Invoice extends Eloquent
         'invoice_type_lookup_code',
         'payment_method_lookup_code',
         'status',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'amount' => 'float',
+        'ap_invoice_date' => 'date',
+        'ap_invoice_received_date' => 'date',
+        'ap_gl_date' => 'date',
+        'creation_date' => 'dateTime',
     ];
 
     /**

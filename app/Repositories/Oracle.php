@@ -1,8 +1,14 @@
 <?php
+
 namespace App\Repositories;
 
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 use PDOException;
 use PDO;
+
+use App\Models\Oracle\Invoice as Model;
+use App\Exports\Oracle\Header as HeaderReport;
 
 class Oracle
 {
@@ -14,7 +20,8 @@ class Oracle
      * @param Model $model
      * @return Area
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Oracle database configuration
         // $host = 'devoradb12.rpx.co.id';
         $host = config('oracle.oracle.host');
@@ -25,12 +32,41 @@ class Oracle
 
         // PDO DSN string
         $dsn = "oci:dbname=//{$host}:{$port}/{$service}";
-        
+
         try {
             $this->pdo = new PDO($dsn, $username, $password);
         } catch (PDOException $e) {
             info($e->getMessage());
         }
+    }
+
+    /**
+     * Display all of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function header(Request $request)
+    {
+        $query = Model::ordering($request)
+            ->filtering($request)
+            ->searching($request, ['trx_number', 'description', 'currency_code', 'payment_method_lookup_code', 'error_message'])
+            ->latest('creation_date');
+
+        return $query->paginate($request->per_page ?? 10)->withQueryString();
+    }
+
+    /**
+     * Export to storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Model
+     */
+    public static function headerExport($request)
+    {
+        $date = now()->format('d-m-Y H:i:s');
+        $name = str((new \ReflectionClass(__CLASS__))->getShortName())->kebab();
+        return Excel::download(new HeaderReport($request), "{$name}-header-{$date}.xlsx");
     }
 
     /**

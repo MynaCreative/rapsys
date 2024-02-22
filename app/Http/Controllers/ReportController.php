@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 
 use App\Repositories\Invoice as Repository;
+use App\Repositories\Oracle as RepositoryOracle;
 
 use App\Http\Requests\Invoice\{
     Index   as IndexRequest,
@@ -16,6 +17,7 @@ use Throwable;
 class ReportController extends Controller
 {
     private Repository  $repository;
+    private RepositoryOracle  $repositoryOracle;
 
     private $module = 'Transaction';
     private $page = 'Report';
@@ -25,9 +27,10 @@ class ReportController extends Controller
      *
      * @return void
      */
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, RepositoryOracle $repositoryOracle)
     {
         $this->repository   = $repository;
+        $this->repositoryOracle   = $repositoryOracle;
         $this->middleware('permission:report');
     }
 
@@ -42,7 +45,7 @@ class ReportController extends Controller
      */
     public function invoiceHeader(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/Index", [
+        return Inertia::render("{$this->module}/{$this->page}/InvoiceHeader/Index", [
             'collection' => $this->repository::report($request),
             'statistic' => $this->repository::statistic($request),
         ]);
@@ -76,7 +79,7 @@ class ReportController extends Controller
      */
     public function invoiceLineManual(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/Index", [
+        return Inertia::render("{$this->module}/{$this->page}/InvoiceHeader/Index", [
             'collection' => $this->repository::report($request),
             'statistic' => $this->repository::statistic($request),
         ]);
@@ -93,7 +96,7 @@ class ReportController extends Controller
      */
     public function invoiceLineAwb(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/Index", [
+        return Inertia::render("{$this->module}/{$this->page}/InvoiceHeader/Index", [
             'collection' => $this->repository::report($request),
             'statistic' => $this->repository::statistic($request),
         ]);
@@ -110,7 +113,7 @@ class ReportController extends Controller
      */
     public function invoiceLineSmu(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/Index", [
+        return Inertia::render("{$this->module}/{$this->page}/InvoiceHeader/Index", [
             'collection' => $this->repository::report($request),
             'statistic' => $this->repository::statistic($request),
         ]);
@@ -127,10 +130,26 @@ class ReportController extends Controller
      */
     public function oracleHeader(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/Index", [
-            'collection' => $this->repository::report($request),
-            'statistic' => $this->repository::statistic($request),
+        return Inertia::render("{$this->module}/{$this->page}/OracleHeader/Index", [
+            'collection' => $this->repositoryOracle::header($request),
         ]);
+    }
+
+    /**
+     * Export
+     *
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function oracleHeaderExport(IndexRequest $request)
+    {
+        try {
+            return $this->repositoryOracle::headerExport($request);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -144,7 +163,7 @@ class ReportController extends Controller
      */
     public function oracleLine(IndexRequest $request)
     {
-        return Inertia::render("{$this->module}/{$this->page}/Index", [
+        return Inertia::render("{$this->module}/{$this->page}/InvoiceHeader/Index", [
             'collection' => $this->repository::report($request),
             'statistic' => $this->repository::statistic($request),
         ]);

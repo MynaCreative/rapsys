@@ -29,9 +29,9 @@
                         <MenuItem route-name="transaction.report.invoice-header" name="Invoice Header" :permission="$page.props.auth.permissions.includes('report')"/>
                         <!-- <MenuItem route-name="transaction.report.invoice-line-manual" name="Invoice Line Manual" :permission="$page.props.auth.permissions.includes('report')"/>
                         <MenuItem route-name="transaction.report.invoice-line-smu" name="Invoice Line SMU" :permission="$page.props.auth.permissions.includes('report')"/>
-                        <MenuItem route-name="transaction.report.invoice-line-awb" name="Invoice Line AWB" :permission="$page.props.auth.permissions.includes('report')"/>
+                        <MenuItem route-name="transaction.report.invoice-line-awb" name="Invoice Line AWB" :permission="$page.props.auth.permissions.includes('report')"/> -->
                         <MenuItem route-name="transaction.report.oracle-header" name="Oracle Header" :permission="$page.props.auth.permissions.includes('report')"/>
-                        <MenuItem route-name="transaction.report.oracle-line" name="Oracle Line" :permission="$page.props.auth.permissions.includes('report')"/> -->
+                        <MenuItem route-name="transaction.report.oracle-line" name="Oracle Line" :permission="$page.props.auth.permissions.includes('report')"/>
                     </ul>
                 </div>
             </li>
