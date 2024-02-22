@@ -147,6 +147,30 @@ class Delta
     }
 
     /**
+     * Get tracking Cons Detail
+     */
+    public static function consDetail($code)
+    {
+        $payload = [
+            'body' => [
+                'awb' => $code,
+            ]
+        ];
+        $signature = self::sign($payload);
+        return Http::withToken(self::token())
+            // ->retry(2, 1500)
+            ->connectTimeout(100000)
+            ->withOptions([
+                'stream' => true,
+            ])
+            ->withBody(json_encode([
+                'request'   => $payload,
+                'signature' => $signature
+            ]), 'application/json')
+            ->get(config('delta.rest.url') . '/v3/racos/info');
+    }
+
+    /**
      * Get token
      */
     public static function token()

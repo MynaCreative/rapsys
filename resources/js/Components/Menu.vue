@@ -119,6 +119,22 @@
                         <MenuItem route-name="setting.delta.awb-detail" name="AWB Detail" :permission="$page.props.auth.permissions.includes('delta')"/>
                         <MenuItem route-name="setting.delta.awb-scan-compliance" name="AWB Scan Compliance" :permission="$page.props.auth.permissions.includes('delta')"/>
                         <MenuItem route-name="setting.delta.awb-batch" name="AWB Batch" :permission="$page.props.auth.permissions.includes('delta')"/>
+                        <MenuItem route-name="setting.delta.cons-detail" name="CONS Detail" :permission="$page.props.auth.permissions.includes('delta')"/>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item" v-if="hasAnyPermission([
+                'racos',
+            ])">
+                <a :class="['nav-link menu-link', {active: route().current().startsWith('setting.racos')}]"
+                :aria-expanded="route().current().startsWith('setting.racos')"
+                href="#setting-racos" data-bs-toggle="collapse" role="button" aria-controls="setting-racos">
+                    <i class=" ri-calculator-line"></i>
+                    <span data-key="t-authentication">Racos Testing</span>
+                </a>
+                <div :class="['collapse menu-dropdown', {show: route().current().startsWith('setting.racos')}]" id="setting-racos">
+                    <ul class="nav nav-sm flex-column">
+                        <MenuItem route-name="setting.racos.info" name="CONS Info" :permission="$page.props.auth.permissions.includes('delta')"/>
                     </ul>
                 </div>
             </li>

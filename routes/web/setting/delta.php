@@ -14,4 +14,5 @@ Route::prefix("{$module}/{$endpoint}")->name("{$module}.{$endpoint}.")
         Route::get($endpoint . '/awb-detail', [CurrentController::class, 'awbDetail'])->name('awb-detail');
         Route::get($endpoint . '/awb-batch', [CurrentController::class, 'awbBatch'])->name('awb-batch');
         Route::get($endpoint . '/awb-scan-compliance', [CurrentController::class, 'awbScanCompliance'])->name('awb-scan-compliance');
+        Route::get($endpoint . '/cons-detail', [CurrentController::class, 'consDetail'])->name('cons-detail');
     });

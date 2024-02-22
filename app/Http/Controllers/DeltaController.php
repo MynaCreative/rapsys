@@ -190,6 +190,38 @@ class DeltaController extends Controller
 
     /**
      *
+     * Display a smu test.
+     *
+     * @param   Request  $request
+     *
+     * @return  ApiResponse
+     * @throws  Throwable
+     */
+    public function consDetail(Request $request)
+    {
+        $result = null;
+        try {
+            if ($request->code) {
+                $result = $this->repository::consDetail($request->code)->json();
+            }
+            return Inertia::render("{$this->module}/ConsDetail", [
+                'result' => $result,
+                'information' => [
+                    'url' => config('delta.rest.url') . '/v3/racos/info',
+                    'username' => config('delta.rest.username'),
+                    'password' => config('delta.rest.password'),
+                ]
+            ]);
+        } catch (Throwable $exception) {
+            return redirect()->back()->withErrors([
+                'error' => __('messages.error.internal_server'),
+                'exception' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     *
      * Convert module string to route format.
      *
      * @return  String
