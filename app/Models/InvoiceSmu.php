@@ -54,6 +54,7 @@ class InvoiceSmu extends Model
         'validation_scan_compliance',
         'validation_ops_plan',
         'validation_bill',
+        'validation_data_revenue',
         'validation_score',
 
         'is_validated',
@@ -87,6 +88,7 @@ class InvoiceSmu extends Model
         'validation_scan_compliance'    => 'boolean',
         'validation_ops_plan'           => 'boolean',
         'validation_bill'               => 'boolean',
+        'validation_data_revenue'       => 'boolean',
         'is_validated'                  => 'boolean',
         'scan_compliance'               => 'json',
     ];

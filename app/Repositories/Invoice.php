@@ -32,6 +32,7 @@ use App\Models\Department;
 use App\Models\Expense;
 use App\Models\Interco;
 use App\Models\InvoiceAwb;
+use App\Models\InvoiceCons;
 use App\Models\InvoiceExpense;
 use App\Models\InvoiceSmu;
 use App\Models\InvoiceType;
@@ -256,10 +257,16 @@ class Invoice
                                         ];
                                     })
                                     ->toArray();
-                                if ($upload['type'] == Expense::TYPE_SMU) {
-                                    $model->smuItems()->createMany($rows);
-                                } else {
-                                    $model->awbItems()->createMany($rows);
+                                switch ($upload['type']) {
+                                    case Expense::TYPE_AWB:
+                                        $model->awbItems()->createMany($rows);
+                                        break;
+                                    case Expense::TYPE_SMU:
+                                        $model->smuItems()->createMany($rows);
+                                        break;
+                                    case Expense::TYPE_CONS:
+                                        $model->consItems()->createMany($rows);
+                                        break;
                                 }
                             }
                         }
@@ -284,10 +291,16 @@ class Invoice
                                         ];
                                     })
                                     ->toArray();
-                                if ($upload['type'] == Expense::TYPE_SMU) {
-                                    self::saveSmuItem($model, $rows ?? []);
-                                } else {
-                                    self::saveAwbItem($model, $rows ?? []);
+                                switch ($upload['type']) {
+                                    case Expense::TYPE_AWB:
+                                        self::saveAwbItem($model, $rows ?? []);
+                                        break;
+                                    case Expense::TYPE_SMU:
+                                        self::saveSmuItem($model, $rows ?? []);
+                                        break;
+                                    case Expense::TYPE_CONS:
+                                        self::saveConsItem($model, $rows ?? []);
+                                        break;
                                 }
                             }
                         }
@@ -374,9 +387,7 @@ class Invoice
      */
     public static function import($request): void
     {
-        $rows = Excel::toCollection(new DataImport, $request->file('excel_file'))
-            ->first()
-            ->toArray();
+        $rows = Excel::toCollection(new DataImport, $request->file('excel_file'))->first()->toArray();
         DB::transaction(function () use ($rows) {
             foreach ($rows as $row) {
                 Model::updateOrCreate(
@@ -447,6 +458,19 @@ class Invoice
                 })
                 ->get();
             $items = $smus;
+        }
+        if ($expense->type == InvoiceExpense::TYPE_CONS) {
+            $awbs = $expense->awbItems()
+                ->when(!request()->get('all'), function ($query) {
+                    $query->where('validation_score', '!=', 5);
+                })
+                ->get();
+            $cons = $expense->consItems()
+                ->when(!request()->get('all'), function ($query) {
+                    $query->where('validation_score', '!=', 5);
+                })
+                ->get();
+            $items = $cons;
         }
         $name = request()->get('all') ? 'all' : 'revision-invalid';
         if (request()->get('all')) {
@@ -779,13 +803,27 @@ class Invoice
     }
 
     /**
-     * Save awb items
+     * Save smu items
      */
     public static function saveSmuItem(Model $model, $items)
     {
         if (!empty($items)) {
             foreach ($items as $item) {
                 InvoiceSmu::find($item['id'])->update(
+                    $item
+                );
+            }
+        }
+    }
+
+    /**
+     * Save cons items
+     */
+    public static function saveConsItem(Model $model, $items)
+    {
+        if (!empty($items)) {
+            foreach ($items as $item) {
+                InvoiceCons::find($item['id'])->update(
                     $item
                 );
             }

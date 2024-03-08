@@ -2,7 +2,7 @@
     <Layout>
         <Head title="Report - Oracle Header" />
         <template #header>
-            <PageHeader title="Report - Oracle Header" :breadcrumbs="breadcrumbs" />
+            <PageHeader title="Report - Oracle Header (Staging)" :breadcrumbs="breadcrumbs" />
         </template>
         <div class="card">
             <div class="card-header border-0">
@@ -64,7 +64,13 @@
                                 <td class="text-center date">{{ $dayjs(item.ap_invoice_date).format('DD MMM, YYYY') }}</td>
                                 <td class="text-center date">{{ $dayjs(item.ap_invoice_received_date).format('DD MMM, YYYY') }}</td>
                                 <td class="text-center date">{{ $dayjs(item.ap_gl_date).format('DD MMM, YYYY') }}</td>
-                                <td class="text-center">{{ item.status }}</td>
+                                <td class="text-center">
+                                    <span v-if="item.status == 'S'" class="badge bg-success rounded-pill text-capitalize">posted</span>
+                                    <span v-else-if="item.status == 'E' " class="badge bg-danger rounded-pill text-capitalize">error</span>
+                                    <span v-else-if="item.status == 'G'" class="badge bg-danger rounded-pill text-capitalize">failed</span>
+                                    <span v-else-if="item.status == 'I'" class="badge bg-info rounded-pill text-capitalize">pending</span>
+                                    <template v-else>{{ item.status }}</template>
+                                </td>
                                 <td >{{ item.error_message }}</td>
                                 <td class="text-center date"><DataTimestamp :data="item.creation_date"/></td>
                             </tr>

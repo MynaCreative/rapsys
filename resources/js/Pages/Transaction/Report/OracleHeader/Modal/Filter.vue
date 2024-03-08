@@ -22,10 +22,10 @@
                     <b-form-checkbox-group
                         v-model="form.filters.status"
                         :options="[
-                            { text: 'I', value: 'I' },
-                            { text: 'S', value: 'S' },
-                            { text: 'E', value: 'E' },
-                            { text: 'G', value: 'G' },
+                            { text: 'Pending', value: 'I' },
+                            { text: 'Posted', value: 'S' },
+                            { text: 'Error', value: 'E' },
+                            { text: 'Failed', value: 'G' },
                         ]"
                         aria-describedby="input-type-feedback"
                     ></b-form-checkbox-group>

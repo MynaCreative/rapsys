@@ -1,8 +1,8 @@
 s<template>
     <Layout>
-        <Head title="CONS Detail" />
+        <Head title="Revenue AWB" />
         <template #header>
-            <PageHeader title="CONS Detail" :breadcrumbs="breadcrumbs" />
+            <PageHeader title="Revenue AWB" :breadcrumbs="breadcrumbs" />
         </template>
         <div class="alert alert-danger alert-dismissible alert-additional shadow fade show" role="alert" v-if="Object.keys($page.props.errors).length">
             <div class="alert-body">
@@ -75,7 +75,7 @@ const breadcrumbs = [
     { text: 'Dashboard', to: route('dashboard') },
     { text: 'Setting' },
     { text: 'Delta' },
-    { text: 'CONS Detail', active: true },
+    { text: 'Revenue AWB', active: true },
 ]
 
 const props = defineProps(['result','information'])

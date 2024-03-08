@@ -2,7 +2,7 @@
     <Layout>
         <Head title="Report - Oracle Line" />
         <template #header>
-            <PageHeader title="Report - Oracle Line" :breadcrumbs="breadcrumbs" />
+            <PageHeader title="Report - Oracle Line (Staging)" :breadcrumbs="breadcrumbs" />
         </template>
         <div class="card">
             <div class="card-header border-0">
@@ -61,8 +61,18 @@
                                 <td class="text-center">{{ item.ppn_code }}</td>
                                 <td class="text-center">{{ item.tax_rate_id }}</td>
                                 <td class="text-end">{{ item.amount.toLocaleString() }}</td>
-                                <td class="text-center">{{ item.invoice?.status ?? '' }}</td>
-                                <td class="text-center">{{ item.status }}</td>
+                                <td class="text-center">
+                                    <span v-if="item.invoice?.status == 'S'" class="badge bg-success rounded-pill text-capitalize">posted</span>
+                                    <span v-else-if="item.invoice?.status == 'E' || item.invoice?.status == 'G'" class="badge bg-danger rounded-pill text-capitalize">error</span>
+                                    <span v-else-if="item.invoice?.status == 'I'" class="badge bg-info rounded-pill text-capitalize">pending</span>
+                                    <template v-else>{{ item.invoice?.status }}</template>
+                                </td>
+                                <td class="text-center">
+                                    <span v-if="item.invoice?.status == 'I'" class="badge bg-info rounded-pill text-capitalize">pending</span>
+                                    <span v-if="item.status == 'V'" class="badge bg-success rounded-pill text-capitalize">posted</span>
+                                    <span v-else-if="item.status == 'E'" class="badge bg-danger rounded-pill text-capitalize">error</span>
+                                    <template v-else>{{ item.status }}</template>
+                                </td>
                                 <td >{{ item.error_message }}</td>
                                 <td class="text-center date"><DataTimestamp :data="item.creation_date"/></td>
                             </tr>

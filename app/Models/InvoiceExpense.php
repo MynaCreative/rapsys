@@ -16,6 +16,7 @@ class InvoiceExpense extends Model
 
     const TYPE_SMU = 1;
     const TYPE_AWB = 2;
+    const TYPE_CONS = 3;
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +43,7 @@ class InvoiceExpense extends Model
 
         'total_weight',
         'total_weight_smu',
+        'total_weight_cons',
         'total_weight_all_awb',
         'total_weight_dim_all_awb',
         'total_weight_actual_all_awb',
@@ -58,18 +60,21 @@ class InvoiceExpense extends Model
         'total_valid_validation_scan_compliance',
         'total_valid_validation_ops_plan',
         'total_valid_validation_bill',
+        'total_valid_validation_data_revenue',
 
         'total_weight_validation_reference',
         'total_weight_validation_weight',
         'total_weight_validation_scan_compliance',
         'total_weight_validation_ops_plan',
         'total_weight_validation_bill',
+        'total_weight_validation_data_revenue',
 
         'total_validation_reference',
         'total_validation_weight',
         'total_validation_scan_compliance',
         'total_validation_ops_plan',
         'total_validation_bill',
+        'total_validation_data_revenue',
         'total_validation_score',
 
         'created_by',
@@ -87,6 +92,7 @@ class InvoiceExpense extends Model
 
         'total_weight'                              => 'float',
         'total_weight_smu'                          => 'float',
+        'total_weight_cons'                         => 'float',
         'total_weight_all_awb'                      => 'float',
         'total_weight_dim_all_awb'                  => 'float',
         'total_weight_actual_all_awb'               => 'float',
@@ -103,24 +109,28 @@ class InvoiceExpense extends Model
         'total_weight_validation_scan_compliance'   => 'float',
         'total_weight_validation_ops_plan'          => 'float',
         'total_weight_validation_bill'              => 'float',
+        'total_weight_validation_data_revenue'      => 'float',
 
         'total_validation_reference'                => 'integer',
         'total_validation_weight'                   => 'integer',
         'total_validation_scan_compliance'          => 'integer',
         'total_validation_ops_plan'                 => 'integer',
         'total_validation_bill'                     => 'integer',
+        'total_validation_data_revenue'             => 'integer',
 
         'total_valid_amount_validation_reference'          => 'float',
         'total_valid_amount_validation_weight'             => 'float',
         'total_valid_amount_validation_scan_compliance'    => 'float',
         'total_valid_amount_validation_ops_plan'           => 'float',
         'total_valid_amount_validation_bill'               => 'float',
+        'total_valid_amount_validation_data_revenue'       => 'float',
 
         'total_invalid_amount_validation_reference'          => 'float',
         'total_invalid_amount_validation_weight'             => 'float',
         'total_invalid_amount_validation_scan_compliance'    => 'float',
         'total_invalid_amount_validation_ops_plan'           => 'float',
         'total_invalid_amount_validation_bill'               => 'float',
+        'total_invalid_amount_validation_data_revenue'       => 'float',
     ];
 
     protected $appends = ['excel_file'];
@@ -201,6 +211,14 @@ class InvoiceExpense extends Model
     public function smuItems()
     {
         return $this->hasMany(InvoiceSmu::class, 'invoice_expense_id')->latest()->orderBy('validation_score');
+    }
+
+    /**
+     * Get the smu items for the invoice.
+     */
+    public function consItems()
+    {
+        return $this->hasMany(InvoiceCons::class, 'invoice_expense_id')->latest()->orderBy('validation_score');
     }
 
     /**

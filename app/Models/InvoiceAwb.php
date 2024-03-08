@@ -26,6 +26,7 @@ class InvoiceAwb extends Model
         'invoice_id',
         'invoice_expense_id',
         'invoice_smu_id',
+        'invoice_cons_id',
 
         'expense_id',
         'cost_center_id',
@@ -37,6 +38,7 @@ class InvoiceAwb extends Model
 
         'dist',
         'smu',
+        'cons',
         'code',
         'route',
         'date_item',
@@ -61,6 +63,7 @@ class InvoiceAwb extends Model
         'validation_scan_compliance',
         'validation_ops_plan',
         'validation_bill',
+        'validation_data_revenue',
         'validation_score',
 
         'is_validated',
@@ -94,6 +97,7 @@ class InvoiceAwb extends Model
         'validation_scan_compliance'    => 'boolean',
         'validation_ops_plan'           => 'boolean',
         'validation_bill'               => 'boolean',
+        'validation_data_revenue'       => 'boolean',
         'is_validated'                  => 'boolean',
         'scan_compliance'               => 'json',
     ];
@@ -120,6 +124,14 @@ class InvoiceAwb extends Model
     public function invoiceSmu()
     {
         return $this->belongsTo(InvoiceSmu::class);
+    }
+
+    /**
+     * Get the invoice cons that owns the invoice item.
+     */
+    public function invoiceCons()
+    {
+        return $this->belongsTo(InvoiceCons::class);
     }
 
     /**

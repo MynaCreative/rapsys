@@ -56,6 +56,9 @@ class ExpenseValidation implements ShouldQueue
         if ($this->expense->type == InvoiceExpense::TYPE_SMU) {
             $this->summarySMU($this->expense);
         }
+        if ($this->expense->type == InvoiceExpense::TYPE_CONS) {
+            $this->summaryCONS($this->expense);
+        }
     }
 
     public function summaryAWB($expense)
@@ -146,6 +149,52 @@ class ExpenseValidation implements ShouldQueue
             'total_validation_ops_plan' => $expense->smuItems->where('validation_ops_plan', 0)->count(),
             'total_validation_bill' => $expense->smuItems->where('validation_bill', 0)->count(),
             'total_validation_score' => $expense->smuItems->sum('validation_score'),
+        ]);
+    }
+
+    public function summaryCONS($expense)
+    {
+        $expense->update([
+            'total_amount' => $expense->consItems->sum('amount'),
+            'total_amount_after_tax' => $expense->consItems->sum('amount_after_tax'),
+
+            'total_valid_amount' => $expense->consItems->where('validation_reference', 1)->sum('amount'),
+            'total_invalid_amount' => $expense->consItems->where('validation_reference', 0)->sum('amount'),
+
+            'total_weight' => $expense->consItems->sum('weight'),
+            'total_weight_cons' => $expense->consItems->sum('total_weight_cons'),
+            'total_weight_all_awb' => $expense->consItems->sum('total_weight_awb'),
+            'total_weight_dim_all_awb' => $expense->consItems->sum('total_weight_dim'),
+            'total_weight_actual_all_awb' => $expense->consItems->sum('total_weight_actual'),
+
+            'total_withholding_tax' => $expense->consItems->sum('withholding_tax'),
+            'total_vat_tax' => $expense->consItems->sum('vat_tax'),
+            'grand_total' => $expense->consItems->sum('amount_after_tax'),
+
+            'total_valid_amount_validation_reference' => $expense->consItems->where('validation_reference', 1)->sum('amount'),
+            'total_valid_amount_validation_weight' => $expense->consItems->where('validation_weight', 1)->sum('amount'),
+            'total_valid_amount_validation_scan_compliance' => $expense->consItems->where('validation_scan_compliance', 1)->sum('amount'),
+            'total_valid_amount_validation_ops_plan' => $expense->consItems->where('validation_ops_plan', 1)->sum('amount'),
+            'total_valid_amount_validation_bill' => $expense->consItems->where('validation_bill', 1)->sum('amount'),
+
+            'total_invalid_amount_validation_reference' => $expense->consItems->where('validation_reference', 0)->sum('amount'),
+            'total_invalid_amount_validation_weight' => $expense->consItems->where('validation_weight', 0)->sum('amount'),
+            'total_invalid_amount_validation_scan_compliance' => $expense->consItems->where('validation_scan_compliance', 0)->sum('amount'),
+            'total_invalid_amount_validation_ops_plan' => $expense->consItems->where('validation_ops_plan', 0)->sum('amount'),
+            'total_invalid_amount_validation_bill' => $expense->consItems->where('validation_bill', 0)->sum('amount'),
+
+            'total_weight_validation_reference' => $expense->consItems->where('validation_reference', 0)->sum('weight'),
+            'total_weight_validation_weight' => $expense->consItems->where('validation_weight', 0)->sum('weight'),
+            'total_weight_validation_scan_compliance' => $expense->consItems->where('validation_scan_compliance', 0)->sum('weight'),
+            'total_weight_validation_ops_plan' => $expense->consItems->where('validation_ops_plan', 0)->sum('weight'),
+            'total_weight_validation_bill' => $expense->consItems->where('validation_bill', 0)->sum('weight'),
+
+            'total_validation_reference' => $expense->consItems->where('validation_reference', 0)->count(),
+            'total_validation_weight' => $expense->consItems->where('validation_weight', 0)->count(),
+            'total_validation_scan_compliance' => $expense->consItems->where('validation_scan_compliance', 0)->count(),
+            'total_validation_ops_plan' => $expense->consItems->where('validation_ops_plan', 0)->count(),
+            'total_validation_bill' => $expense->consItems->where('validation_bill', 0)->count(),
+            'total_validation_score' => $expense->consItems->sum('validation_score'),
         ]);
     }
 }

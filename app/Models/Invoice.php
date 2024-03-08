@@ -190,6 +190,39 @@ class Invoice extends Model
                                 }
                             };
                         }
+                        if ($expense->type == InvoiceExpense::TYPE_CONS) {
+                            $dists = $expense->awbItems;
+                            $distGroups = $dists->groupBy('dist');
+                            foreach ($distGroups as $group) {
+                                $item = $group->first();
+                                if ($item->product && $item->area) {
+                                    $description = implode('|', array_filter([
+                                        $expense->expense->code,
+                                        $group->count() . $item->type,
+                                        $item->product->code ?? null,
+                                        $item->area->code ?? null
+                                    ]));
+                                    $amount = $group->sum('amount');
+                                    $withholding = ($item->withholding->deduction ?? 0) * $amount;
+                                    $tax = ($item->tax->deduction ?? 0) * $amount;
+                                    $items[] = [
+                                        'description' => $description,
+                                        'line_type_code' => 'ITEM',
+                                        'ppn_code' => $item->tax->name ?? null,
+                                        'tax_rate_id' => $item->tax->code ?? null,
+                                        'awt_group_id' => $item->withholding->code ?? null,
+                                        'awt_group_name' => $item->withholding->name ?? null,
+                                        'ppn_code' => $item->tax->name ?? null,
+                                        'amount' => $amount,
+                                        'amount_withholding' => $withholding,
+                                        'amount_tax' => $tax,
+                                        'amount_after_tax' => $amount + $tax,
+                                        'amount_after_wht' => $amount - $withholding + $tax,
+                                        'dist_code_concat' => $item->dist,
+                                    ];
+                                }
+                            };
+                        }
                     }
                 }
                 if ($this->items) {
@@ -395,6 +428,14 @@ class Invoice extends Model
     public function smuItems()
     {
         return $this->hasMany(InvoiceSmu::class)->orderBy('validation_score')->orderBy('is_validated')->orderBy('message');
+    }
+
+    /**
+     * Get the smu items for the invoice.
+     */
+    public function consItems()
+    {
+        return $this->hasMany(InvoiceCons::class)->orderBy('validation_score')->orderBy('is_validated')->orderBy('message');
     }
 
     /**

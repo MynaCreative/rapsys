@@ -17,6 +17,7 @@ use App\Models\Product;
 use App\Models\Area;
 use App\Models\Invoice;
 use App\Repositories\Delta;
+use App\Repositories\Racos;
 
 class DeltaValidation implements ShouldQueue
 {
@@ -78,6 +79,30 @@ class DeltaValidation implements ShouldQueue
                     'amount_after_tax' => $amountAfterTax
                 ]);
                 $this->validationSMU($item);
+            }
+        }
+
+        if ($model->consItems) {
+            $consItems = $model->consItems->where('validation_score', '!=', 5);
+            foreach ($consItems as $item) {
+                $item->awbItems()->delete();
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                $this->validationCONS($item);
             }
         }
 
@@ -411,6 +436,192 @@ class DeltaValidation implements ShouldQueue
             'validation_ops_plan' => $referenceOpsPlan,
 
             'total_weight_smu' => $totalWeightSmu,
+            'total_weight_awb' => $totalWeightAwb,
+            'total_weight_dim' => $totalWeightDim,
+            'total_weight_actual' => $totalWeightActual,
+
+            'validation_score' => $validation_score,
+            'is_validated' => true,
+
+            'message' => count($messages) > 0 ? implode(', ', $messages) : null,
+            'awb_message' => count($awbItems) > 0 ? implode(', ', array_column($awbItems, 'message')) : null,
+        ]);
+    }
+
+    public function validationCONS($item)
+    {
+        $delta = Racos::info($item->code);
+
+        /**
+         * Validation
+         */
+        $validationReference = false;
+        $validationBillExist = false;
+        $validationWeight = false;
+        $referenceMandatoryScan = false;
+        $referenceOpsPlan = true;
+
+        /**
+         * Weight
+         */
+        $totalWeightCons = 0;
+        $totalWeightAwb = 0;
+        $totalWeightDim = 0;
+        $totalWeightActual = 0;
+
+        $messages = [];
+
+        $validationReference = (trim($delta['msg']) == 'Data Found') ? true : false;
+        if ($validationReference) {
+            $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
+            if (!$validationBillExist) {
+                $validationWeight = $delta['data']['tot_weight_all_awb'] == $item->weight ? true : false;
+                $totalWeightCons = $delta['data']['tot_weight_all_awb'];
+                $totalWeightAwb = $delta['data']['tot_weight_all_awb'];
+                $totalWeightDim = $delta['data']['tot_weight_dim_all_awb'];
+                $totalWeightActual = $delta['data']['tot_weight_actual_all_awb'];
+
+                if ($validationWeight) {
+                    if ($item->expense->mandatory_scan) {
+                        $awbs = array_filter(array_column($delta['data']['airwaybill'], 'awb'));
+                        // $mandatoryScans = [];
+                        // foreach ($awbs as $awb) {
+                        //     $deltaBatch = Delta::awbBatch([$awb]);
+                        //     $tracking = array_unique(array_column($deltaBatch['data']['tracking'], 'tracking_id'));
+                        //     $mandatoryScans[] = $this->operationPattern($tracking, $item->expense->mandatory_scan);
+                        // }
+                        // $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
+                        $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
+                        $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
+                        if (!$referenceMandatoryScan) {
+                            $messages[] = "CONS: '" . $item->code . "' not passed scan compliance";
+                        }
+                    } else {
+                        $messages[] = "Expense doesn't have mandatory scan";
+                    }
+                } else {
+                    $messages[] = "CONS: '" . $item->code . "' weight is : {$item->weight} but delta is : " . $delta['data']['tot_weight_all_awb'];
+                }
+            }
+        } else {
+            $messages[] = "CONS: '" . $item->code . "' not found in Delta API";
+        }
+        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
+        $awbItems = [];
+        // if ($validation_score >= 2) {
+        if (isset($delta['data']['airwaybill'])) {
+            foreach ($delta['data']['airwaybill'] as $awbItem) {
+                $awbMessages = [];
+                $area = null;
+                $product = null;
+                $salesChannel = null;
+                $areaId = null;
+                $productId = null;
+                $salesChannelId = null;
+                if ($awbItem['awb']) {
+                    $deltaAwb = Delta::awbDetail($awbItem['awb']);
+                    if (trim($deltaAwb['msg']) == 'Data Found') {
+                        if (isset($deltaAwb['data'][0]['origin'])) {
+                            $area = $this->getArea($deltaAwb['data'][0]['origin']);
+                            if ($area) {
+                                $areaId = optional($area)->id;
+                            } else {
+                                $awbMessages[] = "Area: '" . $delta['data'][0]['origin'] . "' not found in RAPsys database";
+                            }
+                        } else {
+                            $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have origin";
+                        }
+                        if (isset($deltaAwb['data'][0]['sales_channel'])) {
+                            $salesChannel = $this->getSalesChannel($deltaAwb['data'][0]['sales_channel']);
+                            if ($salesChannel) {
+                                $salesChannelId = optional($salesChannel)->id;
+                            } else {
+                                $awbMessages[] = "Sales Channel: '" . $delta['data'][0]['sales_channel'] . "' not found in RAPsys database";
+                            }
+                        } else {
+                            $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have sales_channel";
+                        }
+                        if (isset($deltaAwb['data'][0]['service_type_id'])) {
+                            $product = $this->getProduct($deltaAwb['data'][0]['service_type_id']);
+                            if ($product) {
+                                $productId = optional($product)->id;
+                            } else {
+                                $awbMessages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                            }
+                        } else {
+                            $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have service_type_id";
+                        }
+                    } else {
+                        $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' not found in Delta API";
+                    }
+
+                    $percentage = (($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']) * 100);
+                    $amount = (float) ($item->amount * ($awbItem['total_weight_awb'] / $delta['data']['tot_weight_all_awb']));
+
+                    $tax = 0;
+                    $withholding = 0;
+                    $amountAfterTax = $amount;
+                    if ($item->tax && $item->withholding) {
+                        $tax = (float) ($amount * $item->tax->deduction);
+                        $withholding = (float) ($amount * $item->withholding->deduction);
+
+                        $amountAfterTax = (float) ($amount + $tax - $withholding);
+                    }
+
+                    $awbItems[] = [
+                        'invoice_id' => $item->invoice_id,
+                        'expense_id' => $item->expense_id,
+                        'invoice_expense_id' => $item->invoice_expense_id,
+                        'cost_center_id' => $item->cost_center_id,
+                        'tax_id' => $item->tax_id,
+                        'withholding_id' => $item->withholding_id,
+                        'cons' => $item->code,
+                        'code' => $awbItem['awb'],
+                        'weight' => $awbItem['total_weight_awb'],
+                        'delta_weight' => $awbItem['total_weight_awb'],
+                        'delta_weight_actual' => $awbItem['total_weight_actual'],
+                        'delta_weight_dim' => $awbItem['total_weight_dim'],
+
+                        'area_id' => $areaId,
+                        'product_id' => $productId,
+                        'sales_channel_id' => $salesChannelId,
+
+                        'amount' => $amount,
+                        'delta_amount' => $amount,
+                        'delta_percentage' => $percentage,
+
+                        'vat_tax' => $tax,
+                        'withholding_tax' => $withholding,
+                        'amount_after_tax' => $amountAfterTax,
+
+                        'message' => count($awbMessages) > 0 ? implode(', ', $awbMessages) : null,
+                        'validation_score' => count($awbMessages),
+                        'is_validated' => 1,
+
+                        'dist' => implode('-', [
+                            $item->invoice->sbu->coa ?? null,
+                            $area->coa ?? null,
+                            $item->costCenter->cost_center ?? null,
+                            $item->expense->coa ?? $item->expense_coa,
+                            $salesChannel->coa ?? null,
+                            $product->coa ?? null,
+                            $item->invoice->interco->coa ?? null,
+                            '0000',
+                            '0000',
+                        ])
+                    ];
+                }
+            }
+            $item->awbItems()->createMany($awbItems);
+        }
+        $item->update([
+            'validation_reference' => $validationReference,
+            'validation_bill' => !$validationBillExist,
+            'validation_weight' => $validationWeight,
+            'validation_scan_compliance' => $referenceMandatoryScan,
+            'validation_ops_plan' => $referenceOpsPlan,
+
+            'total_weight_cons' => $totalWeightCons,
             'total_weight_awb' => $totalWeightAwb,
             'total_weight_dim' => $totalWeightDim,
             'total_weight_actual' => $totalWeightActual,
