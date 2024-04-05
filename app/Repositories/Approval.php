@@ -79,6 +79,7 @@ class Approval
                         'ap_invoice_received_date' => date('d-M-Y', strtotime($this->model->invoice_receipt_date)),
                         'ap_gl_date' => date('d-M-Y', strtotime($this->model->posting_date)),
                         'supplier_tax_invoice_date' => date('d-M-Y', strtotime($this->model->supplier_tax_invoice_date)),
+                        'terms_date' => date('d-M-Y', strtotime($this->model->term_date)),
                         'supplier_tax_invoice_number' => $this->model->supplier_tax_invoice,
                         'ap_source' => 'RAPSYS',
                         'terms_id' => $this->model->term->code,
