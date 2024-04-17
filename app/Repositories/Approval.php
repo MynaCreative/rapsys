@@ -84,7 +84,7 @@ class Approval
                         'ap_source' => 'RAPSYS',
                         'terms_id' => $this->model->term->code,
                         'invoice_type_lookup_code' => strtoupper($this->model->invoiceType->name),
-                        'payment_method_lookup_code' => 'TRANSFER',
+                        'payment_method_lookup_code' => 'Transfer',
                         'status' => 'I',
                     ]);
 
