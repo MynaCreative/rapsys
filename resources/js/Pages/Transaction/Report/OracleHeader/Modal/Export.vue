@@ -6,16 +6,24 @@
         </div>
         <div class="modal-body">
             <div class="mb-3">
-                <label for="type" class="form-label">Period (Creation Date)</label>
-                <input type="month" v-model="form.period" class="form-control"/>
+                <label for="type" class="form-label">Creation Date</label>
+                <input type="month" v-model="form.created_at" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Invoice Date</label>
+                <input type="month" v-model="form.invoice_date" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label">Posting Date</label>
+                <input type="month" v-model="form.posting_date" class="form-control"/>
             </div>
             <div class="mb-3">
                 <label for="type" class="form-label">Payment Method</label>
                 <b-form-checkbox-group
                     v-model="form.payment_method_lookup_code"
                     :options="[
-                        { text: 'Transfer', value: 'TRANSFER' },
-                        { text: 'Check', value: 'CHECK' },
+                        { text: 'Transfer', value: 'Transfer' },
+                        { text: 'Check', value: 'Check' },
                     ]"
                     aria-describedby="input-type-feedback"
                 ></b-form-checkbox-group>
@@ -61,8 +69,10 @@ const emit  = defineEmits(['update:show'])
 
 const form = reactive({
     type: 'xlsx',
-    payment_method_lookup_code: ['TRANSFER','CHECK'],
+    payment_method_lookup_code: ['Transfer','Check'],
     status: ['I','S','E','G'],
-    period: dayjs().format('YYYY-MM'),
+    created_at: dayjs().format('YYYY-MM'),
+    invoice_date: null,
+    posting_date: null,
 })
 </script>

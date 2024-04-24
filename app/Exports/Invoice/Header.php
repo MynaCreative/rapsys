@@ -36,6 +36,10 @@ class Header implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithCo
             ->when($this->request->approval_status, function ($query) {
                 $query->whereIn('approval_status', $this->request->approval_status);
             })
+            ->when($this->request->posting_date, function ($query) {
+                $period = explode('-', $this->request->posting_date);
+                $query->whereYear('posting_date', $period[0])->whereMonth('posting_date', $period[1]);
+            })
             ->when($this->request->data_type, function ($query) {
                 $query->whereHas('expense', function ($query) {
                     $query->whereIn('type', $this->request->data_type);
@@ -55,9 +59,9 @@ class Header implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithCo
                 $workSheet = $event->sheet->getDelegate();
                 $workSheet->freezePane('A' . $this->firstRow + 1);
                 $workSheet->setAutoFilter("A{$this->firstRow}:{$event->sheet->getHighestColumn()}{$this->firstRow}");
-                $event->sheet->getStyle('H' . ($this->firstRow + 1) . ':H' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('yyyy-mm-dd');
                 $event->sheet->getStyle('I' . ($this->firstRow + 1) . ':I' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('yyyy-mm-dd');
                 $event->sheet->getStyle('J' . ($this->firstRow + 1) . ':J' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('yyyy-mm-dd');
+                $event->sheet->getStyle('K' . ($this->firstRow + 1) . ':K' . $event->sheet->getHighestRow())->getNumberFormat()->setFormatCode('yyyy-mm-dd');
             },
         ];
     }
@@ -65,7 +69,8 @@ class Header implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithCo
     public function columnFormats(): array
     {
         return [
-            'D' => '#,##0'
+            'D' => '#,##0',
+            'E' => '#,##0'
         ];
     }
 

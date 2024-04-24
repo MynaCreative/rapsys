@@ -32,9 +32,17 @@ class Header implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithCo
         $name = str(ltrim(strrchr(__NAMESPACE__, '\\'), '\\'))->kebab();
 
         $rows = Invoice::latest('creation_date')
-            ->when($this->request->period, function ($query) {
-                $period = explode('-', $this->request->period);
+            ->when($this->request->created_at, function ($query) {
+                $period = explode('-', $this->request->created_at);
                 $query->whereYear('creation_date', $period[0])->whereMonth('creation_date', $period[1]);
+            })
+            ->when($this->request->invoice_date, function ($query) {
+                $period = explode('-', $this->request->invoice_date);
+                $query->whereYear('ap_invoice_date', $period[0])->whereMonth('ap_invoice_date', $period[1]);
+            })
+            ->when($this->request->posting_date, function ($query) {
+                $period = explode('-', $this->request->posting_date);
+                $query->whereYear('ap_gl_date', $period[0])->whereMonth('ap_gl_date', $period[1]);
             })
             ->when($this->request->payment_method_lookup_code, function ($query) {
                 $query->whereIn('payment_method_lookup_code', $this->request->payment_method_lookup_code);

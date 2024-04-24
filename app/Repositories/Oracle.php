@@ -84,6 +84,9 @@ class Oracle
             ->ordering($request)
             ->filtering($request)
             ->searching($request, ['dist_code_concat', 'description', 'ppn_code', 'tax_rate_id', 'error_message'])
+            ->when($request->keyword, function ($query) use ($request) {
+                return $query->orWhereRelation('invoice', 'trx_number', 'like', "%{$request->keyword}%");
+            })
             ->latest('creation_date');
 
         return $query->paginate($request->per_page ?? 10)->withQueryString();

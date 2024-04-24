@@ -11,8 +11,8 @@
                     <b-form-checkbox-group
                         v-model="form.filters.payment_method_lookup_code"
                         :options="[
-                            { text: 'Transfer', value: 'TRANSFER' },
-                            { text: 'Check', value: 'CHECK' },
+                            { text: 'Transfer', value: 'Transfer' },
+                            { text: 'Check', value: 'Check' },
                         ]"
                         aria-describedby="input-type-feedback"
                     ></b-form-checkbox-group>
@@ -59,7 +59,7 @@ const queryString = route().params;
 const form = reactive({
     ...queryString,
     filters: {
-        payment_method_lookup_code: queryString.filters?.payment_method_lookup_code ?? ['TRANSFER','CHECK'],
+        payment_method_lookup_code: queryString.filters?.payment_method_lookup_code ?? ['Transfer','Check'],
         status: queryString.filters?.status ?? ['I','S','E','G'],
     }
 });

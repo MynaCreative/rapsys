@@ -23,6 +23,7 @@
             <th>Invoice Number</th>
             <th>Vendor</th>
             <th>Invoice Amount</th>
+            <th>Invoice Amount (Distribution)</th>
             <th>Document Status</th>
             <th>Approval Status</th>
             <th>Data Type</th>
@@ -38,9 +39,30 @@
             <td>{{ $row->invoice_number }}</td>
             <td>{{ optional($row->vendor)->name ?? '-' }}</td>
             <td>{{ $row->total_amount }}</td>
+            <td>
+                @if ($row->amount_distribution)
+                {{ json_encode($row->amount_distribution) }}
+                @endif
+            </td>
             <td>{{ $row->document_status }}</td>
             <td>{{ $row->approval_status }}</td>
-            <td>{{ optional($row->expense->expense)->type == 1 ? 'SMU' : 'AWB' }}</td>
+            <td>
+                @switch(optional($row->expense->expense)->type)
+
+                @case(1)
+                SMU
+                @break
+
+                @case(2)
+                AWB
+                @break
+
+                @case(3)
+                CONS
+                @break
+
+                @endswitch
+            </td>
             <td>{{ $excelDate::dateTimeToExcel($row->invoice_date) }}</td>
             <td>{{ $excelDate::dateTimeToExcel($row->posting_date) }}</td>
             <td>{{ $excelDate::dateTimeToExcel($row->created_at) }}</td>

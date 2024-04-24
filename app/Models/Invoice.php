@@ -108,7 +108,7 @@ class Invoice extends Model
      * @var array
      */
     protected $appends = [
-        'dists'
+        'dists', 'amount_distribution'
     ];
 
     /**
@@ -320,6 +320,20 @@ class Invoice extends Model
                     'items' => $items,
                     'taxes' => $taxes,
                 ];
+            },
+        );
+    }
+
+    /**
+     * Get the user's type text.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function amountDistribution(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                return ($this->awbItems->sum('amount') ?? 0) + ($this->items->sum('amount') ?? 0);
             },
         );
     }

@@ -32,8 +32,8 @@ class Line implements FromView, WithStyles, WithEvents, ShouldAutoSize, WithColu
         $name = str(ltrim(strrchr(__NAMESPACE__, '\\'), '\\'))->kebab();
 
         $rows = InvoiceLine::latest('creation_date')
-            ->when($this->request->period, function ($query) {
-                $period = explode('-', $this->request->period);
+            ->when($this->request->created_at, function ($query) {
+                $period = explode('-', $this->request->created_at);
                 $query->whereYear('creation_date', $period[0])->whereMonth('creation_date', $period[1]);
             })
             ->when($this->request->status, function ($query) {

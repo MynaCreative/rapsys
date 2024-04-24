@@ -17,6 +17,10 @@
                 ></b-form-radio-group>
             </div> -->
             <div class="mb-3">
+                <label for="type" class="form-label">Posting Date</label>
+                <input type="month" v-model="form.posting_date" class="form-control"/>
+            </div>
+            <div class="mb-3">
                 <label for="type" class="form-label">Document Status</label>
                 <b-form-checkbox-group
                     v-model="form.document_status"
@@ -49,6 +53,7 @@
                     :options="[
                         { text: 'SMU', value: 1 },
                         { text: 'AWB', value: 2 },
+                        { text: 'CONS', value: 3 },
                     ]"
                     aria-describedby="input-type-feedback"
                 ></b-form-checkbox-group>
@@ -67,10 +72,13 @@
     </ModalContainer>
 </template>
 <script setup>
-import { reactive } from 'vue'
+import { reactive, getCurrentInstance } from 'vue'
 import ModalContainer from '@/Components/Modal.vue'
 
 import entityData from '../entity'
+
+const app = getCurrentInstance()
+const dayjs = app.appContext.config.globalProperties.$dayjs
 
 const page = entityData().page
 const props = defineProps(['show'])
@@ -80,6 +88,7 @@ const form = reactive({
     type: 'xlsx',
     document_status: ['draft','published','void','closed'],
     approval_status: ['none','pending','approved','rejected'],
-    data_type: [1,2],
+    data_type: [1,2,3],
+    posting_date: dayjs().format('YYYY-MM'),
 })
 </script>

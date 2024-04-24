@@ -6,8 +6,8 @@
         </div>
         <div class="modal-body">
             <div class="mb-3">
-                <label for="type" class="form-label">Period (Creation Date)</label>
-                <input type="month" v-model="form.period" class="form-control"/>
+                <label for="type" class="form-label">Creation Date</label>
+                <input type="month" v-model="form.created_at" class="form-control"/>
             </div>
             <div class="mb-3">
                 <label for="type" class="form-label">Status</label>
@@ -50,6 +50,6 @@ const emit  = defineEmits(['update:show'])
 const form = reactive({
     type: 'xlsx',
     status: ['V','E',null],
-    period: dayjs().format('YYYY-MM'),
+    created_at: dayjs().format('YYYY-MM'),
 })
 </script>
