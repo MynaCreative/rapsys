@@ -60,7 +60,7 @@ class DeltaValidation implements ShouldQueue
         if ($model->smuItems) {
             $smuItems = $model->smuItems->where('validation_score', '!=', 5);
             // $smuItems = $model->smuItems->where('is_validated', false);
-            foreach ($smuItems as $item) {
+            foreach ($smuItems as $index => $item) {
                 $item->awbItems()->delete();
                 $amount = $item->amount;
                 $tax = 0;
@@ -84,7 +84,7 @@ class DeltaValidation implements ShouldQueue
 
         if ($model->consItems) {
             $consItems = $model->consItems->where('validation_score', '!=', 5);
-            foreach ($consItems as $item) {
+            foreach ($consItems as $index => $item) {
                 $item->awbItems()->delete();
                 $amount = $item->amount;
                 $tax = 0;
@@ -143,6 +143,7 @@ class DeltaValidation implements ShouldQueue
         $validationWeight = false;
         $referenceMandatoryScan = false;
         $referenceOpsPlan = true;
+        $referenceDataRevenue = true;
         $area = null;
         $product = null;
         $salesChannel = null;
@@ -274,6 +275,7 @@ class DeltaValidation implements ShouldQueue
         $validationWeight = false;
         $referenceMandatoryScan = false;
         $referenceOpsPlan = true;
+        $referenceDataRevenue = true;
 
         /**
          * Weight
@@ -307,7 +309,14 @@ class DeltaValidation implements ShouldQueue
                         // $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
                         $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
-                        if (!$referenceMandatoryScan) {
+                        if ($referenceMandatoryScan) {
+                            // foreach ($awbs as $awb) {
+                            //     $deltaDataRevenue = Delta::consDetail($awb);
+                            //     if ($awb === array_key_last($awbs)) {
+                            //         $referenceDataRevenue = true;
+                            //     }
+                            // }
+                        } else {
                             $messages[] = "SMU: '" . $item->code . "' not passed scan compliance";
                         }
                     } else {
@@ -434,6 +443,7 @@ class DeltaValidation implements ShouldQueue
             'validation_weight' => $validationWeight,
             'validation_scan_compliance' => $referenceMandatoryScan,
             'validation_ops_plan' => $referenceOpsPlan,
+            'validation_data_revenue' => $referenceDataRevenue,
 
             'total_weight_smu' => $totalWeightSmu,
             'total_weight_awb' => $totalWeightAwb,
@@ -460,6 +470,7 @@ class DeltaValidation implements ShouldQueue
         $validationWeight = false;
         $referenceMandatoryScan = false;
         $referenceOpsPlan = true;
+        $referenceDataRevenue = false;
 
         /**
          * Weight
@@ -493,7 +504,24 @@ class DeltaValidation implements ShouldQueue
                         // $referenceMandatoryScan = (in_array(false, $mandatoryScans, true) === false);
                         $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
-                        if (!$referenceMandatoryScan) {
+                        if ($referenceMandatoryScan) {
+                            // foreach ($awbs as $awb) {
+                            //     $deltaDataRevenue = Delta::consDetail($awb);
+                            //     if ($deltaDataRevenue) {
+                            //         if ($awb === array_key_last($awbs)) {
+                            //             $referenceDataRevenue = true;
+                            //         } else {
+                            //             break;
+                            //         }
+                            //         continue;
+                            //     } else {
+                            //         break;
+                            //     }
+                            // }
+                            // if (!$referenceDataRevenue) {
+                            //     $messages[] = "CONS: '" . $item->code . "' not passed data revenue";
+                            // }
+                        } else {
                             $messages[] = "CONS: '" . $item->code . "' not passed scan compliance";
                         }
                     } else {
@@ -546,7 +574,7 @@ class DeltaValidation implements ShouldQueue
                             if ($product) {
                                 $productId = optional($product)->id;
                             } else {
-                                $awbMessages[] = "Product: '" . $delta['data'][0]['service_type_id'] . "' not found in RAPsys database";
+                                $awbMessages[] = "Product: '" . $deltaAwb['data'][0]['service_type_id'] . "' not found in RAPsys database";
                             }
                         } else {
                             $awbMessages[] = "AWB: '" . $awbItem['awb'] . "' doesn't have service_type_id";
@@ -620,6 +648,7 @@ class DeltaValidation implements ShouldQueue
             'validation_weight' => $validationWeight,
             'validation_scan_compliance' => $referenceMandatoryScan,
             'validation_ops_plan' => $referenceOpsPlan,
+            'validation_data_revenue' => $referenceDataRevenue,
 
             'total_weight_cons' => $totalWeightCons,
             'total_weight_awb' => $totalWeightAwb,

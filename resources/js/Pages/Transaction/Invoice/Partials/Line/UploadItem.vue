@@ -47,6 +47,13 @@
                         <td class="text-end">{{ expense.total_validation_ops_plan.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                         <td class="text-end">{{ expense.total_weight_validation_ops_plan.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
                     </tr>
+                    <tr :class="[{'table-danger':expense.total_validation_data_revenue > 0}]">
+                        <td>{{ expense.expense.name }}</td>
+                        <td>Validation Data Revenue</td>
+                        <td>Cost higher than revenue</td>
+                        <td class="text-end">{{ expense.total_validation_data_revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                        <td class="text-end">{{ expense.total_weight_validation_data_revenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}</td>
+                    </tr>
                 </tbody>
             </table>
 
