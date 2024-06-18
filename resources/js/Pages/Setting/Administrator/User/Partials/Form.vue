@@ -32,8 +32,16 @@
         </div>
         <div class="col-lg-12">
             <label for="department" class="form-label">Department</label>
-            <Multiselect id="department" v-model="form.department_id" :class="{'is-invalid' : form.errors.department_id }" :searchable="true"
-                aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
+            <v-select
+                id="department"
+                v-model="form.department_id"
+                :options="references.departments"
+                :reduce="(option) => option.id"
+                :clearable="false"
+                label="name"
+                :class="{'is-invalid' : form.errors.department_id }"
+                aria-describedby="input-department-feedback"
+            />
             <b-form-invalid-feedback id="input-department-feedback" v-html="form.errors.department"/>
         </div>
         <div class="col-lg-12">
@@ -49,7 +57,8 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-import Multiselect from '@vueform/multiselect'
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])

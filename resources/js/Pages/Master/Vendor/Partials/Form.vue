@@ -16,14 +16,28 @@
         </div>
         <div class="col-lg-12">
             <label for="site" class="form-label">Sites</label>
-            <Multiselect id="site" v-model="form.sites" :class="{'is-invalid' : form.errors.sites }" :searchable="true"
-                aria-describedby="input-site-feedback" :options="references.sites" placeholder="Select data"></Multiselect>
+            <v-select
+                id="site"
+                v-model="form.sites"
+                :options="references.sites"
+                :reduce="(option) => option.id"
+                :clearable="false"
+                label="name"
+                aria-describedby="input-site-feedback"
+            />
             <b-form-invalid-feedback id="input-site-feedback" v-html="form.errors.sites"/>
         </div>
         <div class="col-lg-12">
             <label for="sbu" class="form-label">SBU</label>
-            <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }" :searchable="true"
-                aria-describedby="input-sbu-feedback" :options="references.sbus" placeholder="Select data"></Multiselect>
+            <v-select
+                id="sbu"
+                v-model="form.sbu_id"
+                :options="references.sbus"
+                :reduce="(option) => option.id"
+                :clearable="false"
+                label="name"
+                aria-describedby="input-sbu-feedback"
+            />
             <b-form-invalid-feedback id="input-sbu-feedback" v-html="form.errors.sbu_id"/>
         </div>
         <div class="col-lg-12">
@@ -34,7 +48,8 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-import Multiselect from '@vueform/multiselect'
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])

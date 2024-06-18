@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use Illuminate\Http\Request;
@@ -38,17 +39,17 @@ class Permission
             ->searching($request, ['label', 'name']);
 
         return $query->paginate($request->per_page ?? 10)->withQueryString()
-        ->through(function ($item) {
-            return [
-                'id'                => $item->id,
-                'name'              => $item->name,
-                'label'             => $item->label,
-                'guard_name'        => $item->guard_name,
-                'permission_group'  => $item->permissionGroup,
-                'created_at'        => $item->created_at,
-                'updated_at'        => $item->updated_at,
-            ];
-        });
+            ->through(function ($item) {
+                return [
+                    'id'                => $item->id,
+                    'name'              => $item->name,
+                    'label'             => $item->label,
+                    'guard_name'        => $item->guard_name,
+                    'permission_group'  => $item->permissionGroup,
+                    'created_at'        => $item->created_at,
+                    'updated_at'        => $item->updated_at,
+                ];
+            });
     }
 
     /**
@@ -84,7 +85,8 @@ class Permission
      *
      * @return Model
      */
-    public function show(): Model {
+    public function show(): Model
+    {
         return $this->model->load(['permissionGroup']);
     }
 
@@ -106,7 +108,7 @@ class Permission
     public static function reference(): array
     {
         return [
-            'permission_groups' => PermissionGroup::pluck('name','id'),
+            'permission_groups' => PermissionGroup::select(['id', 'name'])->get(),
         ];
     }
 }

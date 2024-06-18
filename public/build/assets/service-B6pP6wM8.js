@@ -1,0 +1,1 @@
+import{C as a}from"./app-DSTM3SJ3.js";const t={async fetchData(t,r,o=null){try{const{data:s}=await a.get(route(`dashboard.${t}`,{type:r}),{params:o});return s}catch(s){console.error(s)}}};export{t as s};

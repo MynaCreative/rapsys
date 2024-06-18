@@ -3,33 +3,72 @@
         <div class="row g-4 mb-4">
             <div class="col-md-6 col-lg-2">
                 <label for="department" class="form-label required">Department</label>
-                <Multiselect id="department" v-model="form.department" :class="{'is-invalid' : form.errors.department_id }" :searchable="true"
-                    @select="(option) => form.department_id = option.id" @clear="() => form.department_id = null" :object="true" label="name" valueProp="id"
-                    aria-describedby="input-department-feedback" :options="references.departments" placeholder="Select data"></Multiselect>
+                <v-select
+                    id="department"
+                    v-model="form.department_id"
+                    :options="references.departments"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.department_id }"
+                    aria-describedby="input-department-feedback"
+                />
                 <b-form-invalid-feedback id="input-department-feedback" v-html="form.errors.department_id"/>
             </div>
             <div class="col-md-6 col-lg-2">
                 <label for="sbu" class="form-label required">SBU</label>
-                <Multiselect id="sbu" v-model="form.sbu_id" :class="{'is-invalid' : form.errors.sbu_id }" :searchable="true"
-                    aria-describedby="input-sbu-feedback" :options="references.sbus" placeholder="Select data"></Multiselect>
+                <v-select
+                    id="sbu"
+                    v-model="form.sbu_id"
+                    :options="references.sbus"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.sbu_id }"
+                    aria-describedby="input-sbu-feedback"
+                />
                 <b-form-invalid-feedback id="input-sbu-feedback" v-html="form.errors.sbu_id"/>
             </div>
             <div class="col-md-6 col-lg-2">
                 <label for="invoice_type" class="form-label required">Invoice Type</label>
-                <Multiselect id="invoice_type" v-model="form.invoice_type_id" :class="{'is-invalid' : form.errors.invoice_type_id }" :searchable="true"
-                    aria-describedby="input-invoice_type-feedback" :options="references.invoice_types" placeholder="Select data"></Multiselect>
+                <v-select
+                    id="invoice_type"
+                    v-model="form.invoice_type_id"
+                    :options="references.invoice_types"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.invoice_type_id }"
+                    aria-describedby="input-invoice_type-feedback"
+                />
                 <b-form-invalid-feedback id="input-invoice_type-feedback" v-html="form.errors.invoice_type_id"/>
             </div>
             <div class="col-md-6 col-lg-2">
                 <label for="currency" class="form-label required">Currency</label>
-                <Multiselect id="currency" v-model="form.currency_id" :class="{'is-invalid' : form.errors.currency_id }" :searchable="true"
-                    aria-describedby="input-currency-feedback" :options="references.currencies" placeholder="Select data"></Multiselect>
+                <v-select
+                    id="currency"
+                    v-model="form.currency_id"
+                    :options="references.currencies"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.currency_id }"
+                    aria-describedby="input-currency-feedback"
+                />
                 <b-form-invalid-feedback id="input-currency-feedback" v-html="form.errors.currency_id"/>
             </div>
             <div class="col-md-6 col-lg-4">
                 <label for="interco" class="form-label required">Interco</label>
-                <Multiselect id="interco" v-model="form.interco_id" :class="{'is-invalid' : form.errors.interco_id }" :searchable="true"
-                    aria-describedby="input-interco-feedback" :options="references.intercos" placeholder="Select data"></Multiselect>
+                <v-select
+                    id="interco"
+                    v-model="form.interco_id"
+                    :options="references.intercos"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.interco_id }"
+                    aria-describedby="input-interco-feedback"
+                />
                 <b-form-invalid-feedback id="input-interco-feedback" v-html="form.errors.interco_id"/>
             </div>
         </div>
@@ -55,8 +94,17 @@
         <div class="row g-4 mb-2">
             <div class="col-lg-4">
                 <label for="vendor" class="form-label required">Vendor</label>
-                <Multiselect id="vendor" v-model="form.vendor_id" :class="{'is-invalid' : form.errors.vendor_id }" :searchable="true"
-                    aria-describedby="input-vendor-feedback" :options="references.vendors" placeholder="Select data" @change="setVendor"></Multiselect>
+                <v-select
+                    id="vendor"
+                    v-model="form.vendor_id"
+                    :options="references.vendors"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.vendor_id }"
+                    @update:model-value="() => (form.vendor_site_id = null)"
+                    aria-describedby="input-vendor-feedback"
+                />
                 <b-form-invalid-feedback id="input-vendor-feedback" v-html="form.errors.vendor_id"/>
             </div>
             <div class="col-lg-4">
@@ -75,8 +123,16 @@
         <div class="row g-4 mb-2">
             <div class="col-lg-4">
                 <label for="vendor_site" class="form-label required">Vendor Site</label>
-                <Multiselect id="vendor_site" v-model="form.vendor_site_id" :class="{'is-invalid' : form.errors.vendor_site_id }"
-                    aria-describedby="input-vendor_site-feedback" :options="vendor_sites" placeholder="Select data" ref="vendor_site_id"></Multiselect>
+                <v-select
+                    id="vendor_site"
+                    v-model="form.vendor_site_id"
+                    :options="vendor_sites"
+                    :reduce="(option) => option.id"
+                    :clearable="false"
+                    label="name"
+                    :class="{'is-invalid' : form.errors.vendor_site_id }"
+                    aria-describedby="input-vendor_site-feedback"
+                />
                 <b-form-invalid-feedback id="input-vendor_site-feedback" v-html="form.errors.vendor_site_id"/>
             </div>
             <div class="col-lg-4">
@@ -101,8 +157,16 @@
             </div>
             <div class="col-lg-2">
                 <label for="term" class="form-label required">Payment Term</label>
-                <Multiselect id="term" v-model="form.term_id" :class="{'is-invalid' : form.errors.term_id }" @change="setTerm"
-                    aria-describedby="input-term-feedback" :options="references.terms" placeholder="Select data"></Multiselect>
+                <v-select
+                    id="term"
+                    v-model="form.term"
+                    :options="references.terms"
+                    :clearable="false"
+                    label="name"
+                    @update:model-value="(option) => ((form.term_id = option.id), (setTerm(option)))"
+                    :class="{'is-invalid' : form.errors.term_id }"
+                    aria-describedby="input-term-feedback"
+                />
                 <b-form-invalid-feedback id="input-term-feedback" v-html="form.errors.term_id"/>
             </div>
             <div class="col-lg-4">
@@ -142,23 +206,23 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar-sm">
-                                        <div class="avatar-title bg-light rounded fs-24 shadow shadow" style="color:#bf2718"
+                                        <div class="avatar-title bg-light rounded fs-24 shadow" style="color:#bf2718"
                                             v-if="attachment.type == 'application/pdf'">
                                             <i class="ri-file-text-line"></i>
                                         </div>
-                                        <div class="avatar-title bg-light text-primary rounded fs-24 shadow shadow"
+                                        <div class="avatar-title bg-light text-primary rounded fs-24 shadow"
                                             v-if="attachment.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
                                             <i class="ri-file-word-line"></i>
                                         </div>
-                                        <div class="avatar-title bg-light text-success rounded fs-24 shadow shadow"
+                                        <div class="avatar-title bg-light text-success rounded fs-24 shadow"
                                             v-if="attachment.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'">
                                             <i class="ri-file-excel-line"></i>
                                         </div>
-                                        <div class="avatar-title bg-light text-warning rounded fs-24 shadow shadow"
+                                        <div class="avatar-title bg-light text-warning rounded fs-24 shadow"
                                             v-if="['image/jpg','image/jpeg','image/png'].includes(attachment.type)">
                                             <i class="ri-image-line"></i>
                                         </div>
-                                        <div class="avatar-title bg-light rounded fs-24 shadow shadow" style="color:#3a3ca1"
+                                        <div class="avatar-title bg-light rounded fs-24 shadow" style="color:#3a3ca1"
                                             v-if="['application/zip','application/x-zip-compressed','multipart/x-zip','application/vnd.rar','application/x-rar-compressed',''].includes(attachment.type)">
                                             <i class="ri-file-zip-line"></i>
                                         </div>
@@ -182,7 +246,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar-sm">
-                                        <div class="avatar-title bg-light text-muted rounded fs-24 shadow shadow">
+                                        <div class="avatar-title bg-light text-muted rounded fs-24 shadow">
                                             <i class="ri-cloud-off-line"></i>
                                         </div>
                                     </div>
@@ -204,14 +268,13 @@
 import { ref, computed, getCurrentInstance } from 'vue'
 import { Money3Component } from 'v-money3'
 import filter from 'lodash/filter'
-import find from 'lodash/find'
-import Multiselect from '@vueform/multiselect'
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])
 
 const attachment_file = ref('attachment_file')
-const vendor_site_id = ref('vendor_site_id')
 
 const app = getCurrentInstance()
 const dayjs = app.appContext.config.globalProperties.$dayjs
@@ -225,20 +288,16 @@ const form = computed({
     },
 })
 
-const setVendor = () => {
-    vendor_site_id.value.clear()
-}
-
 const setTerm = (option) => {
-    let term = find(props.references.terms, { value: option })
-    form.value.due_date =  dayjs(form.value.term_date).add(term.day, 'day').format('YYYY-MM-DD')
-    form.value.term_date =  dayjs(form.value.term_date).add(term.day, 'day').format('YYYY-MM-DD')
+    if(option){
+        form.value.due_date =  dayjs(form.value.term_date).add(form.value.term.day, 'day').format('YYYY-MM-DD')
+        form.value.term_date =  dayjs(form.value.term_date).add(form.value.term.day, 'day').format('YYYY-MM-DD')
+    }
 }
 
 const setInvoiceDate = (option) => {
-    let term = find(props.references.terms, { value: form.value.term_id })
-    form.value.due_date =  dayjs(option).add(term.day, 'day').format('YYYY-MM-DD')
-    form.value.term_date =  dayjs(option).add(term.day, 'day').format('YYYY-MM-DD')
+    form.value.due_date =  dayjs(option).add(form.value.term.day, 'day').format('YYYY-MM-DD')
+    form.value.term_date =  dayjs(option).add(form.value.term.day, 'day').format('YYYY-MM-DD')
 }
 
 const vendor_sites = computed(() => filter(props.references.vendor_sites, (item) => {

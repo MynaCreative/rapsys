@@ -46,7 +46,7 @@ import { Link, usePage } from '@inertiajs/vue3'
 import { router } from '@inertiajs/vue3'
 import { computed, onMounted, onUnmounted } from 'vue'
 
-import { SimpleBar } from 'simplebar-vue3'
+import SimpleBar from 'simplebar-vue'
 import Swal from 'sweetalert2'
 
 import NavBar from '@/Components/NavBar.vue'

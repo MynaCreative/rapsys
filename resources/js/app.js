@@ -1,17 +1,25 @@
 import './bootstrap'
 
 import '@/Assets/scss/config/material/app.scss'
-import '@vueform/multiselect/themes/default.css'
 
 import { createApp, h } from 'vue'
 
 import { createInertiaApp } from '@inertiajs/vue3'
 
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
+import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 // import BootstrapVueNext from 'bootstrap-vue-next'
 import {BToastPlugin} from 'bootstrap-vue-next'
-import VueApexCharts from 'vue3-apexcharts'
+
+import Highcharts from 'highcharts';
+import HighchartsVue from 'highcharts-vue';
+import accessibilityInit from 'highcharts/modules/accessibility';
+import moreInit from 'highcharts/highcharts-more';
+import solidGaugeInit from 'highcharts/modules/solid-gauge';
+
+moreInit(Highcharts);
+solidGaugeInit(Highcharts);
+accessibilityInit(Highcharts);
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -29,8 +37,8 @@ createInertiaApp({
             .use(plugin)
             // .use(BootstrapVueNext)
             .use(BToastPlugin)
-            .use(ZiggyVue, Ziggy)
-            .use(VueApexCharts)
+            .use(ZiggyVue)
+            .use(HighchartsVue)
         dayjs.extend(relativeTime)
         myApp.config.globalProperties.$dayjs = dayjs
         myApp.mount(el);

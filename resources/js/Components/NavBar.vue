@@ -150,7 +150,7 @@
     </header>
 </template>
 <script>
-import { SimpleBar } from 'simplebar-vue3'
+import SimpleBar from 'simplebar-vue'
 import { Link } from '@inertiajs/vue3'
 export default{
     components: {

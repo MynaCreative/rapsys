@@ -1,1 +1,0 @@
-import{o as s,c as a}from"./app-4fa61095.js";const e={key:0,class:"badge badge-soft-danger"},o={key:1,class:"badge badge-soft-success"},p={__name:"Active",props:{data:{required:!0}},setup:p=>(t,d)=>p.data?(s(),a("span",e,"No")):(s(),a("span",o,"Yes"))};export{p as _};

@@ -29,27 +29,46 @@
         </div>
         <div class="col-lg-6 p-4">
             <label for="cost_center_upload" class="form-label">Cost Center</label>
-            <Multiselect id="cost_center_upload" v-model="expense.cost_center" :searchable="true"
-                @select="(option) => expense.cost_center_id = option.id" :object="true" label="name" valueProp="id"
-                aria-describedby="input-cost_center-feedback" :options="references.cost_centers" placeholder="Select data"></Multiselect>
+            <v-select
+                id="cost_center_upload"
+                v-model="expense.cost_center"
+                :options="references.cost_centers"
+                :clearable="false"
+                label="name"
+                aria-describedby="input-cost_center_upload-feedback"
+                @update:model-value="(option) => (option ? (expense.cost_center_id = option.id) : (expense.cost_center_id = null))"
+            />
         </div>
         <div class="col-lg-6 px-4">
             <label for="withholding" class="form-label">Withholding</label>
-            <Multiselect id="withholding" v-model="expense.withholding" :searchable="true"
-                @select="(option) => expense.withholding_id = option.id" :object="true" label="name" valueProp="id"
-                aria-describedby="input-withholding-feedback" :options="references.withholdings" placeholder="Select data"></Multiselect>
+            <v-select
+                id="withholding"
+                v-model="expense.withholding"
+                :options="references.withholdings"
+                :clearable="false"
+                label="name"
+                aria-describedby="input-withholding-feedback"
+                @update:model-value="(option) => (option ? (expense.withholding_id = option.id) : (expense.withholding_id = null))"
+            />
         </div>
         <div class="col-lg-6 px-4">
             <label for="tax" class="form-label">Tax</label>
-            <Multiselect id="tax" v-model="expense.tax" :searchable="true"
-                @select="(option) => expense.tax_id = option.id" :object="true" label="name" valueProp="id"
-                aria-describedby="input-tax-feedback" :options="references.taxes" placeholder="Select data"></Multiselect>
+            <v-select
+                id="tax"
+                v-model="expense.tax"
+                :options="references.taxes"
+                :clearable="false"
+                label="name"
+                aria-describedby="input-tax-feedback"
+                @update:model-value="(option) => (option ? (expense.tax_id = option.id) : (expense.tax_id = null))"
+            />
         </div>
     </div>
 </template>
 <script setup>
 import { ref, computed } from 'vue'
-import Multiselect from '@vueform/multiselect'
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps(['formData','expenseData','references'])
 const emit  = defineEmits(['update:formData','update:expenseData'])

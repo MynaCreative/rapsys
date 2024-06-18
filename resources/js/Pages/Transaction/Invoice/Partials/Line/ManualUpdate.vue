@@ -7,10 +7,8 @@
         <form @submit.prevent="submit">
             <div class="modal-body">
                 <PartialForm 
-                    :formData="form"
-                    @update:formData="form = $event"
-                    :itemData="item"
-                    @update:itemData="item = $event"
+                    :form="form"
+                    :item="item"
                     :references="references"/>
             </div>
             <div class="modal-footer justify-content-between">

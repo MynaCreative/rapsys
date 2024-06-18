@@ -7,10 +7,8 @@
         <form @submit.prevent="submit">
             <div class="modal-body">
                 <PartialForm 
-                    :formData="form"
-                    @update:formData="form = $event"
-                    :itemData="item"
-                    @update:itemData="item = $event"
+                    :form="form"
+                    :item="item"
                     :references="references"/>
             </div>
             <div class="modal-footer justify-content-between">
@@ -44,7 +42,7 @@ const form = computed({
     },
 })
 
-const initialItem = () => ({
+const initialItem = {
     code: null,
     amount: 0,
     weight: 0,
@@ -67,18 +65,41 @@ const initialItem = () => ({
     date_item: null,
     type: 'MNL',
     expense_coa: null,
-})
+}
 
-let item = {...initialItem()}
+let item = {...initialItem}
 
 const addItem = () => {
     form.value.items.push({ ...item})
-    item = initialItem()
+    item = initialItem
     emit('update:show', false)
 }
 
 const closeModal = () => {
-    item = initialItem()
+    item = {
+        code: null,
+        amount: 0,
+        weight: 0,
+        route: null,
+        expense_id: 1,
+        cost_center_id: null,
+        cost_center: null,
+        withholding_id: null,
+        withholding: null,
+        tax_id: null,
+        tax: null,
+        area_id: null,
+        area: null,
+        product_id: null,
+        product: null,
+        sales_channel_id: null,
+        sales_channel: null,
+        cost_center_id: null,
+        cost_center: null,
+        date_item: null,
+        type: 'MNL',
+        expense_coa: null,
+    }
     emit('update:show', false)
 }
 </script>

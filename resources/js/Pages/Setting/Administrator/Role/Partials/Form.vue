@@ -25,7 +25,6 @@
 </template>
 <script setup>
 import { computed } from 'vue'
-import Multiselect from '@vueform/multiselect'
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])

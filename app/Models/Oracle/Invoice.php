@@ -72,7 +72,7 @@ class Invoice extends Eloquent
         'ap_invoice_date' => 'date',
         'ap_invoice_received_date' => 'date',
         'ap_gl_date' => 'date',
-        'creation_date' => 'dateTime',
+        'creation_date' => 'datetime',
     ];
 
     /**

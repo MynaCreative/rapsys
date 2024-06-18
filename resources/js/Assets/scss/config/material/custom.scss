@@ -114,16 +114,6 @@ File: Custom Css File
     }
 }
 
-.multiselect {
-    border-color: var(--vz-input-border) !important;
-    background: $input-bg !important;
-}
-
-.multiselect-search {
-    color: $input-color !important;
-    background: $input-bg !important;
-}
-
 .dropzone {
     height: 200px;
     display: flex;
@@ -155,33 +145,6 @@ File: Custom Css File
     label {
         background-color: $white;
         color: $success;
-    }
-}
-
-.multiselect-tags .multiselect-tags-search-wrapper .multiselect-tags-search {
-    background-color: transparent;
-    color: var(--vz-input-color);
-    border: 1px solid transparent !important;
-
-    &:focus,
-    &:hover {
-        outline: $border-color;
-    }
-}
-
-.multiselect-dropdown {
-    .multiselect-options {
-        list-style: none;
-        padding-left: 0;
-    }
-
-    .multiselect-no-results {
-        text-align: center;
-        padding-bottom: 1px;
-    }
-
-    &.is-hidden {
-        display: none !important;
     }
 }
 
@@ -382,51 +345,6 @@ File: Custom Css File
     }
 }
 
-//ecommerce products 
-
-.multiselect {
-    min-height: auto !important;
-    padding: $input-btn-padding-y $input-btn-padding-x;
-    font-size: $input-btn-font-size !important;
-
-    .multiselect-tag {
-        background: $primary;
-        border-radius: 7px;
-        padding: 2px 7px;
-        font-size: 11px;
-        font-weight: $font-weight-normal;
-    }
-
-    &.is-active {
-        box-shadow: none !important;
-    }
-}
-
-.multiselect-dropdown {
-    .multiselect-option {
-        font-size: $input-btn-font-size;
-
-        &.is-selected {
-            background-color: $primary;
-
-            &.is-pointed {
-                background-color: $primary;
-            }
-        }
-    }
-}
-
-.filter-choices-input {
-    .multiselect {
-        border: none;
-    }
-
-    .multiselect-caret,
-    .multiselect-clear-icon {
-        background-color: transparent;
-    }
-}
-
 //range slider 
 .slider-base {
     .slider-tooltip {
@@ -533,10 +451,6 @@ File: Custom Css File
 .avatar-xxxs {
     height: 1.3rem;
     width: 1.3rem;
-}
-
-.multiselect.is-invalid{
-    border-color: #f06548 !important;
 }
 
 .form-label.required:after, .col-form-label.required:after {

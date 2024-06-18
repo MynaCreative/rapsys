@@ -218,18 +218,6 @@ html {
     left: auto !important; 
 }
 
-// select plugin
-.multiselect-multiple-label, .multiselect-placeholder, .multiselect-single-label{
-    left: auto !important;
-    right: 0;
-    padding-right: var(--ms-px,.875rem) !important;
-    padding-left: calc(1.25rem + var(--ms-px, .875rem)*3) !important;
-}
-
-.multiselect-search{
-    padding-right: var(--ms-px,.875rem);
-}
-
 // data-option-flag
 [data-option-flag-name], [data-option-flag-img-name]{
     &::before{

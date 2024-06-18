@@ -22,8 +22,15 @@ class Department extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','cost_center','description'];
+    protected $fillable = ['name', 'cost_center', 'description'];
 
+    /**
+     * Get the invoices for the department.
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class)->latest();
+    }
 
     /**
      * Logging activity history.

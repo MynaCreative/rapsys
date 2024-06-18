@@ -20,15 +20,24 @@
         </div>
         <div class="col-lg-12">
             <label for="permission-group" class="form-label">Permission Group</label>
-            <Multiselect id="permission-group" v-model="form.permission_group_id" :class="{'is-invalid' : form.errors.permission_group_id }" :searchable="true"
-                aria-describedby="input-permission-group-feedback" :options="references.permission_groups" placeholder="Select data"></Multiselect>
+            <v-select
+                id="permission-group"
+                v-model="form.permission_group_id"
+                :options="references.permission_groups"
+                :reduce="(option) => option.id"
+                :clearable="false"
+                label="name"
+                :class="{'is-invalid' : form.errors.permission_group_id }"
+                aria-describedby="input-permission-group-feedback"
+            />
             <b-form-invalid-feedback id="input-permission-group-feedback" v-html="form.errors.permission_group_id"/>
         </div>
     </div>
 </template>
 <script setup>
 import { computed } from 'vue'
-import Multiselect from '@vueform/multiselect'
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps(['formData','references'])
 const emit  = defineEmits(['update:formData'])

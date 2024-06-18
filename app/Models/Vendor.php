@@ -70,6 +70,14 @@ class Vendor extends Model
     }
 
     /**
+     * Get the invoices for the department.
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class)->latest();
+    }
+
+    /**
      * Logging activity history.
      */
     public function getActivitylogOptions(): LogOptions

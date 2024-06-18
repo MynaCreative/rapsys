@@ -143,7 +143,8 @@ class DeltaValidation implements ShouldQueue
         $validationWeight = false;
         $referenceMandatoryScan = false;
         $referenceOpsPlan = true;
-        $referenceDataRevenue = true;
+        $referenceDataRevenue = false;
+
         $area = null;
         $product = null;
         $salesChannel = null;
@@ -195,7 +196,13 @@ class DeltaValidation implements ShouldQueue
                         // $referenceMandatoryScan = $this->operationPattern($tracking, $item->expense->mandatory_scan);
                         $deltaScanCompliance = Delta::awbScanCompliance($item->code, $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
-                        if (!$referenceMandatoryScan) {
+                        if ($referenceMandatoryScan) {
+                            $deltaDataRevenue = Delta::consDetail($item->code);
+                            $referenceDataRevenue = trim($deltaDataRevenue['msg']) === 'Data Found';
+                            if (!$referenceDataRevenue) {
+                                $messages[] = "AWB: '" . $item->code . "' not passed data revenue";
+                            }
+                        } else {
                             $messages[] = "AWB: '" . $item->code . "' not passed scan compliance";
                         }
                     } else {
@@ -240,6 +247,7 @@ class DeltaValidation implements ShouldQueue
             'validation_weight' => $validationWeight,
             'validation_scan_compliance' => $referenceMandatoryScan,
             'validation_ops_plan' => $referenceOpsPlan,
+            'validation_data_revenue' => $referenceDataRevenue,
 
             'delta_weight' => $delta['data'][0]['tot_weight'] ?? null,
             'delta_weight_dim' => $delta['data'][0]['tot_dimensi'] ?? null,
@@ -275,7 +283,7 @@ class DeltaValidation implements ShouldQueue
         $validationWeight = false;
         $referenceMandatoryScan = false;
         $referenceOpsPlan = true;
-        $referenceDataRevenue = true;
+        $referenceDataRevenue = false;
 
         /**
          * Weight
@@ -310,12 +318,13 @@ class DeltaValidation implements ShouldQueue
                         $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
                         if ($referenceMandatoryScan) {
-                            // foreach ($awbs as $awb) {
-                            //     $deltaDataRevenue = Delta::consDetail($awb);
-                            //     if ($awb === array_key_last($awbs)) {
-                            //         $referenceDataRevenue = true;
-                            //     }
-                            // }
+                            foreach ($awbs as $awb) {
+                                $deltaDataRevenue = Delta::consDetail($awb);
+                                $referenceDataRevenue = trim($deltaDataRevenue['msg']) === 'Data Found';
+                                if (!$referenceDataRevenue) {
+                                    $messages[] = "SMU: '" . $item->code . "' not passed data revenue";
+                                }
+                            }
                         } else {
                             $messages[] = "SMU: '" . $item->code . "' not passed scan compliance";
                         }
@@ -505,22 +514,13 @@ class DeltaValidation implements ShouldQueue
                         $deltaScanCompliance = Delta::awbScanCompliance(implode(',', $awbs), $item->expense->with_scan, $item->expense->or_scan);
                         $referenceMandatoryScan = trim($deltaScanCompliance['msg']) === 'Data Found';
                         if ($referenceMandatoryScan) {
-                            // foreach ($awbs as $awb) {
-                            //     $deltaDataRevenue = Delta::consDetail($awb);
-                            //     if ($deltaDataRevenue) {
-                            //         if ($awb === array_key_last($awbs)) {
-                            //             $referenceDataRevenue = true;
-                            //         } else {
-                            //             break;
-                            //         }
-                            //         continue;
-                            //     } else {
-                            //         break;
-                            //     }
-                            // }
-                            // if (!$referenceDataRevenue) {
-                            //     $messages[] = "CONS: '" . $item->code . "' not passed data revenue";
-                            // }
+                            foreach ($awbs as $awb) {
+                                $deltaDataRevenue = Delta::consDetail($awb);
+                                $referenceDataRevenue = trim($deltaDataRevenue['msg']) === 'Data Found';
+                                if (!$referenceDataRevenue) {
+                                    $messages[] = "CONS: '" . $item->code . "' not passed data revenue";
+                                }
+                            }
                         } else {
                             $messages[] = "CONS: '" . $item->code . "' not passed scan compliance";
                         }

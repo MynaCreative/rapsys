@@ -269,8 +269,8 @@ class Vendor
     public static function reference(): array
     {
         return [
-            'sites' => VendorSite::pluck('name', 'id'),
-            'sbus' => Sbu::pluck('name', 'id'),
+            'sites' => VendorSite::select(['id', 'name'])->get(),
+            'sbus' => Sbu::select(['id', 'name'])->get(),
         ];
     }
 }

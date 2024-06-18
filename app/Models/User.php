@@ -86,6 +86,14 @@ class User extends Authenticatable
     /**
      * Get the approvals for the user.
      */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    /**
+     * Get the approvals for the user.
+     */
     public function currentApprovals()
     {
         return $this->hasMany(Approval::class)->where('current', true);

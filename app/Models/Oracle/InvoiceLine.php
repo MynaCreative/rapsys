@@ -64,7 +64,7 @@ class InvoiceLine extends Eloquent
      */
     protected $casts = [
         'amount' => 'float',
-        'creation_date' => 'dateTime',
+        'creation_date' => 'datetime',
     ];
 
     /**

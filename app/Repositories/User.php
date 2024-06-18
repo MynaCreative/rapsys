@@ -123,7 +123,7 @@ class User
     {
         return [
             'roles'         => Role::pluck('name', 'id'),
-            'departments'   => Department::pluck('name', 'id'),
+            'departments'   => Department::select(['id', 'name'])->get(),
         ];
     }
 }

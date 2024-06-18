@@ -42,7 +42,6 @@
                                 </div>
                             </div>
                         </div>
-                        <apexchart class="apex-charts" height="350" dir="ltr" :series="chartSeries" :options="chartOptions"></apexchart>
                     </div>
                 </div>
                 <div class="col-xxl-4">
@@ -114,91 +113,5 @@
 </template>
 <script setup>
 import { CountTo } from 'vue3-count-to'
-import { ref, watchEffect  } from 'vue'
 import { Link  } from '@inertiajs/vue3'
-
-const getChartColorsArray = (colors) => {
-    colors = JSON.parse(colors)
-    return colors.map(function (value) {
-        var newValue = value.replace(" ", "")
-        if (newValue.indexOf(",") === -1) {
-            var color = getComputedStyle(document.documentElement).getPropertyValue(newValue)
-            if (color) {
-                color = color.replace(" ", "")
-                return color
-            } else return newValue
-        } else {
-            var val = value.split(',')
-            if (val.length == 2) {
-                var rgbaColor = getComputedStyle(document.documentElement).getPropertyValue(val[0])
-                rgbaColor = "rgba(" + rgbaColor + "," + val[1] + ")"
-                return rgbaColor
-            } else {
-                return newValue
-            }
-        }
-    })
-}
-
-const chartSeries = ref([])
-watchEffect(() => {
-    chartSeries.value = [
-        {
-            name: "Total",
-            data: [0],
-        },
-        {
-            name: "Valid",
-            data: [0],
-        },
-        {
-            name: "Invalid",
-            data: [0],
-        },
-    ]
-})
-
-const chartOptions = {
-    chart: {
-        height: 100,
-        type: "area",
-        toolbar: "false",
-    },
-    dataLabels: {
-        enabled: false,
-    },
-    stroke: {
-        curve: "smooth",
-        width: 3,
-    },
-    xaxis: {
-        categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-        ],
-    },
-    yaxis: {
-        labels: {
-            formatter: function (value) {
-                return value;
-            },
-        },
-        tickAmount: 5,
-        min: 0,
-        max: 150,
-    },
-    colors: getChartColorsArray('["--vz-gray-400", "--vz-success","--vz-danger"]'),
-    fill: {
-        opacity: 0,
-        colors: ["#0AB39C", "#F06548"],
-        type: "solid",
-    },
-}
 </script>

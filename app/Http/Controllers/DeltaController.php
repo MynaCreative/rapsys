@@ -202,7 +202,7 @@ class DeltaController extends Controller
         $result = null;
         try {
             if ($request->code) {
-                $result = $this->repository::consDetail($request->code)->json();
+                $result = $this->repository::consDetail(explode(',', $request->code))->json();
             }
             return Inertia::render("{$this->module}/ConsDetail", [
                 'result' => $result,

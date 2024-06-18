@@ -702,25 +702,13 @@ class Invoice
     {
         return [
             /** Header */
-            'sbus' => Sbu::pluck('name', 'id'),
-            'invoice_types' => InvoiceType::pluck('name', 'id'),
-            'currencies' => Currency::pluck('name', 'id'),
-            'intercos' => Interco::pluck('name', 'id'),
-            'vendors' => Vendor::pluck('name', 'id'),
-            'vendor_sites' => VendorSite::all()->map(function ($item) {
-                return [
-                    'value' => $item->id,
-                    'label' => $item->name,
-                    'vendor_id' => $item->vendor_id,
-                ];
-            }),
-            'terms' => Term::all()->map(function ($item) {
-                return [
-                    'value' => $item->id,
-                    'label' => $item->name,
-                    'day' => $item->day,
-                ];
-            }),
+            'sbus' => Sbu::select(['id', 'name'])->get(),
+            'invoice_types' => InvoiceType::select(['id', 'name'])->get(),
+            'currencies' => Currency::select(['id', 'name'])->get(),
+            'intercos' => Interco::select(['id', 'name'])->get(),
+            'vendors' => Vendor::select(['id', 'name'])->get(),
+            'vendor_sites' => VendorSite::select(['id', 'name', 'vendor_id'])->get(),
+            'terms' => Term::select(['id', 'name', 'day'])->get(),
             /** Item */
             'expenses' => Expense::select('id', 'icon', 'code', 'name', 'type')->get()->append('type_text'),
             'products' => Product::select('id', 'name')->get(),

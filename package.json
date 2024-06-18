@@ -5,34 +5,33 @@
         "build": "vite build"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^1.0.14",
-        "@vueform/multiselect": "^2.6.6",
+        "@inertiajs/vue3": "^1.2.0",
         "@vueform/slider": "^2.1.10",
         "@zhuowenli/vue-feather-icons": "^5.0.2",
-        "apexcharts": "^3.45.1",
-        "axios": "^1.6.4",
+        "axios": "^1.7.2",
         "bootstrap": "5.2.3",
         "bootstrap-vue-next": "^0.6.7",
-        "dayjs": "^1.11.10",
+        "dayjs": "^1.11.11",
+        "highcharts": "^11.4.3",
+        "highcharts-vue": "^2.0.1",
         "json-tree-view-vue3": "^0.2.3",
         "lodash": "^4.17.21",
         "lottie-web": "^5.12.2",
-        "simplebar": "5.3.8",
-        "simplebar-vue3": "0.2.0",
-        "sweetalert2": "^11.10.2",
-        "terser": "^5.26.0",
-        "v-money3": "^3.24.0",
+        "simplebar": "^6.2.7",
+        "simplebar-vue": "^2.3.5",
+        "sweetalert2": "^11.11.1",
+        "terser": "^5.31.1",
+        "v-money3": "^3.24.1",
         "vue-select": "4.0.0-beta.6",
-        "vue3-apexcharts": "^1.4.4",
         "vue3-count-to": "^1.1.2"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
         "@vitejs/plugin-vue": "^4.6.2",
-        "laravel-vite-plugin": "^0.7.8",
-        "sass": "^1.69.7",
+        "laravel-vite-plugin": "^1.0.4",
+        "sass": "^1.77.6",
         "unplugin-vue-components": "^0.24.1",
-        "vite": "^4.5.1",
-        "vue": "3.2.45"
+        "vite": "^5.3.1",
+        "vue": "^3.4.29"
     }
 }
