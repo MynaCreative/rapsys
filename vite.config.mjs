@@ -25,7 +25,6 @@ export default defineConfig({
         })
     ],
     build: {
-        manifest: true,
         minify: 'terser',
         chunkSizeWarningLimit: 1500,
         target: ['es2020', 'safari14'],

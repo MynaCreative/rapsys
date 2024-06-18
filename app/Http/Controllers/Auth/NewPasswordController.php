@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Validation\ValidationException;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Http\Request;
-
-use App\Http\Requests\Auth\NewPasswordRequest;
 use App\Http\Controllers\Controller;
-
+use App\Http\Requests\Auth\NewPasswordRequest;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class NewPasswordController extends Controller
 {
     /**
      * Display the password reset view.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Inertia\Response
      */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
         return Inertia::render('Auth/ResetPassword', [
             'email' => $request->email,
@@ -31,12 +28,9 @@ class NewPasswordController extends Controller
     /**
      * Handle an incoming new password request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(NewPasswordRequest $request)
+    public function store(NewPasswordRequest $request): RedirectResponse
     {
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -45,8 +39,8 @@ class NewPasswordController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user) use ($request) {
                 $user->forceFill([
-                    'password'          => $request->password,
-                    'remember_token'    => str()->random(60),
+                    'password' => $request->password,
+                    'remember_token' => str()->random(60),
                 ])->save();
 
                 event(new PasswordReset($user));
