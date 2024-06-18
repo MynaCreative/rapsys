@@ -17,8 +17,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $logPath = storage_path('logs/cron.log');
+
         // $schedule->command('inspire')->hourly();
-        $schedule->job(new SynchronizeVendor)->daily();
+        $schedule->job(new SynchronizeVendor)->daily()->appendOutputTo($logPath);
     }
 
     /**
@@ -28,7 +30,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
