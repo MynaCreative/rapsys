@@ -544,17 +544,7 @@ class Invoice
     public function deltaValidate(): Model
     {
         $startTime = now();
-        Log::info("Validation processing [{$this->model->invoice_number}] started at: " . $startTime, [
-            'invoice' => [
-                'id' => $this->model->id,
-                'code' => $this->model->code,
-                'invoice_number' => $this->model->invoice_number,
-                'invoice_date' => $this->model->invoice_date,
-                'posting_date' => $this->model->posting_date,
-                'due_date' => $this->model->due_date,
-            ],
-            'user' => auth()->user()
-        ]);
+        Log::info("Validation processing [{$this->model->invoice_number}] started at: " . $startTime);
 
         $jobs = [];
 
@@ -649,23 +639,13 @@ class Invoice
                 $endTime = now();
                 $duration = $endTime->diffInSeconds($startTime);
 
-                Log::notice("Validation processing [{$this->model->invoice_number}] completed at: " . $endTime, [
-                    'start' => $startTime,
-                    'end' => $endTime,
-                    'duration' => $duration,
-                ]);
+                Log::notice("Validation processing [{$this->model->invoice_number}] completed at: " . $endTime);
             })->catch(function (Batch $batch, Throwable $e) use ($startTime) {
                 // First batch job failure detected...
                 $endTime = now();
                 $duration = $endTime->diffInSeconds($startTime);
 
-                Log::error("Validation processing [{$this->model->invoice_number}] failed at: " . $endTime, [
-                    'start' => $startTime,
-                    'end' => $endTime,
-                    'duration' => $duration,
-                    'message' => $e->getMessage(),
-
-                ]);
+                Log::error("Validation processing [{$this->model->invoice_number}] failed at: " . $endTime);
             })->dispatch();
 
         $this->model->update([
