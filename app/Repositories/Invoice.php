@@ -633,20 +633,7 @@ class Invoice
 
         $jobs[] = new InvoiceValidation($this->model);
 
-        $batch = Bus::batch($jobs)
-            ->then(function (Batch $batch) use ($startTime) {
-                // All jobs completed successfully...
-                $endTime = now();
-                $duration = $endTime->diffInSeconds($startTime);
-
-                Log::notice("Validation processing [{$this->model->invoice_number}] completed at: " . $endTime);
-            })->catch(function (Batch $batch, Throwable $e) use ($startTime) {
-                // First batch job failure detected...
-                $endTime = now();
-                $duration = $endTime->diffInSeconds($startTime);
-
-                Log::error("Validation processing [{$this->model->invoice_number}] failed at: " . $endTime);
-            })->dispatch();
+        $batch = Bus::batch($jobs)->dispatch();
 
         $this->model->update([
             'job_batch' => $batch->id
