@@ -28,8 +28,7 @@ class DeltaValidation implements ShouldQueue
      *
      * @var \App\Models\Invoice
      */
-    public $item;
-    public $type;
+    public $modelId;
 
     /**
      * The number of seconds the job can run before timing out.
@@ -45,10 +44,9 @@ class DeltaValidation implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($item, $type)
+    public function __construct($modelId)
     {
-        $this->item = $item;
-        $this->type = $type;
+        $this->modelId = $modelId;
     }
 
     /**
@@ -58,14 +56,78 @@ class DeltaValidation implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->type == 'AWB') {
-            $this->validationAWB($this->item);
+        $model = Invoice::where('id', $this->modelId)->first();
+        if ($model->smuItems) {
+            $smuItems = $model->smuItems->where('validation_score', '!=', 5);
+            // $smuItems = $model->smuItems->where('is_validated', false);
+            foreach ($smuItems as $index => $item) {
+                $item->awbItems()->delete();
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                $this->validationSMU($item);
+            }
         }
-        if ($this->type == 'SMU') {
-            $this->validationSMU($this->item);
+
+        if ($model->consItems) {
+            $consItems = $model->consItems->where('validation_score', '!=', 5);
+            foreach ($consItems as $index => $item) {
+                $item->awbItems()->delete();
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                $this->validationCONS($item);
+            }
         }
-        if ($this->type == 'CONS') {
-            $this->validationCONS($this->item);
+
+        if ($model->awbItems) {
+            $awbItems = $model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
+            // $awbItems = $model->awbItems->where('is_validated', false)->where('uuid', '!=', null);
+            foreach ($awbItems as $item) {
+                $amount = $item->amount;
+                $tax = 0;
+                $withholding = 0;
+                $amountAfterTax = $amount;
+                if ($item->tax && $item->withholding) {
+                    $tax = ($amount * $item->tax->deduction);
+                    $withholding = ($amount * $item->withholding->deduction);
+
+                    $amountAfterTax = $amount + $tax - $withholding;
+                }
+                $item->update([
+                    'is_validated' => false,
+                    'vat_tax' => $tax,
+                    'withholding_tax' => $withholding,
+                    'amount_after_tax' => $amountAfterTax
+                ]);
+                $this->validationAWB($item);
+            }
         }
     }
 
