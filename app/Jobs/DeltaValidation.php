@@ -217,7 +217,7 @@ class DeltaValidation implements ShouldQueue
         } else {
             $messages[] = "AWB: '" . $item->code . "' not found in Delta API";
         }
-        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
+        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan + $referenceDataRevenue;
 
         $tax = 0;
         $withholding = 0;
@@ -338,7 +338,7 @@ class DeltaValidation implements ShouldQueue
         } else {
             $messages[] = "SMU: '" . $item->code . "' not found in Delta API";
         }
-        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
+        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan + $referenceDataRevenue;
         $awbItems = [];
         // if ($validation_score >= 2) {
         if (isset($delta['data']['airwaybill'])) {
@@ -534,7 +534,7 @@ class DeltaValidation implements ShouldQueue
         } else {
             $messages[] = "CONS: '" . $item->code . "' not found in Delta API";
         }
-        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan;
+        $validation_score = $validationReference + !$validationBillExist + $validationWeight + $referenceMandatoryScan + $referenceOpsPlan + $referenceDataRevenue;
         $awbItems = [];
         // if ($validation_score >= 2) {
         if (isset($delta['data']['airwaybill'])) {

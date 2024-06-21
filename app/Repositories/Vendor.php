@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,8 @@ use App\Models\Sbu;
 
 use App\Imports\DataImport;
 use App\Exports\Vendor\Sample as SampleTemplate;
+
+use Throwable;
 
 class Vendor
 {
@@ -75,43 +78,70 @@ class Vendor
      */
     public static function synchronize(): void
     {
-        OracleVendor::select(['vendor_id', 'vendor_name', 'vendor_type_lookup_code'])->whereHas('sites', function ($q) {
-            $q->where('org_id', 103);
-        })->get()->each(function ($item) {
-            Model::updateOrCreate(
-                [
-                    'id' => $item->vendor_id,
-                ],
-                [
-                    'sbu_id' => 1,
-                    'code' => $item->vendor_id,
-                    'name' => $item->vendor_name,
-                    'type' => $item->vendor_type_lookup_code
-                ],
-            );
+        $startTime = now();
+        Log::info("Synchronize processing started at: " . $startTime, [
+            'user' => auth()->user()
+        ]);
 
-            // $sites = $item->sites->map(function($site){
-            //     return [
-            //         'id' => $site->vendor_site_id,
-            //         'code' => $site->vendor_site_id,
-            //         'name' => $site->vendor_site_code,
-            //     ];
-            // });
-            // $model->sites()->createMany($sites);
-        });
+        try {
+            OracleVendor::select(['vendor_id', 'vendor_name', 'vendor_type_lookup_code'])->whereHas('sites', function ($q) {
+                $q->where('org_id', 103);
+            })->get()->each(function ($item) {
+                Model::updateOrCreate(
+                    [
+                        'id' => $item->vendor_id,
+                    ],
+                    [
+                        'sbu_id' => 1,
+                        'code' => $item->vendor_id,
+                        'name' => $item->vendor_name,
+                        'type' => $item->vendor_type_lookup_code
+                    ],
+                );
 
-        OracleVendorSite::select(['vendor_id', 'vendor_site_id', 'vendor_site_code', 'org_id'])->where('org_id', 103)->get()->each(function ($item) {
-            VendorSite::updateOrCreate(
-                [
-                    'id' => $item->vendor_site_id,
-                ],
-                [
-                    'code' => $item->vendor_site_id,
-                    'vendor_id' => $item->vendor_id,
-                    'name' => $item->vendor_site_code,
-                ],
-            );
-        });
+                // $sites = $item->sites->map(function($site){
+                //     return [
+                //         'id' => $site->vendor_site_id,
+                //         'code' => $site->vendor_site_id,
+                //         'name' => $site->vendor_site_code,
+                //     ];
+                // });
+                // $model->sites()->createMany($sites);
+            });
+
+            OracleVendorSite::select(['vendor_id', 'vendor_site_id', 'vendor_site_code', 'org_id'])->where('org_id', 103)->get()->each(function ($item) {
+                VendorSite::updateOrCreate(
+                    [
+                        'id' => $item->vendor_site_id,
+                    ],
+                    [
+                        'code' => $item->vendor_site_id,
+                        'vendor_id' => $item->vendor_id,
+                        'name' => $item->vendor_site_code,
+                    ],
+                );
+            });
+
+            $endTime = now();
+            $duration = $endTime->diffInSeconds($startTime);
+
+            Log::notice("Synchronize processing completed at: " . $endTime, [
+                'start' => $startTime,
+                'end' => $endTime,
+                'duration' => $duration,
+            ]);
+        } catch (Throwable $e) {
+            $endTime = now();
+            $duration = $endTime->diffInSeconds($startTime);
+
+            Log::error("Synchronize processing failed at: " . $endTime, [
+                'start' => $startTime,
+                'end' => $endTime,
+                'duration' => $duration,
+                'message' => $e->getMessage(),
+
+            ]);
+        }
     }
 
     /**

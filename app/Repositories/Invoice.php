@@ -5,8 +5,6 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -544,7 +542,17 @@ class Invoice
     public function deltaValidate(): Model
     {
         $startTime = now();
-        Log::info("Validation processing [{$this->model->invoice_number}] started at: " . $startTime);
+        Log::info("Validation processing [{$this->model->invoice_number}] started at: " . $startTime, [
+            'invoice' => [
+                'id' => $this->model->id,
+                'invoice_number' => $this->model->invoice_number,
+                'invoice_date' => $this->model->invoice_date,
+                'due_date' => $this->model->due_date,
+                'posting_date' => $this->model->posting_date
+            ],
+            'user' => auth()->user()
+        ]);
+
         $jobs = [];
         // if ($this->model->smuItems) {
         //     $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);

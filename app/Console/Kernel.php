@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
     {
         $logPath = storage_path('logs/cron.log');
 
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('inspire')->hourly()->appendOutputTo($logPath);
         $schedule->job(new SynchronizeVendor)->daily()->appendOutputTo($logPath);
     }
 
