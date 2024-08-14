@@ -97,7 +97,7 @@ class Approval
                             'ledger_id' => 2024,
                             'org_id' => 103,
                             'line_number' => $key,
-                            'description' => $line['description'],
+                            'description' => $line['description'] . ' ~ ' . $this->model->note,
                             'line_type_code' => 'ITEM',
                             'ppn_code' => $line['ppn_code'],
                             'tax_rate_id' => $line['tax_rate_id'],

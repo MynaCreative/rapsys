@@ -236,6 +236,9 @@ class Invoice
                             if (isset($upload['excel_file'])) {
                                 $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
                                     ->first()
+                                    ->filter(function ($item) {
+                                        return !empty($item['code']);
+                                    })
                                     ->map(function ($item, $index) use ($upload, $uuid, $expense) {
                                         $date_item = null;
                                         if (isset($item['date_item'])) {
@@ -280,6 +283,9 @@ class Invoice
                             if (isset($upload['excel_file'])) {
                                 $rows = Excel::toCollection(new DataImport, $upload['excel_file'])
                                     ->first()
+                                    ->filter(function ($item) {
+                                        return !empty($item['code']);
+                                    })
                                     ->map(function ($item) use ($upload) {
                                         return [
                                             ...$item,

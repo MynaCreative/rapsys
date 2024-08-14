@@ -188,7 +188,7 @@ class DeltaValidation implements ShouldQueue
             // $validationBillExist = $this->validationBill($item->id, $item->expense_id, $item->code);
             $validationBillExist = false;
             if ((!$validationBillExist && $area && $salesChannel && $product) || $item->validation_bill) {
-                $validationWeight = $delta['data'][0]['tot_weight'] == $item->weight ? true : false;
+                $validationWeight = ($delta['data'][0]['tot_weight'] ?? 0) == $item->weight ? true : false;
                 if ($validationWeight || $item->validation_weight) {
                     if ($item->expense->mandatory_scan) {
                         // $deltaBatch = Delta::awbBatch([$item->code]);
@@ -209,7 +209,7 @@ class DeltaValidation implements ShouldQueue
                         $messages[] = "Expense doesn't have mandatory scan";
                     }
                 } else {
-                    $messages[] = "AWB: '" . $item->code . "' weight is : {$item->weight} but delta is : " . $delta['data'][0]['tot_weight'];
+                    $messages[] = "AWB: '" . $item->code . "' weight is : {$item->weight} but delta is : " . ($delta['data'][0]['tot_weight'] ?? 0);
                 }
             } else {
                 $messages[] = "AWB: '" . $item->code . "' already billed";
