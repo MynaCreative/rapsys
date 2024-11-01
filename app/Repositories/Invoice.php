@@ -559,99 +559,61 @@ class Invoice
             'user' => auth()->user()
         ]);
 
-        $jobs = [];
-        // if ($this->model->smuItems) {
-        //     $smuItems = $this->model->smuItems->where('validation_score', '!=', 5);
-        //     // $smuItems = $this->model->smuItems->where('is_validated', false);
-        //     foreach ($smuItems as $item) {
-        //         $item->awbItems()->delete();
-        //         $amount = $item->amount;
-        //         $tax = 0;
-        //         $withholding = 0;
-        //         $amountAfterTax = $amount;
-        //         if ($item->tax && $item->withholding) {
-        //             $tax = ($amount * $item->tax->deduction);
-        //             $withholding = ($amount * $item->withholding->deduction);
+        $jobs = $this->prepareJobs();
 
-        //             $amountAfterTax = $amount + $tax - $withholding;
-        //         }
-        //         $item->update([
-        //             'is_validated' => false,
-        //             'vat_tax' => $tax,
-        //             'withholding_tax' => $withholding,
-        //             'amount_after_tax' => $amountAfterTax
-        //         ]);
-        //         $jobs[] = new DeltaValidation($item, 'SMU');
-        //     }
-        // }
+        // Process batch
+        $batch = Bus::batch($jobs)
+            ->then(fn(Batch $batch) => $this->handleSuccess($startTime))
+            ->catch(fn(Batch $batch, Throwable $e) => $this->handleFailure($e, $startTime))
+            ->dispatch();
 
-        // if ($this->model->awbItems) {
-        //     $awbItems = $this->model->awbItems->where('validation_score', '!=', 5)->where('uuid', '!=', null);
-        //     // $awbItems = $this->model->awbItems->where('is_validated', false)->where('uuid', '!=', null);
-        //     foreach ($awbItems as $item) {
-        //         $amount = $item->amount;
-        //         $tax = 0;
-        //         $withholding = 0;
-        //         $amountAfterTax = $amount;
-        //         if ($item->tax && $item->withholding) {
-        //             $tax = ($amount * $item->tax->deduction);
-        //             $withholding = ($amount * $item->withholding->deduction);
+        // Store batch ID in model
+        $this->model->update(['job_batch' => $batch->id]);
 
-        //             $amountAfterTax = $amount + $tax - $withholding;
-        //         }
-        //         $item->update([
-        //             'is_validated' => false,
-        //             'vat_tax' => $tax,
-        //             'withholding_tax' => $withholding,
-        //             'amount_after_tax' => $amountAfterTax
-        //         ]);
-        //         $jobs[] = new DeltaValidation($item, 'AWB');
-        //     }
-        // }
+        return $this->model;
+    }
 
-        $jobs[] = new DeltaValidation($this->model->id);
+    /**
+     * Prepare validation jobs
+     */
+    protected function prepareJobs(): array
+    {
+        $jobs = [new DeltaValidation($this->model->id)];
 
-        $expenses = InvoiceExpense::where('invoice_id', $this->model->id)->get();
-        if ($expenses) {
-            foreach ($expenses as $expense) {
-                if ($expense->expense_id != 1) {
-                    $jobs[] = new ExpenseValidation($expense);
-                }
-            }
-        }
+        InvoiceExpense::where('invoice_id', $this->model->id)
+            ->where('expense_id', '!=', 1)
+            ->each(fn($expense) => $jobs[] = new ExpenseValidation($expense));
 
         $jobs[] = new InvoiceValidation($this->model);
 
-        $batch = Bus::batch($jobs)
-            ->then(function (Batch $batch) use ($startTime) {
-                // All jobs completed successfully...
-                $endTime = now();
-                $duration = $endTime->diffInSeconds($startTime);
+        return $jobs;
+    }
 
-                Log::notice("Validation processing [{$this->model->invoice_number}] completed at: " . $endTime, [
-                    'start' => $startTime,
-                    'end' => $endTime,
-                    'duration' => $duration,
-                ]);
-            })->catch(function (Batch $batch, Throwable $e) use ($startTime) {
-                // First batch job failure detected...
-                $endTime = now();
-                $duration = $endTime->diffInSeconds($startTime);
-
-                Log::error("Validation processing [{$this->model->invoice_number}] failed at: " . $endTime, [
-                    'start' => $startTime,
-                    'end' => $endTime,
-                    'duration' => $duration,
-                    'message' => $e->getMessage(),
-
-                ]);
-            })->dispatch();
-
-        $this->model->update([
-            'job_batch' => $batch->id
+    /**
+     * Handle batch success
+     */
+    protected function handleSuccess($startTime): void
+    {
+        $duration = now()->diffInSeconds($startTime);
+        Log::info("Validation processing [{$this->model->invoice_number}] completed in {$duration} seconds.", [
+            'start' => $startTime,
+            'end' => now(),
+            'duration' => $duration,
         ]);
+    }
 
-        return $this->model;
+    /**
+     * Handle batch failure
+     */
+    protected function handleFailure(Throwable $e, $startTime): void
+    {
+        $duration = now()->diffInSeconds($startTime);
+        Log::error("Validation processing [{$this->model->invoice_number}] failed at: " . now(), [
+            'start' => $startTime,
+            'end' => now(),
+            'duration' => $duration,
+            'message' => $e->getMessage(),
+        ]);
     }
 
     /**
